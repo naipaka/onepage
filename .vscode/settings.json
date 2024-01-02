@@ -1,0 +1,82 @@
+{
+  "git.ignoreLimitWarning": true,
+  "diffEditor.ignoreTrimWhitespace": true,
+  "cSpell.customDictionaries": {
+    "app-words": {
+      "name": "app-words",
+      "path": "${workspaceRoot}/.cspell/app-words.txt",
+      "description": "App Words",
+      "addWords": true,
+      "scope": "workspace"
+    },
+    "flutter-words": {
+      "name": "flutter-words",
+      "path": "${workspaceRoot}/.cspell/flutter-words.txt",
+      "description": "Flutter Development Words",
+      "addWords": true,
+      "scope": "workspace"
+    },
+    "org-words": {
+      "name": "org-words",
+      "path": "${workspaceRoot}/.cspell/org-words.txt",
+      "description": "Organization Words",
+      "addWords": true,
+      "scope": "workspace"
+    }
+  },
+  "cSpell.enabled": true,
+  "cSpell.language": "en,it,es,de,fr,nl,pt,ru",
+  "cSpell.ignoreWords": ["transform", "sparkling"],
+  "debug.openDebug": "openOnDebugBreak",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.formatOnPaste": true,
+  "editor.rulers": [80],
+  "editor.renderWhitespace": "all",
+  "editor.renderControlCharacters": true,
+  "editor.minimap.enabled": false,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "[dart]": {
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "recentlyUsedByPrefix",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off",
+    "editor.codeActionsOnSave": {
+      "quickfix.insertSemicolon": "always",
+      "source.organizeImports": "always",
+      "source.addMissingImports": "always",
+      "source.fixAll": "always"
+    }
+  },
+  "dart.flutterGenerateLocalizationsOnSave": "all",
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  "dart.sdkPath": ".fvm/flutter_sdk/bin/cache/dart-sdk",
+  "dart.debugExternalPackageLibraries": false,
+  "dart.debugSdkLibraries": false,
+  "dart.showSkippedTests": false,
+  "dart.runPubGetOnPubspecChanges": "always",
+  "dart.renameFilesWithClasses": "always",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "pubspec.yaml": ".flutter-plugins, .packages, .dart_tool, .flutter-plugins-dependencies, .metadata, template.iml, pubspec.lock, lefthook.yaml, pubspec_overrides.yaml",
+    "firebase.json": ".firebaserc, firestore.rules, firestore.indexes.json,storage.rules, remoteconfig.template.json",
+    ".env.sample": ".env*",
+    ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
+    "readme.*": "authors, backers.md, changelog*, citation*, code_of_conduct.md, codeowners, contributing.md, contributors, copying, credits, governance.md, history.md, license*, maintainers, readme*, security.md, sponsors.md",
+    "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).mocks.dart"
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "search.exclude": {
+    "**/.fvm": true,
+    "**/*.freezed.dart": true,
+    "**/*.g.dart": true
+  }
+}
