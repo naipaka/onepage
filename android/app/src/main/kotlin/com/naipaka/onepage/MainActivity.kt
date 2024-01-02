@@ -1,4 +1,4 @@
-package com.naipaka.onepage.onepage
+package com.naipaka.onepage
 
 import io.flutter.embedding.android.FlutterActivity
 

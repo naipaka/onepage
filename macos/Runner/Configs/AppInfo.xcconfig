@@ -8,7 +8,7 @@
 PRODUCT_NAME = onepage
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.naipaka.onepage.onepage
+PRODUCT_BUNDLE_IDENTIFIER = com.naipaka.onepage
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2024 com.naipaka.onepage. All rights reserved.
