@@ -13,8 +13,39 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.9.0
+  build_runner: ^2.4.7
+  flutter_gen_runner: ^5.3.2
   flutter_test:
     sdk: flutter
 
+flutter_gen:
+  enabled: true
+  output: lib/gen/
+  line_length: 80
+  integrations:
+    flutter_svg: true
+    flare_flutter: false
+    rive: false
+    lottie: false
+  assets:
+    outputs:
+      style: dot-delimiter
+
 flutter:
   uses-material-design: true
+
+  fonts:
+    - family: NotoSansJP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Black.otf
+          weight: 900
+        - asset: assets/fonts/NotoSansJP-Bold.otf
+          weight: 700
+        - asset: assets/fonts/NotoSansJP-Medium.otf
+          weight: 500
+        - asset: assets/fonts/NotoSansJP-Regular.otf
+          weight: 400
+        - asset: assets/fonts/NotoSansJP-Light.otf
+          weight: 300
+        - asset: assets/fonts/NotoSansJP-Thin.otf
+          weight: 100

@@ -2,5 +2,6 @@
 COCOAPODS
 endforeach
 flutterfire
+lottie
 PODFILE
 xcconfig
