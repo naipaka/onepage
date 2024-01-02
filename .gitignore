@@ -152,4 +152,5 @@ coverage/
 # Firebase with Build Phases
 **/firebase_app_id_file.json
 **/GoogleService-Info.plist
-**/app/google-services.json
+**/google-services.json
+**/firebase_options_*.dart

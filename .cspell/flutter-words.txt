@@ -1,1 +1,6 @@
 # Custom Dictionary Words
+COCOAPODS
+endforeach
+flutterfire
+PODFILE
+xcconfig
