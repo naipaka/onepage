@@ -1,1 +1,6 @@
-include: package:flutter_lints/flutter.yaml
+include: package:altive_lints/altive_lints.yaml
+analyzer:
+  exclude:
+    - "**/l10n/*.dart"
+    - "**/gen/*.dart"
+    - "**/firebase_options_*.dart"
