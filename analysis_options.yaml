@@ -1,6 +1,14 @@
 include: package:altive_lints/altive_lints.yaml
 analyzer:
+  plugins:
+    - custom_lint
   exclude:
     - "**/l10n/*.dart"
     - "**/gen/*.dart"
     - "**/firebase_options_*.dart"
+
+custom_lint:
+  rules:
+    # false once because of warnings in classes starting with `_Sliver`.
+    # https://github.com/altive/altive_lints/issues/36
+    - prefer_sliver_prefix: false

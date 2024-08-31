@@ -119,6 +119,7 @@ unlinked_spec.ds
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+**/ios/Flutter/Dart-Defines.xcconfig
 
 # macOS
 **/macos/Flutter/GeneratedPluginRegistrant.swift
@@ -154,3 +155,6 @@ coverage/
 **/GoogleService-Info.plist
 **/google-services.json
 **/firebase_options_*.dart
+
+# FVM Version Cache
+.fvm/

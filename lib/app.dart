@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// The main application widget.
 class App extends StatelessWidget {
+  /// Creates the main application widget.
   const App({super.key});
 
   @override
