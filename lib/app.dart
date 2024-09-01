@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'router/router.dart';
+import 'theme/theme.dart';
 
 /// The main application widget.
 class App extends ConsumerWidget {
@@ -12,6 +13,8 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
+      theme: appLightThemeData,
+      darkTheme: appDarkThemeData,
       routerConfig: router,
     );
   }

@@ -2,6 +2,7 @@
 altfire
 COCOAPODS
 crashlytics
+cupertino
 dartx
 endforeach
 fixnum
