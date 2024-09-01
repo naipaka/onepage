@@ -2,27 +2,28 @@
 
 // ignore_for_file: duplicate_ignore, type=lint, implicit_dynamic_parameter, implicit_dynamic_type, implicit_dynamic_method, strict_raw_type
 
-part of 'tracker_provider.dart';
+part of 'update_request_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trackerHash() => r'8ecd81245dd6432bae9e66b41a7b1f546e4c5f6b';
+String _$updateRequestHash() => r'9164f50c0b5a2fe3234cbbd6223e4e3c665f1a85';
 
-/// [Tracker] provider.
+/// Provide the current [UpdateRequest].
 ///
-/// Copied from [tracker].
-@ProviderFor(tracker)
-final trackerProvider = Provider<Tracker>.internal(
-  tracker,
-  name: r'trackerProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$trackerHash,
+/// Copied from [updateRequest].
+@ProviderFor(updateRequest)
+final updateRequestProvider = AutoDisposeProvider<UpdateRequest>.internal(
+  updateRequest,
+  name: r'updateRequestProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$updateRequestHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef TrackerRef = ProviderRef<Tracker>;
+typedef UpdateRequestRef = AutoDisposeProviderRef<UpdateRequest>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

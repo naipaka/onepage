@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'features/update_request/update_request.dart';
 import 'providers/providers.dart';
 import 'router/router.dart';
 import 'theme/theme.dart';
@@ -39,6 +40,19 @@ class App extends ConsumerWidget {
                   );
                 }
                 return const SizedBox.shrink();
+              },
+            ),
+            // Show the update request dialog if the message is not null.
+            Consumer(
+              builder: (context, ref, child) {
+                final message = ref.watch(updateRequestMessageProvider);
+                if (message == null) {
+                  return const SizedBox.shrink();
+                }
+                return ColoredBox(
+                  color: colors.overlay!,
+                  child: UpdateRequestView(message: message),
+                );
               },
             ),
           ],

@@ -1,6 +1,7 @@
 # Custom Dictionary Words
 altfire
 COCOAPODS
+configurator
 crashlytics
 cupertino
 dartx
@@ -10,6 +11,7 @@ flutterfire
 fullscreen
 hashcodes
 hotreloader
+linux
 lottie
 nullable
 petitparser

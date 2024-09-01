@@ -2,27 +2,27 @@
 
 // ignore_for_file: duplicate_ignore, type=lint, implicit_dynamic_parameter, implicit_dynamic_type, implicit_dynamic_method, strict_raw_type
 
-part of 'tracker_provider.dart';
+part of 'package_info_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trackerHash() => r'8ecd81245dd6432bae9e66b41a7b1f546e4c5f6b';
+String _$packageInfoHash() => r'517f01fbab81b5ebd10a5d03633b9ffaee13310a';
 
-/// [Tracker] provider.
+/// A reference to the [PackageInfo] provider.
 ///
-/// Copied from [tracker].
-@ProviderFor(tracker)
-final trackerProvider = Provider<Tracker>.internal(
-  tracker,
-  name: r'trackerProvider',
+/// Copied from [packageInfo].
+@ProviderFor(packageInfo)
+final packageInfoProvider = Provider<PackageInfo>.internal(
+  packageInfo,
+  name: r'packageInfoProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$trackerHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$packageInfoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef TrackerRef = ProviderRef<Tracker>;
+typedef PackageInfoRef = ProviderRef<PackageInfo>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

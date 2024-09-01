@@ -1,4 +1,6 @@
 {
     "@@locale": "en",
-    "appName": "One Page"
+    "appName": "One Page",
+    "requestForUpdate": "Request for Update",
+    "updateNow": "Update Now"
 }

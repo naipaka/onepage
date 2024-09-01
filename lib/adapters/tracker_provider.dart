@@ -6,5 +6,5 @@ part 'tracker_provider.g.dart';
 /// [Tracker] provider.
 @Riverpod(keepAlive: true)
 Tracker tracker(TrackerRef ref) {
-  return Tracker();
+  throw UnimplementedError();
 }
