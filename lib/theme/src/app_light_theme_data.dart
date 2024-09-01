@@ -11,7 +11,7 @@ ThemeData get appLightThemeData {
     brightness: Brightness.light,
     bgMain: Color(0xFFEDEDED),
     textMain: Color(0xFF4F4F4F),
-    overlay: Colors.black54,
+    overlay: Colors.black38,
   );
 
   final typography = appTypography(textColor: colors.textMain!);

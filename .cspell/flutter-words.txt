@@ -7,6 +7,7 @@ dartx
 endforeach
 fixnum
 flutterfire
+fullscreen
 hashcodes
 hotreloader
 lottie

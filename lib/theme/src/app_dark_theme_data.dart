@@ -11,7 +11,7 @@ ThemeData get appDarkThemeData {
     brightness: Brightness.dark,
     bgMain: Color(0xFF4F4F4F),
     textMain: Color(0xFFEDEDED),
-    overlay: Colors.black54,
+    overlay: Colors.black38,
   );
 
   final typography = appTypography(textColor: colors.textMain!);
