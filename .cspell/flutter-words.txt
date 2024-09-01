@@ -1,7 +1,20 @@
 # Custom Dictionary Words
+altfire
 COCOAPODS
+crashlytics
+dartx
 endforeach
+fixnum
 flutterfire
+hashcodes
+hotreloader
 lottie
+petitparser
 PODFILE
+pubspec
+riverpod
+rxdart
+sprintf
+unawaited
+uuid
 xcconfig
