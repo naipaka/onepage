@@ -91,8 +91,3 @@ jobs:
       - name: Run package tests
         run: melos run test:ci --no-select
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage/lcov.info
