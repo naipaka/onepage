@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../../gen/strings.g.dart';
+import 'package:i18n/i18n.dart';
 
 /// Home page when the app is opened.
 class HomePage extends HookConsumerWidget {

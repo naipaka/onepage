@@ -1,0 +1,26 @@
+name: i18n
+description: A new Flutter package project.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  slang: ^4.2.1
+  slang_flutter: ^4.2.0
+
+dev_dependencies:
+  altive_lints: ^1.15.0
+  build_runner: ^2.4.13
+  custom_lint: ^0.7.0
+  flutter_test:
+    sdk: flutter
+  slang_build_runner: ^4.2.0
+
+flutter:
+  uses-material-design: true

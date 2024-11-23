@@ -436,7 +436,7 @@ packages:
     source: hosted
     version: "0.20.5"
   flutter_localizations:
-    dependency: "direct main"
+    dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -570,6 +570,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  i18n:
+    dependency: "direct main"
+    description:
+      path: "../i18n"
+      relative: true
+    source: path
+    version: "1.0.0"
   image_size_getter:
     dependency: transitive
     description:
@@ -856,23 +863,15 @@ packages:
     source: sdk
     version: "0.0.99"
   slang:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: slang
       sha256: "0af2983d4863f9b57f7a28f47fdd86df4ada462e1fad727b47e6bf5fc64d0060"
       url: "https://pub.dev"
     source: hosted
     version: "4.2.1"
-  slang_build_runner:
-    dependency: "direct dev"
-    description:
-      name: slang_build_runner
-      sha256: "2c0f2790ad0f68210c151fefee86b863c483f315816cbe59496dbbe744ef90e2"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.2.0"
   slang_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: slang_flutter
       sha256: "1693804c4c16a14134e753e48e488dca6a86ad682d5faf3c9c53e80b7b2e6b49"

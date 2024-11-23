@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:i18n/i18n.dart';
 import 'package:theme/theme.dart';
 import 'package:utils/utils.dart';
 import 'package:widgets/widgets.dart';
 
 import 'features/update_request/update_request.dart';
-import 'gen/strings.g.dart';
 import 'router/router.dart';
 
 /// The main application widget.
@@ -21,9 +20,9 @@ class App extends ConsumerWidget {
       theme: appLightThemeData,
       darkTheme: appDarkThemeData,
       routerConfig: router,
-      locale: TranslationProvider.of(context).flutterLocale,
-      supportedLocales: AppLocaleUtils.supportedLocales,
-      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      locale: context.locale,
+      supportedLocales: supportedLocales,
+      localizationsDelegates: localizationsDelegates,
       builder: (context, child) {
         final colors = context.colors;
         return Stack(
