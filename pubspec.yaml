@@ -1,7 +1,7 @@
 name: onepage_workspace
 
 environment:
-  sdk: ^3.5.1
+  sdk: ^3.5.4
 
 dev_dependencies:
   melos: ^6.2.0
