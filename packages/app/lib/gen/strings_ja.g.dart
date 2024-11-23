@@ -39,6 +39,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	// Translations
 	String get title => 'One Page';
 	late final TranslationsUpdateRequestJa updateRequest = TranslationsUpdateRequestJa._(_root);
+	late final TranslationsHomeJa home = TranslationsHomeJa._(_root);
 }
 
 // Path: updateRequest
@@ -50,6 +51,16 @@ class TranslationsUpdateRequestJa {
 	// Translations
 	String get title => 'アップデートのお願い';
 	late final TranslationsUpdateRequestButtonJa button = TranslationsUpdateRequestButtonJa._(_root);
+}
+
+// Path: home
+class TranslationsHomeJa {
+	TranslationsHomeJa._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get today => '今日';
 }
 
 // Path: updateRequest.button
@@ -70,6 +81,7 @@ extension on Translations {
 			case 'title': return 'One Page';
 			case 'updateRequest.title': return 'アップデートのお願い';
 			case 'updateRequest.button.updateNow': return '更新する';
+			case 'home.today': return '今日';
 			default: return null;
 		}
 	}

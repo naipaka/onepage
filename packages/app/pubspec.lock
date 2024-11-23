@@ -843,7 +843,7 @@ packages:
     source: hosted
     version: "2.0.1"
   simple_logger:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: simple_logger
       sha256: "1de79f22bf31e5c33b91e9e302394dac02d8269d474848d33153c3a15c08e970"
