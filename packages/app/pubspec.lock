@@ -997,6 +997,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  update_requester:
+    dependency: "direct main"
+    description:
+      path: "../features/update_requester"
+      relative: true
+    source: path
+    version: "1.0.0"
   url_launcher:
     dependency: "direct main"
     description:
@@ -1101,7 +1108,7 @@ packages:
     source: hosted
     version: "2.1.4"
   version:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: version
       sha256: "3d4140128e6ea10d83da32fef2fa4003fccbf6852217bb854845802f04191f94"

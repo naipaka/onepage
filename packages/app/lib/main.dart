@@ -9,13 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:update_requester/update_requester.dart';
 import 'package:utils/utils.dart';
 
 import 'adapters/configurator_provider.dart';
 import 'adapters/tracker_provider.dart';
 import 'app.dart';
 import 'environment/environment.dart';
-import 'features/update_request/update_request.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

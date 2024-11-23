@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:version/version.dart';
 
-import '../../../../../adapters/configurator_provider.dart';
+import '../../adapters/configurator_provider.dart';
 import '../../models/models.dart';
 
 part 'update_request_provider.g.dart';

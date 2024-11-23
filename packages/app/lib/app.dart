@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:theme/theme.dart';
+import 'package:update_requester/update_requester.dart';
 import 'package:utils/utils.dart';
 import 'package:widgets/widgets.dart';
 
-import 'features/update_request/update_request.dart';
 import 'router/router.dart';
 
 /// The main application widget.
