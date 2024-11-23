@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 import 'dart:ui';
 
@@ -15,6 +16,7 @@ import 'environment/environment.dart';
 import 'features/update_request/update_request.dart';
 import 'gen/strings.g.dart';
 import 'providers/providers.dart';
+import 'utils/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,12 +25,6 @@ Future<void> main() async {
 
   await Firebase.initializeApp(options: firebaseOptionsWithFlavor(flavor));
 
-  final (configurator, packageInfo, _) = await (
-    _initializeConfigurator(),
-    PackageInfo.fromPlatform(),
-    LocaleSettings.useDeviceLocale(),
-  ).wait;
-
   final tracker = Tracker();
   // Logs errors caught by the Flutter framework.
   FlutterError.onError = tracker.onFlutterError;
@@ -36,6 +32,12 @@ Future<void> main() async {
   PlatformDispatcher.instance.onError = tracker.onPlatformError;
   // Logs errors outside the Flutter environment.
   Isolate.current.addErrorListener(tracker.isolateErrorListener());
+
+  final (configurator, packageInfo, _) = await (
+    _initializeConfigurator(tracker: tracker),
+    PackageInfo.fromPlatform(),
+    LocaleSettings.useDeviceLocale(),
+  ).wait;
 
   runApp(
     ProviderScope(
@@ -53,9 +55,16 @@ Future<void> main() async {
 }
 
 /// Initializes the process to retrieve values from RemoteConfig.
-Future<Configurator> _initializeConfigurator() async {
+Future<Configurator> _initializeConfigurator({
+  required Tracker tracker,
+}) async {
   final target = Configurator();
-  await target.fetchAndActivate();
+  try {
+    await target.fetchAndActivate();
+  } on Exception catch (e) {
+    logger.severe('Failed to fetch and activate remote config: $e');
+    unawaited(tracker.recordError(e, StackTrace.current));
+  }
   // Sets default values to be used when the app is offline or
   // cannot fetch updates.
   await target.setDefaults({
