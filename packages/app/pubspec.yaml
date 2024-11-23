@@ -29,6 +29,8 @@ dependencies:
   simple_logger: ^1.10.0
   slang: ^4.2.1
   slang_flutter: ^4.2.0
+  theme:
+    path: ../theme/
   url_launcher: ^6.3.1
   version: ^3.0.2
 
@@ -64,15 +66,15 @@ flutter:
   fonts:
     - family: NotoSansJP
       fonts:
-        - asset: assets/fonts/NotoSansJP-Black.ttf
+        - asset: packages/theme/fonts/NotoSansJP-Black.ttf
           weight: 900
-        - asset: assets/fonts/NotoSansJP-Bold.ttf
+        - asset: packages/theme/fonts/NotoSansJP-Bold.ttf
           weight: 700
-        - asset: assets/fonts/NotoSansJP-Medium.ttf
+        - asset: packages/theme/fonts/NotoSansJP-Medium.ttf
           weight: 500
-        - asset: assets/fonts/NotoSansJP-Regular.ttf
+        - asset: packages/theme/fonts/NotoSansJP-Regular.ttf
           weight: 400
-        - asset: assets/fonts/NotoSansJP-Light.ttf
+        - asset: packages/theme/fonts/NotoSansJP-Light.ttf
           weight: 300
-        - asset: assets/fonts/NotoSansJP-Thin.ttf
+        - asset: packages/theme/fonts/NotoSansJP-Thin.ttf
           weight: 100

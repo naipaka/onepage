@@ -967,6 +967,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  theme:
+    dependency: "direct main"
+    description:
+      path: "../theme"
+      relative: true
+    source: path
+    version: "1.0.0"
   time:
     dependency: transitive
     description:

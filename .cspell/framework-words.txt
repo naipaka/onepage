@@ -18,6 +18,7 @@ hashcodes
 hotreloader
 internalsharing
 kuhnroyal
+leoafarias
 linux
 lottie
 nullable

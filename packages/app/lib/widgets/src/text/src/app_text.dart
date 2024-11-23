@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../../../../theme/theme.dart';
+import 'package:theme/theme.dart';
 
 /// Types of typography available for use with [AppText].
 enum _AppTypographyType {

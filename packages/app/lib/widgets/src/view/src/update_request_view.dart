@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:theme/theme.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../i18n/localizer.dart';
 import '../../../../providers/providers.dart';
-import '../../../../theme/theme.dart';
 import '../../../widgets.dart';
 
 /// A view that shows a dialog to request an update.
