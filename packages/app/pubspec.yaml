@@ -23,6 +23,8 @@ dependencies:
   json_annotation: ^4.9.0
   package_info_plus: ^8.0.2
   riverpod_annotation: ^2.3.5
+  slang: ^4.2.1
+  slang_flutter: ^4.2.0
   url_launcher: ^6.3.0
   version: ^3.0.2
 
@@ -37,6 +39,7 @@ dev_dependencies:
   json_serializable: ^6.8.0
   riverpod_generator: ^2.4.3
   riverpod_lint: ^2.3.13
+  slang_build_runner: ^4.2.0
 
 dependency_overrides:
   # Because Flutter Stable 3.24.1 is fixed to depend on collection 1.18.0,
@@ -61,7 +64,6 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
-  generate: true
 
   fonts:
     - family: NotoSansJP

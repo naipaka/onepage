@@ -1,0 +1,6 @@
+# locale: "ja"
+title: "One Page"
+updateRequest:
+  title: "アップデートのお願い"
+  button:
+    updateNow: "更新する"

@@ -13,6 +13,7 @@ import 'adapters/tracker_provider.dart';
 import 'app.dart';
 import 'environment/environment.dart';
 import 'features/update_request/update_request.dart';
+import 'gen/strings.g.dart';
 import 'providers/providers.dart';
 
 Future<void> main() async {
@@ -22,9 +23,10 @@ Future<void> main() async {
 
   await Firebase.initializeApp(options: firebaseOptionsWithFlavor(flavor));
 
-  final (configurator, packageInfo) = await (
+  final (configurator, packageInfo, _) = await (
     _initializeConfigurator(),
     PackageInfo.fromPlatform(),
+    LocaleSettings.useDeviceLocale(),
   ).wait;
 
   final tracker = Tracker();
@@ -43,7 +45,9 @@ Future<void> main() async {
         trackerProvider.overrideWithValue(tracker),
         packageInfoProvider.overrideWithValue(packageInfo),
       ],
-      child: const App(),
+      child: TranslationProvider(
+        child: const App(),
+      ),
     ),
   );
 }

@@ -1,0 +1,6 @@
+# locale: "en"
+title: "One Page"
+updateRequest:
+  title: "Update Request"
+  button:
+    updateNow: "Update Now"

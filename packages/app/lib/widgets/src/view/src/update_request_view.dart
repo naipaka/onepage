@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
-import '../../../../l10n/localizer.dart';
+import '../../../../i18n/localizer.dart';
 import '../../../../providers/providers.dart';
 import '../../../../theme/theme.dart';
 import '../../../widgets.dart';
@@ -22,14 +22,14 @@ class UpdateRequestView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = context.l10n;
+    final t = context.t.updateRequest;
     final colors = context.colors;
 
     return PopScope(
       canPop: false,
       child: AlertDialog(
         title: AppText.bodyLBold(
-          l10n.requestForUpdate,
+          t.title,
           color: colors.bgMain,
         ),
         content: AppText.bodyM(
@@ -50,7 +50,7 @@ class UpdateRequestView extends ConsumerWidget {
               };
               unawaited(launchUrlString(url));
             },
-            child: Text(l10n.updateNow),
+            child: Text(t.button.updateNow),
           ),
         ],
       ),
