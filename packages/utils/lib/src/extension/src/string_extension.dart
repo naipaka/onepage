@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 /// 文字列の拡張機能。
 extension StringExtension on String {

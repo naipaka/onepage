@@ -1,0 +1,16 @@
+name: utils
+description: A new Flutter package project.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  altive_lints: ^1.15.0
+  custom_lint: ^0.7.0
+  test: ^1.25.8
