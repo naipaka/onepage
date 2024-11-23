@@ -35,6 +35,8 @@ dependencies:
   utils:
     path: ../utils/
   version: ^3.0.2
+  widgets:
+    path: ../widgets/
 
 dev_dependencies:
   altive_lints: ^1.15.0
