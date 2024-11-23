@@ -2,7 +2,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:version/version.dart';
 
-import '../../../../providers/providers.dart';
+import '../../../../utils/utils.dart';
 import 'update_request_provider.dart';
 
 part 'update_request_message_provider.g.dart';

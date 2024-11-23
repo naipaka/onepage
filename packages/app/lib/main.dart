@@ -15,7 +15,6 @@ import 'app.dart';
 import 'environment/environment.dart';
 import 'features/update_request/update_request.dart';
 import 'gen/strings.g.dart';
-import 'providers/providers.dart';
 import 'utils/utils.dart';
 
 Future<void> main() async {

@@ -6,7 +6,7 @@ import 'package:theme/theme.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../../../i18n/localizer.dart';
-import '../../../../providers/providers.dart';
+import '../../../../utils/utils.dart';
 import '../../../widgets.dart';
 
 /// A view that shows a dialog to request an update.

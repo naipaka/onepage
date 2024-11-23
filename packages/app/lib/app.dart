@@ -5,8 +5,8 @@ import 'package:theme/theme.dart';
 
 import 'features/update_request/update_request.dart';
 import 'gen/strings.g.dart';
-import 'providers/providers.dart';
 import 'router/router.dart';
+import 'utils/utils.dart';
 import 'widgets/widgets.dart';
 
 /// The main application widget.
