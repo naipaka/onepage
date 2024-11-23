@@ -3,19 +3,47 @@
   "configurations": [
     {
       "name": "onepage dev-debug",
+      "cwd": "packages/app",
       "program": "lib/main.dart",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": ["--dart-define-from-file=dart_defines/dev.env"]
+      "args": [
+        "--dart-define-from-file=dart_defines/dev.env"
+      ]
     },
     {
       "name": "onepage prod-debug",
+      "cwd": "packages/app",
       "program": "lib/main.dart",
       "request": "launch",
       "type": "dart",
       "flutterMode": "debug",
-      "args": ["--dart-define-from-file=dart_defines/prod.env"]
+      "args": [
+        "--dart-define-from-file=dart_defines/prod.env"
+      ]
+    },
+    {
+      "name": "onepage dev-release",
+      "cwd": "packages/app",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": [
+        "--dart-define-from-file=dart_defines/dev.env"
+      ]
+    },
+    {
+      "name": "onepage prod-release",
+      "cwd": "packages/app",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": [
+        "--dart-define-from-file=dart_defines/prod.env"
+      ]
     }
   ]
 }
