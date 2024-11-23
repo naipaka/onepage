@@ -8,22 +8,24 @@ part of 'update_request_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$updateRequestHash() => r'9164f50c0b5a2fe3234cbbd6223e4e3c665f1a85';
+String _$updateRequestStateHash() =>
+    r'c642345163185d90706b4cf9433ea6888b6c37d6';
 
 /// Provide the current [UpdateRequest].
 ///
-/// Copied from [updateRequest].
-@ProviderFor(updateRequest)
-final updateRequestProvider = AutoDisposeProvider<UpdateRequest>.internal(
-  updateRequest,
-  name: r'updateRequestProvider',
+/// Copied from [UpdateRequestState].
+@ProviderFor(UpdateRequestState)
+final updateRequestStateProvider =
+    AutoDisposeNotifierProvider<UpdateRequestState, UpdateRequest>.internal(
+  UpdateRequestState.new,
+  name: r'updateRequestStateProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$updateRequestHash,
+      : _$updateRequestStateHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef UpdateRequestRef = AutoDisposeProviderRef<UpdateRequest>;
+typedef _$UpdateRequestState = AutoDisposeNotifier<UpdateRequest>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

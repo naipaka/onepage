@@ -8,7 +8,7 @@ part of 'configurator_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configuratorHash() => r'dcc06a45e8b39df3fb73acfbd8d05b1099a3f0f1';
+String _$configuratorHash() => r'9e492ffb951b15cbe24c846fb5bdcbb0fe71a690';
 
 /// A provider that manages the [Configurator].
 ///
@@ -23,6 +23,8 @@ final configuratorProvider = Provider<Configurator>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ConfiguratorRef = ProviderRef<Configurator>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

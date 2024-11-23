@@ -8,7 +8,7 @@ part of 'platform_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$platformHash() => r'525c6849d48f1953bceaf8ef45a47b4e9850daec';
+String _$platformHash() => r'c7d8b19a3d257e337e1969d7790dce487fca5a19';
 
 /// Provide the current [TargetPlatform].
 ///
@@ -23,6 +23,8 @@ final platformProvider = Provider<TargetPlatform>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef PlatformRef = ProviderRef<TargetPlatform>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -1,3 +1,4 @@
+// Allow hardcoding of colors for Theme settings.
 // ignore_for_file: avoid_hardcoded_color
 import 'package:flutter/material.dart';
 

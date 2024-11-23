@@ -1,4 +1,3 @@
-// ignore_for_file: avoid_hardcoded_color
 import 'package:flutter/material.dart';
 
 /// The [Color] that should be defined for each [ThemeMode] of the app.

@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'platform_provider.g.dart';
 
 /// Provide the current [TargetPlatform].
 @Riverpod(keepAlive: true)
-TargetPlatform platform(PlatformRef ref) {
+TargetPlatform platform(Ref ref) {
   return defaultTargetPlatform;
 }
 

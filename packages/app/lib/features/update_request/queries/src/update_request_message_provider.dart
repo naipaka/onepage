@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:version/version.dart';
 
@@ -12,8 +13,8 @@ part 'update_request_message_provider.g.dart';
 /// If an update is required, it provides an update prompt message.
 /// If no update is needed, it returns null.
 @riverpod
-String? updateRequestMessage(UpdateRequestMessageRef ref) {
-  final updateRequest = ref.watch(updateRequestProvider);
+String? updateRequestMessage(Ref ref) {
+  final updateRequest = ref.watch(updateRequestStateProvider);
   final currentVersion = Version.parse(ref.watch(packageInfoProvider).version);
   if (currentVersion < updateRequest.version) {
     return updateRequest.message;

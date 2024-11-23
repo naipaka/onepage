@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../adapters/tracker_provider.dart';
@@ -17,7 +18,7 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 /// The router provider.
 @Riverpod(keepAlive: true)
-Raw<GoRouter> router(RouterRef ref) {
+Raw<GoRouter> router(Ref ref) {
   final tracker = ref.watch(trackerProvider);
   late GoRouter router;
   router = GoRouter(

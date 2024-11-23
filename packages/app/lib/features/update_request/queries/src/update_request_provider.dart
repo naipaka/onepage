@@ -21,13 +21,16 @@ final updateRequestDefaultValue = jsonEncode(
 
 /// Provide the current [UpdateRequest].
 @riverpod
-UpdateRequest updateRequest(UpdateRequestRef ref) {
-  final configurator = ref.watch(configuratorProvider);
-  final config = configurator.getDataConfig(
-    updateRequestKey,
-    fromJson: UpdateRequest.fromJson,
-    onConfigUpdated: (value) => ref.state = value,
-  );
-  ref.onDispose(config.dispose);
-  return config.value;
+class UpdateRequestState extends _$UpdateRequestState {
+  @override
+  UpdateRequest build() {
+    final configurator = ref.watch(configuratorProvider);
+    final config = configurator.getDataConfig(
+      updateRequestKey,
+      fromJson: UpdateRequest.fromJson,
+      onConfigUpdated: (value) => state = value,
+    );
+    ref.onDispose(config.dispose);
+    return config.value;
+  }
 }
