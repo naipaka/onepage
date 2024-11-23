@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:theme/theme.dart';
+import 'package:utils/utils.dart';
 
 import 'features/update_request/update_request.dart';
 import 'gen/strings.g.dart';
 import 'router/router.dart';
-import 'utils/utils.dart';
 import 'widgets/widgets.dart';
 
 /// The main application widget.

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:theme/theme.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import 'package:utils/utils.dart';
 
 import '../../../../../i18n/localizer.dart';
-import '../../../../../utils/utils.dart';
 
 /// A view that shows a dialog to request an update.
 class UpdateRequestView extends ConsumerWidget {

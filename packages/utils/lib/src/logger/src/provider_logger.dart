@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:utils/utils.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../extension/extension.dart';
 import 'logger.dart';
 
 /// `Provider`イベントの種別

@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      riverpod_generator:
+        generate_for:
+          include:
+            - lib/**/provider/*.dart
+            - lib/**/*provider.dart
+        options:
+          provider_name_suffix: "Provider" # (default)

@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:utils/utils.dart';
 
 import 'adapters/configurator_provider.dart';
 import 'adapters/tracker_provider.dart';
@@ -15,7 +16,6 @@ import 'app.dart';
 import 'environment/environment.dart';
 import 'features/update_request/update_request.dart';
 import 'gen/strings.g.dart';
-import 'utils/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
