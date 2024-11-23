@@ -1,42 +1,45 @@
 {
-  "git.ignoreLimitWarning": true,
-  "diffEditor.ignoreTrimWhitespace": true,
   "cSpell.customDictionaries": {
-    "app-words": {
-      "name": "app-words",
-      "path": "${workspaceRoot}/.cspell/app-words.txt",
-      "description": "App Words",
+    "project-words": {
+      "name": "project-words",
+      "path": "${workspaceRoot}/.cspell/project-words.txt",
+      "description": "Words specific to this project",
       "addWords": true,
       "scope": "workspace"
     },
-    "flutter-words": {
-      "name": "flutter-words",
-      "path": "${workspaceRoot}/.cspell/flutter-words.txt",
-      "description": "Flutter Development Words",
+    "framework-words": {
+      "name": "framework-words",
+      "path": "${workspaceRoot}/.cspell/framework-words.txt",
+      "description": "Framework specific Words",
       "addWords": true,
       "scope": "workspace"
     },
-    "org-words": {
-      "name": "org-words",
-      "path": "${workspaceRoot}/.cspell/org-words.txt",
-      "description": "Organization Words",
+    "organization-words": {
+      "name": "organization-words",
+      "path": "${workspaceRoot}/.cspell/organization-words.txt",
+      "description": "Organization specific Words",
       "addWords": true,
       "scope": "workspace"
     }
   },
-  "cSpell.enabled": true,
-  "cSpell.language": "en,it,es,de,fr,nl,pt,ru",
-  "cSpell.ignoreWords": ["transform", "sparkling"],
-  "debug.openDebug": "openOnDebugBreak",
-  "editor.formatOnSave": true,
-  "editor.formatOnType": true,
-  "editor.formatOnPaste": true,
-  "editor.rulers": [80],
-  "editor.renderWhitespace": "all",
-  "editor.renderControlCharacters": true,
-  "editor.minimap.enabled": false,
-  "editor.bracketPairColorization.enabled": true,
-  "editor.guides.bracketPairs": true,
+  "cSpell.ignorePaths": [
+    "dart_defines",
+    "firebase_options*.dart",
+    "google-services.json",
+    "node_modules",
+    "package-lock.json",
+    "vscode-extension",
+    "*.gen.dart",
+    "*.lock",
+    "*.xcconfig",
+    "**/fvm",
+    "**/.pub-cache",
+    ".git/objects",
+    ".metadata",
+    ".vscode",
+    ".vscode-insiders"
+  ],
+  "cSpell.spellCheckOnlyWorkspaceFiles": true,
   "[dart]": {
     "editor.selectionHighlight": false,
     "editor.suggest.snippetsPreventQuickSuggestions": false,
@@ -52,12 +55,24 @@
   },
   "dart.flutterGenerateLocalizationsOnSave": "all",
   "dart.flutterSdkPath": ".fvm/versions/3.24.1",
-  "dart.sdkPath": ".fvm/flutter_sdk/bin/cache/dart-sdk",
   "dart.debugExternalPackageLibraries": false,
   "dart.debugSdkLibraries": false,
+  "dart.experimentalRefactors": true,
   "dart.showSkippedTests": false,
   "dart.runPubGetOnPubspecChanges": "always",
   "dart.renameFilesWithClasses": "always",
+  "debug.openDebug": "openOnDebugBreak",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.formatOnPaste": true,
+  "editor.rulers": [
+    80
+  ],
+  "editor.renderWhitespace": "all",
+  "editor.renderControlCharacters": true,
+  "editor.minimap.enabled": false,
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
   "explorer.confirmDragAndDrop": false,
   "explorer.fileNesting.enabled": true,
   "explorer.fileNesting.expand": false,
@@ -69,14 +84,29 @@
     "readme.*": "authors, backers.md, changelog*, citation*, code_of_conduct.md, codeowners, contributing.md, contributors, copying, credits, governance.md, history.md, license*, maintainers, readme*, security.md, sponsors.md",
     "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).mocks.dart"
   },
+  "files.associations": {
+    "*.apns": "json"
+  },
   "files.watcherExclude": {
-    "**/.fvm": true
+    "**/.fvm": true,
+    ".idea": true
   },
   "git.autofetch": true,
   "git.enableSmartCommit": true,
+  "[json]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
+  },
   "search.exclude": {
-    "**/.fvm": true,
+    "**/*.dart_tool": true,
     "**/*.freezed.dart": true,
-    "**/*.g.dart": true
+    "**/*.g.dart": true,
+    "**/*.log": true,
+    "**/*.symlinks": true,
+    "**/.fvm": true,
+    "**/.idea": true,
+    "**/build": true,
+    "**/node_modules": true,
+    "**/Pods": true
   }
 }

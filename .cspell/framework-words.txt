@@ -1,5 +1,6 @@
 # Custom Dictionary Words
 altfire
+appbundle
 COCOAPODS
 configurator
 crashlytics
@@ -22,4 +23,5 @@ rxdart
 sprintf
 unawaited
 uuid
+wholename
 xcconfig
