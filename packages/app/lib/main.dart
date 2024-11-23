@@ -47,6 +47,7 @@ Future<void> main() async {
         trackerProvider.overrideWithValue(tracker),
         packageInfoProvider.overrideWithValue(packageInfo),
       ],
+      observers: [ProviderLogger()],
       child: TranslationProvider(
         child: const App(),
       ),
