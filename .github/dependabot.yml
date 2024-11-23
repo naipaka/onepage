@@ -1,0 +1,42 @@
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "pub"
+    directories:
+      - "/"
+      - "/packages/*"
+    schedule:
+      interval: "weekly"
+    groups:
+      altfire-dependencies:
+        patterns:
+          - "altfire*"
+      riverpod-dependencies:
+        patterns:
+          - "*riverpod*"
+          - "build_runner"
+      freezed-dependencies:
+        patterns:
+          - "build_runner"
+          - "freezed*"
+          - "json_annotation"
+          - "json_serializable"
+      slang-dependencies:
+        patterns:
+          - "build_runner"
+          - "slang*"
+      go-router-dependencies:
+        patterns:
+          - "build_runner"
+          - "go_router*"
+      dependencies-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"

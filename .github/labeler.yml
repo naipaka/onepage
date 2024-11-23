@@ -1,0 +1,31 @@
+android:
+  - changed-files:
+      - any-glob-to-any-file: "**/android/**/*"
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: "**/*.md"
+
+app:
+  - changed-files:
+      - any-glob-to-any-file: "packages/app/**/*"
+
+ios:
+  - changed-files:
+      - any-glob-to-any-file: "**/ios/**/*"
+
+macos:
+  - changed-files:
+      - any-glob-to-any-file: "**/macos/**/*"
+
+test:
+  - changed-files:
+      - any-glob-to-any-file: "**/test/**/*"
+
+themes:
+  - changed-files:
+      - any-glob-to-any-file: "packages/themes/**/*"
+
+web:
+  - changed-files:
+      - any-glob-to-any-file: "**/web/**/*"

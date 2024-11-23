@@ -1,17 +1,23 @@
 # Custom Dictionary Words
+adkll
 altfire
 appbundle
+bluefireteam
 COCOAPODS
 configurator
 crashlytics
 cupertino
 dartx
+dorny
 endforeach
 fixnum
 flutterfire
 fullscreen
+fvmrc
 hashcodes
 hotreloader
+internalsharing
+kuhnroyal
 linux
 lottie
 nullable
@@ -21,6 +27,8 @@ pubspec
 riverpod
 rxdart
 sprintf
+technote
+temurin
 unawaited
 uuid
 wholename

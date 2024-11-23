@@ -1,0 +1,23 @@
+name: Create release pull request
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: |
+          Release version e.g., 1.0.0
+          If not specified, only the build number is incremented.
+        required: false
+        type: string
+jobs:
+  create:
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: altive/.github/.github/workflows/create-release-pull-request-for-flutter-app.yaml@main
+    with:
+      version: ${{ inputs.version }}
+      working-directory: "./packages/app"
+    secrets: 
+      app-id: ${{ vars.PR_WRITER_APP_ID }}
+      private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}

@@ -1,4 +1,4 @@
-name: jwt_guide_app_workspace
+name: onepage_workspace
 
 environment:
   sdk: ^3.5.1
