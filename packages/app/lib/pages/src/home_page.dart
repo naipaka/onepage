@@ -61,15 +61,31 @@ class _DiaryListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
+    final dateColor = date.isToday ? colors.primary : colors.textMain;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Column(
           children: [
-            AppText.bodySBold('${date.year}'),
-            AppText.bodyLBold(date.month.toString().padLeft(2, '0')),
-            AppText.bodyLBold(date.day.toString().padLeft(2, '0')),
-            AppText.bodySBold(date.shortWeekday),
+            AppText.bodySBold(
+              '${date.year}',
+              color: dateColor,
+            ),
+            AppText.bodyLBold(
+              date.month.toString().padLeft(2, '0'),
+              color: dateColor,
+            ),
+            AppText.bodyLBold(
+              date.day.toString().padLeft(2, '0'),
+              color: dateColor,
+            ),
+            AppText.bodySBold(
+              date.shortWeekday,
+              color: dateColor,
+            ),
           ],
         ),
         const Gap(16),

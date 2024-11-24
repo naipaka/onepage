@@ -1,3 +1,5 @@
+// Allow hardcoding of colors for Theme settings.
+// ignore_for_file: avoid_hardcoded_color
 import 'package:flutter/material.dart';
 
 /// The [Color] that should be defined for each [ThemeMode] of the app.
@@ -22,6 +24,12 @@ class AppColors extends ThemeExtension<AppColors> {
 
   /// The overlay color of the app.
   final Color? overlay;
+
+  /// Brand color used in the app.
+  Color get primary => const Color(0xFFFF6F00);
+
+  /// Foreground color on the primary color.
+  Color get onPrimary => const Color(0xFFFFFFFF);
 
   @override
   AppColors copyWith({
