@@ -60,7 +60,7 @@ class TranslationsHomeJa {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get today => '今日';
+	String get today => 'Today';
 }
 
 // Path: updateRequest.button
@@ -81,7 +81,7 @@ extension on Translations {
 			case 'title': return 'One Page';
 			case 'updateRequest.title': return 'アップデートのお願い';
 			case 'updateRequest.button.updateNow': return '更新する';
-			case 'home.today': return '今日';
+			case 'home.today': return 'Today';
 			default: return null;
 		}
 	}
