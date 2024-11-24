@@ -4,7 +4,20 @@ import 'package:flutter/material.dart';
 
 import '../theme_extensions/app_colors.dart';
 
-/// [AppColors] を引数にとって、 [ThemeMode] に適した [ColorScheme]を作成するための関数
+/// This function takes an [AppColors] object as an argument and creates
+/// a [ColorScheme]  suitable for the given [ThemeMode].
+///
+/// The [ColorScheme] is used to define the colors for the application's theme,
+/// including primary, secondary, error, surface, and their respective on-colors
+/// (colors used for text and icons on top of these colors).
+///
+/// Parameters:
+/// - [colors] : An instance of [AppColors] which contains the color
+///   definitions used to create the [ColorScheme].
+///
+/// Returns:
+/// - A [ColorScheme] object configured with the colors provided
+///   by the [AppColors] instance.
 ColorScheme appColorScheme(AppColors colors) {
   return ColorScheme(
     brightness: colors.brightness,

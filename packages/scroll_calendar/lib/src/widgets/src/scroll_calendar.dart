@@ -6,29 +6,29 @@ import 'package:widgets/widgets.dart';
 
 import '../../extension/extension.dart';
 
-/// 今日の日付にスクロールする関数の型定義。
+/// Type definition for a function that scrolls to today's date.
 ///
-/// [duration] スクロールアニメーションの持続時間。
-/// [curve] スクロールアニメーションのイージング曲線。
+/// - [duration] : The duration of the scroll animation.
+/// - [curve] : The easing curve of the scroll animation.
 typedef ScrollToTodayCallback = Future<void> Function({
   Duration duration,
   Curve curve,
 });
 
-/// 指定された日付にスクロールする関数の型定義。
+/// Type definition for a function that scrolls to a specified date.
 ///
-/// [date] スクロール先の目標日付。
-/// [duration] スクロールアニメーションの持続時間。
-/// [curve] スクロールアニメーションのイージング曲線。
+/// - [date] : The target date to scroll to.
+/// - [duration] : The duration of the scroll animation.
+/// - [curve] : The easing curve of the scroll animation.
 typedef ScrollToDateCallback = Future<void> Function(
   DateTime date, {
   Duration duration,
   Curve curve,
 });
 
-/// スクロール可能なカレンダーを制御するコントローラー。
+/// Controller for a scrollable calendar.
 ///
-/// ### 対応する ScrollCalendar
+/// ### Corresponding ScrollCalendar
 /// - [VerticalScrollCalendar]
 class ScrollCalendarController {
   /// [ScrollCalendarController] constructor.
@@ -37,7 +37,12 @@ class ScrollCalendarController {
   ScrollToTodayCallback? _scrollToToday;
   ScrollToDateCallback? _scrollToDate;
 
-  /// 今日の日付までスクロールする。
+  /// Scrolls to today's date.
+  ///
+  /// - [duration] : The duration of the scroll animation.
+  ///   Defaults to 500 milliseconds.
+  /// - [curve] : The easing curve of the scroll animation.
+  ///   Defaults to [Curves.easeInOut].
   Future<void> scrollToToday({
     Duration duration = const Duration(milliseconds: 500),
     Curve curve = Curves.easeInOut,
@@ -49,7 +54,13 @@ class ScrollCalendarController {
     await _scrollToToday?.call(duration: duration, curve: curve);
   }
 
-  /// 指定した日付までスクロールする。
+  /// Scrolls to the specified date.
+  ///
+  /// - [date] : The target date to scroll to.
+  /// - [duration] : The duration of the scroll animation.
+  ///   Defaults to 500 milliseconds.
+  /// - [curve] : The easing curve of the scroll animation.
+  ///   Defaults to [Curves.easeInOut].
   Future<void> scrollToDate(
     DateTime date, {
     Duration duration = const Duration(milliseconds: 500),
@@ -77,10 +88,10 @@ class ScrollCalendarController {
   }
 }
 
-/// 縦方向にスクロールするカレンダー。
+/// A vertically scrollable calendar.
 ///
-/// 過去の日付を追加読み込みする機能を持つ。
-/// 日記用であるため、未来の日付の追加読み込みは考慮していない。
+/// This calendar supports loading past dates incrementally.
+/// It is designed for diary use, so loading future dates is not considered.
 class VerticalScrollCalendar extends StatefulWidget {
   /// [VerticalScrollCalendar] constructor.
   const VerticalScrollCalendar({
@@ -90,13 +101,13 @@ class VerticalScrollCalendar extends StatefulWidget {
     required this.separatorBuilder,
   });
 
-  /// カレンダーのスクロール位置を制御するコントローラー。
+  /// Controller to manage the scroll position of the calendar.
   final ScrollCalendarController? controller;
 
-  /// 日付ごとの Widget を生成するコールバック関数。
+  /// Callback function to build a widget for each date.
   final Widget Function(BuildContext, DateTime) dateItemBuilder;
 
-  /// 日付の間に挿入するセパレーターを生成するコールバック関数。
+  /// Callback function to build a separator widget between dates.
   final Widget Function(BuildContext, int)? separatorBuilder;
 
   @override
@@ -104,25 +115,25 @@ class VerticalScrollCalendar extends StatefulWidget {
 }
 
 class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
-  /// 現在の日時。
+  /// The current date and time.
   final now = clock.now();
 
-  /// カレンダーに表示する日付一覧。
+  /// List of dates to be displayed in the calendar.
   late List<DateTime> dates = now.datesInMonths(-1, 0);
 
-  /// 逆順の日付一覧。
+  /// List of dates in reverse order.
   ///
-  /// ListView が `reverse: true` になっているため、
-  /// 日付の昇順になるようにリストを逆順にする。
+  /// The ListView is set to `reverse: true`,
+  /// so the list is reversed to display dates in ascending order.
   List<DateTime> get _reversedDates => dates.reversed.toList();
 
-  /// [ScrollablePositionedList] のスクロール位置を制御するコントローラー。
+  /// Controller to manage the scroll position of the [ScrollablePositionedList].
   final _itemScrollController = ItemScrollController();
 
-  /// 初回のスクロール位置。
+  /// Initial scroll position.
   late final int _initialScrollIndex;
 
-  /// スクロール可能なカレンダーを制御するコントローラー。
+  /// Fallback controller to manage the scroll position of the calendar.
   late final ScrollCalendarController _fallbackScrollCalendarController;
   ScrollCalendarController get _effectiveScrollCalendarController =>
       widget.controller ?? _fallbackScrollCalendarController;
@@ -130,7 +141,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   @override
   void initState() {
     super.initState();
-    // 初回のスクロール位置を設定する。
+    // Set the initial scroll position.
     _initialScrollIndex = _reversedDates.indexWhere(
       (date) => DateUtils.isSameDay(date, clock.now()),
     );
@@ -149,7 +160,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     super.dispose();
   }
 
-  /// 過去の日付を読み込む。
+  /// Loads more past dates.
   void _loadMoreOlder() {
     final firstDate = dates.first;
     final previousDate = firstDate.subtract(const Duration(days: 1));
@@ -158,7 +169,12 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     });
   }
 
-  /// 今日の日付にスクロールする。
+  /// Scrolls to today's date.
+  ///
+  /// - [duration] : The duration of the scroll animation.
+  ///   Defaults to 500 milliseconds.
+  /// - [curve] : The easing curve of the scroll animation.
+  ///   Defaults to [Curves.easeInOut].
   Future<void> _scrollToToday({
     Duration duration = const Duration(milliseconds: 500),
     Curve curve = Curves.easeInOut,
@@ -170,7 +186,13 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     );
   }
 
-  /// 指定した日付にスクロールする。
+  /// Scrolls to the specified date.
+  ///
+  /// - [date] : The target date to scroll to.
+  /// - [duration] : The duration of the scroll animation.
+  ///   Defaults to 500 milliseconds.
+  /// - [curve] : The easing curve of the scroll animation.
+  ///   Defaults to [Curves.easeInOut].
   Future<void> _scrollToDate(
     DateTime date, {
     Duration duration = const Duration(milliseconds: 500),
@@ -187,16 +209,16 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   Widget build(BuildContext context) {
     return ScrollablePositionedList.separated(
       itemScrollController: _itemScrollController,
-      // 追加読み込み中のローディングインジケーターを表示するために、
-      // 1つ余分にアイテムを表示している。
+      // Display one extra item to show a loading indicator
+      // while loading more items.
       itemCount: _reversedDates.length + 1,
       initialScrollIndex: _initialScrollIndex,
       initialAlignment: 0.5,
-      // 一番上までスクロールした時に追加読み込みを行う際に、
-      // スクロール位置が変わらないようにするために `reverse: true` を指定している。
+      // Set `reverse: true` to prevent scroll position changes
+      // when loading more items at the top.
       reverse: true,
-      // 月の初日や最終日にジャンプする際に異常なバウンスが発生しないように
-      // `ClampingScrollPhysics` を使用している。
+      // Use `ClampingScrollPhysics` to prevent abnormal bouncing
+      // when jumping to the first or last day of the month.
       physics: const ClampingScrollPhysics(),
       separatorBuilder: widget.separatorBuilder,
       itemBuilder: (_, index) {

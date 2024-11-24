@@ -4,8 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../extension/extension.dart';
 import 'logger.dart';
 
-/// `Provider`イベントの種別
-/// `dart_defines`の`providerLogPrint`にて、このイベントを文字列で指定すると、対応するログが出力される。
+/// Types of `Provider` events.
+/// By specifying this event as a string in `dart_defines` with `providerLogPrint`,
+/// the corresponding log will be output.
 enum _ProviderEvent {
   add,
   update,
@@ -13,12 +14,12 @@ enum _ProviderEvent {
   error,
 }
 
-/// `Provider`のイベントをログ出力するクラス。
+/// A class that logs events of `Provider`.
 class ProviderLogger implements ProviderObserver {
-  /// [ProviderLogger] インスタンスを作成。
+  /// Creates an instance of [ProviderLogger].
   ProviderLogger() {
     const providerLogPrint = String.fromEnvironment('providerLogPrint');
-    // 空文字の場合は、空配列を設定しログを出力しない。
+    // If the string is empty, set an empty array and do not output logs.
     if (providerLogPrint.isEmpty) {
       outputLogTypes = [];
       return;
@@ -30,7 +31,7 @@ class ProviderLogger implements ProviderObserver {
         .toList();
   }
 
-  /// ログ出力対象のイベント種別。
+  /// The types of events to log.
   @visibleForTesting
   late final List<_ProviderEvent> outputLogTypes;
 
@@ -39,7 +40,7 @@ class ProviderLogger implements ProviderObserver {
     required ProviderBase<dynamic> provider,
     Object? value,
   }) {
-    // 指定したイベントのログではない場合は、何もしない。
+    // If the event is not one of the specified events to log, do nothing.
     if (!outputLogTypes.contains(providerEvent)) {
       return;
     }

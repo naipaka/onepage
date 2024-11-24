@@ -3,7 +3,7 @@ import 'package:simple_logger/simple_logger.dart';
 
 export 'provider_logger.dart';
 
-/// ロガー。
+/// Logger instance for the package.
 final logger = SimpleLogger()
   ..setLevel(
     Level.FINEST,
