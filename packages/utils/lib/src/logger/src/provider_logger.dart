@@ -5,8 +5,8 @@ import '../../extension/extension.dart';
 import 'logger.dart';
 
 /// Types of `Provider` events.
-/// By specifying this event as a string in `dart_defines` with `providerLogPrint`,
-/// the corresponding log will be output.
+/// By specifying this event as a string in `dart_defines`
+/// with `providerLogPrint`, the corresponding log will be output.
 enum _ProviderEvent {
   add,
   update,

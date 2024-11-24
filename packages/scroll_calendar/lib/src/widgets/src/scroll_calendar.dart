@@ -108,7 +108,7 @@ class VerticalScrollCalendar extends StatefulWidget {
   final Widget Function(BuildContext, DateTime) dateItemBuilder;
 
   /// Callback function to build a separator widget between dates.
-  final Widget Function(BuildContext, int)? separatorBuilder;
+  final Widget Function(BuildContext, int) separatorBuilder;
 
   @override
   State<VerticalScrollCalendar> createState() => _VerticalScrollCalendarState();
@@ -127,7 +127,8 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   /// so the list is reversed to display dates in ascending order.
   List<DateTime> get _reversedDates => dates.reversed.toList();
 
-  /// Controller to manage the scroll position of the [ScrollablePositionedList].
+  /// Controller to manage the scroll position of the
+  /// [ScrollablePositionedList].
   final _itemScrollController = ItemScrollController();
 
   /// Initial scroll position.
