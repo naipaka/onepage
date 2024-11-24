@@ -11,8 +11,6 @@ dependencies:
   clock: ^1.1.1
   flutter:
     sdk: flutter
-  i18n:
-    path: ../i18n/
   # Because flutter_localizations depends on intl 0.19.0.
   intl: ^0.19.0
   scrollable_positioned_list: ^0.3.8

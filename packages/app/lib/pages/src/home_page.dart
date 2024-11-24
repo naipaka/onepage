@@ -83,7 +83,7 @@ class _DiaryListTile extends StatelessWidget {
               color: dateColor,
             ),
             AppText.bodySBold(
-              date.shortWeekday,
+              date.shortWeekday(context.locale.languageCode),
               color: dateColor,
             ),
           ],

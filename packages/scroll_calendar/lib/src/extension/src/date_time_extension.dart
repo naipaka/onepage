@@ -1,6 +1,5 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
-import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
 
 /// For Calendar [DateTime] extension methods.
@@ -33,8 +32,7 @@ extension DateTimeExtensionForCalendar on DateTime {
   /// Get the abbreviated weekday.
   ///
   /// e.g. `Tue`
-  String get shortWeekday {
-    final locale = LocaleSettings.currentLocale.languageTag;
+  String shortWeekday(String locale) {
     if (locale == 'ja') {
       // For Japanese, get the weekday in English.
       return DateFormat.E('en').format(this);
