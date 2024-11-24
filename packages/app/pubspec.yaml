@@ -29,7 +29,7 @@ dependencies:
   theme:
     path: ../theme/
   update_requester:
-    path: ../features/update_requester/
+    path: ../update_requester/
   url_launcher: ^6.3.1
   utils:
     path: ../utils/

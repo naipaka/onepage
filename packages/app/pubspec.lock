@@ -1000,7 +1000,7 @@ packages:
   update_requester:
     dependency: "direct main"
     description:
-      path: "../features/update_requester"
+      path: "../update_requester"
       relative: true
     source: path
     version: "1.0.0"
