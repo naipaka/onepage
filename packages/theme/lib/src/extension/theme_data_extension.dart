@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../theme_data/theme_data.dart';
 import '../theme_extensions/theme_extensions.dart';
 
 /// Provides a set of extensions for [ThemeData].
@@ -22,6 +23,10 @@ extension ThemeDataExtension on ThemeData {
       primaryTextTheme: textTheme,
       textTheme: textTheme,
       // 🖼 ThemeData section
+      appBarTheme: appBarThemeData(
+        typography: typography,
+        colors: colors,
+      ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         shape: const CircleBorder(),
         foregroundColor: colorScheme.onPrimary,
