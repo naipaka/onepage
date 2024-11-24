@@ -1,0 +1,26 @@
+name: scroll_calendar
+description: A new Flutter package project.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.5.4
+
+dependencies:
+  # Because flutter_test depends on clock 1.1.1.
+  clock: ^1.1.1
+  flutter:
+    sdk: flutter
+  scrollable_positioned_list: ^0.3.8
+  visibility_detector: ^0.4.0+2
+  widgets:
+    path: ../widgets/
+
+dev_dependencies:
+  altive_lints: ^1.15.0
+  custom_lint: ^0.7.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
