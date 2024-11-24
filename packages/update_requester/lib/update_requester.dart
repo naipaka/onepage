@@ -2,5 +2,5 @@
 library;
 
 export 'src/models/models.dart';
-export 'src/queries/queries.dart';
+export 'src/update_requester.dart';
 export 'src/widgets/widgets.dart';

@@ -6,6 +6,7 @@ import 'package:update_requester/update_requester.dart';
 import 'package:utils/utils.dart';
 import 'package:widgets/widgets.dart';
 
+import 'adapters/update_requester_provider.dart';
 import 'router/router.dart';
 
 /// The main application widget.

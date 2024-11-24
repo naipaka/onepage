@@ -1,14 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'platform_provider.g.dart';
-
-/// Provide the current [TargetPlatform].
-@Riverpod(keepAlive: true)
-TargetPlatform platform(Ref ref) {
-  return defaultTargetPlatform;
-}
 
 /// Extension methods for [TargetPlatform].
 extension TargetPlatformEx on TargetPlatform {

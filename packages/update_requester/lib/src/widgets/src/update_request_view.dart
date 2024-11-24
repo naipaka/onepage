@@ -1,14 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:theme/theme.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import 'package:utils/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// A view that shows a dialog to request an update.
-class UpdateRequestView extends ConsumerWidget {
+class UpdateRequestView extends StatelessWidget {
   /// Creates the [UpdateRequestView].
   const UpdateRequestView({
     super.key,
@@ -19,7 +18,7 @@ class UpdateRequestView extends ConsumerWidget {
   final String message;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final t = context.t.updateRequest;
     final colors = context.colors;
 
@@ -37,16 +36,21 @@ class UpdateRequestView extends ConsumerWidget {
         actionsAlignment: MainAxisAlignment.center,
         actions: [
           FilledButton(
-            onPressed: () {
-              final platform = ref.read(platformProvider);
-              final url = switch (platform) {
+            onPressed: () async {
+              final platform = defaultTargetPlatform;
+              final urlString = switch (platform) {
+                // TODO(naipaka): Add the URL for the play store.
                 TargetPlatform.android => '',
+                // TODO(naipaka): Add the URL for the app store.
                 TargetPlatform.iOS => '',
                 _ => throw UnsupportedError(
                     'Unsupported platform: $platform',
                   ),
               };
-              unawaited(launchUrlString(url));
+              final url = Uri.https(urlString);
+              if (await canLaunchUrl(url)) {
+                unawaited(launchUrl(url));
+              }
             },
             child: Text(t.button.updateNow),
           ),
