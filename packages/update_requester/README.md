@@ -1,39 +1,57 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Update Requester
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+The `update_requester` package provides functionality to manage application updates. It checks if an update is required and displays a prompt to the user if necessary.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Check if an app update is required based on the current version.
+- Display a dialog to prompt the user to update the app.
+- Integrates with Firebase for configuration management.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package, add `update_requester` as a dependency in your `pubspec.yaml` file.
+
+```yaml
+dependencies:
+  update_requester:
+    path: ../update_requester/
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Here is an example of how to use the `update_requester` package.
 
 ```dart
-const like = 'sample';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:update_requester/update_requester.dart';
+
+void main() {
+  runApp(ProviderScope(child: MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Update Requester Example'),
+        ),
+        body: Center(
+          child: Consumer(
+            builder: (context, ref, child) {
+              final message = ref.watch(updateRequestMessageProvider);
+              if (message != null) {
+                return UpdateRequestView(message: message);
+              }
+              return Text('No update required');
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.

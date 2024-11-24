@@ -1,39 +1,72 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Scroll Calendar
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+A Flutter package for a scrollable calendar widget.
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Scrollable calendar with vertical scrolling.
+- Supports loading past dates incrementally.
+- Customizable date item builder and separator builder.
+- Scroll to today's date or a specific date with animation.
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package, add `scroll_calendar` as a dependency in your `pubspec.yaml` file.
+
+```yaml
+dependencies:
+  scroll_calendar:
+    path: ../scroll_calendar/
+```
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Here is an example of how to use the `VerticalScrollCalendar` widget.
 
 ```dart
-const like = 'sample';
+import 'package:flutter/material.dart';
+import 'package:scroll_calendar/scroll_calendar.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Scroll Calendar Example'),
+        ),
+        body: CalendarPage(),
+      ),
+    );
+  }
+}
+
+class CalendarPage extends StatefulWidget {
+  @override
+  _CalendarPageState createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
+  final scrollCalendarController = ScrollCalendarController();
+
+  @override
+  Widget build(BuildContext context) {
+    return VerticalScrollCalendar(
+      controller: scrollCalendarController,
+      separatorBuilder: (_, __) => const Divider(),
+      dateItemBuilder: (_, date) {
+        return ListTile(
+          title: Text('${date.year}/${date.month}/${date.day}'),
+          onTap: () {
+            print('Tapped: $date');
+          },
+        );
+      },
+    );
+  }
+}
 ```
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
