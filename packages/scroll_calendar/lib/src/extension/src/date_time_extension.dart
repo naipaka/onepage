@@ -1,3 +1,6 @@
+import 'package:i18n/i18n.dart';
+import 'package:intl/intl.dart';
+
 /// For Calendar [DateTime] extension methods.
 extension DateTimeExtensionForCalendar on DateTime {
   /// Get a list of dates for the target month.
@@ -23,5 +26,17 @@ extension DateTimeExtensionForCalendar on DateTime {
       dates.addAll(DateTime(year, month + i).datesInMonth);
     }
     return dates;
+  }
+
+  /// Get the abbreviated weekday.
+  ///
+  /// e.g. `Tue`
+  String get shortWeekday {
+    final locale = LocaleSettings.currentLocale.languageTag;
+    if (locale == 'ja') {
+      // For Japanese, get the weekday in English.
+      return DateFormat.E('en').format(this);
+    }
+    return DateFormat.E(locale).format(this);
   }
 }
