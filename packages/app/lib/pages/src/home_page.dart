@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
@@ -29,7 +30,7 @@ class HomePage extends HookConsumerWidget {
       body: SafeArea(
         child: VerticalScrollCalendar(
           controller: scrollCalendarController,
-          separatorBuilder: (_, __) => const Divider(),
+          separatorBuilder: (_, __) => const Gap(32),
           dateItemBuilder: (_, date) {
             return ListTile(
               title: Text('${date.year}/${date.month}/${date.day}'),

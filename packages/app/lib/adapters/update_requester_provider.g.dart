@@ -10,7 +10,7 @@ part of 'update_requester_provider.dart';
 
 String _$updateRequesterHash() => r'8e297f3db152629cae40d3cf50de5d8161d02937';
 
-/// アップデートを要求する責務を持つクラスを提供するプロバイダー。
+/// Provider that supplies a class responsible for requesting updates.
 ///
 /// Copied from [updateRequester].
 @ProviderFor(updateRequester)
@@ -54,7 +54,7 @@ typedef UpdateRequestMessageRef = AutoDisposeProviderRef<String?>;
 String _$updateRequestStateHash() =>
     r'a6bea312fbf33278019cf887759517b0d46b703b';
 
-/// Provide the current [UpdateRequest].
+/// Provides the current [UpdateRequest].
 ///
 /// Copied from [UpdateRequestState].
 @ProviderFor(UpdateRequestState)
