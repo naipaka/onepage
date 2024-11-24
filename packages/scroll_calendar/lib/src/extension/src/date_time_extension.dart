@@ -1,3 +1,5 @@
+import 'package:clock/clock.dart';
+import 'package:flutter/material.dart';
 import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
 
@@ -38,5 +40,13 @@ extension DateTimeExtensionForCalendar on DateTime {
       return DateFormat.E('en').format(this);
     }
     return DateFormat.E(locale).format(this);
+  }
+
+  /// Checks if the current DateTime instance represents today's date.
+  ///
+  /// Returns `true` if the date is today, otherwise `false`.
+  bool get isToday {
+    final now = clock.now();
+    return DateUtils.isSameDay(this, now);
   }
 }
