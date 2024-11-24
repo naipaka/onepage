@@ -182,6 +182,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   }) async {
     await _itemScrollController.scrollTo(
       index: _reversedDates.indexWhere((d) => DateUtils.isSameDay(d, now)),
+      alignment: 0.5,
       duration: duration,
       curve: curve,
     );
@@ -201,6 +202,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   }) async {
     await _itemScrollController.scrollTo(
       index: _reversedDates.indexWhere((d) => DateUtils.isSameDay(d, date)),
+      alignment: 0.5,
       duration: duration,
       curve: curve,
     );
