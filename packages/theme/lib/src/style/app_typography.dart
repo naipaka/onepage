@@ -11,7 +11,7 @@ AppTypography appTypography({required Color textColor}) {
       fontFamily: _notoSansJPFontFamily,
       fontWeight: FontWeight.normal,
       fontSize: 12,
-      height: 17 / 12,
+      height: 14 / 12,
       color: textColor,
     ),
     bodyM: TextStyle(
@@ -25,14 +25,14 @@ AppTypography appTypography({required Color textColor}) {
       fontFamily: _notoSansJPFontFamily,
       fontWeight: FontWeight.normal,
       fontSize: 20,
-      height: 29 / 20,
+      height: 20 / 20,
       color: textColor,
     ),
     bodySBold: TextStyle(
       fontFamily: _notoSansJPFontFamily,
       fontWeight: FontWeight.bold,
       fontSize: 12,
-      height: 17 / 12,
+      height: 14 / 12,
       color: textColor,
     ),
     bodyMBold: TextStyle(
@@ -46,7 +46,7 @@ AppTypography appTypography({required Color textColor}) {
       fontFamily: _notoSansJPFontFamily,
       fontWeight: FontWeight.bold,
       fontSize: 20,
-      height: 29 / 20,
+      height: 20 / 20,
       color: textColor,
     ),
   );
