@@ -144,7 +144,7 @@ jobs:
       - name: Create release PR
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          title: "Update Dependency Graph"
+          title: "doc: Update Dependency Graph"
           body: "This PR updates the dependency graph and SVG image."
         run: gh pr create -B "$GITHUB_REF" -H "${{ env.BRANCH_NAME }}" -t "${{ env.title }}" -b "${{ env.body }}" -a "$GITHUB_ACTOR"
 
