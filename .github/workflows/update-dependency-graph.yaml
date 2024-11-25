@@ -20,6 +20,12 @@ jobs:
       - name: Setup Flutter with FVM
         uses: kuhnroyal/flutter-fvm-config-action/setup@v3
 
+      - name: Prepare Melos
+        run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
+
+      - name: Install Melos
+        uses: bluefireteam/melos-action@v3
+
       - name: Install Melos and Graphviz
         run: |
           dart pub global activate melos
@@ -43,9 +49,9 @@ jobs:
         id: check_diff
         run: |
           if diff "dependency_graph.dot" "./docs/dependency_graph.dot"; then
-            echo "has_diff=false" >> $GITHUB_OUTPUT
+            echo "has_diff=false" >> "$GITHUB_OUTPUT"
           else
-            echo "has_diff=true" >> $GITHUB_OUTPUT
+            echo "has_diff=true" >> "$GITHUB_OUTPUT"
           fi
 
   create-branch:
