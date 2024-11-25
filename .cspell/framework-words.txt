@@ -14,6 +14,7 @@ fixnum
 flutterfire
 fullscreen
 fvmrc
+genhtml
 ghcp
 gifs
 Graphviz
