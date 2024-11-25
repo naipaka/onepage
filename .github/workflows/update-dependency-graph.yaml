@@ -105,9 +105,6 @@ jobs:
     name: Create Pull Request
     runs-on: ubuntu-latest
     needs: commit-changes
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
 
