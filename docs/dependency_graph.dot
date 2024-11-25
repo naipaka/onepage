@@ -1,1 +1,30 @@
-
+digraph packages {
+  size="10"; ratio=fill;
+  i18n [shape="box"; color="#d7afc5"];
+  onepage [shape="box"; color="#08802d"];
+  scroll_calendar [shape="box"; color="#713e2e"];
+  theme [shape="box"; color="#1214e6"];
+  update_requester [shape="box"; color="#a2aa60"];
+  utils [shape="box"; color="#f548cf"];
+  widgets [shape="box"; color="#3ed5a4"];
+  onepage -> i18n [style="filled"; color="#d7afc5"];
+  onepage -> scroll_calendar [style="filled"; color="#713e2e"];
+  onepage -> theme [style="filled"; color="#1214e6"];
+  onepage -> update_requester [style="filled"; color="#a2aa60"];
+  onepage -> utils [style="filled"; color="#f548cf"];
+  onepage -> widgets [style="filled"; color="#3ed5a4"];
+  scroll_calendar -> widgets [style="filled"; color="#3ed5a4"];
+  update_requester -> i18n [style="filled"; color="#d7afc5"];
+  update_requester -> theme [style="filled"; color="#1214e6"];
+  subgraph "cluster packages" {
+    label="packages";
+    color="#6b4949";
+    i18n;
+    onepage;
+    scroll_calendar;
+    theme;
+    update_requester;
+    utils;
+    widgets;
+  }
+}
