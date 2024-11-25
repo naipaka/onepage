@@ -38,6 +38,12 @@ jobs:
       - name: Generate Dependency Graph
         run: |
           melos list --gviz > "dependency_graph.dot"
+      
+      - name: Upload Dependency Graph as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: dependency_graph
+          path: dependency_graph.dot
 
       - name: Compare with Previous Output
         id: check_diff
@@ -79,6 +85,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.BRANCH_NAME }}
+
+      - name: Download Dependency Graph Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dependency_graph
 
       - name: Install Graphviz
         run: |
