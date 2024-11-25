@@ -40,7 +40,7 @@ jobs:
           melos list --gviz > "dependency_graph.dot"
       
       - name: Upload Dependency Graph as Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dependency_graph
           path: dependency_graph.dot
@@ -87,7 +87,7 @@ jobs:
           ref: ${{ env.BRANCH_NAME }}
 
       - name: Download Dependency Graph Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dependency_graph
 
@@ -95,6 +95,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y graphviz
+
+      - name: Ensure Docs Directory Exists
+        run: mkdir -p "./docs"
 
       - name: Generate SVG Image
         run: dot -Tsvg "dependency_graph.dot" -o "./docs/dependency_graph.svg"
