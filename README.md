@@ -1,3 +1,4 @@
+[![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Flutter app code check](https://github.com/naipaka/onepage/actions/workflows/flutter-app-code-check.yml/badge.svg)](https://github.com/naipaka/onepage/actions/workflows/flutter-app-code-check.yml)
 [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square)](https://github.com/invertase/melos)
 
@@ -9,7 +10,9 @@
 
 This project is experimentally divided into packages by feature.
 
-### app
+![dependency_graph](./docs/dependency_graph.svg)
+
+### app (onepage)
 
 This package contains the entry point of the application and is the main package of the application.
 
