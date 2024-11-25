@@ -5,7 +5,9 @@ void main() {
   group('StringExtension', () {
     group('trimAtMaxLength', () {
       test(
-        '絵文字を含む文字列が指定された最大長を超える場合、指定された長さまで切り詰めてから `...` を付与すること',
+        'If a string containing emojis exceeds the specified maximum length, '
+        'it should be truncated to the specified length and then appended with '
+        '`...`',
         () {
           final emoji = '😀😃😄😁'.trimAtMaxLength(4);
           final textAndEmoji = '😀😃a😄😁😆'.trimAtMaxLength(5);
@@ -18,7 +20,9 @@ void main() {
         },
       );
 
-      test('無効な最大長が指定された場合、例外をスローすること', () {
+      test(
+          'An exception should be thrown if an invalid maximum length is '
+          'specified', () {
         const errorText = 'abcdef';
         expect(() => errorText.trimAtMaxLength(-1), throwsArgumentError);
         expect(() => errorText.trimAtMaxLength(0), throwsArgumentError);
