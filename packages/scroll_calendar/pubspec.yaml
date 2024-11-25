@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   # Because flutter_localizations depends on intl 0.19.0.
-  intl: ^0.19.0
+  intl: ^0.20.0
   scrollable_positioned_list: ^0.3.8
   visibility_detector: ^0.4.0+2
   widgets:
