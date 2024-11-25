@@ -96,6 +96,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y graphviz
 
+      - name: Set up ghcp
+        run: |
+          curl -fL -o /tmp/ghcp.zip https://github.com/int128/ghcp/releases/download/v1.13.5/ghcp_linux_amd64.zip
+          unzip /tmp/ghcp.zip -d /tmp
+
       - name: Ensure Docs Directory Exists
         run: mkdir -p "./docs"
 
@@ -106,19 +111,21 @@ jobs:
         run: |
           mv "dependency_graph.dot" "./docs/dependency_graph.dot"
 
-      - name: Git Config
-        run: |
-          git remote set-url origin "https://github-actions:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}"
-          git config --global user.name "${GITHUB_ACTOR}"
-          git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: Generate GitHub App token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.PR_WRITER_APP_ID }}
+          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
 
       - name: Commit Changes
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
-          git add "./docs/dependency_graph.dot" "./docs/dependency_graph.svg"
-          git commit -m "Update Dependency Graph and SVG image"
-
-      - name: Push Changes
-        run: git push origin "${{ env.BRANCH_NAME }}"
+          find docs/ -type f | xargs /tmp/ghcp commit \
+            -r "$GITHUB_REPOSITORY" \
+            -b "${{ env.BRANCH_NAME }}" \
+            -m "Update Dependency Graph and SVG image" \
 
   create-pr:
     name: Create Pull Request
@@ -127,17 +134,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate GitHub App token
-        id: generate_token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.PR_WRITER_APP_ID }}
-          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
-
-      - name: Create release PR
+      - name: Create Pull Request
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          title: "Update Dependency Graph"
-          body: "This PR updates the dependency graph and SVG image."
-        run: gh pr create -B "$GITHUB_REF" -H "${{ env.BRANCH_NAME }}" -t "${{ env.title }}" -b "${{ env.body }}" -a "$GITHUB_ACTOR"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            -B "main" \
+            -H "${{ env.BRANCH_NAME }}" \
+            -t "Update Dependency Graph" \
+            -b "This pull request updates the Dependency Graph and SVG image." \
+            -a "$GITHUB_ACTOR"
 
