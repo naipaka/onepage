@@ -26,12 +26,6 @@ jobs:
       - name: Install Melos
         uses: bluefireteam/melos-action@v3
 
-      - name: Install Melos and Graphviz
-        run: |
-          dart pub global activate melos
-          sudo apt-get update
-          sudo apt-get install -y graphviz
-
       - name: Ensure Docs Directory Exists
         run: mkdir -p "./docs"
 
@@ -80,6 +74,11 @@ jobs:
         with:
           ref: ${{ env.BRANCH_NAME }}
 
+      - name: Install Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+
       - name: Generate SVG Image
         run: dot -Tsvg "dependency_graph.dot" -o "./docs/dependency_graph.svg"
 
@@ -108,17 +107,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate GitHub App token
-        id: generate_token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.PR_WRITER_APP_ID }}
-          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
-
       - name: Create Pull Request
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          title: "Update Dependency Graph"
-          body: "This pull request updates the Dependency Graph and SVG image."
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create -B "main" -H "${{ env.BRANCH_NAME }}" -t "${{ env.title }}" -b "${{ env.body }}" -a "$GITHUB_ACTOR"
+          gh pr create \
+            -B "main" \
+            -H "${{ env.BRANCH_NAME }}" \
+            -t "Update Dependency Graph" \
+            -b "This pull request updates the Dependency Graph and SVG image." \
+            -a "$GITHUB_ACTOR"
+
