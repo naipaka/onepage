@@ -26,12 +26,6 @@ jobs:
       - name: Install Melos
         uses: bluefireteam/melos-action@v3
 
-      - name: Install Melos and Graphviz
-        run: |
-          dart pub global activate melos
-          sudo apt-get update
-          sudo apt-get install -y graphviz
-
       - name: Ensure Docs Directory Exists
         run: mkdir -p "./docs"
 
@@ -44,6 +38,12 @@ jobs:
       - name: Generate Dependency Graph
         run: |
           melos list --gviz > "dependency_graph.dot"
+      
+      - name: Upload Dependency Graph as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency_graph
+          path: dependency_graph.dot
 
       - name: Compare with Previous Output
         id: check_diff
@@ -62,14 +62,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create or Checkout Branch
+      - name: Check if branch already exists
         run: |
-          if git ls-remote --exit-code --heads origin "${{ env.BRANCH_NAME }}"; then
-            git switch "${{ env.BRANCH_NAME }}"
-          else
-            git switch -c "${{ env.BRANCH_NAME }}"
-            git push --set-upstream origin "${{ env.BRANCH_NAME }}"
-          fi
+          exists=$(
+            git fetch origin ${{ env.BRANCH_NAME }} &&
+            echo true ||
+            echo false
+          )
+          echo "branch_exists=${exists}" >> "$GITHUB_ENV"
+
+      - name: Create or Switch to Branch
+        if: env.branch_exists == 'false'
+        run: |
+          git switch -c ${{ env.BRANCH_NAME }}
+          git push origin ${{ env.BRANCH_NAME }}
 
   commit-changes:
     name: Commit Changes
@@ -79,6 +85,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.BRANCH_NAME }}
+
+      - name: Download Dependency Graph Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dependency_graph
+
+      - name: Install Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz
+
+      - name: Ensure Docs Directory Exists
+        run: mkdir -p "./docs"
 
       - name: Generate SVG Image
         run: dot -Tsvg "dependency_graph.dot" -o "./docs/dependency_graph.svg"
@@ -108,17 +127,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Generate GitHub App token
-        id: generate_token
-        uses: actions/create-github-app-token@v1
-        with:
-          app-id: ${{ vars.PR_WRITER_APP_ID }}
-          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
-
       - name: Create Pull Request
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          title: "Update Dependency Graph"
-          body: "This pull request updates the Dependency Graph and SVG image."
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh pr create -B "main" -H "${{ env.BRANCH_NAME }}" -t "${{ env.title }}" -b "${{ env.body }}" -a "$GITHUB_ACTOR"
+          gh pr create \
+            -B "main" \
+            -H "${{ env.BRANCH_NAME }}" \
+            -t "Update Dependency Graph" \
+            -b "This pull request updates the Dependency Graph and SVG image." \
+            -a "$GITHUB_ACTOR"
+
