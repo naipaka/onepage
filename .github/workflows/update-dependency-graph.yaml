@@ -122,7 +122,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
-          find docs/ -type f | xargs /tmp/ghcp commit \
+          find docs/ -type f -print0 | xargs -0 /tmp/ghcp commit \
             -r "$GITHUB_REPOSITORY" \
             -b "${{ env.BRANCH_NAME }}" \
             -m "Update Dependency Graph and SVG image" \
