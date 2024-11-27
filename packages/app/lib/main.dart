@@ -38,6 +38,13 @@ Future<void> main() async {
     LocaleSettings.useDeviceLocale(),
   ).wait;
 
+  const providerLogPrint = String.fromEnvironment('providerLogPrint');
+  final outputLogTypes = ProviderEvent.getEventsFromNames(providerLogPrint);
+  final providerLogger = ProviderLogger(
+    outputLogTypes: outputLogTypes,
+    logger: logger,
+  );
+
   runApp(
     ProviderScope(
       overrides: [
@@ -46,7 +53,7 @@ Future<void> main() async {
         trackerProvider.overrideWithValue(tracker),
         packageInfoProvider.overrideWithValue(packageInfo),
       ],
-      observers: [ProviderLogger()],
+      observers: [providerLogger],
       child: TranslationProvider(
         child: const App(),
       ),

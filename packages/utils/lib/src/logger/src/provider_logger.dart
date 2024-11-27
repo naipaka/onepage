@@ -1,42 +1,57 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:simple_logger/simple_logger.dart';
 
 import '../../extension/extension.dart';
-import 'logger.dart';
 
 /// Types of `Provider` events.
 /// By specifying this event as a string in `dart_defines`
 /// with `providerLogPrint`, the corresponding log will be output.
-enum _ProviderEvent {
+enum ProviderEvent {
+  /// Logs when a provider is added.
   add,
+
+  /// Logs when a provider is updated.
   update,
+
+  /// Logs when a provider is disposed.
   dispose,
+
+  /// Logs when a provider throws an error.
   error,
+  ;
+
+  /// Returns a list of [ProviderEvent] from a comma-separated string of
+  /// event names.
+  ///
+  /// The [names] parameter should be a comma-separated string where each
+  /// event name corresponds to a value in the [ProviderEvent] enum.
+  ///
+  /// Example:
+  /// ```dart
+  /// final events = ProviderEvent.getEventsFromNames('add,update,error');
+  /// // events will be [ProviderEvent.add, ProviderEvent.update, ProviderEvent.error]
+  /// ```
+  static List<ProviderEvent> getEventsFromNames(String names) {
+    return names.split(',').map((e) => values.byName(e)).toList();
+  }
 }
 
 /// A class that logs events of `Provider`.
 class ProviderLogger implements ProviderObserver {
   /// Creates an instance of [ProviderLogger].
-  ProviderLogger() {
-    const providerLogPrint = String.fromEnvironment('providerLogPrint');
-    // If the string is empty, set an empty array and do not output logs.
-    if (providerLogPrint.isEmpty) {
-      outputLogTypes = [];
-      return;
-    }
-
-    outputLogTypes = providerLogPrint
-        .split(',')
-        .map((e) => _ProviderEvent.values.byName(e))
-        .toList();
-  }
+  const ProviderLogger({
+    required this.outputLogTypes,
+    required this.logger,
+  });
 
   /// The types of events to log.
-  @visibleForTesting
-  late final List<_ProviderEvent> outputLogTypes;
+  final List<ProviderEvent> outputLogTypes;
+
+  /// The logger instance to use.
+  final SimpleLogger logger;
 
   void _print({
-    required _ProviderEvent providerEvent,
+    required ProviderEvent providerEvent,
     required ProviderBase<dynamic> provider,
     Object? value,
   }) {
@@ -61,7 +76,7 @@ class ProviderLogger implements ProviderObserver {
     ProviderContainer _,
   ) {
     _print(
-      providerEvent: _ProviderEvent.add,
+      providerEvent: ProviderEvent.add,
       provider: provider,
       value: value,
     );
@@ -75,7 +90,7 @@ class ProviderLogger implements ProviderObserver {
     ProviderContainer __,
   ) {
     _print(
-      providerEvent: _ProviderEvent.update,
+      providerEvent: ProviderEvent.update,
       provider: provider,
       value: newValue,
     );
@@ -87,7 +102,7 @@ class ProviderLogger implements ProviderObserver {
     ProviderContainer _,
   ) {
     _print(
-      providerEvent: _ProviderEvent.dispose,
+      providerEvent: ProviderEvent.dispose,
       provider: provider,
     );
   }
@@ -100,7 +115,7 @@ class ProviderLogger implements ProviderObserver {
     ProviderContainer __,
   ) {
     _print(
-      providerEvent: _ProviderEvent.error,
+      providerEvent: ProviderEvent.error,
       provider: provider,
       value: error,
     );
