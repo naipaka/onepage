@@ -31,6 +31,9 @@ enum ProviderEvent {
   /// // events will be [ProviderEvent.add, ProviderEvent.update, ProviderEvent.error]
   /// ```
   static List<ProviderEvent> getEventsFromNames(String names) {
+    if (names.isEmpty) {
+      return [];
+    }
     return names.split(',').map((e) => values.byName(e)).toList();
   }
 }
