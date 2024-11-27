@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:simple_logger/simple_logger.dart';
-
-import '../../extension/extension.dart';
+import 'package:utils/utils.dart';
 
 /// Types of `Provider` events.
 /// By specifying this event as a string in `dart_defines`

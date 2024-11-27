@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:provider_utils/provider_utils.dart';
 import 'package:update_requester/update_requester.dart';
 import 'package:utils/utils.dart';
 

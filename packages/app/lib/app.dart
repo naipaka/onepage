@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
 import 'package:update_requester/update_requester.dart';
-import 'package:utils/utils.dart';
 import 'package:widgets/widgets.dart';
 
 import 'adapters/update_requester_provider.dart';

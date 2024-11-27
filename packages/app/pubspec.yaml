@@ -26,6 +26,8 @@ dependencies:
     path: ../i18n/
   json_annotation: ^4.9.0
   package_info_plus: ^8.1.1
+  provider_utils:
+    path: ../provider_utils/
   riverpod_annotation: ^2.6.1
   scroll_calendar:
     path: ../scroll_calendar/

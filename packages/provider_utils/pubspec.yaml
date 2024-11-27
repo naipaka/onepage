@@ -1,4 +1,4 @@
-name: utils
+name: provider_utils
 description: A new Flutter package project.
 version: 1.0.0
 publish_to: "none"
@@ -9,9 +9,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_riverpod: ^2.6.1
+  package_info_plus: ^8.1.1
+  riverpod_annotation: ^2.6.1
   simple_logger: ^1.10.0
+  utils:
+    path: ../utils
 
 dev_dependencies:
   altive_lints: ^1.16.0
+  build_runner: ^2.4.13
   custom_lint: ^0.7.0
+  riverpod_generator: ^2.6.3
+  riverpod_lint: ^2.6.3
   test: ^1.25.8

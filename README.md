@@ -21,6 +21,10 @@ This package contains the entry point of the application and is the main package
 
 This package supports the internationalization and localization of the application. All texts for translating the application's text are defined here.
 
+### provider_utils
+
+This package provides utility functions for the riverpod package.
+
 ### scroll_calendar
 
 This package provides a scrollable calendar.

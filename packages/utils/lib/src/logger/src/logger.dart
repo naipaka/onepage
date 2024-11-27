@@ -1,8 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:simple_logger/simple_logger.dart';
 
-export 'provider_logger.dart';
-
 /// Logger instance for the package.
 final logger = SimpleLogger()
   ..setLevel(
