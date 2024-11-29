@@ -7,7 +7,6 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
-import 'package:utils/utils.dart';
 import 'package:widgets/widgets.dart';
 
 import 'stub_diaries_state_provider.dart';
@@ -53,21 +52,17 @@ class HomePage extends HookConsumerWidget {
           },
           separatorBuilder: (_, __) => const Gap(32),
           dateItemBuilder: (_, date) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: asyncDiaries.when(
-                error: (_, __) => centerLoadingIndicator,
-                loading: () => centerLoadingIndicator,
-                data: (diaries) {
-                  final diary = diaries.firstWhereOrNull(
-                    (e) => DateUtils.isSameDay(e.date, date),
-                  );
-                  return DiaryListTile(
-                    date: date,
-                    text: diary?.content ?? '',
-                  );
-                },
-              ),
+            return asyncDiaries.when(
+              error: (_, __) => centerLoadingIndicator,
+              loading: () => centerLoadingIndicator,
+              data: (diaries) {
+                final diary = diaries.firstWhereOrNull(
+                  (e) => DateUtils.isSameDay(e.date, date),
+                );
+                return DiaryListTile(
+                  text: diary?.content ?? '',
+                );
+              },
             );
           },
         ),

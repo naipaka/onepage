@@ -7,16 +7,10 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
-  clock: ^1.1.1
   flutter:
     sdk: flutter
-  gap: ^3.0.1
-  i18n:
-    path: ../i18n
   theme:
     path: ../theme
-  utils:
-    path: ../utils
 
 dev_dependencies:
   altive_lints: ^1.16.0

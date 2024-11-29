@@ -1,7 +1,7 @@
 import 'package:clock/clock.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:test/test.dart';
-import 'package:utils/src/extension/src/date_time_extension.dart';
+import 'package:scroll_calendar/src/extension/src/date_time_extension.dart';
 
 void main() {
   group('DateTimeExtensionForCalendar', () {

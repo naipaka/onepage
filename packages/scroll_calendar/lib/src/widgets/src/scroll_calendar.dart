@@ -1,8 +1,12 @@
 import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:theme/theme.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:widgets/widgets.dart';
+
+import '../../extension/extension.dart';
 
 /// Type definition for a function that scrolls to today's date.
 ///
@@ -237,20 +241,68 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       separatorBuilder: widget.separatorBuilder,
       itemBuilder: (_, index) {
         if (index == _reversedDates.length) {
-          return EndItem(onScrollEnd: widget.loadMoreOlder);
+          return _EndItem(onScrollEnd: widget.loadMoreOlder);
         }
         final date = _reversedDates[index];
-        return widget.dateItemBuilder(context, date);
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _DateItem(date: date),
+              const Gap(16),
+              Expanded(
+                child: widget.dateItemBuilder(context, date),
+              ),
+            ],
+          ),
+        );
       },
     );
   }
 }
 
+/// A widget that displays a date.
+class _DateItem extends StatelessWidget {
+  const _DateItem({
+    required this.date,
+  });
+
+  /// The date to be displayed.
+  final DateTime date;
+
+  @override
+  Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context).languageCode;
+    final colors = context.colors;
+    final dateColor = date.isToday ? colors.primary : colors.textMain;
+    return Column(
+      children: [
+        AppText.bodySBold(
+          '${date.year}',
+          color: dateColor,
+        ),
+        AppText.bodyLBold(
+          date.month.toString().padLeft(2, '0'),
+          color: dateColor,
+        ),
+        AppText.bodyLBold(
+          date.day.toString().padLeft(2, '0'),
+          color: dateColor,
+        ),
+        AppText.bodySBold(
+          date.shortWeekday(locale),
+          color: dateColor,
+        ),
+      ],
+    );
+  }
+}
+
 /// A widget that triggers a callback when it is visible.
-class EndItem extends StatelessWidget {
-  /// [EndItem] constructor.
-  const EndItem({
-    super.key,
+class _EndItem extends StatelessWidget {
+  /// [_EndItem] constructor.
+  const _EndItem({
     required void Function() onScrollEnd,
   }) : _onScrollEnd = onScrollEnd;
 
