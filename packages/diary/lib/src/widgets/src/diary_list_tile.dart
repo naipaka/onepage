@@ -6,14 +6,14 @@ class DiaryListTile extends StatelessWidget {
   /// Creates a diary list tile.
   const DiaryListTile({
     super.key,
-    required this.text,
+    required this.content,
   });
 
-  /// Text of the diary.
-  final String text;
+  /// Content of the diary.
+  final String content;
 
   @override
   Widget build(BuildContext context) {
-    return AppText.bodyS(text);
+    return AppText.bodyS(content);
   }
 }

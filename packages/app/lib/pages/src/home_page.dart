@@ -60,7 +60,7 @@ class HomePage extends HookConsumerWidget {
                   (e) => DateUtils.isSameDay(e.date, date),
                 );
                 return DiaryListTile(
-                  text: diary?.content ?? '',
+                  content: diary?.content ?? '',
                 );
               },
             );
