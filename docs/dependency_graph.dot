@@ -1,5 +1,7 @@
 digraph packages {
   size="10"; ratio=fill;
+  db_client [shape="box"; color="#c4fbfc"];
+  diary [shape="box"; color="#2c56bd"];
   i18n [shape="box"; color="#d7afc5"];
   onepage [shape="box"; color="#08802d"];
   provider_utils [shape="box"; color="#f445c4"];
@@ -8,6 +10,10 @@ digraph packages {
   update_requester [shape="box"; color="#a2aa60"];
   utils [shape="box"; color="#f548cf"];
   widgets [shape="box"; color="#3ed5a4"];
+  diary -> i18n [style="filled"; color="#d7afc5"];
+  diary -> theme [style="filled"; color="#1214e6"];
+  diary -> utils [style="filled"; color="#f548cf"];
+  onepage -> diary [style="filled"; color="#2c56bd"];
   onepage -> i18n [style="filled"; color="#d7afc5"];
   onepage -> provider_utils [style="filled"; color="#f445c4"];
   onepage -> scroll_calendar [style="filled"; color="#713e2e"];
@@ -21,6 +27,8 @@ digraph packages {
   subgraph "cluster packages" {
     label="packages";
     color="#6b4949";
+    db_client;
+    diary;
     i18n;
     onepage;
     provider_utils;
