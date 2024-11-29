@@ -49,6 +49,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Decode Firebase options
+        run: |
+          echo ${{ secrets.FIREBASE_OPTIONS_DEV_BASE64 }} | base64 -d > packages/app/lib/environment/src/firebase_options_dev.dart
+          echo ${{ secrets.FIREBASE_OPTIONS_PROD_BASE64 }} | base64 -d > packages/app/lib/environment/src/firebase_options_prod.dart
+
       - name: Setup Flutter with FVM
         id: setup-flutter
         uses: kuhnroyal/flutter-fvm-config-action/setup@v3
