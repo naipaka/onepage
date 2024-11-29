@@ -1,4 +1,5 @@
 import 'package:clock/clock.dart';
+import 'package:collection/collection.dart';
 import 'package:diary/diary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -7,6 +8,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:utils/utils.dart';
+import 'package:widgets/widgets.dart';
+
+import 'stub_diaries_state_provider.dart';
 
 /// Home page when the app is opened.
 class HomePage extends HookConsumerWidget {
@@ -23,6 +27,8 @@ class HomePage extends HookConsumerWidget {
 
     // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
+
+    final asyncDiaries = ref.watch(stubDiariesStateProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,9 +55,18 @@ class HomePage extends HookConsumerWidget {
           dateItemBuilder: (_, date) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: DiaryListTile(
-                date: date,
-                text: _mockTextList[date.day % 5],
+              child: asyncDiaries.when(
+                error: (_, __) => centerLoadingIndicator,
+                loading: () => centerLoadingIndicator,
+                data: (diaries) {
+                  final diary = diaries.firstWhereOrNull(
+                    (e) => DateUtils.isSameDay(e.date, date),
+                  );
+                  return DiaryListTile(
+                    date: date,
+                    text: diary?.content ?? '',
+                  );
+                },
               ),
             );
           },
@@ -60,20 +75,3 @@ class HomePage extends HookConsumerWidget {
     );
   }
 }
-
-// TODO(naipaka): Remove this mock text list.
-final _mockTextList = [
-  // For mock text, use the following text.
-  // ignore: avoid_hardcoded_japanese
-  '春はあけぼの。やうやう白くなりゆく山ぎは、すこしあかりて、紫だちたる 雲のほそくたなびきたる。',
-  // For mock text, use the following text.
-  // ignore: avoid_hardcoded_japanese
-  '夏は夜。月のころはさらなり。やみもなほ、蛍の多く飛びちがひたる。また、 ただ一つ二つなど、ほのかにうち光りて行くもをかし。雨など降るもをかし。',
-  // For mock text, use the following text.
-  // ignore: avoid_hardcoded_japanese
-  '''秋は夕暮れ。夕日のさして山の端いと近うなりたるに、烏の寝どころへ行く とて、三つ四つ、二つ三つなど、飛びいそぐさへあはれなり。まいて雁などの つらねたるが、いと小さく見ゆるはいとをかし。日入りはてて、風の音、虫の 音など、はたいふべきにあらず。''',
-  // For mock text, use the following text.
-  // ignore: avoid_hardcoded_japanese
-  '''冬はつとめて。雪の降りたるはいふべきにもあらず、霜のいと白きも、また さらでもいと寒きに、火など急ぎおこして、炭もて渡るもいとつきづきし。 昼になりて、ぬるくゆるびもていけば、火桶の火も白き灰がちになりてわろし。''',
-  '',
-];
