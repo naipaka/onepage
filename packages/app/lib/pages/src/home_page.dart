@@ -1,11 +1,12 @@
 import 'package:clock/clock.dart';
+import 'package:diary/diary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
-import 'package:theme/theme.dart';
+import 'package:utils/utils.dart';
 
 /// Home page when the app is opened.
 class HomePage extends HookConsumerWidget {
@@ -48,7 +49,7 @@ class HomePage extends HookConsumerWidget {
           dateItemBuilder: (_, date) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _DiaryListTile(
+              child: DiaryListTile(
                 date: date,
                 text: _mockTextList[date.day % 5],
               ),
@@ -56,60 +57,6 @@ class HomePage extends HookConsumerWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-/// Diary list tile.
-class _DiaryListTile extends StatelessWidget {
-  const _DiaryListTile({
-    required this.date,
-    this.text,
-  });
-
-  /// Date of the diary.
-  final DateTime date;
-
-  /// Text of the diary.
-  final String? text;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-
-    final dateColor = date.isToday ? colors.primary : colors.textMain;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Column(
-          children: [
-            AppText.bodySBold(
-              '${date.year}',
-              color: dateColor,
-            ),
-            AppText.bodyLBold(
-              date.month.toString().padLeft(2, '0'),
-              color: dateColor,
-            ),
-            AppText.bodyLBold(
-              date.day.toString().padLeft(2, '0'),
-              color: dateColor,
-            ),
-            AppText.bodySBold(
-              date.shortWeekday(context.locale.languageCode),
-              color: dateColor,
-            ),
-          ],
-        ),
-        const Gap(16),
-        if (text case final String text)
-          Expanded(
-            child: AppText.bodyS(text),
-          )
-        else
-          const Spacer(),
-      ],
     );
   }
 }

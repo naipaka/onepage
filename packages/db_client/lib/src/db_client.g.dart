@@ -112,19 +112,32 @@ class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
 }
 
 class Diary extends DataClass implements Insertable<Diary> {
-  /// 自動採番の主キー。
+  /// The auto-incrementing primary key.
+  ///
+  /// This column represents the unique identifier for each diary entry.
   final int id;
 
-  /// 日記の内容。
+  /// The content of the diary entry.
+  ///
+  /// This column stores the text content of the diary. The length of the text
+  /// is constrained to be between 0 and 1000 characters.
   final String content;
 
-  /// 日記の日付。
+  /// The date of the diary entry.
+  ///
+  /// This column stores the date associated with the diary entry.
   final DateTime date;
 
-  /// 作成日時。
+  /// The creation timestamp of the diary entry.
+  ///
+  /// This column stores the timestamp when the diary entry was created. It
+  /// defaults to the current date and time.
   final DateTime createdAt;
 
-  /// 更新日時。
+  /// The update timestamp of the diary entry.
+  ///
+  /// This column stores the timestamp when the diary entry was last updated. It
+  /// defaults to the current date and time.
   final DateTime updatedAt;
   const Diary(
       {required this.id,
