@@ -1,5 +1,6 @@
 digraph packages {
   size="10"; ratio=fill;
+  db_client [shape="box"; color="#c4fbfc"];
   i18n [shape="box"; color="#d7afc5"];
   onepage [shape="box"; color="#08802d"];
   provider_utils [shape="box"; color="#f445c4"];
@@ -21,6 +22,7 @@ digraph packages {
   subgraph "cluster packages" {
     label="packages";
     color="#6b4949";
+    db_client;
     i18n;
     onepage;
     provider_utils;

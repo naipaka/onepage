@@ -14,14 +14,20 @@
 <polygon fill="none" stroke="#6b4949" points="9.86,-24.51 9.86,-695.49 710.14,-695.49 710.14,-24.51 9.86,-24.51"/>
 <text text-anchor="middle" x="360" y="-680.29" font-family="Times,serif" font-size="14.00">packages</text>
 </g>
-<!-- i18n -->
+<!-- db_client -->
 <g id="node1" class="node">
+<title>db_client</title>
+<polygon fill="none" stroke="#c4fbfc" points="574.08,-563.51 493.08,-563.51 493.08,-527.51 574.08,-527.51 574.08,-563.51"/>
+<text text-anchor="middle" x="533.58" y="-541.81" font-family="Times,serif" font-size="14.00">db_client</text>
+</g>
+<!-- i18n -->
+<g id="node2" class="node">
 <title>i18n</title>
 <polygon fill="none" stroke="#d7afc5" points="79.58,-342.51 25.58,-342.51 25.58,-306.51 79.58,-306.51 79.58,-342.51"/>
 <text text-anchor="middle" x="52.58" y="-320.81" font-family="Times,serif" font-size="14.00">i18n</text>
 </g>
 <!-- onepage -->
-<g id="node2" class="node">
+<g id="node3" class="node">
 <title>onepage</title>
 <polygon fill="none" stroke="#08802d" points="338.08,-563.51 261.08,-563.51 261.08,-527.51 338.08,-527.51 338.08,-563.51"/>
 <text text-anchor="middle" x="299.58" y="-541.81" font-family="Times,serif" font-size="14.00">onepage</text>
@@ -33,7 +39,7 @@
 <polygon fill="#d7afc5" stroke="#d7afc5" points="81.67,-346.63 71.87,-342.62 77.03,-351.87 81.67,-346.63"/>
 </g>
 <!-- provider_utils -->
-<g id="node3" class="node">
+<g id="node4" class="node">
 <title>provider_utils</title>
 <polygon fill="none" stroke="#f445c4" points="237.58,-342.51 121.58,-342.51 121.58,-306.51 237.58,-306.51 237.58,-342.51"/>
 <text text-anchor="middle" x="179.58" y="-320.81" font-family="Times,serif" font-size="14.00">provider_utils</text>
@@ -45,7 +51,7 @@
 <polygon fill="#f445c4" stroke="#f445c4" points="196.82,-349.7 188.95,-342.62 190.68,-353.07 196.82,-349.7"/>
 </g>
 <!-- scroll_calendar -->
-<g id="node4" class="node">
+<g id="node5" class="node">
 <title>scroll_calendar</title>
 <polygon fill="none" stroke="#713e2e" points="661.58,-342.51 537.58,-342.51 537.58,-306.51 661.58,-306.51 661.58,-342.51"/>
 <text text-anchor="middle" x="599.58" y="-320.81" font-family="Times,serif" font-size="14.00">scroll_calendar</text>
@@ -57,7 +63,7 @@
 <polygon fill="#713e2e" stroke="#713e2e" points="570.13,-351.34 576.14,-342.62 566,-345.68 570.13,-351.34"/>
 </g>
 <!-- theme -->
-<g id="node5" class="node">
+<g id="node6" class="node">
 <title>theme</title>
 <polygon fill="none" stroke="#1214e6" points="385.58,-122.51 323.58,-122.51 323.58,-86.51 385.58,-86.51 385.58,-122.51"/>
 <text text-anchor="middle" x="354.58" y="-100.81" font-family="Times,serif" font-size="14.00">theme</text>
@@ -69,7 +75,7 @@
 <polygon fill="#1214e6" stroke="#1214e6" points="354.66,-132.96 352.43,-122.6 347.72,-132.09 354.66,-132.96"/>
 </g>
 <!-- update_requester -->
-<g id="node6" class="node">
+<g id="node7" class="node">
 <title>update_requester</title>
 <polygon fill="none" stroke="#a2aa60" points="483.08,-342.51 340.08,-342.51 340.08,-306.51 483.08,-306.51 483.08,-342.51"/>
 <text text-anchor="middle" x="411.58" y="-320.81" font-family="Times,serif" font-size="14.00">update_requester</text>
@@ -81,7 +87,7 @@
 <polygon fill="#a2aa60" stroke="#a2aa60" points="401.39,-353.11 402.83,-342.62 395.16,-349.92 401.39,-353.11"/>
 </g>
 <!-- utils -->
-<g id="node7" class="node">
+<g id="node8" class="node">
 <title>utils</title>
 <polygon fill="none" stroke="#f548cf" points="247.58,-122.51 193.58,-122.51 193.58,-86.51 247.58,-86.51 247.58,-122.51"/>
 <text text-anchor="middle" x="220.58" y="-100.81" font-family="Times,serif" font-size="14.00">utils</text>
@@ -93,7 +99,7 @@
 <polygon fill="#f548cf" stroke="#f548cf" points="228.87,-131.82 223.65,-122.6 221.98,-133.06 228.87,-131.82"/>
 </g>
 <!-- widgets -->
-<g id="node8" class="node">
+<g id="node9" class="node">
 <title>widgets</title>
 <polygon fill="none" stroke="#3ed5a4" points="663.08,-122.51 590.08,-122.51 590.08,-86.51 663.08,-86.51 663.08,-122.51"/>
 <text text-anchor="middle" x="626.58" y="-100.81" font-family="Times,serif" font-size="14.00">widgets</text>
