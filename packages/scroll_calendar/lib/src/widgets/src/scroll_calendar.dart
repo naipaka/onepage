@@ -4,8 +4,6 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:widgets/widgets.dart';
 
-import '../../extension/extension.dart';
-
 /// Type definition for a function that scrolls to today's date.
 ///
 /// - [duration] : The duration of the scroll animation.
@@ -97,12 +95,20 @@ class VerticalScrollCalendar extends StatefulWidget {
   const VerticalScrollCalendar({
     super.key,
     this.controller,
+    required this.dates,
+    required this.loadMoreOlder,
     required this.dateItemBuilder,
     required this.separatorBuilder,
   });
 
   /// Controller to manage the scroll position of the calendar.
   final ScrollCalendarController? controller;
+
+  /// List of dates to be displayed in the calendar.
+  final List<DateTime> dates;
+
+  /// Callback function to load more past dates.
+  final VoidCallback loadMoreOlder;
 
   /// Callback function to build a widget for each date.
   final Widget Function(BuildContext, DateTime) dateItemBuilder;
@@ -118,14 +124,11 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   /// The current date and time.
   final now = clock.now();
 
-  /// List of dates to be displayed in the calendar.
-  late List<DateTime> dates = now.datesInMonths(-1, 0);
-
   /// List of dates in reverse order.
   ///
   /// The ListView is set to `reverse: true`,
   /// so the list is reversed to display dates in ascending order.
-  List<DateTime> get _reversedDates => dates.reversed.toList();
+  List<DateTime> get _reversedDates => widget.dates.reversed.toList();
 
   /// Controller to manage the scroll position of the
   /// [ScrollablePositionedList].
@@ -161,13 +164,21 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     super.dispose();
   }
 
-  /// Loads more past dates.
-  void _loadMoreOlder() {
-    final firstDate = dates.first;
-    final previousDate = firstDate.subtract(const Duration(days: 1));
-    setState(() {
-      dates = [...previousDate.datesInMonth, ...dates];
-    });
+  /// Returns the alignment of the specified index.
+  ///
+  /// Ensures that today's date is displayed around the middle of the viewport.
+  /// If fixed at 0.5, abnormal bouncing occurs when today's date is near
+  /// the beginning or end of the month.
+  /// Adjusts the value if near the beginning or end of the list,
+  /// otherwise sets it to 0.5.
+  double get _indexAlignment {
+    final length = _reversedDates.length;
+    if (_initialScrollIndex <= 4) {
+      return _initialScrollIndex * 0.1;
+    } else if (_initialScrollIndex >= length - 5) {
+      return 1.0 - (length - 1 - _initialScrollIndex) * 0.1;
+    }
+    return 0.5;
   }
 
   /// Scrolls to today's date.
@@ -216,7 +227,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       // while loading more items.
       itemCount: _reversedDates.length + 1,
       initialScrollIndex: _initialScrollIndex,
-      initialAlignment: 0.5,
+      initialAlignment: _indexAlignment,
       // Set `reverse: true` to prevent scroll position changes
       // when loading more items at the top.
       reverse: true,
@@ -226,7 +237,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       separatorBuilder: widget.separatorBuilder,
       itemBuilder: (_, index) {
         if (index == _reversedDates.length) {
-          return EndItem(onScrollEnd: _loadMoreOlder);
+          return EndItem(onScrollEnd: widget.loadMoreOlder);
         }
         final date = _reversedDates[index];
         return widget.dateItemBuilder(context, date);

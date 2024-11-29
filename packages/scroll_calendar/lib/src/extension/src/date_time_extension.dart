@@ -16,6 +16,13 @@ extension DateTimeExtensionForCalendar on DateTime {
     );
   }
 
+  /// Get a list of [DateTime] for the previous month.
+  List<DateTime> get previousMonthDates {
+    final firstDate = DateTime(year, month);
+    final previousDate = firstDate.subtract(const Duration(days: 1));
+    return previousDate.datesInMonth;
+  }
+
   /// Get a list of dates from [start] months
   /// before to [end] months after the target date.
   ///

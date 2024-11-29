@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -15,6 +16,11 @@ class HomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
 
+    // Get the list of dates for the previous month for calendar display.
+    final now = useMemoized(() => clock.now());
+    final datesState = useState(now.datesInMonths(-1, 0));
+
+    // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
 
     return Scaffold(
@@ -30,6 +36,14 @@ class HomePage extends HookConsumerWidget {
       body: SafeArea(
         child: VerticalScrollCalendar(
           controller: scrollCalendarController,
+          dates: datesState.value,
+          loadMoreOlder: () {
+            datesState.value = [
+              // Add the previous month's dates to the beginning of the list.
+              ...datesState.value.first.previousMonthDates,
+              ...datesState.value,
+            ];
+          },
           separatorBuilder: (_, __) => const Gap(32),
           dateItemBuilder: (_, date) {
             return Padding(
