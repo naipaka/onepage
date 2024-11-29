@@ -1,4 +1,4 @@
-name: utils
+name: diary
 description: A new Flutter package project.
 version: 1.0.0
 publish_to: "none"
@@ -10,8 +10,13 @@ dependencies:
   clock: ^1.1.1
   flutter:
     sdk: flutter
-  intl: ^0.19.0
-  simple_logger: ^1.10.0
+  gap: ^3.0.1
+  i18n:
+    path: ../i18n
+  theme:
+    path: ../theme
+  utils:
+    path: ../utils
 
 dev_dependencies:
   altive_lints: ^1.16.0
