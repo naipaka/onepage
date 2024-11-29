@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../../adapters/tracker_provider.dart';
+import '../../adapters/adapters.dart';
 import 'app_routes.dart';
 
 part 'router_provider.g.dart';

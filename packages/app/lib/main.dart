@@ -13,8 +13,7 @@ import 'package:provider_utils/provider_utils.dart';
 import 'package:update_requester/update_requester.dart';
 import 'package:utils/utils.dart';
 
-import 'adapters/configurator_provider.dart';
-import 'adapters/tracker_provider.dart';
+import 'adapters/adapters.dart';
 import 'app.dart';
 import 'environment/environment.dart';
 

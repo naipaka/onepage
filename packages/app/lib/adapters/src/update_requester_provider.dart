@@ -3,7 +3,7 @@ import 'package:provider_utils/provider_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:update_requester/update_requester.dart';
 
-import '../../adapters/configurator_provider.dart';
+import 'configurator_provider.dart';
 
 part 'update_requester_provider.g.dart';
 

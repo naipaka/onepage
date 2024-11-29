@@ -10,7 +10,7 @@ import 'package:update_requester/update_requester.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:widgets/widgets.dart';
 
-import 'adapters/update_requester_provider.dart';
+import 'adapters/adapters.dart';
 import 'router/router.dart';
 
 /// The main application widget.
