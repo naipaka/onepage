@@ -1,9 +1,13 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
 import 'package:update_requester/update_requester.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:widgets/widgets.dart';
 
 import 'adapters/update_requester_provider.dart';
@@ -53,7 +57,27 @@ class App extends ConsumerWidget {
                 }
                 return ColoredBox(
                   color: colors.overlay!,
-                  child: UpdateRequestView(message: message),
+                  child: UpdateRequestView(
+                    title: t.updateRequest.title,
+                    message: message,
+                    buttonText: t.updateRequest.button.updateNow,
+                    onButtonPressed: () async {
+                      final platform = defaultTargetPlatform;
+                      final urlString = switch (platform) {
+                        // TODO(naipaka): Add the URL for the play store.
+                        TargetPlatform.android => '',
+                        // TODO(naipaka): Add the URL for the app store.
+                        TargetPlatform.iOS => '',
+                        _ => throw UnsupportedError(
+                            'Unsupported platform: $platform',
+                          ),
+                      };
+                      final url = Uri.https(urlString);
+                      if (await canLaunchUrl(url)) {
+                        unawaited(launchUrl(url));
+                      }
+                    },
+                  ),
                 );
               },
             ),
