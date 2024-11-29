@@ -63,6 +63,11 @@ android {
         versionName flutter.versionName
         multiDexEnabled true // For Firebase.
         resValue "string", "app_name", "${dartDefines.appName}"
+        // For sqlite3.
+        // https://github.com/simolus3/sqlite3.dart/tree/main/sqlite3_flutter_libs#included-platforms
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+        }
     }
 
     signingConfigs {
