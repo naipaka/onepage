@@ -4,7 +4,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/app.dart';
-import 'package:onepage/main.dart';
 import 'package:onepage/pages/pages.dart';
 import 'package:onepage/router/router.dart';
 
