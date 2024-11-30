@@ -100,6 +100,7 @@ class VerticalScrollCalendar extends StatefulWidget {
     this.controller,
     required this.dates,
     required this.loadMoreOlder,
+    required this.onVisibleDateChanged,
     required this.dateItemBuilder,
     required this.separatorBuilder,
   });
@@ -113,11 +114,14 @@ class VerticalScrollCalendar extends StatefulWidget {
   /// Callback function to load more past dates.
   final VoidCallback loadMoreOlder;
 
+  /// Callback function to handle the visibility of the calendar.
+  final ValueChanged<DateTime> onVisibleDateChanged;
+
   /// Callback function to build a widget for each date.
   final Widget Function(BuildContext, DateTime) dateItemBuilder;
 
   /// Callback function to build a separator widget between dates.
-  final Widget Function(BuildContext, int) separatorBuilder;
+  final Widget Function(BuildContext, DateTime) separatorBuilder;
 
   @override
   State<VerticalScrollCalendar> createState() => _VerticalScrollCalendarState();
@@ -137,6 +141,10 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   /// [ScrollablePositionedList].
   final _itemScrollController = ItemScrollController();
 
+  /// Listener to detect the visibility of items in the
+  /// [ScrollablePositionedList].
+  final _itemPositionsListener = ItemPositionsListener.create();
+
   /// Initial scroll position.
   late final int _initialScrollIndex;
 
@@ -144,6 +152,9 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   late final ScrollCalendarController _fallbackScrollCalendarController;
   ScrollCalendarController get _effectiveScrollCalendarController =>
       widget.controller ?? _fallbackScrollCalendarController;
+
+  /// The index of the middle visible item.
+  int? _middleVisibleIndex;
 
   @override
   void initState() {
@@ -159,10 +170,13 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       scrollToToday: _scrollToToday,
       scrollToDate: _scrollToDate,
     );
+    _itemPositionsListener.itemPositions.addListener(_onItemPositionsChanged);
   }
 
   @override
   void dispose() {
+    _itemPositionsListener.itemPositions
+        .removeListener(_onItemPositionsChanged);
     _effectiveScrollCalendarController._detach();
     super.dispose();
   }
@@ -196,7 +210,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   }) async {
     await _itemScrollController.scrollTo(
       index: _reversedDates.indexWhere((d) => DateUtils.isSameDay(d, now)),
-      alignment: 0.5,
+      alignment: _indexAlignment,
       duration: duration,
       curve: curve,
     );
@@ -216,16 +230,36 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   }) async {
     await _itemScrollController.scrollTo(
       index: _reversedDates.indexWhere((d) => DateUtils.isSameDay(d, date)),
-      alignment: 0.5,
+      alignment: _indexAlignment,
       duration: duration,
       curve: curve,
     );
+  }
+
+  /// Callback function to handle the visibility of items in the list.
+  void _onItemPositionsChanged() {
+    final positions = _itemPositionsListener.itemPositions.value.toList();
+    if (positions.isEmpty) {
+      return;
+    }
+    positions.sort((a, b) => a.index.compareTo(b.index));
+    final middleVisibleIndex = positions[positions.length ~/ 2].index;
+    if (middleVisibleIndex == _reversedDates.length) {
+      return;
+    }
+    if (middleVisibleIndex == _middleVisibleIndex) {
+      return;
+    }
+    _middleVisibleIndex = middleVisibleIndex;
+    final visibleDate = _reversedDates[middleVisibleIndex];
+    widget.onVisibleDateChanged(visibleDate);
   }
 
   @override
   Widget build(BuildContext context) {
     return ScrollablePositionedList.separated(
       itemScrollController: _itemScrollController,
+      itemPositionsListener: _itemPositionsListener,
       // Display one extra item to show a loading indicator
       // while loading more items.
       itemCount: _reversedDates.length + 1,
@@ -234,11 +268,14 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       // Set `reverse: true` to prevent scroll position changes
       // when loading more items at the top.
       reverse: true,
-      // Use `ClampingScrollPhysics` to prevent abnormal bouncing
-      // when jumping to the first or last day of the month.
-      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 80),
-      separatorBuilder: widget.separatorBuilder,
+      separatorBuilder: (_, index) {
+        if (index == _reversedDates.length) {
+          return const SizedBox.shrink();
+        }
+        final date = _reversedDates[index];
+        return widget.separatorBuilder(context, date);
+      },
       itemBuilder: (_, index) {
         if (index == _reversedDates.length) {
           return _EndItem(onScrollEnd: widget.loadMoreOlder);
@@ -280,30 +317,14 @@ class _DateItem extends StatelessWidget {
     return Column(
       children: [
         Text(
-          '${date.year}',
-          style: textTheme.bodySmall?.copyWith(
+          date.shortWeekday(locale),
+          style: textTheme.bodyMedium?.copyWith(
             color: dateColor,
-          ),
-        ),
-        const Gap(2),
-        Text(
-          date.month.toString().padLeft(2, '0'),
-          style: textTheme.titleLarge?.copyWith(
-            color: dateColor,
-            height: 1,
           ),
         ),
         Text(
           date.day.toString().padLeft(2, '0'),
-          style: textTheme.titleLarge?.copyWith(
-            color: dateColor,
-            height: 1,
-          ),
-        ),
-        const Gap(2),
-        Text(
-          date.shortWeekday(locale),
-          style: textTheme.bodySmall?.copyWith(
+          style: textTheme.headlineSmall?.copyWith(
             color: dateColor,
           ),
         ),

@@ -22,18 +22,27 @@ class HomePage extends HookConsumerWidget {
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
-    final datesState = useState(
-      now.datesInMonths(-1, 0)..add(now.add(const Duration(days: 1))),
+    final datesState = useMemoized(
+      () => ValueNotifier(
+        now.datesInMonths(-1, 0)..add(DateTime(now.year, now.month + 1)),
+      ),
     );
+    // Get the visible date for the calendar.
+    final visibleDateState = useMemoized(() => ValueNotifier(now));
 
     // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
 
-    final asyncDiaries = ref.watch(stubDiariesStateProvider);
-    final diaryNotifier = ref.watch(stubDiariesStateProvider.notifier);
-
     return Scaffold(
       appBar: AppBar(
+        title: ValueListenableBuilder(
+          valueListenable: visibleDateState,
+          builder: (context, value, child) {
+            return Text(
+              '${value.year}年${value.month}月',
+            );
+          },
+        ),
         actions: [
           IconButton(
             onPressed: scrollCalendarController.scrollToToday,
@@ -44,36 +53,58 @@ class HomePage extends HookConsumerWidget {
       drawer: const Drawer(),
       body: SafeArea(
         bottom: false,
-        child: VerticalScrollCalendar(
-          controller: scrollCalendarController,
-          dates: datesState.value,
-          loadMoreOlder: () {
-            datesState.value = [
-              // Add the previous month's dates to the beginning of the list.
-              ...datesState.value.first.previousMonthDates,
-              ...datesState.value,
-            ];
-          },
-          separatorBuilder: (_, __) => const Gap(32),
-          dateItemBuilder: (_, date) {
-            return asyncDiaries.when(
-              loading: () => centerLoadingIndicator,
-              error: (_, __) => Center(
-                child: Icon(
-                  Icons.error,
-                  color: colorScheme.error,
-                ),
-              ),
-              data: (diaries) {
-                final diary = diaries.firstWhereOrNull(
-                  (e) => DateUtils.isSameDay(e.date, date),
+        child: ValueListenableBuilder(
+          valueListenable: datesState,
+          builder: (context, value, child) {
+            final asyncDiaries = ref.watch(stubDiariesStateProvider);
+            final diaryNotifier = ref.watch(stubDiariesStateProvider.notifier);
+            return VerticalScrollCalendar(
+              controller: scrollCalendarController,
+              dates: value,
+              loadMoreOlder: () {
+                datesState.value = [
+                  // Add the previous month's dates to the start of the list.
+                  ...datesState.value.first.previousMonthDates,
+                  ...datesState.value,
+                ];
+              },
+              onVisibleDateChanged: (date) {
+                visibleDateState.value = date;
+              },
+              separatorBuilder: (_, date) {
+                if (date.day != 1) {
+                  return const Gap(32);
+                }
+                return const Padding(
+                  padding: EdgeInsets.all(32),
+                  child: DashedDivider(
+                    dashedHeight: 2,
+                    dashedWidth: 2,
+                    dashedSpace: 16,
+                  ),
                 );
-                return DiaryListTile(
-                  content: diary?.content,
-                  save: (content) async {
-                    await diaryNotifier.save(
-                      date: date,
-                      content: content,
+              },
+              dateItemBuilder: (_, date) {
+                return asyncDiaries.when(
+                  loading: () => centerLoadingIndicator,
+                  error: (_, __) => Center(
+                    child: Icon(
+                      Icons.error,
+                      color: colorScheme.error,
+                    ),
+                  ),
+                  data: (diaries) {
+                    final diary = diaries.firstWhereOrNull(
+                      (e) => DateUtils.isSameDay(e.date, date),
+                    );
+                    return DiaryListTile(
+                      content: diary?.content,
+                      save: (content) async {
+                        await diaryNotifier.save(
+                          date: date,
+                          content: content,
+                        );
+                      },
                     );
                   },
                 );
