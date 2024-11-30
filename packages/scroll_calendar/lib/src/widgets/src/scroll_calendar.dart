@@ -242,6 +242,9 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     if (positions.isEmpty) {
       return;
     }
+    // NOTE: When scrolling quickly, the order of positions may change,
+    // so sort by index before processing.
+    // https://github.com/google/flutter.widgets/issues/541#issuecomment-2370315790
     positions.sort((a, b) => a.index.compareTo(b.index));
     final middleVisibleIndex = positions[positions.length ~/ 2].index;
     if (middleVisibleIndex == _reversedDates.length) {
