@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
@@ -39,7 +40,7 @@ class HomePage extends HookConsumerWidget {
           valueListenable: visibleDateState,
           builder: (context, value, child) {
             return Text(
-              '${value.year}年${value.month}月',
+              value.yMMMM(context.locale.languageCode),
             );
           },
         ),

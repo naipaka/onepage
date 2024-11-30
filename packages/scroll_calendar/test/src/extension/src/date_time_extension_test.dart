@@ -34,6 +34,12 @@ void main() {
       expect(dates.last, DateTime(2024, 12, 31));
     });
 
+    test('yMMMM should return correct year and month', () {
+      final date = DateTime(2024, 5);
+      expect(date.yMMMM('en'), 'May 2024');
+      expect(date.yMMMM('ja'), 'May 2024');
+    });
+
     test('shortWeekday should return correct abbreviated weekday', () {
       final date = DateTime(2024, 5);
       expect(date.shortWeekday('en'), 'Wed');

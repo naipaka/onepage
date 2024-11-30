@@ -36,6 +36,17 @@ extension DateTimeExtensionForCalendar on DateTime {
     return dates;
   }
 
+  /// 年月形式の日付文字列に変換する。
+  ///
+  /// e.g. `2024年5月`, 'May 2024'
+  String yMMMM(String locale) {
+    if (locale == 'ja') {
+      // For Japanese, get the month and year in English.
+      return DateFormat.yMMMM('en').format(this);
+    }
+    return DateFormat.yMMMM('en').format(this);
+  }
+
   /// Get the abbreviated weekday.
   ///
   /// e.g. `Tue`
