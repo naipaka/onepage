@@ -1,6 +1,13 @@
 # See: https://docs.codecov.com/docs/codecov-yaml
 # validate: curl -X POST --data-binary @codecov.yml https://codecov.io/validate
 
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 0
+
 # excluding generated files and examples from the coverage report
 ignore:
   - "**/gen"
