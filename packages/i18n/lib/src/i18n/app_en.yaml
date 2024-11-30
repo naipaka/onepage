@@ -4,5 +4,3 @@ updateRequest:
   title: "Update Request"
   button:
     updateNow: "Update Now"
-home:
-  today: "Today"

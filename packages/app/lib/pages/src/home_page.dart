@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
@@ -19,7 +18,6 @@ class HomePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final t = context.t;
     final colorScheme = context.colorScheme;
 
     // Get the list of dates for the previous month for calendar display.
@@ -37,11 +35,9 @@ class HomePage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          TextButton(
+          IconButton(
             onPressed: scrollCalendarController.scrollToToday,
-            child: TitleSmallText(
-              t.home.today,
-            ),
+            icon: const Icon(Icons.today_outlined),
           ),
         ],
       ),

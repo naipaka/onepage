@@ -35,7 +35,6 @@ class TranslationsEn implements Translations {
 	// Translations
 	@override String get title => 'One Page';
 	@override late final _TranslationsUpdateRequestEn updateRequest = _TranslationsUpdateRequestEn._(_root);
-	@override late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 }
 
 // Path: updateRequest
@@ -47,16 +46,6 @@ class _TranslationsUpdateRequestEn implements TranslationsUpdateRequestJa {
 	// Translations
 	@override String get title => 'Update Request';
 	@override late final _TranslationsUpdateRequestButtonEn button = _TranslationsUpdateRequestButtonEn._(_root);
-}
-
-// Path: home
-class _TranslationsHomeEn implements TranslationsHomeJa {
-	_TranslationsHomeEn._(this._root);
-
-	final TranslationsEn _root; // ignore: unused_field
-
-	// Translations
-	@override String get today => 'Today';
 }
 
 // Path: updateRequest.button
@@ -77,7 +66,6 @@ extension on TranslationsEn {
 			case 'title': return 'One Page';
 			case 'updateRequest.title': return 'Update Request';
 			case 'updateRequest.button.updateNow': return 'Update Now';
-			case 'home.today': return 'Today';
 			default: return null;
 		}
 	}

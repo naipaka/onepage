@@ -4,5 +4,3 @@ updateRequest:
   title: "アップデートのお願い"
   button:
     updateNow: "更新する"
-home:
-  today: "Today"
