@@ -238,6 +238,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       // Use `ClampingScrollPhysics` to prevent abnormal bouncing
       // when jumping to the first or last day of the month.
       physics: const ClampingScrollPhysics(),
+      padding: const EdgeInsets.only(bottom: 40),
       separatorBuilder: widget.separatorBuilder,
       itemBuilder: (_, index) {
         if (index == _reversedDates.length) {

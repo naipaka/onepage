@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theme/theme.dart';
+import 'package:utils/utils.dart';
 
 /// Diary list tile.
 class DiaryListTile extends StatefulWidget {
@@ -22,26 +23,53 @@ class DiaryListTile extends StatefulWidget {
 
 class _DiaryListTileState extends State<DiaryListTile>
     with WidgetsBindingObserver {
-  late final TextEditingController textController;
+  /// Diary content text controller.
+  late final textController = TextEditingController(text: widget.content);
+
+  /// An instance of FocusNode to monitor the state of focus.
+  final _focusNode = FocusNode();
+
+  /// An instance of Debounce to delay the processing after input.
+  final _debounce = Debounce(delay: const Duration(seconds: 2));
 
   @override
   void initState() {
     super.initState();
-    textController = TextEditingController(text: widget.content);
+    _focusNode.addListener(_onFocusChange);
     WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _focusNode
+      ..removeListener(_onFocusChange)
+      ..dispose();
     textController.dispose();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused) {
-      widget.save(textController.text);
+    final shouldSave = [
+      AppLifecycleState.paused,
+      AppLifecycleState.inactive,
+      AppLifecycleState.detached,
+    ].contains(state);
+    if (shouldSave) {
+      _save();
+    }
+  }
+
+  /// Save diary content.
+  void _save() {
+    widget.save(textController.text);
+  }
+
+  /// Focus change event handler.
+  void _onFocusChange() {
+    if (!_focusNode.hasFocus) {
+      _save();
     }
   }
 
@@ -50,6 +78,7 @@ class _DiaryListTileState extends State<DiaryListTile>
     final typography = context.typography;
     return TextField(
       controller: textController,
+      focusNode: _focusNode,
       decoration: const InputDecoration(
         border: InputBorder.none,
         contentPadding: EdgeInsets.zero,
@@ -57,12 +86,7 @@ class _DiaryListTileState extends State<DiaryListTile>
       style: typography.bodyM,
       minLines: 3,
       maxLines: null,
-      onChanged: (value) {
-        widget.save(value);
-      },
-      onTapOutside: (_) {
-        widget.save(textController.text);
-      },
+      onChanged: (_) => _debounce(_save),
     );
   }
 }

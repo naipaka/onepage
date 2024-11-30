@@ -10,7 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   theme:
-    path: ../theme
+    path: ../theme/
+  utils:
+    path: ../utils/
 
 dev_dependencies:
   altive_lints: ^1.16.0
