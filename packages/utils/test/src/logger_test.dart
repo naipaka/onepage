@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:test/test.dart';
-import 'package:utils/src/logger/src/logger.dart';
+import 'package:utils/src/logger.dart';
 
 void main() {
   group('Logger', () {
