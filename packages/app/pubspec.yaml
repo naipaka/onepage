@@ -70,19 +70,3 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
-
-  fonts:
-    - family: NotoSansJP
-      fonts:
-        - asset: packages/theme/fonts/NotoSansJP-Black.ttf
-          weight: 900
-        - asset: packages/theme/fonts/NotoSansJP-Bold.ttf
-          weight: 700
-        - asset: packages/theme/fonts/NotoSansJP-Medium.ttf
-          weight: 500
-        - asset: packages/theme/fonts/NotoSansJP-Regular.ttf
-          weight: 400
-        - asset: packages/theme/fonts/NotoSansJP-Light.ttf
-          weight: 300
-        - asset: packages/theme/fonts/NotoSansJP-Thin.ttf
-          weight: 100

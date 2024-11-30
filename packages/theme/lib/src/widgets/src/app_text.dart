@@ -2,33 +2,33 @@ import 'package:flutter/material.dart';
 
 import '../../utils/utils.dart';
 
-/// テキストウィジェットの共通プロパティ。
+/// Common properties for text widgets.
 mixin TextThemeText implements Widget {
-  /// 表示する文字列。
+  /// The string to display.
   String get data;
 
-  /// 文字色。
+  /// The color of the text.
   Color? get color;
 
-  /// 字下げする空白数値。
+  /// The number of spaces to indent.
   double? get indent;
 
-  /// 最大行数。nullなら無制限。
+  /// The maximum number of lines. If null, unlimited.
   int? get maxLines;
 
-  /// テキストの揃え方。
+  /// The alignment of the text.
   TextAlign? get textAlign;
 
-  /// フォントウェイト。
+  /// The font weight.
   FontWeight? get fontWeight;
 
-  /// 高さ。
+  /// The height of the text.
   double? get height;
 }
 
-/// [TextTheme.displayLarge] の [Text] ウィジェット。
+/// [TextTheme.displayLarge] text widget.
 class DisplayLargeText extends StatelessWidget with TextThemeText {
-  /// [DisplayLargeText] インスタンスを作成。
+  /// Creates an instance of [DisplayLargeText].
   const DisplayLargeText(
     this.data, {
     super.key,
@@ -78,9 +78,9 @@ class DisplayLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.displayMedium] の [Text] ウィジェット。
+/// [TextTheme.displayMedium] text widget.
 class DisplayMediumText extends StatelessWidget with TextThemeText {
-  /// [DisplayMediumText] インスタンスを作成。
+  /// Creates an instance of [DisplayMediumText].
   const DisplayMediumText(
     this.data, {
     super.key,
@@ -130,9 +130,9 @@ class DisplayMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.displaySmall] の [Text] ウィジェット。
+/// [TextTheme.displaySmall] text widget.
 class DisplaySmallText extends StatelessWidget with TextThemeText {
-  /// [DisplaySmallText] インスタンスを作成。
+  /// Creates an instance of [DisplaySmallText].
   const DisplaySmallText(
     this.data, {
     super.key,
@@ -182,9 +182,9 @@ class DisplaySmallText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.headlineLarge] の [Text] ウィジェット。
+/// [TextTheme.headlineLarge] text widget.
 class HeadlineLargeText extends StatelessWidget with TextThemeText {
-  /// [HeadlineLargeText] インスタンスを作成。
+  /// Creates an instance of [HeadlineLargeText].
   const HeadlineLargeText(
     this.data, {
     super.key,
@@ -234,9 +234,9 @@ class HeadlineLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.headlineMedium] の [Text] ウィジェット。
+/// [TextTheme.headlineMedium] text widget.
 class HeadlineMediumText extends StatelessWidget with TextThemeText {
-  /// [HeadlineMediumText] インスタンスを作成。
+  /// Creates an instance of [HeadlineMediumText].
   const HeadlineMediumText(
     this.data, {
     super.key,
@@ -286,9 +286,9 @@ class HeadlineMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.headlineSmall] の [Text] ウィジェット。
+/// [TextTheme.headlineSmall] text widget.
 class HeadlineSmallText extends StatelessWidget with TextThemeText {
-  /// [HeadlineSmallText] インスタンスを作成。
+  /// Creates an instance of [HeadlineSmallText].
   const HeadlineSmallText(
     this.data, {
     super.key,
@@ -338,9 +338,9 @@ class HeadlineSmallText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.titleLarge] の [Text] ウィジェット。
+/// [TextTheme.titleLarge] text widget.
 class TitleLargeText extends StatelessWidget with TextThemeText {
-  /// [TitleLargeText] インスタンスを作成。
+  /// Creates an instance of [TitleLargeText].
   const TitleLargeText(
     this.data, {
     super.key,
@@ -390,9 +390,9 @@ class TitleLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.titleMedium] の [Text] ウィジェット。
+/// [TextTheme.titleMedium] text widget.
 class TitleMediumText extends StatelessWidget with TextThemeText {
-  /// [TitleMediumText] インスタンスを作成。
+  /// Creates an instance of [TitleMediumText].
   const TitleMediumText(
     this.data, {
     super.key,
@@ -442,9 +442,9 @@ class TitleMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.titleSmall] の [Text] ウィジェット。
+/// [TextTheme.titleSmall] text widget.
 class TitleSmallText extends StatelessWidget with TextThemeText {
-  /// [TitleSmallText] インスタンスを作成。
+  /// Creates an instance of [TitleSmallText].
   const TitleSmallText(
     this.data, {
     super.key,
@@ -494,9 +494,9 @@ class TitleSmallText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.bodyLarge] の [Text] ウィジェット。
+/// [TextTheme.bodyLarge] text widget.
 class BodyLargeText extends StatelessWidget with TextThemeText {
-  /// [BodyLargeText] インスタンスを作成。
+  /// Creates an instance of [BodyLargeText].
   const BodyLargeText(
     this.data, {
     super.key,
@@ -546,9 +546,9 @@ class BodyLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.bodyMedium] の [Text] ウィジェット。
+/// [TextTheme.bodyMedium] text widget.
 class BodyMediumText extends StatelessWidget with TextThemeText {
-  /// [BodyMediumText] インスタンスを作成。
+  /// Creates an instance of [BodyMediumText].
   const BodyMediumText(
     this.data, {
     super.key,
@@ -598,9 +598,9 @@ class BodyMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.bodySmall] の [Text] ウィジェット。
+/// [TextTheme.bodySmall] text widget.
 class BodySmallText extends StatelessWidget with TextThemeText {
-  /// [BodySmallText] インスタンスを作成。
+  /// Creates an instance of [BodySmallText].
   const BodySmallText(
     this.data, {
     super.key,
@@ -650,9 +650,9 @@ class BodySmallText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.labelLarge] の [Text] ウィジェット。
+/// [TextTheme.labelLarge] text widget.
 class LabelLargeText extends StatelessWidget with TextThemeText {
-  /// [LabelLargeText] インスタンスを作成。
+  /// Creates an instance of [LabelLargeText].
   const LabelLargeText(
     this.data, {
     super.key,
@@ -702,9 +702,9 @@ class LabelLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.labelMedium] の [Text] ウィジェット。
+/// [TextTheme.labelMedium] text widget.
 class LabelMediumText extends StatelessWidget with TextThemeText {
-  /// [LabelMediumText] インスタンスを作成。
+  /// Creates an instance of [LabelMediumText].
   const LabelMediumText(
     this.data, {
     super.key,
@@ -754,9 +754,9 @@ class LabelMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
-/// [TextTheme.labelSmall] の [Text] ウィジェット。
+/// [TextTheme.labelSmall] text widget.
 class LabelSmallText extends StatelessWidget with TextThemeText {
-  /// [LabelSmallText] インスタンスを作成。
+  /// Creates an instance of [LabelSmallText].
   const LabelSmallText(
     this.data, {
     super.key,

@@ -285,12 +285,12 @@ class _DateItem extends StatelessWidget {
             color: dateColor,
           ),
         ),
+        const Gap(2),
         Text(
           date.month.toString().padLeft(2, '0'),
           style: textTheme.titleLarge?.copyWith(
             color: dateColor,
             height: 1,
-            fontFamily: 'NotoSansJP',
           ),
         ),
         Text(
@@ -298,9 +298,9 @@ class _DateItem extends StatelessWidget {
           style: textTheme.titleLarge?.copyWith(
             color: dateColor,
             height: 1,
-            fontFamily: 'NotoSansJP',
           ),
         ),
+        const Gap(2),
         Text(
           date.shortWeekday(locale),
           style: textTheme.bodySmall?.copyWith(
