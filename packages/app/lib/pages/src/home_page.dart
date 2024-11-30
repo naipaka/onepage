@@ -7,6 +7,7 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
+import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
 
 import 'stub_diaries_state_provider.dart';
@@ -19,6 +20,7 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
+    final colors = context.colors;
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
@@ -28,43 +30,59 @@ class HomePage extends HookConsumerWidget {
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
 
     final asyncDiaries = ref.watch(stubDiariesStateProvider);
+    final diaryNotifier = ref.watch(stubDiariesStateProvider.notifier);
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          TextButton(
-            onPressed: scrollCalendarController.scrollToToday,
-            child: Text(t.home.today),
+    return UnfocusOnTap(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            TextButton(
+              onPressed: scrollCalendarController.scrollToToday,
+              child: AppText.bodyMBold(
+                t.home.today,
+              ),
+            ),
+          ],
+        ),
+        drawer: const Drawer(),
+        body: SafeArea(
+          child: VerticalScrollCalendar(
+            controller: scrollCalendarController,
+            dates: datesState.value,
+            loadMoreOlder: () {
+              datesState.value = [
+                // Add the previous month's dates to the beginning of the list.
+                ...datesState.value.first.previousMonthDates,
+                ...datesState.value,
+              ];
+            },
+            separatorBuilder: (_, __) => const Gap(32),
+            dateItemBuilder: (_, date) {
+              return asyncDiaries.when(
+                loading: () => centerLoadingIndicator,
+                error: (_, __) => Center(
+                  child: Icon(
+                    Icons.error,
+                    color: colors.error,
+                  ),
+                ),
+                data: (diaries) {
+                  final diary = diaries.firstWhereOrNull(
+                    (e) => DateUtils.isSameDay(e.date, date),
+                  );
+                  return DiaryListTile(
+                    content: diary?.content,
+                    save: (content) async {
+                      await diaryNotifier.save(
+                        date: date,
+                        content: content,
+                      );
+                    },
+                  );
+                },
+              );
+            },
           ),
-        ],
-      ),
-      drawer: const Drawer(),
-      body: SafeArea(
-        child: VerticalScrollCalendar(
-          controller: scrollCalendarController,
-          dates: datesState.value,
-          loadMoreOlder: () {
-            datesState.value = [
-              // Add the previous month's dates to the beginning of the list.
-              ...datesState.value.first.previousMonthDates,
-              ...datesState.value,
-            ];
-          },
-          separatorBuilder: (_, __) => const Gap(32),
-          dateItemBuilder: (_, date) {
-            return asyncDiaries.when(
-              error: (_, __) => centerLoadingIndicator,
-              loading: () => centerLoadingIndicator,
-              data: (diaries) {
-                final diary = diaries.firstWhereOrNull(
-                  (e) => DateUtils.isSameDay(e.date, date),
-                );
-                return DiaryListTile(
-                  content: diary?.content ?? '',
-                );
-              },
-            );
-          },
         ),
       ),
     );

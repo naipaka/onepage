@@ -39,7 +39,7 @@ class StubDiariesState extends _$StubDiariesState {
   }
 
   /// Update the diary.
-  Future<void> updateDiary({
+  Future<void> save({
     required DateTime date,
     required String content,
   }) async {
@@ -63,7 +63,10 @@ class StubDiariesState extends _$StubDiariesState {
 
     state = AsyncData([
       for (final e in previous)
-        if (e.date == date) (date: date, content: content) else e,
+        if (DateUtils.isSameDay(e.date, date))
+          (date: date, content: content)
+        else
+          e,
     ]);
   }
 }

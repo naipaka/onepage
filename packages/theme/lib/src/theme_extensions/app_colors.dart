@@ -31,6 +31,9 @@ class AppColors extends ThemeExtension<AppColors> {
   /// Foreground color on the primary color.
   Color get onPrimary => const Color(0xFFFFFFFF);
 
+  /// Error color used in the app.
+  Color get error => const Color(0xFFB00020);
+
   @override
   AppColors copyWith({
     Brightness? brightness,
