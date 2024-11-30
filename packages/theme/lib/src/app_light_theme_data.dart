@@ -6,9 +6,7 @@ import 'style/style.dart';
 /// Light theme data.
 ThemeData get appLightThemeData {
   final themeData = ThemeData.light();
-  final textTheme = themeData.textTheme.merge(appTextTheme);
   return themeData.custom(
     colorScheme: lightColorScheme,
-    textTheme: textTheme,
   );
 }

@@ -9,7 +9,6 @@ extension ThemeDataExtension on ThemeData {
   /// the new values.
   ThemeData custom({
     required ColorScheme colorScheme,
-    required TextTheme textTheme,
   }) {
     return copyWith(
       // 🎨 Color scheme section
