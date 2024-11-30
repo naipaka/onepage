@@ -1,4 +1,5 @@
 /// Widgets library
 library;
 
-export 'src/loading/loading.dart';
+export 'src/center_loading_indicator.dart';
+export 'src/unfocus_on_tap.dart';
