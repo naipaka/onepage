@@ -13,8 +13,6 @@ dependencies:
   freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   package_info_plus: ^8.1.1
-  theme:
-    path: ../theme/
   version: ^3.0.2
 
 dev_dependencies:

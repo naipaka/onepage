@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../theme_extensions/theme_extensions.dart';
-
-/// [BuildContext] extension methods for [AppColors] and [AppTypography].
+/// [BuildContext] extension methods for [ColorScheme] and [TextTheme].
 extension BuildContextWithThemeExtension on BuildContext {
-  /// Retrieve the closest [AppColors] instance via [BuildContext].
-  AppColors get colors => Theme.of(this).extension()!;
+  /// Get the closest [TextTheme] instance via [BuildContext].
+  TextTheme get textTheme => Theme.of(this).textTheme;
 
-  /// Retrieve the closest [AppTypography] instance via [BuildContext].
-  AppTypography get typography => Theme.of(this).extension()!;
+  /// Get the closest [ColorScheme] instance via [BuildContext].
+  ColorScheme get colorScheme => Theme.of(this).colorScheme;
 }

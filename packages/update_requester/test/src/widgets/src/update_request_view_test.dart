@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:theme/theme.dart';
 import 'package:update_requester/src/widgets/src/update_request_view.dart';
 
 void main() {
@@ -96,7 +95,6 @@ class _TestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: appLightThemeData,
       home: Scaffold(
         body: UpdateRequestView(
           title: title,

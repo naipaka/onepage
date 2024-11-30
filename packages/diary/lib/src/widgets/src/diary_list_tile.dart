@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:theme/theme.dart';
 import 'package:utils/utils.dart';
 
 /// Diary list tile.
@@ -63,6 +62,10 @@ class _DiaryListTileState extends State<DiaryListTile>
 
   /// Save diary content.
   void _save() {
+    if (textController.text == widget.content) {
+      // When the content is not changed, do nothing.
+      return;
+    }
     widget.save(textController.text);
   }
 
@@ -75,7 +78,7 @@ class _DiaryListTileState extends State<DiaryListTile>
 
   @override
   Widget build(BuildContext context) {
-    final typography = context.typography;
+    final textTheme = Theme.of(context).textTheme;
     return TextField(
       controller: textController,
       focusNode: _focusNode,
@@ -83,10 +86,11 @@ class _DiaryListTileState extends State<DiaryListTile>
         border: InputBorder.none,
         contentPadding: EdgeInsets.zero,
       ),
-      style: typography.bodyM,
+      style: textTheme.bodyLarge,
       minLines: 3,
       maxLines: null,
       onChanged: (_) => _debounce(_save),
+      onTapOutside: (_) => _focusNode.unfocus(),
     );
   }
 }

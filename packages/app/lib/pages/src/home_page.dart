@@ -20,11 +20,13 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
-    final colors = context.colors;
+    final colorScheme = context.colorScheme;
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
-    final datesState = useState(now.datesInMonths(-1, 0));
+    final datesState = useState(
+      now.datesInMonths(-1, 0)..add(now.add(const Duration(days: 1))),
+    );
 
     // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
@@ -32,57 +34,56 @@ class HomePage extends HookConsumerWidget {
     final asyncDiaries = ref.watch(stubDiariesStateProvider);
     final diaryNotifier = ref.watch(stubDiariesStateProvider.notifier);
 
-    return UnfocusOnTap(
-      child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            TextButton(
-              onPressed: scrollCalendarController.scrollToToday,
-              child: AppText.bodyMBold(
-                t.home.today,
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          TextButton(
+            onPressed: scrollCalendarController.scrollToToday,
+            child: TitleSmallText(
+              t.home.today,
             ),
-          ],
-        ),
-        drawer: const Drawer(),
-        body: SafeArea(
-          child: VerticalScrollCalendar(
-            controller: scrollCalendarController,
-            dates: datesState.value,
-            loadMoreOlder: () {
-              datesState.value = [
-                // Add the previous month's dates to the beginning of the list.
-                ...datesState.value.first.previousMonthDates,
-                ...datesState.value,
-              ];
-            },
-            separatorBuilder: (_, __) => const Gap(32),
-            dateItemBuilder: (_, date) {
-              return asyncDiaries.when(
-                loading: () => centerLoadingIndicator,
-                error: (_, __) => Center(
-                  child: Icon(
-                    Icons.error,
-                    color: colors.error,
-                  ),
-                ),
-                data: (diaries) {
-                  final diary = diaries.firstWhereOrNull(
-                    (e) => DateUtils.isSameDay(e.date, date),
-                  );
-                  return DiaryListTile(
-                    content: diary?.content,
-                    save: (content) async {
-                      await diaryNotifier.save(
-                        date: date,
-                        content: content,
-                      );
-                    },
-                  );
-                },
-              );
-            },
           ),
+        ],
+      ),
+      drawer: const Drawer(),
+      body: SafeArea(
+        bottom: false,
+        child: VerticalScrollCalendar(
+          controller: scrollCalendarController,
+          dates: datesState.value,
+          loadMoreOlder: () {
+            datesState.value = [
+              // Add the previous month's dates to the beginning of the list.
+              ...datesState.value.first.previousMonthDates,
+              ...datesState.value,
+            ];
+          },
+          separatorBuilder: (_, __) => const Gap(32),
+          dateItemBuilder: (_, date) {
+            return asyncDiaries.when(
+              loading: () => centerLoadingIndicator,
+              error: (_, __) => Center(
+                child: Icon(
+                  Icons.error,
+                  color: colorScheme.error,
+                ),
+              ),
+              data: (diaries) {
+                final diary = diaries.firstWhereOrNull(
+                  (e) => DateUtils.isSameDay(e.date, date),
+                );
+                return DiaryListTile(
+                  content: diary?.content,
+                  save: (content) async {
+                    await diaryNotifier.save(
+                      date: date,
+                      content: content,
+                    );
+                  },
+                );
+              },
+            );
+          },
         ),
       ),
     );

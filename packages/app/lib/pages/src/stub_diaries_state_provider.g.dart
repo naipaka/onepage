@@ -8,7 +8,7 @@ part of 'stub_diaries_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$stubDiariesStateHash() => r'05aa2fa01f8d76b00a828779ad3e4ed8c56c726d';
+String _$stubDiariesStateHash() => r'8c101b0f71a422f63a830dc0325b316ac27f29c8';
 
 /// For mocking diaries state.
 ///

@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../theme.dart';
-
 /// A [AppBarTheme] for the app.
 AppBarTheme appBarThemeData({
-  required AppTypography typography,
-  required AppColors colors,
+  required ColorScheme colorScheme,
 }) {
   return AppBarTheme(
-    color: colors.bgMain,
+    color: colorScheme.surface,
     scrolledUnderElevation: 0,
-    iconTheme: IconThemeData(color: colors.textMain),
+    iconTheme: IconThemeData(color: colorScheme.onSurface),
     centerTitle: true,
-    titleTextStyle: typography.bodyLBold,
   );
 }

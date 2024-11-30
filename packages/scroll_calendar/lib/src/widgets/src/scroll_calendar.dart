@@ -2,7 +2,6 @@ import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:theme/theme.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:widgets/widgets.dart';
 
@@ -238,7 +237,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       // Use `ClampingScrollPhysics` to prevent abnormal bouncing
       // when jumping to the first or last day of the month.
       physics: const ClampingScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: 40),
+      padding: const EdgeInsets.only(bottom: 80),
       separatorBuilder: widget.separatorBuilder,
       itemBuilder: (_, index) {
         if (index == _reversedDates.length) {
@@ -275,25 +274,38 @@ class _DateItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context).languageCode;
-    final colors = context.colors;
-    final dateColor = date.isToday ? colors.primary : colors.textMain;
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+    final dateColor = date.isToday ? colorScheme.primary : null;
     return Column(
       children: [
-        AppText.bodySBold(
+        Text(
           '${date.year}',
-          color: dateColor,
+          style: textTheme.bodySmall?.copyWith(
+            color: dateColor,
+          ),
         ),
-        AppText.bodyLBold(
+        Text(
           date.month.toString().padLeft(2, '0'),
-          color: dateColor,
+          style: textTheme.titleLarge?.copyWith(
+            color: dateColor,
+            height: 1,
+            fontFamily: 'NotoSansJP',
+          ),
         ),
-        AppText.bodyLBold(
+        Text(
           date.day.toString().padLeft(2, '0'),
-          color: dateColor,
+          style: textTheme.titleLarge?.copyWith(
+            color: dateColor,
+            height: 1,
+            fontFamily: 'NotoSansJP',
+          ),
         ),
-        AppText.bodySBold(
+        Text(
           date.shortWeekday(locale),
-          color: dateColor,
+          style: textTheme.bodySmall?.copyWith(
+            color: dateColor,
+          ),
         ),
       ],
     );

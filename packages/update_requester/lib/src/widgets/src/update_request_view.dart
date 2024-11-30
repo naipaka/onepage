@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:theme/theme.dart';
 
 /// A view that shows a dialog to request an update.
 class UpdateRequestView extends StatelessWidget {
@@ -26,15 +25,18 @@ class UpdateRequestView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return PopScope(
       canPop: false,
       child: AlertDialog(
-        title: AppText.bodyLBold(
+        title: Text(
           title,
+          style: textTheme.titleLarge,
         ),
-        content: AppText.bodyM(
+        content: Text(
           message,
           textAlign: TextAlign.center,
+          style: textTheme.bodyMedium,
         ),
         actionsAlignment: MainAxisAlignment.center,
         actions: [

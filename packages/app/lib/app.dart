@@ -29,7 +29,7 @@ class App extends ConsumerWidget {
       supportedLocales: supportedLocales,
       localizationsDelegates: localizationsDelegates,
       builder: (context, child) {
-        final colors = context.colors;
+        final colorScheme = context.colorScheme;
         return Stack(
           children: [
             if (child case final Widget child) child,
@@ -38,7 +38,7 @@ class App extends ConsumerWidget {
               builder: (context, ref, child) {
                 if (ref.watch(isLoadingProvider)) {
                   return ColoredBox(
-                    color: colors.overlay!,
+                    color: colorScheme.scrim,
                     child: const PopScope(
                       canPop: false,
                       child: centerLoadingIndicator,
@@ -56,7 +56,7 @@ class App extends ConsumerWidget {
                   return const SizedBox.shrink();
                 }
                 return ColoredBox(
-                  color: colors.overlay!,
+                  color: colorScheme.scrim,
                   child: UpdateRequestView(
                     title: t.updateRequest.title,
                     message: message,

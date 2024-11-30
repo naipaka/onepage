@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../theme_data/theme_data.dart';
-import '../theme_extensions/theme_extensions.dart';
 
 /// Provides a set of extensions for [ThemeData].
 extension ThemeDataExtension on ThemeData {
@@ -10,31 +9,25 @@ extension ThemeDataExtension on ThemeData {
   /// the new values.
   ThemeData custom({
     required ColorScheme colorScheme,
-    required AppColors colors,
-    required AppTypography typography,
+    required TextTheme textTheme,
   }) {
     return copyWith(
       // 🎨 Color scheme section
       colorScheme: colorScheme,
-      dialogBackgroundColor: colors.overlay,
+      dialogBackgroundColor: colorScheme.scrim,
       primaryColor: colorScheme.primary,
-      scaffoldBackgroundColor: colors.bgMain,
+      scaffoldBackgroundColor: colorScheme.surface,
       // 🖋 Text theme section
       primaryTextTheme: textTheme,
       textTheme: textTheme,
       // 🖼 ThemeData section
       appBarTheme: appBarThemeData(
-        typography: typography,
-        colors: colors,
+        colorScheme: colorScheme,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         shape: const CircleBorder(),
         foregroundColor: colorScheme.onPrimary,
       ),
-      extensions: [
-        colors,
-        typography,
-      ],
       // Workaround for: CupertinoTextInputDialog input text color and
       // background color are the same.
       // https://pub.dev/packages/adaptive_dialog#the-input-text-color-same-with-backgound-when-using-cupertinotextinputdialog
