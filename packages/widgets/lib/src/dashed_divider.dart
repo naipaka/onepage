@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// 破線（切り取り線）の区切り線。
+/// A dashed divider line.
 class DashedDivider extends StatelessWidget {
-  /// [DashedDivider] インスタンスを作成。
+  /// Creates an instance of [DashedDivider].
   const DashedDivider({
     super.key,
     this.dashedWidth = 5,
@@ -11,16 +11,16 @@ class DashedDivider extends StatelessWidget {
     this.color,
   });
 
-  /// 破線単体の幅。
+  /// The width of a single dash.
   final double dashedWidth;
 
-  /// 破線の高さ。
+  /// The height of the dash.
   final double dashedHeight;
 
-  /// 破線の間隔。
+  /// The space between dashes.
   final double dashedSpace;
 
-  /// 破線の色。
+  /// The color of the dash.
   final Color? color;
 
   @override
@@ -47,16 +47,16 @@ class _DashedLinePainter extends CustomPainter {
     required this.color,
   });
 
-  /// 破線単体の幅
+  /// The width of a single dash.
   final double dashedWidth;
 
-  /// 破線の高さ
+  /// The height of the dash.
   final double dashedHeight;
 
-  /// 破線の間隔
+  /// The space between dashes.
   final double dashedSpace;
 
-  /// 破線の色
+  /// The color of the dash.
   final Color color;
 
   @override
@@ -66,13 +66,13 @@ class _DashedLinePainter extends CustomPainter {
       ..color = color
       ..strokeWidth = dashedHeight;
     while (dashedStartX < size.width) {
-      // 始点
+      // Start point.
       final startOffset = Offset(dashedStartX, 0);
-      // 終点
+      // End point.
       final endOffset = Offset(dashedStartX + dashedWidth, 0);
-      // 始点から終点にかけて描画
+      // Draw from start point to end point.
       canvas.drawLine(startOffset, endOffset, paint);
-      // 始点のX座標を更新
+      // Update the X coordinate of the start point.
       dashedStartX = dashedStartX + dashedWidth + dashedSpace;
     }
   }
