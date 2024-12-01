@@ -1,3 +1,5 @@
+import 'package:clock/clock.dart';
+import 'package:db_client/db_client.dart';
 import 'package:diary/src/diary_command.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -13,8 +15,16 @@ void main() {
       const content = 'New Diary Entry';
       final date = DateTime(2024, 1, 10);
 
+      final diary = Diary(
+        id: 1,
+        content: content,
+        date: date,
+        createdAt: clock.now(),
+        updatedAt: clock.now(),
+      );
+
       when(mockDbClient.insertDiary(content: content, date: date))
-          .thenAnswer((_) async => 1);
+          .thenAnswer((_) async => diary);
 
       await diaryCommand.addDiary(content: content, date: date);
 
