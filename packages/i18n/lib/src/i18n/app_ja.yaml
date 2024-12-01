@@ -1,6 +1,10 @@
 # locale: "ja"
 title: "One Page"
+organization: "NPK Studio"
 updateRequest:
   title: "アップデートのお願い"
   button:
     updateNow: "更新する"
+home:
+  title: "Home"
+  license: "License"

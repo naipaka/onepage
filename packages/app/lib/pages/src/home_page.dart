@@ -4,6 +4,7 @@ import 'package:diary/diary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
@@ -11,14 +12,15 @@ import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
+import '../../router/src/app_routes.dart';
 
 /// Home page when the app is opened.
-class HomePage extends HookConsumerWidget {
+class HomePage extends HookWidget {
   /// [HomePage] constructor.
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final colorScheme = context.colorScheme;
 
     // Get the list of dates for the previous month for calendar display.
@@ -46,7 +48,7 @@ class HomePage extends HookConsumerWidget {
           ),
         ],
       ),
-      drawer: const Drawer(),
+      drawer: const _Drawer(),
       body: SafeArea(
         bottom: false,
         child: Consumer(
@@ -126,6 +128,65 @@ class HomePage extends HookConsumerWidget {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class _Drawer extends ConsumerWidget {
+  const _Drawer();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final t = context.t;
+    return Drawer(
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              children: [
+                Image.asset(
+                  'assets/icon.png',
+                  width: 64,
+                  height: 64,
+                ),
+                const Gap(4),
+                HeadlineSmallText(
+                  t.title,
+                  color: context.colorScheme.onSurface,
+                ),
+              ],
+            ),
+          ),
+          const Gap(8),
+          const DashedDivider(
+            dashedHeight: 2,
+            dashedWidth: 2,
+            dashedSpace: 16,
+          ),
+          const Gap(8),
+          ListTile(
+            leading: const Icon(Icons.home_outlined),
+            title: Text(t.home.title),
+            onTap: () {
+              final currentRoute = GoRouterState.of(context).path;
+              if (currentRoute == HomeRouteData.path) {
+                Scaffold.of(context).closeDrawer();
+                return;
+              }
+              const HomeRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          ListTile(
+            leading: const Icon(Icons.description_outlined),
+            title: Text(t.home.license),
+            onTap: () {
+              const LicenseRouteData().go(context);
+            },
+          ),
+        ],
       ),
     );
   }

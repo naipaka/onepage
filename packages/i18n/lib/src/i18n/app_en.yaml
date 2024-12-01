@@ -1,6 +1,10 @@
 # locale: "en"
 title: "One Page"
+organization: "NPK Studio"
 updateRequest:
   title: "Update Request"
   button:
     updateNow: "Update Now"
+home:
+  title: "Home"
+  license: "License"

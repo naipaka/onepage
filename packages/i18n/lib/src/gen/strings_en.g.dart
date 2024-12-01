@@ -34,7 +34,9 @@ class TranslationsEn implements Translations {
 
 	// Translations
 	@override String get title => 'One Page';
+	@override String get organization => 'NPK Studio';
 	@override late final _TranslationsUpdateRequestEn updateRequest = _TranslationsUpdateRequestEn._(_root);
+	@override late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
 }
 
 // Path: updateRequest
@@ -46,6 +48,17 @@ class _TranslationsUpdateRequestEn implements TranslationsUpdateRequestJa {
 	// Translations
 	@override String get title => 'Update Request';
 	@override late final _TranslationsUpdateRequestButtonEn button = _TranslationsUpdateRequestButtonEn._(_root);
+}
+
+// Path: home
+class _TranslationsHomeEn implements TranslationsHomeJa {
+	_TranslationsHomeEn._(this._root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Home';
+	@override String get license => 'License';
 }
 
 // Path: updateRequest.button
@@ -64,8 +77,11 @@ extension on TranslationsEn {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'title': return 'One Page';
+			case 'organization': return 'NPK Studio';
 			case 'updateRequest.title': return 'Update Request';
 			case 'updateRequest.button.updateNow': return 'Update Now';
+			case 'home.title': return 'Home';
+			case 'home.license': return 'License';
 			default: return null;
 		}
 	}

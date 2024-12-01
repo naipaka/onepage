@@ -74,3 +74,6 @@ flutter_gen:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/
