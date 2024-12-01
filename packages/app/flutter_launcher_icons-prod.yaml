@@ -3,5 +3,5 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/launcher_icon/icon-prod.png"
-  adaptive_icon_foreground: "assets/launcher_icon/icon-prod.png"
+  adaptive_icon_foreground: "assets/launcher_icon/icon-dev.png"
   adaptive_icon_background: "#EDEDED"
