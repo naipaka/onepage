@@ -12,6 +12,7 @@ digraph packages {
   widgets [shape="box"; color="#3ed5a4"];
   diary -> db_client [style="filled"; color="#c4fbfc"];
   diary -> utils [style="filled"; color="#f548cf"];
+  onepage -> db_client [style="filled"; color="#c4fbfc"];
   onepage -> diary [style="filled"; color="#2c56bd"];
   onepage -> i18n [style="filled"; color="#d7afc5"];
   onepage -> provider_utils [style="filled"; color="#f445c4"];
