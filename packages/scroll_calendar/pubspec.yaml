@@ -16,8 +16,6 @@ dependencies:
   intl: ^0.19.0
   scrollable_positioned_list: ^0.3.8
   visibility_detector: ^0.4.0+2
-  widgets:
-    path: ../widgets/
 
 dev_dependencies:
   altive_lints: ^1.16.0

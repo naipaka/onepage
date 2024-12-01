@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:widgets/widgets.dart';
 
 import '../../extension/extension.dart';
 
@@ -12,8 +11,8 @@ import '../../extension/extension.dart';
 /// - [duration] : The duration of the scroll animation.
 /// - [curve] : The easing curve of the scroll animation.
 typedef ScrollToTodayCallback = Future<void> Function({
-  Duration duration,
-  Curve curve,
+  required Duration duration,
+  required Curve curve,
 });
 
 /// Type definition for a function that scrolls to a specified date.
@@ -23,8 +22,8 @@ typedef ScrollToTodayCallback = Future<void> Function({
 /// - [curve] : The easing curve of the scroll animation.
 typedef ScrollToDateCallback = Future<void> Function(
   DateTime date, {
-  Duration duration,
-  Curve curve,
+  required Duration duration,
+  required Curve curve,
 });
 
 /// Controller for a scrollable calendar.
@@ -74,7 +73,12 @@ class ScrollCalendarController {
     await _scrollToDate?.call(date, duration: duration, curve: curve);
   }
 
-  void _attach({
+  /// Attaches the controller to a [VerticalScrollCalendar].
+  ///
+  /// - [scrollToToday] : Callback function to scroll to today's date.
+  /// - [scrollToDate] : Callback function to scroll to a specified date.
+  @visibleForTesting
+  void attach({
     required ScrollToTodayCallback scrollToToday,
     required ScrollToDateCallback scrollToDate,
   }) {
@@ -83,7 +87,11 @@ class ScrollCalendarController {
     _scrollToDate = scrollToDate;
   }
 
-  void _detach() {
+  /// Detaches the controller from a [VerticalScrollCalendar].
+  ///
+  /// Clears the callback functions.
+  @visibleForTesting
+  void detach() {
     _scrollToToday = null;
     _scrollToDate = null;
   }
@@ -101,6 +109,7 @@ class VerticalScrollCalendar extends StatefulWidget {
     required this.dates,
     required this.loadMoreOlder,
     required this.onVisibleDateChanged,
+    required this.loadingIndicator,
     required this.dateItemBuilder,
     required this.separatorBuilder,
   });
@@ -116,6 +125,9 @@ class VerticalScrollCalendar extends StatefulWidget {
 
   /// Callback function to handle the visibility of the calendar.
   final ValueChanged<DateTime> onVisibleDateChanged;
+
+  /// The loading indicator to be displayed at the end of the list.
+  final Widget loadingIndicator;
 
   /// Callback function to build a widget for each date.
   final Widget Function(BuildContext, DateTime) dateItemBuilder;
@@ -166,7 +178,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     if (widget.controller == null) {
       _fallbackScrollCalendarController = ScrollCalendarController();
     }
-    _effectiveScrollCalendarController._attach(
+    _effectiveScrollCalendarController.attach(
       scrollToToday: _scrollToToday,
       scrollToDate: _scrollToDate,
     );
@@ -177,7 +189,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   void dispose() {
     _itemPositionsListener.itemPositions
         .removeListener(_onItemPositionsChanged);
-    _effectiveScrollCalendarController._detach();
+    _effectiveScrollCalendarController.detach();
     super.dispose();
   }
 
@@ -281,7 +293,10 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
       },
       itemBuilder: (_, index) {
         if (index == _reversedDates.length) {
-          return _EndItem(onScrollEnd: widget.loadMoreOlder);
+          return _EndItem(
+            loadingIndicator: widget.loadingIndicator,
+            onScrollEnd: widget.loadMoreOlder,
+          );
         }
         final date = _reversedDates[index];
         return Padding(
@@ -340,8 +355,12 @@ class _DateItem extends StatelessWidget {
 class _EndItem extends StatelessWidget {
   /// [_EndItem] constructor.
   const _EndItem({
+    required this.loadingIndicator,
     required void Function() onScrollEnd,
   }) : _onScrollEnd = onScrollEnd;
+
+  /// The loading indicator to be displayed.
+  final Widget loadingIndicator;
 
   /// The callback to be triggered when the item is visible.
   final VoidCallback _onScrollEnd;
@@ -355,10 +374,10 @@ class _EndItem extends StatelessWidget {
           _onScrollEnd();
         }
       },
-      child: const Center(
+      child: Center(
         child: Padding(
-          padding: EdgeInsets.all(16),
-          child: centerLoadingIndicator,
+          padding: const EdgeInsets.all(16),
+          child: loadingIndicator,
         ),
       ),
     );

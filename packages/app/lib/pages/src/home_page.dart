@@ -72,6 +72,7 @@ class HomePage extends HookConsumerWidget {
               onVisibleDateChanged: (date) {
                 visibleDateState.value = date;
               },
+              loadingIndicator: centerLoadingIndicator,
               separatorBuilder: (_, date) {
                 if (date.day != 1) {
                   return const Gap(32);
