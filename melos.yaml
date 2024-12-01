@@ -77,6 +77,13 @@ scripts:
     packageFilters:
       dirExists: lib
       dependsOn: "flutter_native_splash"
+  
+  gen:splash:remove:
+    exec: flutter pub run flutter_native_splash:remove
+    description: Remove splash screen.
+    packageFilters:
+      dirExists: lib
+      dependsOn: "flutter_native_splash"
 
   slang:
     run: dart run slang
