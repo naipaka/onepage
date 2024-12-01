@@ -17,6 +17,14 @@ This project is experimentally divided into packages by feature.
 
 This package contains the entry point of the application and is the main package of the application.
 
+### db_client
+
+This package provides a database client for the application.
+
+### diary
+
+This package provides the diary feature of the application.
+
 ### i18n
 
 This package supports the internationalization and localization of the application. All texts for translating the application's text are defined here.
