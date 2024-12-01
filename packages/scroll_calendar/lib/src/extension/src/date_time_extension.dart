@@ -36,7 +36,7 @@ extension DateTimeExtensionForCalendar on DateTime {
     return dates;
   }
 
-  /// 年月形式の日付文字列に変換する。
+  /// Converts the date to a string in the format of year and month.
   ///
   /// e.g. `2024年5月`, 'May 2024'
   String yMMMM(String locale) {
