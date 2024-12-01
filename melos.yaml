@@ -70,6 +70,13 @@ scripts:
     packageFilters:
       dirExists: lib
       dependsOn: "flutter_launcher_icons"
+  
+  gen:splash:
+    exec: flutter pub run flutter_native_splash:create
+    description: Generate splash screen.
+    packageFilters:
+      dirExists: lib
+      dependsOn: "flutter_native_splash"
 
   slang:
     run: dart run slang
