@@ -40,17 +40,29 @@ class DbClient extends _$DbClient {
 
   /// Adds a diary entry to the database.
   ///
-  /// This method takes a [DiariesCompanion] object as a parameter and inserts
-  /// it into the 'diaries' table. It returns the ID of the inserted row.
-  Future<int> insertDiary(DiariesCompanion diary) =>
-      into(diaries).insert(diary);
+  /// This method takes [content] and [date] as parameters and inserts
+  /// a new diary entry into the 'diaries' table.
+  /// It returns the ID of the inserted row.
+  Future<int> insertDiary({
+    required String content,
+    required DateTime date,
+  }) {
+    final diary = DiariesCompanion(
+      content: Value(content),
+      date: Value(date),
+    );
+    return into(diaries).insert(diary);
+  }
 
   /// Retrieves diary entries from the database within a specified date range.
   ///
   /// This method takes two [DateTime] objects, [from] and [to], as parameters
   /// and returns a list of [Diary] objects that fall within the specified date
   /// range.
-  Future<List<Diary>> getDiaries(DateTime from, DateTime to) {
+  Future<List<Diary>> getDiaries({
+    required DateTime from,
+    required DateTime to,
+  }) {
     final query = select(diaries)
       ..where((tbl) => tbl.date.isBetweenValues(from, to));
     return query.get();
@@ -58,12 +70,17 @@ class DbClient extends _$DbClient {
 
   /// Updates a diary entry in the database.
   ///
-  /// This method takes an integer [id] and a [DiariesCompanion] object as
-  /// parameters. It updates the diary entry with the specified ID using the
-  /// provided [DiariesCompanion] object.
+  /// This method takes an integer [id] and [content] as parameters.
+  /// It updates the diary with the specified ID using the provided content.
   /// It returns the number of rows affected.
-  Future<int> updateDiary(int id, DiariesCompanion diary) {
+  Future<int> updateDiary({
+    required int id,
+    required String content,
+  }) {
     final query = update(diaries)..where((tbl) => tbl.id.equals(id));
+    final diary = DiariesCompanion(
+      content: Value(content),
+    );
     return query.write(diary);
   }
 }

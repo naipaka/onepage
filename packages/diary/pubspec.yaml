@@ -7,6 +7,8 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
+  db_client:
+    path: ../db_client/
   flutter:
     sdk: flutter
   utils:
@@ -14,5 +16,7 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.16.0
+  build_runner: ^2.4.13
   custom_lint: ^0.7.0
+  mockito: ^5.4.4
   test: ^1.25.8
