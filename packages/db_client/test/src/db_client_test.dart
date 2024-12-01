@@ -21,18 +21,17 @@ void main() {
 
   group('insertDiary', () {
     test('should insert a diary entry and retrieve it correctly', () async {
-      final id = await dbClient.insertDiary(
+      final now = clock.now();
+      final diary = await dbClient.insertDiary(
         content: 'Test diary content',
-        date: clock.now(),
-      );
-      final retrievedDiaries = await dbClient.getDiaries(
-        from: clock.now().subtract(const Duration(days: 1)),
-        to: clock.now().add(const Duration(days: 1)),
+        date: now,
       );
 
-      expect(retrievedDiaries.length, 1);
-      expect(retrievedDiaries.first.id, id);
-      expect(retrievedDiaries.first.content, 'Test diary content');
+      expect(diary.id, 1);
+      expect(diary.content, 'Test diary content');
+      expect(diary.date.year, now.year);
+      expect(diary.date.month, now.month);
+      expect(diary.date.day, now.day);
     });
   });
 
@@ -74,7 +73,7 @@ void main() {
         content: 'Initial content 1',
         date: now.subtract(const Duration(days: 2)),
       );
-      final idToUpdate = await dbClient.insertDiary(
+      final updated = await dbClient.insertDiary(
         content: 'Initial content 2',
         date: now.subtract(const Duration(days: 1)),
       );
@@ -84,7 +83,7 @@ void main() {
       );
 
       await dbClient.updateDiary(
-        id: idToUpdate,
+        id: updated.id,
         content: 'Updated content 2',
       );
 
@@ -94,11 +93,12 @@ void main() {
       );
 
       expect(retrievedDiaries.length, 3);
-      final updatedEntry =
-          retrievedDiaries.firstWhere((d) => d.id == idToUpdate);
+      final updatedEntry = retrievedDiaries.firstWhere(
+        (d) => d.id == updated.id,
+      );
       expect(updatedEntry.content, 'Updated content 2');
 
-      final otherEntries = retrievedDiaries.where((d) => d.id != idToUpdate);
+      final otherEntries = retrievedDiaries.where((d) => d.id != updated.id);
       expect(
         otherEntries.map((d) => d.content),
         containsAll(['Initial content 1', 'Initial content 3']),

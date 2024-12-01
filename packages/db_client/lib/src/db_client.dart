@@ -42,8 +42,8 @@ class DbClient extends _$DbClient {
   ///
   /// This method takes [content] and [date] as parameters and inserts
   /// a new diary entry into the 'diaries' table.
-  /// It returns the ID of the inserted row.
-  Future<int> insertDiary({
+  /// It returns the inserted diary entry.
+  Future<Diary> insertDiary({
     required String content,
     required DateTime date,
   }) {
@@ -51,7 +51,7 @@ class DbClient extends _$DbClient {
       content: Value(content),
       date: Value(date),
     );
-    return into(diaries).insert(diary);
+    return into(diaries).insertReturning(diary);
   }
 
   /// Retrieves diary entries from the database within a specified date range.

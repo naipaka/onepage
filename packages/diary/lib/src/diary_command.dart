@@ -17,11 +17,11 @@ class DiaryCommand {
   ///
   /// - [content] - The content of the diary entry.
   /// - [date] - The date of the diary entry.
-  Future<void> addDiary({
+  Future<Diary> addDiary({
     required String content,
     required DateTime date,
   }) async {
-    await dbClient.insertDiary(
+    return dbClient.insertDiary(
       content: content,
       date: date,
     );
