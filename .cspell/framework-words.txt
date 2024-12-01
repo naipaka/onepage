@@ -1,5 +1,6 @@
 # Custom Dictionary Words
 adkll
+allprojects
 altfire
 androiddebugkey
 appbundle
@@ -19,6 +20,7 @@ crashlytics
 cupertino
 darkbackground
 dartx
+dists
 dorny
 DSYM
 endforeach
@@ -58,6 +60,7 @@ SDKROOT
 sourcecode
 sprintf
 SRCROOT
+subprojects
 subviews
 technote
 temurin
