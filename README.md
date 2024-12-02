@@ -3,9 +3,13 @@
 [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square)](https://github.com/invertase/melos)
 [![codecov](https://codecov.io/gh/naipaka/onepage/graph/badge.svg?token=VSKGRHHHYW)](https://codecov.io/gh/naipaka/onepage)
 
+<img src="./docs/icon.png" alt="One Page" width="200px" height="200px">
+
 # One Page
 
 "One Page" is a simple diary app with no input pages or date pages, just "one page only."
+
+![screenshot](./docs/store-en.png)
 
 ## Packages overview
 
