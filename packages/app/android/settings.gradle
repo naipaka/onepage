@@ -20,7 +20,7 @@ plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
     // Check the latest version here: Google Services Gradle Plugin
     // https://mvnrepository.com/artifact/com.android.tools.build/gradle
-    id "com.android.application" version "7.3.0" apply false
+    id "com.android.application" version '8.7.2' apply false
     // Check the latest version here: Kotlin Releases
     // https://kotlinlang.org/docs/releases.html#release-details
     id "org.jetbrains.kotlin.android" version "2.0.0" apply false

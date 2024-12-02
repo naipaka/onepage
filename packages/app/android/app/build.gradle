@@ -43,14 +43,15 @@ if (project.hasProperty('dart-defines')) {
         }
 }
 
-task selectGoogleServicesJson(type: Copy) {
+tasks.register('selectGoogleServicesJson', Copy) {
     from "src/${dartDefines.flavor}/google-services.json"
     into './'
 }
 
-task copySources(type: Copy) {
+tasks.register('copySources', Copy) {
     from "src/${dartDefines.flavor}/res"
     into 'src/main/res'
+    dependsOn('selectGoogleServicesJson')
 }
 
 tasks.whenTaskAdded { task ->
@@ -61,8 +62,18 @@ tasks.whenTaskAdded { task ->
 }
 
 android {
+    namespace 'com.naipaka.onepage'
     // flutter_sdk/packages/flutter_tools/gradle/src/main/groovy/flutter.groovy
     compileSdkVersion flutter.compileSdkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
 
     sourceSets {
         main {
