@@ -167,10 +167,21 @@ scripts:
       fileExists: "macos/Podfile"
 
   build:android:prod:
-    run: flutter build appbundle --dart-define-from-file=dart_defines/prod.env
+    run: |
+      flutter build appbundle --dart-define-from-file=dart_defines/prod.env && \
+      sh create_native_debug_symbol.sh
     exec:
       concurrency: 1
     description: Build the AppBundle for the production app.
     packageFilters:
       flutter: true
       dirExists: [lib, android]
+
+  upload:ios:prod:
+    run: flutter build ipa --dart-define-from-file=dart_defines/prod.env --export-options-plist="ios/prod/UploadOptions.plist"
+    exec:
+      concurrency: 1
+    description: Upload the IPA for the production app.
+    packageFilters:
+      flutter: true
+      dirExists: [lib, ios]
