@@ -22,6 +22,8 @@ crashlytics
 cupertino
 darkbackground
 dartx
+dblite
+dgph
 dists
 dorny
 DSYM
@@ -53,12 +55,16 @@ nullable
 objc
 Onone
 ORGANIZATIONNAME
+pbxuser
+perspectivev
 petitparser
 PODFILE
+podspec
 pubspec
 riverpod
 RUNPATH
 rxdart
+sconsign
 SDKROOT
 sourcecode
 sprintf
@@ -77,3 +83,4 @@ xcassets
 xcconfig
 xcfilelist
 xctest
+xcuserdata
