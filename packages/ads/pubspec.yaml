@@ -10,7 +10,7 @@ dependencies:
   app_tracking_transparency: ^2.0.6
   flutter:
     sdk: flutter
-  google_mobile_ads: ^5.2.0
+  # google_mobile_ads: ^5.2.0
 
 dev_dependencies:
   altive_lints: ^1.16.0
