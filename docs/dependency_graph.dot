@@ -24,19 +24,27 @@ digraph packages {
   onepage -> utils [style="filled"; color="#f548cf"];
   onepage -> widgets [style="filled"; color="#3ed5a4"];
   provider_utils -> utils [style="filled"; color="#f548cf"];
+  subgraph "cluster packages/features" {
+    label="packages/features";
+    color="#f62736";
+    ads;
+    diary;
+    scroll_calendar;
+    update_requester;
+  }
+  subgraph "cluster packages/core" {
+    label="packages/core";
+    color="#7bbd47";
+    db_client;
+    i18n;
+    provider_utils;
+    theme;
+    utils;
+    widgets;
+  }
   subgraph "cluster packages" {
     label="packages";
     color="#6b4949";
-    ads;
-    db_client;
-    diary;
-    i18n;
     onepage;
-    provider_utils;
-    scroll_calendar;
-    theme;
-    update_requester;
-    utils;
-    widgets;
   }
 }
