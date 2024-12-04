@@ -82,5 +82,6 @@ wholename
 xcassets
 xcconfig
 xcfilelist
+xcstrings
 xctest
 xcuserdata

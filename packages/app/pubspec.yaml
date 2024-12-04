@@ -7,6 +7,8 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
+  ads:
+    path: ../ads/
   altfire_configurator: ^1.0.0
   altfire_tracker: ^0.1.5
   # Because flutter_test depends on clock 1.1.1.

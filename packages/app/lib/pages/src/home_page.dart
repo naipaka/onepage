@@ -15,12 +15,12 @@ import '../../adapters/adapters.dart';
 import '../../router/src/app_routes.dart';
 
 /// Home page when the app is opened.
-class HomePage extends HookWidget {
+class HomePage extends HookConsumerWidget {
   /// [HomePage] constructor.
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = context.colorScheme;
 
     // Get the list of dates for the previous month for calendar display.
@@ -30,6 +30,23 @@ class HomePage extends HookWidget {
 
     // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
+
+    useEffect(
+      () {
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          // TODO(naipaka): When add google ads, uncomment the following code.
+          // // Request consent for ads.
+          // final adsConsentClient = ref.read(adsConsentClientProvider);
+          // await adsConsentClient.requestConsent();
+
+          // Request tracking authorization and consent for ads.
+          final attClient = ref.read(attClientProvider);
+          await attClient.requestTrackingAuthorization();
+        });
+        return null;
+      },
+      [],
+    );
 
     return Scaffold(
       appBar: AppBar(

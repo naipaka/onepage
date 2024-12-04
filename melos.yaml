@@ -145,6 +145,9 @@ scripts:
       melos run pod:ios --no-select
       melos run pod:macos --no-select
     description: Clean install the Pods
+    packageFilters:
+      dirExists: [lib, ios]
+      fileExists: "ios/Podfile"
 
   pod:ios:
     exec: |

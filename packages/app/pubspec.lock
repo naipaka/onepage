@@ -22,6 +22,13 @@ packages:
     description: dart
     source: sdk
     version: "0.3.2"
+  ads:
+    dependency: "direct main"
+    description:
+      path: "../ads"
+      relative: true
+    source: path
+    version: "1.0.0"
   altfire_configurator:
     dependency: "direct main"
     description:
@@ -70,6 +77,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  app_tracking_transparency:
+    dependency: transitive
+    description:
+      name: app_tracking_transparency
+      sha256: "64d9745931e565790abdea91b518ac8dc3cebe6d0d0aaf7119343271b983259a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   archive:
     dependency: transitive
     description:
