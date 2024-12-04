@@ -17,45 +17,49 @@ This project is experimentally divided into packages by feature.
 
 ![dependency_graph](./docs/dependency_graph.svg)
 
-### app (onepage)
+### [app (onepage)](packages/app)
 
 This package contains the entry point of the application and is the main package of the application.
 
-### db_client
+### [core/db_client](packages/core/db_client)
 
 This package provides a database client for the application.
 
-### diary
-
-This package provides the diary feature of the application.
-
-### i18n
+### [core/i18n](packages/core/i18n)
 
 This package supports the internationalization and localization of the application. All texts for translating the application's text are defined here.
 
-### provider_utils
+### [core/provider_utils](packages/core/provider_utils)
 
 This package provides utility functions for the riverpod package.
 
-### scroll_calendar
-
-This package provides a scrollable calendar.
-
-### theme
+### [core/theme](packages/core/theme)
 
 This package is responsible for the appearance of `ThemeData` and other appearance-related data used in Flutter apps.
 
-### update_requester
-
-This package manages application updates.
-
-### utils
+### [core/utils](packages/core/utils)
 
 This package provides utility functions for the application.
 
-### widgets
+### [core/widgets](packages/core/widgets)
 
 This package provides generic widgets for the application.
+
+### [features/ads](packages/features/ads)
+
+This package provides the advertisement feature of the application.
+
+### [features/diary](packages/features/diary)
+
+This package provides the diary feature of the application.
+
+### [features/scroll_calendar](packages/features/scroll_calendar)
+
+This package provides a scrollable calendar.
+
+### [features/update_requester](packages/features/update_requester)
+
+This package manages application updates.
 
 ## How to start development
 
