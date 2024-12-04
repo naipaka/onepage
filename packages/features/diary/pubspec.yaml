@@ -9,11 +9,11 @@ environment:
 dependencies:
   clock: ^1.1.1
   db_client:
-    path: ../db_client/
+    path: ../../core/db_client/
   flutter:
     sdk: flutter
   utils:
-    path: ../utils/
+    path: ../../core/utils/
 
 dev_dependencies:
   altive_lints: ^1.16.0

@@ -25,7 +25,7 @@ packages:
   ads:
     dependency: "direct main"
     description:
-      path: "../ads"
+      path: "../features/ads"
       relative: true
     source: path
     version: "1.0.0"
@@ -328,14 +328,14 @@ packages:
   db_client:
     dependency: "direct main"
     description:
-      path: "../db_client"
+      path: "../core/db_client"
       relative: true
     source: path
     version: "1.0.0"
   diary:
     dependency: "direct main"
     description:
-      path: "../diary"
+      path: "../features/diary"
       relative: true
     source: path
     version: "1.0.0"
@@ -666,7 +666,7 @@ packages:
   i18n:
     dependency: "direct main"
     description:
-      path: "../i18n"
+      path: "../core/i18n"
       relative: true
     source: path
     version: "1.0.0"
@@ -929,7 +929,7 @@ packages:
   provider_utils:
     dependency: "direct main"
     description:
-      path: "../provider_utils"
+      path: "../core/provider_utils"
       relative: true
     source: path
     version: "1.0.0"
@@ -1000,7 +1000,7 @@ packages:
   scroll_calendar:
     dependency: "direct main"
     description:
-      path: "../scroll_calendar"
+      path: "../features/scroll_calendar"
       relative: true
     source: path
     version: "1.0.0"
@@ -1164,7 +1164,7 @@ packages:
   theme:
     dependency: "direct main"
     description:
-      path: "../theme"
+      path: "../core/theme"
       relative: true
     source: path
     version: "1.0.0"
@@ -1203,7 +1203,7 @@ packages:
   update_requester:
     dependency: "direct main"
     description:
-      path: "../update_requester"
+      path: "../features/update_requester"
       relative: true
     source: path
     version: "1.0.0"
@@ -1274,7 +1274,7 @@ packages:
   utils:
     dependency: "direct main"
     description:
-      path: "../utils"
+      path: "../core/utils"
       relative: true
     source: path
     version: "1.0.0"
@@ -1369,7 +1369,7 @@ packages:
   widgets:
     dependency: "direct main"
     description:
-      path: "../widgets"
+      path: "../core/widgets"
       relative: true
     source: path
     version: "1.0.0"
