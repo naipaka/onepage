@@ -5,6 +5,7 @@ altfire
 androiddebugkey
 appbundle
 APPICON
+appstore
 armeabi
 assetcatalog
 Autolayout

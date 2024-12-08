@@ -1,9 +1,13 @@
+![Pub Version](https://img.shields.io/badge/dynamic/yaml?color=blue&label=release&query=version&url=https://raw.githubusercontent.com/naipaka/onepage/main/packages/app/pubspec.yaml)
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Flutter app code check](https://github.com/naipaka/onepage/actions/workflows/flutter-app-code-check.yml/badge.svg)](https://github.com/naipaka/onepage/actions/workflows/flutter-app-code-check.yml)
 [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square)](https://github.com/invertase/melos)
 [![codecov](https://codecov.io/gh/naipaka/onepage/graph/badge.svg?token=VSKGRHHHYW)](https://codecov.io/gh/naipaka/onepage)
 
 <img src="./docs/icon.png" alt="One Page" width="200px" height="200px">
+
+[<img src="./docs/appstore-badge.png" height="50">](https://apps.apple.com/us/app/one-page-simple-diary/id6738889085)
+[<img src="./docs/google-play-badge.png" height="50">](https://play.google.com/store/apps/details?id=com.naipaka.onepage)
 
 # One Page
 
