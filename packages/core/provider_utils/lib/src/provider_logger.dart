@@ -38,9 +38,11 @@ enum ProviderEvent {
   }
 }
 
+/// {@template provider_utils.ProviderLogger}
 /// A class that logs events of `Provider`.
+/// {@endtemplate}
 class ProviderLogger implements ProviderObserver {
-  /// Creates an instance of [ProviderLogger].
+  /// {@macro provider_utils.ProviderLogger}
   const ProviderLogger({
     required this.outputLogTypes,
     required this.logger,

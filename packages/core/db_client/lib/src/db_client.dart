@@ -6,21 +6,23 @@ import 'tables/tables.dart';
 
 part 'db_client.g.dart';
 
+/// {@template db_client.DbClient}
 /// This class represents the database client and provides methods to interact
 /// with the database.
+/// {@endtemplate}
 @DriftDatabase(
   tables: [
     Diaries,
   ],
 )
 class DbClient extends _$DbClient {
-  /// Creates an instance of [DbClient].
+  /// {@macro db_client.DbClient}
   ///
   /// This constructor initializes the database connection using the
   /// [_openConnection] method.
   DbClient() : super(_openConnection());
 
-  /// Creates an instance of [DbClient] for testing purposes.
+  /// {@macro db_client.DbClient}
   ///
   /// This constructor allows for dependency injection, making it easier to
   /// test the database operations.

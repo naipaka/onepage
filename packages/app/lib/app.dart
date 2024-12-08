@@ -13,9 +13,11 @@ import 'package:widgets/widgets.dart';
 import 'adapters/adapters.dart';
 import 'router/router.dart';
 
+/// {@template onepage.App}
 /// The main application widget.
+/// {@endtemplate}
 class App extends ConsumerWidget {
-  /// Creates the main application widget.
+  /// {@macro onepage.App}
   const App({super.key});
 
   @override

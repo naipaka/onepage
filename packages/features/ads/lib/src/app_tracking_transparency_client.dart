@@ -1,9 +1,12 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
+/// {@template ads.AppTrackingTransparencyClient}
 /// A client that handles requesting app tracking transparency on a device.
+///
+/// This client is used to request tracking authorization on a device.
+/// {@endtemplate}
 class AppTrackingTransparencyClient {
-  /// [AppTrackingTransparency] instance to use
-  /// for requesting tracking authorization.
+  /// {@macro ads.AppTrackingTransparencyClient}
   const AppTrackingTransparencyClient();
 
   /// Request tracking authorization

@@ -5,7 +5,9 @@ import '../../pages/pages.dart';
 
 part 'app_routes.g.dart';
 
+/// {@template onepage.HomeRouteData}
 /// Home route data.
+/// {@endtemplate}
 @TypedGoRoute<HomeRouteData>(
   path: HomeRouteData.path,
   routes: [
@@ -15,7 +17,7 @@ part 'app_routes.g.dart';
   ],
 )
 class HomeRouteData extends GoRouteData {
-  /// Creates the home route data constructor.
+  /// {@macro onepage.HomeRouteData}
   const HomeRouteData();
 
   /// The home route path.
@@ -27,9 +29,11 @@ class HomeRouteData extends GoRouteData {
   }
 }
 
+/// {@template onepage.LicenseRouteData}
 /// License route data.
+/// {@endtemplate}
 class LicenseRouteData extends GoRouteData {
-  /// Creates the license route data constructor.
+  /// {@macro onepage.LicenseRouteData}
   const LicenseRouteData();
 
   /// The license route path.

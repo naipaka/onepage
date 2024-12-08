@@ -29,6 +29,7 @@ dists
 dorny
 DSYM
 endforeach
+endtemplate
 fixnum
 flutterfire
 fullscreen
@@ -48,6 +49,7 @@ kuhnroyal
 leoafarias
 libc
 linux
+Loggable
 lottie
 lproj
 MSGSEND

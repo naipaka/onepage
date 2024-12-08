@@ -1,8 +1,10 @@
 import 'package:db_client/db_client.dart';
 
+/// {@template diary.DiaryCommand}
 /// A class that defines methods with side effects related to diary operations.
+/// {@endtemplate}
 class DiaryCommand {
-  /// Creates an instance of [DiaryCommand].
+  /// {@macro diary.DiaryCommand}
   ///
   /// The [dbClient] parameter is required and should be an instance
   /// of [DbClient] that will be used to perform database operations.

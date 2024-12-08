@@ -1,11 +1,13 @@
 import 'dart:async';
 
+/// {@template utils.Debounce}
 /// A class for executing functions with a delay.
 ///
 /// Executes the callback function after the delay specified in [delay].
 /// If called multiple times quickly, only the last call will be executed.
+/// {@endtemplate}
 class Debounce {
-  /// Creates a [Debounce] instance.
+  /// {@macro utils.Debounce}
   Debounce({
     required this.delay,
   });

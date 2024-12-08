@@ -14,9 +14,11 @@ import 'package:widgets/widgets.dart';
 import '../../adapters/adapters.dart';
 import '../../router/src/app_routes.dart';
 
+/// {@template onepage.HomePage}
 /// Home page when the app is opened.
+/// {@endtemplate}
 class HomePage extends HookConsumerWidget {
-  /// [HomePage] constructor.
+  /// {@macro onepage.HomePage}
   const HomePage({super.key});
 
   @override

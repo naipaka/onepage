@@ -18,14 +18,16 @@ final updateRequestDefaultValue = jsonEncode(
   ).toJson(),
 );
 
+/// {@template update_requester.UpdateRequester}
 /// A class responsible for requesting updates.
 ///
 /// This class provides methods to check if an update is
 /// required and to retrieve the update message if an update is needed.
 /// It uses [Configurator] to fetch configuration data and [PackageInfo]
 /// to get the current app version.
+/// {@endtemplate}
 class UpdateRequester {
-  /// Constructor for [UpdateRequester].
+  /// {@macro update_requester.UpdateRequester}
   ///
   /// Takes a [Configurator] to fetch configuration data and a [PackageInfo] to
   /// get the current app version.

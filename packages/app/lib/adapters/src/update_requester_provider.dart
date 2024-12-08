@@ -18,7 +18,9 @@ UpdateRequester updateRequester(Ref ref) {
   );
 }
 
-/// Provides the current [UpdateRequest].
+/// Provides the current [UpdateRequest] state.
+///
+/// {@macro update_requester.UpdateRequest}
 @riverpod
 class UpdateRequestState extends _$UpdateRequestState {
   /// Builds the initial state of the [UpdateRequest].

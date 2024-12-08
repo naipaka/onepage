@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:utils/utils.dart';
 
+/// {@template diary.DiaryListTile}
 /// Diary list tile.
+///
+/// The diary content can be edited by tapping on the tile.
+/// {@endtemplate}
 class DiaryListTile extends StatefulWidget {
-  /// Creates a diary list tile.
+  /// {@macro diary.DiaryListTile}
   const DiaryListTile({
     super.key,
     required this.content,

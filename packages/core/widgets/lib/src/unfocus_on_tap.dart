@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+/// {@template widgets.UnfocusOnTap}
 /// Widget that allows you to unfocus by tapping the child.
+///
+/// This widget is useful when you want to unfocus the keyboard or any other
+/// focusable widget when tapping outside of it.
+/// {@endtemplate}
 class UnfocusOnTap extends StatelessWidget {
-  /// Creates a new instance of [UnfocusOnTap].
+  /// {@macro widgets.UnfocusOnTap}
   const UnfocusOnTap({
     super.key,
     required this.child,

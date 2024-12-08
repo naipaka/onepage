@@ -5,9 +5,11 @@ import 'package:i18n/i18n.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
 
+/// {@template onepage.AppLicensePage}
 /// License page to display the app license.
+/// {@endtemplate}
 class AppLicensePage extends ConsumerWidget {
-  /// [AppLicensePage] constructor.
+  /// {@macro onepage.AppLicensePage}
   const AppLicensePage({super.key});
 
   @override

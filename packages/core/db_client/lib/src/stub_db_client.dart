@@ -6,9 +6,11 @@ import 'package:clock/clock.dart';
 
 import '../db_client.dart';
 
+/// {@template db_client.StubDbClient}
 /// A stub database client for testing purposes.
+/// {@endtemplate}
 class StubDbClient extends DbClient {
-  /// Creates an instance of [StubDbClient].
+  /// {@macro db_client.StubDbClient}
   StubDbClient({
     required this.locale,
   }) : super();

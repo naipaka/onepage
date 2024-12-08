@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
+/// {@template widgets.DashedDivider}
 /// A dashed divider line.
+///
+/// This widget draws a dashed line with a specified width, height, and space
+/// between dashes.
+/// {@endtemplate}
 class DashedDivider extends StatelessWidget {
-  /// Creates an instance of [DashedDivider].
+  /// {@macro widgets.DashedDivider}
   const DashedDivider({
     super.key,
     this.dashedWidth = 5,

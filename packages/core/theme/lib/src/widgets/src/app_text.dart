@@ -26,9 +26,11 @@ mixin TextThemeText implements Widget {
   double? get height;
 }
 
+/// {@template theme.DisplayLargeText}
 /// [TextTheme.displayLarge] text widget.
+/// {@endtemplate}
 class DisplayLargeText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [DisplayLargeText].
+  /// {@macro theme.DisplayLargeText}
   const DisplayLargeText(
     this.data, {
     super.key,
@@ -78,9 +80,11 @@ class DisplayLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.DisplayMediumText}
 /// [TextTheme.displayMedium] text widget.
+/// {@endtemplate}
 class DisplayMediumText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [DisplayMediumText].
+  /// {@macro theme.DisplayMediumText}
   const DisplayMediumText(
     this.data, {
     super.key,
@@ -130,9 +134,11 @@ class DisplayMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.DisplaySmallText}
 /// [TextTheme.displaySmall] text widget.
+/// {@endtemplate}
 class DisplaySmallText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [DisplaySmallText].
+  /// {@macro theme.DisplaySmallText}
   const DisplaySmallText(
     this.data, {
     super.key,
@@ -182,9 +188,11 @@ class DisplaySmallText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.HeadlineLargeText}
 /// [TextTheme.headlineLarge] text widget.
+/// {@endtemplate}
 class HeadlineLargeText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [HeadlineLargeText].
+  /// {@macro theme.HeadlineLargeText}
   const HeadlineLargeText(
     this.data, {
     super.key,
@@ -234,9 +242,11 @@ class HeadlineLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.HeadlineMediumText}
 /// [TextTheme.headlineMedium] text widget.
+/// {@endtemplate}
 class HeadlineMediumText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [HeadlineMediumText].
+  /// {@macro theme.HeadlineMediumText}
   const HeadlineMediumText(
     this.data, {
     super.key,
@@ -286,9 +296,11 @@ class HeadlineMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.HeadlineSmallText}
 /// [TextTheme.headlineSmall] text widget.
+/// {@endtemplate}
 class HeadlineSmallText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [HeadlineSmallText].
+  /// {@macro theme.HeadlineSmallText}
   const HeadlineSmallText(
     this.data, {
     super.key,
@@ -338,9 +350,11 @@ class HeadlineSmallText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.TitleLargeText}
 /// [TextTheme.titleLarge] text widget.
+/// {@endtemplate}
 class TitleLargeText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [TitleLargeText].
+  /// {@macro theme.TitleLargeText}
   const TitleLargeText(
     this.data, {
     super.key,
@@ -390,9 +404,11 @@ class TitleLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.TitleMediumText}
 /// [TextTheme.titleMedium] text widget.
+/// {@endtemplate}
 class TitleMediumText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [TitleMediumText].
+  /// {@macro theme.TitleMediumText}
   const TitleMediumText(
     this.data, {
     super.key,
@@ -442,9 +458,11 @@ class TitleMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.TitleSmallText}
 /// [TextTheme.titleSmall] text widget.
+/// {@endtemplate}
 class TitleSmallText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [TitleSmallText].
+  /// {@macro theme.TitleSmallText}
   const TitleSmallText(
     this.data, {
     super.key,
@@ -494,9 +512,11 @@ class TitleSmallText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.BodyLargeText}
 /// [TextTheme.bodyLarge] text widget.
+/// {@endtemplate}
 class BodyLargeText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [BodyLargeText].
+  /// {@macro theme.BodyLargeText}
   const BodyLargeText(
     this.data, {
     super.key,
@@ -546,9 +566,11 @@ class BodyLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.BodyMediumText}
 /// [TextTheme.bodyMedium] text widget.
+/// {@endtemplate}
 class BodyMediumText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [BodyMediumText].
+  /// {@macro theme.BodyMediumText}
   const BodyMediumText(
     this.data, {
     super.key,
@@ -598,9 +620,11 @@ class BodyMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.BodySmallText}
 /// [TextTheme.bodySmall] text widget.
+/// {@endtemplate}
 class BodySmallText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [BodySmallText].
+  /// {@macro theme.BodySmallText}
   const BodySmallText(
     this.data, {
     super.key,
@@ -650,9 +674,11 @@ class BodySmallText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.LabelLargeText}
 /// [TextTheme.labelLarge] text widget.
+/// {@endtemplate}
 class LabelLargeText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [LabelLargeText].
+  /// {@macro theme.LabelLargeText}
   const LabelLargeText(
     this.data, {
     super.key,
@@ -702,9 +728,11 @@ class LabelLargeText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.LabelMediumText}
 /// [TextTheme.labelMedium] text widget.
+/// {@endtemplate}
 class LabelMediumText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [LabelMediumText].
+  /// {@macro theme.LabelMediumText}
   const LabelMediumText(
     this.data, {
     super.key,
@@ -754,9 +782,11 @@ class LabelMediumText extends StatelessWidget with TextThemeText {
   }
 }
 
+/// {@template theme.LabelSmallText}
 /// [TextTheme.labelSmall] text widget.
+/// {@endtemplate}
 class LabelSmallText extends StatelessWidget with TextThemeText {
-  /// Creates an instance of [LabelSmallText].
+  /// {@macro theme.LabelSmallText}
   const LabelSmallText(
     this.data, {
     super.key,

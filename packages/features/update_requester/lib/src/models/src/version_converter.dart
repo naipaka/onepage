@@ -4,9 +4,11 @@ import 'package:version/version.dart';
 /// A converter that converts a [Version] to a [String] and vice versa.
 const versionConverter = VersionConverter();
 
+/// {@template update_requester.VersionConverter}
 /// A converter that converts a [Version] to a [String] and vice versa.
+/// {@endtemplate}
 class VersionConverter implements JsonConverter<Version, String> {
-  /// Creates a new [VersionConverter].
+  /// {@macro update_requester.VersionConverter}
   const VersionConverter();
 
   @override

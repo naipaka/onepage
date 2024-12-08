@@ -5,8 +5,8 @@ import '../theme_data/theme_data.dart';
 
 /// Provides a set of extensions for [ThemeData].
 extension ThemeDataExtension on ThemeData {
-  /// Creates a copy of this [ThemeData] but with the given fields replaced with
-  /// the new values.
+  /// Returns a copy of this [ThemeData] with the given fields replaced by the
+  /// new values.
   ThemeData custom({
     required ColorScheme colorScheme,
   }) {

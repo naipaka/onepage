@@ -26,12 +26,14 @@ typedef ScrollToDateCallback = Future<void> Function(
   required Curve curve,
 });
 
+/// {@template scroll_calendar.ScrollCalendarController}
 /// Controller for a scrollable calendar.
 ///
 /// ### Corresponding ScrollCalendar
 /// - [VerticalScrollCalendar]
+/// {@endtemplate}
 class ScrollCalendarController {
-  /// [ScrollCalendarController] constructor.
+  /// {@macro scroll_calendar.ScrollCalendarController}
   ScrollCalendarController();
 
   ScrollToTodayCallback? _scrollToToday;
@@ -97,12 +99,14 @@ class ScrollCalendarController {
   }
 }
 
+/// {@template scroll_calendar.VerticalScrollCalendar}
 /// A vertically scrollable calendar.
 ///
 /// This calendar supports loading past dates incrementally.
 /// It is designed for diary use, so loading future dates is not considered.
+/// {@endtemplate}
 class VerticalScrollCalendar extends StatefulWidget {
-  /// [VerticalScrollCalendar] constructor.
+  /// {@macro scroll_calendar.VerticalScrollCalendar}
   const VerticalScrollCalendar({
     super.key,
     this.controller,
@@ -317,8 +321,11 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   }
 }
 
+/// {@template scroll_calendar._DateItem}
 /// A widget that displays a date.
+/// {@endtemplate}
 class _DateItem extends StatelessWidget {
+  /// {@macro scroll_calendar._DateItem}
   const _DateItem({
     required this.date,
   });
@@ -351,9 +358,11 @@ class _DateItem extends StatelessWidget {
   }
 }
 
+/// {@template scroll_calendar._EndItem}
 /// A widget that triggers a callback when it is visible.
+/// {@endtemplate}
 class _EndItem extends StatelessWidget {
-  /// [_EndItem] constructor.
+  /// {@macro scroll_calendar._EndItem}
   const _EndItem({
     required this.loadingIndicator,
     required void Function() onScrollEnd,

@@ -10,6 +10,8 @@ import 'db_client_provider.dart';
 part 'diary_provider.g.dart';
 
 /// A provider that creates a [DiaryCommand] instance.
+///
+/// {@macro diary.DiaryCommand}
 @Riverpod(keepAlive: true)
 DiaryCommand diaryCommand(Ref ref) {
   final dbClient = ref.watch(dbClientProvider);
@@ -17,6 +19,8 @@ DiaryCommand diaryCommand(Ref ref) {
 }
 
 /// A provider that creates a [DiaryQuery] instance.
+///
+/// {@macro diary.DiaryQuery}
 @Riverpod(keepAlive: true)
 DiaryQuery diaryQuery(Ref ref) {
   final dbClient = ref.watch(dbClientProvider);
