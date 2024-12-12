@@ -5,168 +5,156 @@
  -->
 <!-- Title: packages Pages: 1 -->
 <svg width="720pt" height="701pt"
- viewBox="0.00 0.00 720.00 700.96" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="graph0" class="graph" transform="scale(0.83 0.83) rotate(0) translate(4 843)">
+ viewBox="0.00 0.00 720.00 700.74" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(0.96 0.96) rotate(0) translate(4 724)">
 <title>packages</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-843 866.01,-843 866.01,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-724 744.01,-724 744.01,4 -4,4"/>
 <g id="clust1" class="cluster">
-<title>cluster packages/features</title>
-<polygon fill="none" stroke="#f62736" points="385,-415.67 385,-606.94 831,-606.94 831,-415.67 385,-415.67"/>
-<text text-anchor="middle" x="608" y="-591.74" font-family="Times,serif" font-size="14.00">packages/features</text>
+<title>cluster packages/core</title>
+<polygon fill="none" stroke="#7bbd47" points="9,-17.51 9,-339.21 544.5,-339.21 544.5,-17.51 9,-17.51"/>
+<text text-anchor="middle" x="276.75" y="-324.01" font-family="Times,serif" font-size="14.00">packages/core</text>
 </g>
 <g id="clust2" class="cluster">
-<title>cluster packages/core</title>
-<polygon fill="none" stroke="#7bbd47" points="8,-20.4 8,-395.27 483,-395.27 483,-20.4 8,-20.4"/>
-<text text-anchor="middle" x="245.5" y="-380.07" font-family="Times,serif" font-size="14.00">packages/core</text>
+<title>cluster packages/features</title>
+<polygon fill="none" stroke="#f62736" points="290.25,-356.72 290.25,-520.85 711,-520.85 711,-356.72 290.25,-356.72"/>
+<text text-anchor="middle" x="500.62" y="-505.65" font-family="Times,serif" font-size="14.00">packages/features</text>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster packages</title>
-<polygon fill="none" stroke="#6b4949" points="345,-627.34 345,-818.6 439,-818.6 439,-627.34 345,-627.34"/>
-<text text-anchor="middle" x="392" y="-803.4" font-family="Times,serif" font-size="14.00">packages</text>
-</g>
-<!-- ads -->
-<g id="node1" class="node">
-<title>ads</title>
-<polygon fill="none" stroke="#465953" points="519,-500.4 465,-500.4 465,-464.4 519,-464.4 519,-500.4"/>
-<text text-anchor="middle" x="492" y="-478.7" font-family="Times,serif" font-size="14.00">ads</text>
+<polygon fill="none" stroke="#6b4949" points="214.88,-538.36 214.88,-702.49 320.62,-702.49 320.62,-538.36 214.88,-538.36"/>
+<text text-anchor="middle" x="267.75" y="-687.29" font-family="Times,serif" font-size="14.00">packages</text>
 </g>
 <!-- db_client -->
-<g id="node2" class="node">
+<g id="node1" class="node">
 <title>db_client</title>
-<polygon fill="none" stroke="#c4fbfc" points="474.5,-288.4 393.5,-288.4 393.5,-252.4 474.5,-252.4 474.5,-288.4"/>
-<text text-anchor="middle" x="434" y="-266.7" font-family="Times,serif" font-size="14.00">db_client</text>
+<polygon fill="none" stroke="#c4fbfc" points="530.12,-249.51 449.12,-249.51 449.12,-213.51 530.12,-213.51 530.12,-249.51"/>
+<text text-anchor="middle" x="489.62" y="-227.81" font-family="Times,serif" font-size="14.00">db_client</text>
 </g>
 <!-- diary -->
-<g id="node3" class="node">
+<g id="node2" class="node">
 <title>diary</title>
-<polygon fill="none" stroke="#2c56bd" points="447,-500.4 393,-500.4 393,-464.4 447,-464.4 447,-500.4"/>
-<text text-anchor="middle" x="420" y="-478.7" font-family="Times,serif" font-size="14.00">diary</text>
+<polygon fill="none" stroke="#2c56bd" points="698.62,-431.51 644.62,-431.51 644.62,-395.51 698.62,-395.51 698.62,-431.51"/>
+<text text-anchor="middle" x="671.62" y="-409.81" font-family="Times,serif" font-size="14.00">diary</text>
 </g>
 <!-- diary&#45;&gt;db_client -->
 <g id="edge1" class="edge">
 <title>diary&#45;&gt;db_client</title>
-<path fill="none" stroke="#c4fbfc" d="M421.15,-464.22C423.57,-427.82 429.25,-342.72 432.18,-298.76"/>
-<polygon fill="#c4fbfc" stroke="#c4fbfc" points="435.69,-298.74 432.86,-288.53 428.7,-298.27 435.69,-298.74"/>
+<path fill="none" stroke="#c4fbfc" d="M654.17,-395.25C621.7,-363.13 551.89,-294.09 514.49,-257.1"/>
+<polygon fill="#c4fbfc" stroke="#c4fbfc" points="516.59,-254.26 507.02,-249.71 511.67,-259.23 516.59,-254.26"/>
 </g>
 <!-- utils -->
-<g id="node10" class="node">
+<g id="node9" class="node">
 <title>utils</title>
-<polygon fill="none" stroke="#f548cf" points="475,-104.4 421,-104.4 421,-68.4 475,-68.4 475,-104.4"/>
-<text text-anchor="middle" x="448" y="-82.7" font-family="Times,serif" font-size="14.00">utils</text>
+<polygon fill="none" stroke="#f548cf" points="532.62,-92.51 478.62,-92.51 478.62,-56.51 532.62,-56.51 532.62,-92.51"/>
+<text text-anchor="middle" x="505.62" y="-70.81" font-family="Times,serif" font-size="14.00">utils</text>
 </g>
 <!-- diary&#45;&gt;utils -->
 <g id="edge2" class="edge">
 <title>diary&#45;&gt;utils</title>
-<path fill="none" stroke="#f548cf" d="M429.38,-464.08C444.46,-435.14 473.48,-374.66 484,-319.4 498.08,-245.45 473.1,-157.45 458.1,-114.16"/>
-<polygon fill="#f548cf" stroke="#f548cf" points="461.36,-112.89 454.71,-104.64 454.77,-115.24 461.36,-112.89"/>
+<path fill="none" stroke="#f548cf" d="M663.16,-395.33C636.08,-340.35 551.37,-168.37 518.68,-102"/>
+<polygon fill="#f548cf" stroke="#f548cf" points="521.63,-100.07 514.07,-92.65 515.35,-103.17 521.63,-100.07"/>
 </g>
 <!-- i18n -->
-<g id="node4" class="node">
+<g id="node3" class="node">
 <title>i18n</title>
-<polygon fill="none" stroke="#d7afc5" points="70,-288.4 16,-288.4 16,-252.4 70,-252.4 70,-288.4"/>
-<text text-anchor="middle" x="43" y="-266.7" font-family="Times,serif" font-size="14.00">i18n</text>
+<polygon fill="none" stroke="#d7afc5" points="178.62,-249.51 124.62,-249.51 124.62,-213.51 178.62,-213.51 178.62,-249.51"/>
+<text text-anchor="middle" x="151.62" y="-227.81" font-family="Times,serif" font-size="14.00">i18n</text>
 </g>
 <!-- onepage -->
-<g id="node5" class="node">
+<g id="node4" class="node">
 <title>onepage</title>
-<polygon fill="none" stroke="#08802d" points="430.5,-711.4 353.5,-711.4 353.5,-675.4 430.5,-675.4 430.5,-711.4"/>
-<text text-anchor="middle" x="392" y="-689.7" font-family="Times,serif" font-size="14.00">onepage</text>
-</g>
-<!-- onepage&#45;&gt;ads -->
-<g id="edge3" class="edge">
-<title>onepage&#45;&gt;ads</title>
-<path fill="none" stroke="#465953" d="M400.18,-675.3C417.66,-638.77 458.73,-552.95 479.5,-509.53"/>
-<polygon fill="#465953" stroke="#465953" points="482.68,-510.98 483.84,-500.45 476.37,-507.96 482.68,-510.98"/>
+<polygon fill="none" stroke="#08802d" points="306.12,-613.51 229.12,-613.51 229.12,-577.51 306.12,-577.51 306.12,-613.51"/>
+<text text-anchor="middle" x="267.62" y="-591.81" font-family="Times,serif" font-size="14.00">onepage</text>
 </g>
 <!-- onepage&#45;&gt;db_client -->
-<g id="edge4" class="edge">
+<g id="edge3" class="edge">
 <title>onepage&#45;&gt;db_client</title>
-<path fill="none" stroke="#c4fbfc" d="M390.42,-675.03C387.83,-645.53 382.79,-583.76 381,-531.4 379.86,-498.09 376.36,-489.41 381,-456.4 389.1,-398.73 410.74,-333.84 423.72,-298.28"/>
-<polygon fill="#c4fbfc" stroke="#c4fbfc" points="427.1,-299.24 427.3,-288.65 420.54,-296.81 427.1,-299.24"/>
+<path fill="none" stroke="#c4fbfc" d="M264.79,-577.34C259.54,-540.07 251.76,-450.09 286.62,-387.51 325.08,-318.48 366.02,-328.72 428.62,-280.51 438.88,-272.61 450.04,-263.87 459.97,-256.05"/>
+<polygon fill="#c4fbfc" stroke="#c4fbfc" points="462.29,-258.67 467.97,-249.72 457.96,-253.18 462.29,-258.67"/>
 </g>
 <!-- onepage&#45;&gt;diary -->
-<g id="edge5" class="edge">
+<g id="edge4" class="edge">
 <title>onepage&#45;&gt;diary</title>
-<path fill="none" stroke="#2c56bd" d="M394.29,-675.3C399.14,-639.08 410.49,-554.38 416.35,-510.63"/>
-<polygon fill="#2c56bd" stroke="#2c56bd" points="419.86,-510.82 417.72,-500.45 412.92,-509.89 419.86,-510.82"/>
+<path fill="none" stroke="#2c56bd" d="M306.28,-585.8C374.21,-569.31 517.7,-529.1 622.62,-462.51 632.63,-456.16 642.26,-447.49 650.3,-439.26"/>
+<polygon fill="#2c56bd" stroke="#2c56bd" points="652.91,-441.6 657.2,-431.92 647.8,-436.81 652.91,-441.6"/>
 </g>
 <!-- onepage&#45;&gt;i18n -->
-<g id="edge6" class="edge">
+<g id="edge5" class="edge">
 <title>onepage&#45;&gt;i18n</title>
-<path fill="none" stroke="#d7afc5" d="M376.41,-675.23C349.99,-646.02 294.94,-584.67 250,-531.4 171.94,-438.87 153.33,-414.95 79,-319.4 73.39,-312.19 67.4,-304.29 61.95,-297.01"/>
-<polygon fill="#d7afc5" stroke="#d7afc5" points="64.64,-294.76 55.85,-288.84 59.03,-298.95 64.64,-294.76"/>
+<path fill="none" stroke="#d7afc5" d="M257.4,-577.16C243.23,-552.47 217.7,-505.41 202.62,-462.51 177.63,-391.36 162.18,-303.39 155.5,-259.74"/>
+<polygon fill="#d7afc5" stroke="#d7afc5" points="158.93,-259 153.99,-249.63 152,-260.04 158.93,-259"/>
 </g>
 <!-- provider_utils -->
-<g id="node6" class="node">
+<g id="node5" class="node">
 <title>provider_utils</title>
-<polygon fill="none" stroke="#f445c4" points="204,-288.4 88,-288.4 88,-252.4 204,-252.4 204,-288.4"/>
-<text text-anchor="middle" x="146" y="-266.7" font-family="Times,serif" font-size="14.00">provider_utils</text>
+<polygon fill="none" stroke="#f445c4" points="325.62,-249.51 209.62,-249.51 209.62,-213.51 325.62,-213.51 325.62,-249.51"/>
+<text text-anchor="middle" x="267.62" y="-227.81" font-family="Times,serif" font-size="14.00">provider_utils</text>
 </g>
 <!-- onepage&#45;&gt;provider_utils -->
-<g id="edge7" class="edge">
+<g id="edge6" class="edge">
 <title>onepage&#45;&gt;provider_utils</title>
-<path fill="none" stroke="#f445c4" d="M382.05,-675.38C343.96,-610.19 207.21,-376.16 161.22,-297.45"/>
-<polygon fill="#f445c4" stroke="#f445c4" points="164.14,-295.51 156.07,-288.64 158.1,-299.04 164.14,-295.51"/>
+<path fill="none" stroke="#f445c4" d="M257.48,-577.33C243.66,-552.84 219.62,-506.02 210.62,-462.51 195.25,-388.13 231.7,-301.41 253.22,-258.83"/>
+<polygon fill="#f445c4" stroke="#f445c4" points="256.45,-260.2 257.94,-249.71 250.23,-256.98 256.45,-260.2"/>
 </g>
 <!-- scroll_calendar -->
-<g id="node7" class="node">
+<g id="node6" class="node">
 <title>scroll_calendar</title>
-<polygon fill="none" stroke="#713e2e" points="823,-500.4 699,-500.4 699,-464.4 823,-464.4 823,-500.4"/>
-<text text-anchor="middle" x="761" y="-478.7" font-family="Times,serif" font-size="14.00">scroll_calendar</text>
+<polygon fill="none" stroke="#713e2e" points="613.62,-431.51 489.62,-431.51 489.62,-395.51 613.62,-395.51 613.62,-431.51"/>
+<text text-anchor="middle" x="551.62" y="-409.81" font-family="Times,serif" font-size="14.00">scroll_calendar</text>
 </g>
 <!-- onepage&#45;&gt;scroll_calendar -->
-<g id="edge8" class="edge">
+<g id="edge7" class="edge">
 <title>onepage&#45;&gt;scroll_calendar</title>
-<path fill="none" stroke="#713e2e" d="M426.13,-675.36C482.15,-647.08 596.72,-587.94 690,-531.4 702.9,-523.58 716.72,-514.43 728.71,-506.22"/>
-<polygon fill="#713e2e" stroke="#713e2e" points="730.83,-509.01 737.07,-500.45 726.85,-503.25 730.83,-509.01"/>
+<path fill="none" stroke="#713e2e" d="M294.6,-577.41C345.99,-544.84 457.93,-473.89 515.64,-437.32"/>
+<polygon fill="#713e2e" stroke="#713e2e" points="517.84,-440.06 524.42,-431.75 514.1,-434.15 517.84,-440.06"/>
 </g>
 <!-- theme -->
-<g id="node8" class="node">
+<g id="node7" class="node">
 <title>theme</title>
-<polygon fill="none" stroke="#1214e6" points="284,-288.4 222,-288.4 222,-252.4 284,-252.4 284,-288.4"/>
-<text text-anchor="middle" x="253" y="-266.7" font-family="Times,serif" font-size="14.00">theme</text>
+<polygon fill="none" stroke="#1214e6" points="419.62,-249.51 357.62,-249.51 357.62,-213.51 419.62,-213.51 419.62,-249.51"/>
+<text text-anchor="middle" x="388.62" y="-227.81" font-family="Times,serif" font-size="14.00">theme</text>
 </g>
 <!-- onepage&#45;&gt;theme -->
-<g id="edge9" class="edge">
+<g id="edge8" class="edge">
 <title>onepage&#45;&gt;theme</title>
-<path fill="none" stroke="#1214e6" d="M386.38,-675.38C364.94,-610.45 288.22,-378.06 261.92,-298.41"/>
-<polygon fill="#1214e6" stroke="#1214e6" points="265.15,-297.04 258.69,-288.64 258.5,-299.23 265.15,-297.04"/>
+<path fill="none" stroke="#1214e6" d="M261.86,-577.46C250.56,-541.16 228.68,-454.13 253.62,-387.51 264.96,-357.24 327.83,-292.22 363.64,-256.77"/>
+<polygon fill="#1214e6" stroke="#1214e6" points="366.17,-259.18 370.84,-249.67 361.26,-254.2 366.17,-259.18"/>
 </g>
 <!-- update_requester -->
-<g id="node9" class="node">
+<g id="node8" class="node">
 <title>update_requester</title>
-<polygon fill="none" stroke="#a2aa60" points="680.5,-500.4 537.5,-500.4 537.5,-464.4 680.5,-464.4 680.5,-500.4"/>
-<text text-anchor="middle" x="609" y="-478.7" font-family="Times,serif" font-size="14.00">update_requester</text>
+<polygon fill="none" stroke="#a2aa60" points="452.12,-431.51 309.12,-431.51 309.12,-395.51 452.12,-395.51 452.12,-431.51"/>
+<text text-anchor="middle" x="380.62" y="-409.81" font-family="Times,serif" font-size="14.00">update_requester</text>
 </g>
 <!-- onepage&#45;&gt;update_requester -->
-<g id="edge10" class="edge">
+<g id="edge9" class="edge">
 <title>onepage&#45;&gt;update_requester</title>
-<path fill="none" stroke="#a2aa60" d="M409.76,-675.3C448.24,-638.23 539.43,-550.41 583.83,-507.64"/>
-<polygon fill="#a2aa60" stroke="#a2aa60" points="586.53,-509.91 591.3,-500.45 581.67,-504.86 586.53,-509.91"/>
+<path fill="none" stroke="#a2aa60" d="M278.46,-577.25C298.37,-545.53 340.88,-477.81 364.3,-440.5"/>
+<polygon fill="#a2aa60" stroke="#a2aa60" points="367.47,-442.04 369.82,-431.71 361.54,-438.32 367.47,-442.04"/>
 </g>
 <!-- onepage&#45;&gt;utils -->
-<g id="edge11" class="edge">
+<g id="edge10" class="edge">
 <title>onepage&#45;&gt;utils</title>
-<path fill="none" stroke="#f548cf" d="M430.82,-691.98C520.26,-688.65 740.39,-666.45 835,-531.4 961.1,-351.4 602.67,-160.68 484.42,-104.12"/>
-<polygon fill="#f548cf" stroke="#f548cf" points="485.89,-100.94 475.36,-99.82 482.9,-107.27 485.89,-100.94"/>
+<path fill="none" stroke="#f548cf" d="M306.41,-589.01C405.69,-574.06 664.73,-529.27 714.62,-462.51 809.01,-336.22 615.18,-161.89 536.66,-99.17"/>
+<polygon fill="#f548cf" stroke="#f548cf" points="538.57,-96.22 528.56,-92.77 534.23,-101.72 538.57,-96.22"/>
 </g>
 <!-- widgets -->
-<g id="node11" class="node">
+<g id="node10" class="node">
 <title>widgets</title>
-<polygon fill="none" stroke="#3ed5a4" points="375.5,-288.4 302.5,-288.4 302.5,-252.4 375.5,-252.4 375.5,-288.4"/>
-<text text-anchor="middle" x="339" y="-266.7" font-family="Times,serif" font-size="14.00">widgets</text>
+<polygon fill="none" stroke="#3ed5a4" points="96.12,-249.51 23.12,-249.51 23.12,-213.51 96.12,-213.51 96.12,-249.51"/>
+<text text-anchor="middle" x="59.62" y="-227.81" font-family="Times,serif" font-size="14.00">widgets</text>
 </g>
 <!-- onepage&#45;&gt;widgets -->
-<g id="edge12" class="edge">
+<g id="edge11" class="edge">
 <title>onepage&#45;&gt;widgets</title>
-<path fill="none" stroke="#3ed5a4" d="M389.86,-675.38C381.7,-610.58 352.55,-379.01 342.46,-298.9"/>
-<polygon fill="#3ed5a4" stroke="#3ed5a4" points="345.89,-298.12 341.17,-288.64 338.95,-299 345.89,-298.12"/>
+<path fill="none" stroke="#3ed5a4" d="M254.8,-577.48C236.45,-552.8 202.12,-505.32 176.62,-462.51 134.1,-391.09 91.75,-302.37 71.67,-258.95"/>
+<polygon fill="#3ed5a4" stroke="#3ed5a4" points="74.75,-257.28 67.39,-249.66 68.39,-260.21 74.75,-257.28"/>
 </g>
 <!-- provider_utils&#45;&gt;utils -->
-<g id="edge13" class="edge">
+<g id="edge12" class="edge">
 <title>provider_utils&#45;&gt;utils</title>
-<path fill="none" stroke="#f548cf" d="M174.41,-252.28C229.58,-219.03 351.1,-145.8 411.89,-109.16"/>
-<polygon fill="#f548cf" stroke="#f548cf" points="414,-111.98 420.76,-103.82 410.38,-105.98 414,-111.98"/>
+<path fill="none" stroke="#f548cf" d="M294,-213.33C337.19,-185.21 422.95,-129.35 470.98,-98.07"/>
+<polygon fill="#f548cf" stroke="#f548cf" points="473.02,-100.92 479.49,-92.53 469.2,-95.05 473.02,-100.92"/>
 </g>
 </g>
 </svg>
