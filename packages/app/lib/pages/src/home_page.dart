@@ -33,23 +33,6 @@ class HomePage extends HookConsumerWidget {
     // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
 
-    useEffect(
-      () {
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          // TODO(naipaka): When add google ads, uncomment the following code.
-          // // Request consent for ads.
-          // final adsConsentClient = ref.read(adsConsentClientProvider);
-          // await adsConsentClient.requestConsent();
-
-          // Request tracking authorization and consent for ads.
-          final attClient = ref.read(attClientProvider);
-          await attClient.requestTrackingAuthorization();
-        });
-        return null;
-      },
-      [],
-    );
-
     return Scaffold(
       appBar: AppBar(
         title: ValueListenableBuilder(
