@@ -12,18 +12,18 @@ PODS:
   - Firebase/RemoteConfig (11.4.0):
     - Firebase/CoreOnly
     - FirebaseRemoteConfig (~> 11.4.0)
-  - firebase_analytics (11.3.5):
+  - firebase_analytics (11.3.6):
     - Firebase/Analytics (= 11.4.0)
     - firebase_core
     - Flutter
   - firebase_core (3.8.1):
     - Firebase/CoreOnly (= 11.4.0)
     - Flutter
-  - firebase_crashlytics (4.1.5):
+  - firebase_crashlytics (4.2.0):
     - Firebase/Crashlytics (= 11.4.0)
     - firebase_core
     - Flutter
-  - firebase_remote_config (5.1.5):
+  - firebase_remote_config (5.2.0):
     - Firebase/RemoteConfig (= 11.4.0)
     - firebase_core
     - Flutter
@@ -167,7 +167,8 @@ PODS:
     - sqlite3/common
   - sqlite3_flutter_libs (0.0.1):
     - Flutter
-    - sqlite3 (~> 3.47.0)
+    - FlutterMacOS
+    - sqlite3 (~> 3.47.1)
     - sqlite3/dbstatvtab
     - sqlite3/fts5
     - sqlite3/perf-threadsafe
@@ -184,7 +185,7 @@ DEPENDENCIES:
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/ios`)
+  - sqlite3_flutter_libs (from `.symlinks/plugins/sqlite3_flutter_libs/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -227,16 +228,16 @@ EXTERNAL SOURCES:
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
   sqlite3_flutter_libs:
-    :path: ".symlinks/plugins/sqlite3_flutter_libs/ios"
+    :path: ".symlinks/plugins/sqlite3_flutter_libs/darwin"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
 SPEC CHECKSUMS:
   Firebase: cf1b19f21410b029b6786a54e9764a0cacad3c99
-  firebase_analytics: fa7e5b20c2b58042e3301f5112a473d365bd490c
+  firebase_analytics: 2815af29d49c1a994652abd37a5b001a88bc7b75
   firebase_core: 418aed674e9a0b8b6088aec16cde82a811f6261f
-  firebase_crashlytics: 72a8b504422ba8bb435a7a0c0a9341320cbcbe29
-  firebase_remote_config: 96a9b7e79624c5d9d16befdef60791966bb83919
+  firebase_crashlytics: 757e252772ed3dd37c07638f9fcd4dceb5f101c8
+  firebase_remote_config: 015a36be218a38943c2273d63b33bc983b3d7bb6
   FirebaseABTesting: aef1719704fade00b200827e7973f352efc4caee
   FirebaseAnalytics: 3feef9ae8733c567866342a1000691baaa7cad49
   FirebaseCore: e0510f1523bc0eb21653cac00792e1e2bd6f1771
@@ -259,7 +260,7 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   sqlite3: 1e522f0938463e44b7faf50393b40bdc1e1e456d
-  sqlite3_flutter_libs: b55ef23cfafea5318ae5081e0bf3fbbce8417c94
+  sqlite3_flutter_libs: 1b4e98da20ebd4e9b1240269b78cdcf492dbe9f3
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
 
 PODFILE CHECKSUM: ade96bceabe3919b69c16573938e4268fe3a6c9d

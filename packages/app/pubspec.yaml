@@ -11,8 +11,8 @@ dependencies:
   altfire_tracker: ^0.1.5
   # Because flutter_test depends on clock 1.1.1.
   clock: ^1.1.1
-  # Because flutter_test depends on collection 1.18.0.
-  collection: ^1.18.0
+  # Because flutter_test depends on collection 1.19.0.
+  collection: ^1.19.0
   custom_lint: ^0.7.0
   db_client:
     path: ../core/db_client/
