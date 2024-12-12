@@ -10,7 +10,9 @@ part of 'db_client_provider.dart';
 
 String _$dbClientHash() => r'0d3ae5cb08dc890911ec54058d256c216459e3a9';
 
-/// A provider that creates a [DbClient] instance.
+/// Provide a [DbClient] instance.
+///
+/// {@macro db_client.DbClient}
 ///
 /// Copied from [dbClient].
 @ProviderFor(dbClient)

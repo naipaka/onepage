@@ -12,6 +12,8 @@ String _$attClientHash() => r'b503a0cfbc37e2e91f4354597f8a4137fb19a9ed';
 
 /// Provide an [AppTrackingTransparencyClient] instance.
 ///
+/// {@macro ads.AppTrackingTransparencyClient}
+///
 /// Copied from [attClient].
 @ProviderFor(attClient)
 final attClientProvider =

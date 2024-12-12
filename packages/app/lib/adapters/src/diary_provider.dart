@@ -73,7 +73,7 @@ class CachedDiaries extends _$CachedDiaries {
     }
     final current = state.requireValue;
     final previousMonthDates = current.dates.first.previousMonthDates;
-    final diaries = await ref.watch(
+    final diaries = await ref.read(
       diariesProvider(
         fromDate: previousMonthDates.first,
         toDate: current.dates.last,
@@ -93,10 +93,6 @@ class CachedDiaries extends _$CachedDiaries {
     required String content,
   }) async {
     final diary = await _diaryCommand.addDiary(date: date, content: content);
-    if (state.isLoading || !state.hasValue) {
-      // Do nothing if the state is loading or has no value.
-      return;
-    }
     final current = state.requireValue;
     state = AsyncValue.data(
       (
@@ -112,10 +108,6 @@ class CachedDiaries extends _$CachedDiaries {
     required String content,
   }) async {
     await _diaryCommand.updateDiary(id: id, content: content);
-    if (state.isLoading || !state.hasValue) {
-      // Do nothing if the state is loading or has no value.
-      return;
-    }
     final current = state.requireValue;
     final updatedDiaries = current.diaries.map((diary) {
       if (diary.id == id) {

@@ -54,7 +54,9 @@ typedef UpdateRequestMessageRef = AutoDisposeProviderRef<String?>;
 String _$updateRequestStateHash() =>
     r'a6bea312fbf33278019cf887759517b0d46b703b';
 
-/// Provides the current [UpdateRequest].
+/// Provides the current [UpdateRequest] state.
+///
+/// {@macro update_requester.UpdateRequest}
 ///
 /// Copied from [UpdateRequestState].
 @ProviderFor(UpdateRequestState)

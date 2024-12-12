@@ -12,6 +12,8 @@ String _$diaryCommandHash() => r'ffb780d76c5eff004a8f280f5a8290afb6d36d89';
 
 /// A provider that creates a [DiaryCommand] instance.
 ///
+/// {@macro diary.DiaryCommand}
+///
 /// Copied from [diaryCommand].
 @ProviderFor(diaryCommand)
 final diaryCommandProvider = Provider<DiaryCommand>.internal(
@@ -29,6 +31,8 @@ typedef DiaryCommandRef = ProviderRef<DiaryCommand>;
 String _$diaryQueryHash() => r'c2aaf09175f18fb5ff5d9eefca6e772125fae621';
 
 /// A provider that creates a [DiaryQuery] instance.
+///
+/// {@macro diary.DiaryQuery}
 ///
 /// Copied from [diaryQuery].
 @ProviderFor(diaryQuery)
@@ -223,7 +227,7 @@ class _DiariesProviderElement
   DateTime get toDate => (origin as DiariesProvider).toDate;
 }
 
-String _$cachedDiariesHash() => r'dfe24fd069c65e1a1af8d953054f2d220143f1ce';
+String _$cachedDiariesHash() => r'29f52716a1d3b32a32902010895c48c2b03454e0';
 
 /// Provides a list of diaries with dates within the specified date range.
 ///
