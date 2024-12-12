@@ -24,6 +24,7 @@ cupertino
 darkbackground
 dartx
 dblite
+devicelab
 dgph
 dists
 dorny
@@ -37,6 +38,7 @@ fvmrc
 genhtml
 ghcp
 gifs
+gradlew
 Graphviz
 gviz
 hashcodes
@@ -52,8 +54,10 @@ linux
 Loggable
 lottie
 lproj
+mingit
 MSGSEND
 NONNULL
+nonobvious
 nullable
 objc
 Onone
@@ -74,6 +78,8 @@ sprintf
 SRCROOT
 subprojects
 subviews
+swiftpm
+Symbolication
 technote
 temurin
 Tsvg

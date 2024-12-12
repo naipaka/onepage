@@ -4,7 +4,7 @@ publish_to: none
 version: 1.0.0+2
 
 environment:
-  sdk: ^3.5.4
+  sdk: ^3.6.0
 
 dependencies:
   altfire_configurator: ^1.0.0
