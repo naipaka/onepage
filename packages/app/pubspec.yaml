@@ -29,7 +29,7 @@ dependencies:
   i18n:
     path: ../core/i18n/
   json_annotation: ^4.9.0
-  package_info_plus: ^8.1.1
+  package_info_plus: ^8.1.2
   provider_utils:
     path: ../core/provider_utils/
   riverpod_annotation: ^2.6.1
