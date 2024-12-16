@@ -46,7 +46,7 @@ dependencies:
     path: ../core/widgets/
 
 dev_dependencies:
-  altive_lints: ^1.16.0
+  altive_lints: ^1.17.0
   build_runner: ^2.4.13
   flutter_gen_runner: ^5.8.0
   flutter_launcher_icons: ^0.14.2
