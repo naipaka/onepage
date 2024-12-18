@@ -4,6 +4,3 @@ analyzer:
     - custom_lint
   exclude:
     - "**/*.mocks.dart"
-linter:
-  rules: 
-    specify_nonobvious_local_variable_types: false
