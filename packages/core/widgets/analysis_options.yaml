@@ -2,6 +2,3 @@ include: package:altive_lints/altive_lints.yaml
 analyzer:
   plugins:
     - custom_lint
-linter:
-  rules: 
-    specify_nonobvious_local_variable_types: false
