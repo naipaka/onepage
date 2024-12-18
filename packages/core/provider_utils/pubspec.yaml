@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1
-  package_info_plus: ^8.1.1
+  package_info_plus: ^8.1.2
   riverpod_annotation: ^2.6.1
   simple_logger: ^1.10.0
   utils:
