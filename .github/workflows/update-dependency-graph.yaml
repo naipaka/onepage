@@ -41,7 +41,9 @@ jobs:
           fi
 
       - name: Generate Dependency Graph
+        # To resolve dependencies, output to standard output before writing to the file.
         run: |
+          melos list
           melos list --gviz > "dependency_graph.dot"
       
       - name: Upload Dependency Graph as Artifact
