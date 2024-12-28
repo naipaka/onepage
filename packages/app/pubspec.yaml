@@ -19,7 +19,7 @@ dependencies:
     path: ../core/db_client/
   diary:
     path: ../features/diary/
-  firebase_core: ^3.8.1
+  firebase_core: ^3.9.0
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
@@ -47,8 +47,8 @@ dependencies:
     path: ../core/widgets/
 
 dev_dependencies:
-  altive_lints: ^1.17.0
-  build_runner: ^2.4.13
+  altive_lints: ^1.18.0
+  build_runner: ^2.4.14
   custom_lint: ^0.7.0
   flutter_gen_runner: ^5.8.0
   flutter_launcher_icons: ^0.14.2
@@ -57,6 +57,7 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.5.7
   go_router_builder: ^2.7.1
+  # Because freezed depends on source_gen 1.4.0.
   json_serializable: ^6.9.0
   riverpod_generator: ^2.6.3
   riverpod_lint: ^2.6.3
