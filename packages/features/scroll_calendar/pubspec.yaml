@@ -6,6 +6,8 @@ publish_to: "none"
 environment:
   sdk: ^3.6.0
 
+resolution: workspace
+
 dependencies:
   # Because flutter_test depends on clock 1.1.1.
   clock: ^1.1.1

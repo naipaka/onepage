@@ -6,6 +6,8 @@ publish_to: "none"
 environment:
   sdk: ^3.6.0
 
+resolution: workspace
+
 dependencies:
   clock: ^1.1.1
   db_client:
@@ -20,4 +22,5 @@ dev_dependencies:
   build_runner: ^2.4.13
   custom_lint: ^0.7.0
   mockito: ^5.4.4
-  test: ^1.25.12
+  # Because flutter_test depends on test_api 0.7.3.
+  test: ^1.25.8

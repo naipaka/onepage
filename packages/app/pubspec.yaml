@@ -6,6 +6,8 @@ version: 1.0.0+2
 environment:
   sdk: ^3.6.0
 
+resolution: workspace
+
 dependencies:
   altfire_configurator: ^1.0.0
   altfire_tracker: ^0.1.5

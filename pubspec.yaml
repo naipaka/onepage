@@ -3,5 +3,17 @@ name: onepage_workspace
 environment:
   sdk: ^3.5.4
 
+workspace:
+  - packages/app
+  - packages/core/db_client
+  - packages/core/i18n
+  - packages/core/provider_utils
+  - packages/core/theme
+  - packages/core/utils
+  - packages/core/widgets
+  - packages/features/diary
+  - packages/features/scroll_calendar
+  - packages/features/update_requester
+
 dev_dependencies:
   melos: ^6.2.0
