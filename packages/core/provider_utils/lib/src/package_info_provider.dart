@@ -4,6 +4,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'package_info_provider.g.dart';
 
-/// A reference to the [PackageInfo] provider.
+/// Providers that need to initialize asynchronously only once at startup.
 @Riverpod(keepAlive: true)
-PackageInfo packageInfo(Ref ref) => throw UnimplementedError();
+Future<PackageInfo> packageInfoInitializing(Ref ref) async {
+  return PackageInfo.fromPlatform();
+}
+
+/// Provide metadata for the application.
+///
+/// After initialization, use this, which can be obtained synchronously.
+@Riverpod(keepAlive: true)
+PackageInfo packageInfo(Ref ref) {
+  return ref.watch(packageInfoInitializingProvider).requireValue;
+}

@@ -8,7 +8,27 @@ part of 'configurator_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$configuratorHash() => r'9e492ffb951b15cbe24c846fb5bdcbb0fe71a690';
+String _$configuratorInitializingHash() =>
+    r'29c83e1a62006388d30891211dbc0e539c86df9a';
+
+/// Initialize the [Configurator] and set the default values.
+///
+/// Copied from [configuratorInitializing].
+@ProviderFor(configuratorInitializing)
+final configuratorInitializingProvider = FutureProvider<Configurator>.internal(
+  configuratorInitializing,
+  name: r'configuratorInitializingProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$configuratorInitializingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ConfiguratorInitializingRef = FutureProviderRef<Configurator>;
+String _$configuratorHash() => r'4d570762b760fa3a8a6af236aa327b7a6602714c';
 
 /// A provider that manages the [Configurator].
 ///
