@@ -25,6 +25,11 @@ jobs:
 
       - name: Install Melos
         uses: bluefireteam/melos-action@v3
+        with:
+          run-bootstrap: false
+
+      - name: Install Dependencies
+        run: dart pub get --enforce-lockfile
 
       - name: Ensure Docs Directory Exists
         run: mkdir -p "./docs"
