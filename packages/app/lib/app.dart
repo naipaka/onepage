@@ -66,10 +66,10 @@ class App extends ConsumerWidget {
                     onButtonPressed: () async {
                       final platform = defaultTargetPlatform;
                       final urlString = switch (platform) {
-                        // TODO(naipaka): Add the URL for the play store.
-                        TargetPlatform.android => '',
-                        // TODO(naipaka): Add the URL for the app store.
-                        TargetPlatform.iOS => '',
+                        TargetPlatform.android =>
+                          'https://play.google.com/store/apps/details?id=com.naipaka.onepage',
+                        TargetPlatform.iOS =>
+                          'https://apps.apple.com/us/app/one-page-simple-diary/id6738889085',
                         _ => throw UnsupportedError(
                             'Unsupported platform: $platform',
                           ),
