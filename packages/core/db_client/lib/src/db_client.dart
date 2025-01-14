@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'tables/tables.dart';
 
@@ -35,9 +36,14 @@ class DbClient extends _$DbClient {
   /// Opens a connection to the database.
   ///
   /// This method returns a [QueryExecutor] that is used to interact with the
-  /// database. The database is named 'onepage.db'.
+  /// database. The database is named 'onepage'.
   static QueryExecutor _openConnection() {
-    return driftDatabase(name: 'onepage.db');
+    return driftDatabase(
+      name: 'onepage',
+      native: const DriftNativeOptions(
+        databaseDirectory: getApplicationSupportDirectory,
+      ),
+    );
   }
 
   /// Adds a diary entry to the database.

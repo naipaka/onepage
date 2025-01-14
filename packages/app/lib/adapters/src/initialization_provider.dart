@@ -1,3 +1,4 @@
+import 'package:db_client/db_client.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,6 +18,7 @@ Future<void> initialization(Ref ref) async {
   });
   // Concurrent initialization
   await Future.wait([
+    ensureDatabaseFileMigration(),
     ref.watch(packageInfoInitializingProvider.future),
     ref.watch(configuratorInitializingProvider.future),
   ]);
