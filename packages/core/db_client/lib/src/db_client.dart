@@ -46,6 +46,14 @@ class DbClient extends _$DbClient {
     );
   }
 
+  /// Writes the database to a file.
+  ///
+  /// This method takes a [filePath] as a parameter and writes the database to
+  /// the specified file.
+  Future<void> writeBackupToFile({required String filePath}) async {
+    await customStatement('VACUUM INTO ?', [filePath]);
+  }
+
   /// Adds a diary entry to the database.
   ///
   /// This method takes [content] and [date] as parameters and inserts

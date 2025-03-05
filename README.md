@@ -49,6 +49,10 @@ This package provides utility functions for the application.
 
 This package provides generic widgets for the application.
 
+### [features/backup](packages/features/backup)
+
+This package provides the backup feature of the application.
+
 ### [features/diary](packages/features/diary)
 
 This package provides the diary feature of the application.
