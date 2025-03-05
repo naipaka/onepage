@@ -6,7 +6,11 @@ coverage:
     project:
       default:
         target: auto
-        threshold: 0
+        threshold: 10%
+    patch:
+      default:
+        target: auto
+        threshold: 10%
 
 # excluding generated files and examples from the coverage report
 ignore:
