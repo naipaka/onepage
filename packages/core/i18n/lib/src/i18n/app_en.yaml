@@ -9,6 +9,8 @@ home:
   title: "Home"
   license: "License"
   backup: "Backup"
+  errorSavingDiary: "An error occurred while saving your diary"
+  errorSavingDiarySolution: "We apologize, but please copy your text and restart the app"
 backup:
   title: "Backup"
   description: "Backup for a Smooth Device Switch"

@@ -65,6 +65,8 @@ class TranslationsHomeJa {
 	String get title => 'Home';
 	String get license => 'License';
 	String get backup => 'Backup';
+	String get errorSavingDiary => '日記の保存中にエラーが発生しました';
+	String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 }
 
 // Path: backup
@@ -119,6 +121,8 @@ extension on Translations {
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
 			case 'home.backup': return 'Backup';
+			case 'home.errorSavingDiary': return '日記の保存中にエラーが発生しました';
+			case 'home.errorSavingDiarySolution': return '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 			case 'backup.title': return 'Backup';
 			case 'backup.description': return '機種変更でも安心バックアップ';
 			case 'backup.explanation': return 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）';

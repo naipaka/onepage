@@ -61,6 +61,8 @@ class _TranslationsHomeEn implements TranslationsHomeJa {
 	@override String get title => 'Home';
 	@override String get license => 'License';
 	@override String get backup => 'Backup';
+	@override String get errorSavingDiary => 'An error occurred while saving your diary';
+	@override String get errorSavingDiarySolution => 'We apologize, but please copy your text and restart the app';
 }
 
 // Path: backup
@@ -115,6 +117,8 @@ extension on TranslationsEn {
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
 			case 'home.backup': return 'Backup';
+			case 'home.errorSavingDiary': return 'An error occurred while saving your diary';
+			case 'home.errorSavingDiarySolution': return 'We apologize, but please copy your text and restart the app';
 			case 'backup.title': return 'Backup';
 			case 'backup.description': return 'Backup for a Smooth Device Switch';
 			case 'backup.explanation': return 'Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.).';
