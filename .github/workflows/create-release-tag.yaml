@@ -42,7 +42,7 @@ jobs:
       - name: Check if tag exists
         id: check-tag
         run: |
-          TAG=v${{ needs.extract-version.outputs.version }}
+          TAG=${{ needs.extract-version.outputs.version }}
           git fetch --tags
           tag_count=$(git tag -l $TAG | wc -l)
           echo "TAG_COUNT=$tag_count" >> "$GITHUB_ENV"
@@ -51,13 +51,14 @@ jobs:
       - name: Delete old tag
         if: env.TAG_COUNT != '0'
         run: |
-          TAG=v${{ needs.extract-version.outputs.version }}
+          TAG=${{ needs.extract-version.outputs.version }}
           git tag -d $TAG
           git push origin --delete $TAG
 
       # Create and push the release tag.
       - name: Create & Push tag
         run: |
+          TAG=${{ needs.extract-version.outputs.version }}
           git fetch --tags
-          git tag v${{ needs.extract-version.outputs.version }}
-          git push origin v${{ needs.extract-version.outputs.version }}
+          git tag $TAG
+          git push origin $TAG
