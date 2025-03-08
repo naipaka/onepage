@@ -4,10 +4,12 @@ This document outlines the current project structure and architectural patterns.
 
 This project is a simple diary app with a unique "one page only" concept, built with modern Flutter development practices.
 
-## Language Preference
-
-- When addressed in English, respond in English
-- When addressed in Japanese, respond in Japanese
+## Language Preference - STRICT REQUIREMENTS
+IMPORTANT: These language rules MUST be followed without exception:
+- This is a strict requirement: NEVER respond in English when addressed in Japanese
+- This is a strict requirement: NEVER respond in Japanese when addressed in English
+- You MUST match the language of your response to the language used in the question/instruction
+- No exceptions to these language rules are allowed
 
 ## Versioning and Updates
 
