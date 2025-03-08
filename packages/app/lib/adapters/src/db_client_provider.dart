@@ -9,3 +9,9 @@ part 'db_client_provider.g.dart';
 /// {@macro db_client.DbClient}
 @Riverpod(keepAlive: true)
 DbClient dbClient(Ref ref) => DbClient();
+
+/// Provide a [DbConnection] instance.
+///
+/// {@macro db_client.Connection}
+@Riverpod(keepAlive: true)
+DbConnection dbConnection(Ref ref) => DbConnection();

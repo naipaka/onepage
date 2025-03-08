@@ -8,7 +8,7 @@ part of 'initialization_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$initializationHash() => r'4ca6aa703fe55781279c9f74440c5446e793bd1e';
+String _$initializationHash() => r'aa8f933b6d63cee53e2cc0d73be393ff4e2db14c';
 
 /// Providers that need to initialize asynchronously only once at startup.
 ///

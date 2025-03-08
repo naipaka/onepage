@@ -12,6 +12,7 @@ part 'backup_provider.g.dart';
 BackupController backupController(Ref ref) {
   return BackupController(
     dbClient: ref.watch(dbClientProvider),
+    dbConnection: ref.watch(dbConnectionProvider),
     packageInfo: ref.watch(packageInfoProvider),
   );
 }

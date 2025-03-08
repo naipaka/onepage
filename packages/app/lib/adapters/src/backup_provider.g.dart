@@ -8,7 +8,7 @@ part of 'backup_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$backupControllerHash() => r'2fb65c3f2d98a3e0e52d6d5c52f55df77289f516';
+String _$backupControllerHash() => r'9c9b909210ff3370e735dd8e7fd8ef765602723a';
 
 /// {@macro backup.BackupController}
 ///

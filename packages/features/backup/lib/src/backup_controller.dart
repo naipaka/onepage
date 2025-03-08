@@ -19,11 +19,15 @@ class BackupController {
   /// of [DbClient] that will be used to perform database operations.
   const BackupController({
     required this.dbClient,
+    required this.dbConnection,
     required this.packageInfo,
   });
 
   /// Database client.
   final DbClient dbClient;
+
+  /// Database connection.
+  final DbConnection dbConnection;
 
   /// Package information.
   final PackageInfo packageInfo;
@@ -65,10 +69,10 @@ class BackupController {
     }
 
     // Restore backup file.
-    final validBackupFile = await createValidBackupFile(
+    final validBackupFile = await dbConnection.createValidBackupFile(
       backupFilePath: backupFilePath,
     );
-    await restoreBackup(validBackupFile: validBackupFile);
+    await dbConnection.restoreBackup(validBackupFile: validBackupFile);
     return validBackupFile.path;
   }
 }
