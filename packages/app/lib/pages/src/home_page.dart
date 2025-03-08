@@ -48,7 +48,16 @@ class HomePage extends HookConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: scrollCalendarController.scrollToToday,
+            onPressed: () async {
+              await scrollCalendarController.scrollToToday();
+              if (!context.mounted) {
+                return;
+              }
+              showSnackBar(
+                context,
+                message: context.t.home.scrollToToday,
+              );
+            },
             icon: const Icon(Icons.today_outlined),
           ),
         ],
