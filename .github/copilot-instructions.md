@@ -13,8 +13,9 @@ IMPORTANT: These language rules MUST be followed without exception:
 
 ## Versioning and Updates
 
-- If a user provides feedback or corrections about project structure or development practices during conversation, update this document accordingly
-- Do not specify exact version numbers for dependencies as they change frequently
+**IMPORTANT: As an AI agent, you MUST proactively improve this document. When you discover a new pattern or learn from user feedback during conversations, take the initiative to add it to these guidelines. Your role is to continuously evolve this living document with the project's collective knowledge.**
+
+- When users provide feedback or corrections about project structure or development practices, you MUST update this document accordingly
 
 ## Architecture Overview
 
@@ -212,3 +213,27 @@ packages/
    - Ensure all tests pass
    - Verify documentation is complete and accurate
    - Check that code follows project style guidelines
+
+## Internationalization Guidelines
+
+1. Message Structure:
+   - Provide clear and concise messages
+   - Include action items when necessary
+   - Maintain appropriate tone for each language (e.g., formal in Japanese, concise in English)
+
+2. Localization Implementation:
+   - All user-facing text must be internationalized
+   - Account for cultural considerations in each language
+   - Maintain consistent message structure across languages
+
+3. i18n File Management:
+   - Organize messages in appropriate hierarchical structure
+   - Group related messages together
+   - Consider reusability for common messages
+   - Use descriptive keys that reflect the message context
+
+4. Message Handling:
+   - Provide appropriate context in messages
+   - Include recovery steps when applicable
+   - Prioritize user data protection
+   - Format dates, numbers, and currencies according to locale

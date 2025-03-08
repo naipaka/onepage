@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:diary/diary.dart';
@@ -114,13 +116,22 @@ class HomePage extends HookConsumerWidget {
                               content: content,
                             );
                           }
-                        } on Exception catch (e) {
+                        } on Object catch (e) {
+                          final tracker = ref.read(trackerProvider);
+                          unawaited(
+                            tracker.recordError(
+                              e,
+                              StackTrace.current,
+                              fatal: true,
+                            ),
+                          );
                           if (!context.mounted) {
                             return;
                           }
                           showErrorSnackBar(
                             context,
-                            message: e.toString(),
+                            message: '${t.home.errorSavingDiary}\n'
+                                '${t.home.errorSavingDiarySolution}',
                           );
                         }
                       },
