@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
@@ -57,12 +56,12 @@ class BackupController {
   }
 
   /// Restores database from a backup file selected by user.
-  Future<void> restoreBackupFile({required VoidCallback onCompleted}) async {
+  Future<String?> restoreBackupFile() async {
     // Select backup file.
     final result = await FilePicker.platform.pickFiles();
     final backupFilePath = result?.files.single.path;
     if (backupFilePath == null) {
-      return;
+      return backupFilePath;
     }
 
     // Restore backup file.
@@ -70,6 +69,6 @@ class BackupController {
       backupFilePath: backupFilePath,
     );
     await restoreBackup(validBackupFile: validBackupFile);
-    onCompleted.call();
+    return validBackupFile.path;
   }
 }

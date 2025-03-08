@@ -11,6 +11,8 @@ resolution: workspace
 dependencies:
   altfire_configurator: ^1.0.0
   altfire_tracker: ^0.1.5
+  backup:
+    path: ../features/backup/
   # Because flutter_test depends on clock 1.1.1.
   clock: ^1.1.1
   # Because flutter_test depends on collection 1.19.0.
@@ -80,3 +82,4 @@ flutter:
 
   assets:
     - assets/
+    - assets/images/

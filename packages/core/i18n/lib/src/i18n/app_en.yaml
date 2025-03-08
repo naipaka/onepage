@@ -8,3 +8,17 @@ updateRequest:
 home:
   title: "Home"
   license: "License"
+  backup: "Backup"
+backup:
+  title: "Backup"
+  description: "Backup for a Smooth Device Switch"
+  explanation: "Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.)."
+  restoreExplanation: "Simply select the saved backup file to restore your data.\nPlease note: Restoring will overwrite your current data."
+  successMessage: "Backup created successfully!"
+  failedMessage: "Failed to create backup"
+  restoreFailedMessage: "Failed to restore backup"
+  restoreSuccess: "Restoring your backup was successful"
+  actions:
+    create: "Create Backup"
+    restore: "Restore Backup"
+    goToHome: "Go to Home"

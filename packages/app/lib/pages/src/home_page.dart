@@ -12,6 +12,7 @@ import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
+import '../../gen/assets.gen.dart';
 import '../../router/src/app_routes.dart';
 
 /// {@template onepage.HomePage}
@@ -148,8 +149,7 @@ class _Drawer extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
-                Image.asset(
-                  'assets/icon.png',
+                Assets.icon.image(
                   width: 64,
                   height: 64,
                 ),
@@ -186,6 +186,14 @@ class _Drawer extends ConsumerWidget {
             title: Text(t.home.license),
             onTap: () {
               const LicenseRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          ListTile(
+            leading: const Icon(Icons.backup_outlined),
+            title: Text(t.home.backup),
+            onTap: () {
+              const BackupRouteData().go(context);
             },
           ),
         ],

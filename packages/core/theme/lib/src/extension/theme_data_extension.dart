@@ -23,6 +23,10 @@ extension ThemeDataExtension on ThemeData {
       appBarTheme: appBarThemeData(
         colorScheme: colorScheme,
       ),
+      filledButtonTheme: appFilledButtonThemeData(
+        colorScheme: colorScheme,
+        textTheme: textTheme,
+      ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         shape: const CircleBorder(),
         foregroundColor: colorScheme.onPrimary,

@@ -8,3 +8,17 @@ updateRequest:
 home:
   title: "Home"
   license: "License"
+  backup: "Backup"
+backup:
+  title: "Backup"
+  description: "機種変更でも安心バックアップ"
+  explanation: "バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）"
+  restoreExplanation: "保存したバックアップファイルを\n選択して復元できます\n復元時は現在のデータが\n上書きされるため注意してください"
+  successMessage: "バックアップが正常に作成されました！"
+  failedMessage: "バックアップの作成に失敗しました"
+  restoreFailedMessage: "バックアップの復元に失敗しました"
+  restoreSuccess: "復元が完了しました"
+  actions:
+    create: "バックアップを作成"
+    restore: "バックアップを復元"
+    goToHome: "ホームへ戻る"

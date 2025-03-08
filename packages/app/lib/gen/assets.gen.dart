@@ -9,12 +9,27 @@
 
 import 'package:flutter/widgets.dart';
 
+class $AssetsImagesGen {
+  const $AssetsImagesGen();
+
+  /// File path: assets/images/backup.png
+  AssetGenImage get backup => const AssetGenImage('assets/images/backup.png');
+
+  /// File path: assets/images/restored-backup.png
+  AssetGenImage get restoredBackup =>
+      const AssetGenImage('assets/images/restored-backup.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [backup, restoredBackup];
+}
+
 class Assets {
   Assets._();
 
   static const AssetGenImage adaptiveIcon =
       AssetGenImage('assets/adaptive-icon.png');
   static const AssetGenImage icon = AssetGenImage('assets/icon.png');
+  static const $AssetsImagesGen images = $AssetsImagesGen();
 
   /// List of all assets
   static List<AssetGenImage> get values => [adaptiveIcon, icon];

@@ -41,6 +41,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	String get organization => 'NPK Studio';
 	late final TranslationsUpdateRequestJa updateRequest = TranslationsUpdateRequestJa._(_root);
 	late final TranslationsHomeJa home = TranslationsHomeJa._(_root);
+	late final TranslationsBackupJa backup = TranslationsBackupJa._(_root);
 }
 
 // Path: updateRequest
@@ -63,6 +64,25 @@ class TranslationsHomeJa {
 	// Translations
 	String get title => 'Home';
 	String get license => 'License';
+	String get backup => 'Backup';
+}
+
+// Path: backup
+class TranslationsBackupJa {
+	TranslationsBackupJa._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Backup';
+	String get description => '機種変更でも安心バックアップ';
+	String get explanation => 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）';
+	String get restoreExplanation => '保存したバックアップファイルを\n選択して復元できます\n復元時は現在のデータが\n上書きされるため注意してください';
+	String get successMessage => 'バックアップが正常に作成されました！';
+	String get failedMessage => 'バックアップの作成に失敗しました';
+	String get restoreFailedMessage => 'バックアップの復元に失敗しました';
+	String get restoreSuccess => '復元が完了しました';
+	late final TranslationsBackupActionsJa actions = TranslationsBackupActionsJa._(_root);
 }
 
 // Path: updateRequest.button
@@ -73,6 +93,18 @@ class TranslationsUpdateRequestButtonJa {
 
 	// Translations
 	String get updateNow => '更新する';
+}
+
+// Path: backup.actions
+class TranslationsBackupActionsJa {
+	TranslationsBackupActionsJa._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get create => 'バックアップを作成';
+	String get restore => 'バックアップを復元';
+	String get goToHome => 'ホームへ戻る';
 }
 
 /// Flat map(s) containing all translations.
@@ -86,6 +118,18 @@ extension on Translations {
 			case 'updateRequest.button.updateNow': return '更新する';
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
+			case 'home.backup': return 'Backup';
+			case 'backup.title': return 'Backup';
+			case 'backup.description': return '機種変更でも安心バックアップ';
+			case 'backup.explanation': return 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）';
+			case 'backup.restoreExplanation': return '保存したバックアップファイルを\n選択して復元できます\n復元時は現在のデータが\n上書きされるため注意してください';
+			case 'backup.successMessage': return 'バックアップが正常に作成されました！';
+			case 'backup.failedMessage': return 'バックアップの作成に失敗しました';
+			case 'backup.restoreFailedMessage': return 'バックアップの復元に失敗しました';
+			case 'backup.restoreSuccess': return '復元が完了しました';
+			case 'backup.actions.create': return 'バックアップを作成';
+			case 'backup.actions.restore': return 'バックアップを復元';
+			case 'backup.actions.goToHome': return 'ホームへ戻る';
 			default: return null;
 		}
 	}
