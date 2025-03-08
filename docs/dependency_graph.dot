@@ -1,5 +1,6 @@
 digraph packages {
   size="10"; ratio=fill;
+  backup [shape="box"; color="#022013"];
   db_client [shape="box"; color="#c4fbfc"];
   diary [shape="box"; color="#2c56bd"];
   i18n [shape="box"; color="#d7afc5"];
@@ -10,8 +11,10 @@ digraph packages {
   update_requester [shape="box"; color="#a2aa60"];
   utils [shape="box"; color="#f548cf"];
   widgets [shape="box"; color="#3ed5a4"];
+  backup -> db_client [style="filled"; color="#c4fbfc"];
   diary -> db_client [style="filled"; color="#c4fbfc"];
   diary -> utils [style="filled"; color="#f548cf"];
+  onepage -> backup [style="filled"; color="#022013"];
   onepage -> db_client [style="filled"; color="#c4fbfc"];
   onepage -> diary [style="filled"; color="#2c56bd"];
   onepage -> i18n [style="filled"; color="#d7afc5"];
@@ -22,6 +25,14 @@ digraph packages {
   onepage -> utils [style="filled"; color="#f548cf"];
   onepage -> widgets [style="filled"; color="#3ed5a4"];
   provider_utils -> utils [style="filled"; color="#f548cf"];
+  subgraph "cluster packages/features" {
+    label="packages/features";
+    color="#f62736";
+    backup;
+    diary;
+    scroll_calendar;
+    update_requester;
+  }
   subgraph "cluster packages/core" {
     label="packages/core";
     color="#7bbd47";
@@ -31,13 +42,6 @@ digraph packages {
     theme;
     utils;
     widgets;
-  }
-  subgraph "cluster packages/features" {
-    label="packages/features";
-    color="#f62736";
-    diary;
-    scroll_calendar;
-    update_requester;
   }
   subgraph "cluster packages" {
     label="packages";
