@@ -11,12 +11,8 @@ part 'app_routes.g.dart';
 @TypedGoRoute<HomeRouteData>(
   path: HomeRouteData.path,
   routes: [
-    TypedGoRoute<LicenseRouteData>(
-      path: LicenseRouteData.path,
-    ),
-    TypedGoRoute<BackupRouteData>(
-      path: BackupRouteData.path,
-    ),
+    TypedGoRoute<LicenseRouteData>(path: LicenseRouteData.path),
+    TypedGoRoute<BackupRouteData>(path: BackupRouteData.path),
   ],
 )
 class HomeRouteData extends GoRouteData {
@@ -24,7 +20,7 @@ class HomeRouteData extends GoRouteData {
   const HomeRouteData();
 
   /// The home route path.
-  static const String path = '/';
+  static const path = '/';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -40,7 +36,7 @@ class LicenseRouteData extends GoRouteData {
   const LicenseRouteData();
 
   /// The license route path.
-  static const String path = 'license';
+  static const path = 'license';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
@@ -56,7 +52,7 @@ class BackupRouteData extends GoRouteData {
   const BackupRouteData();
 
   /// The backup route path.
-  static const String path = 'backup';
+  static const path = 'backup';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {

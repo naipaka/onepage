@@ -89,24 +89,13 @@ class DiariesFamily extends Family<AsyncValue<List<Diary>>> {
   /// Provides a list of diaries within the specified date range.
   ///
   /// Copied from [diaries].
-  DiariesProvider call({
-    required DateTime fromDate,
-    required DateTime toDate,
-  }) {
-    return DiariesProvider(
-      fromDate: fromDate,
-      toDate: toDate,
-    );
+  DiariesProvider call({required DateTime fromDate, required DateTime toDate}) {
+    return DiariesProvider(fromDate: fromDate, toDate: toDate);
   }
 
   @override
-  DiariesProvider getProviderOverride(
-    covariant DiariesProvider provider,
-  ) {
-    return call(
-      fromDate: provider.fromDate,
-      toDate: provider.toDate,
-    );
+  DiariesProvider getProviderOverride(covariant DiariesProvider provider) {
+    return call(fromDate: provider.fromDate, toDate: provider.toDate);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -131,26 +120,20 @@ class DiariesProvider extends AutoDisposeFutureProvider<List<Diary>> {
   /// Provides a list of diaries within the specified date range.
   ///
   /// Copied from [diaries].
-  DiariesProvider({
-    required DateTime fromDate,
-    required DateTime toDate,
-  }) : this._internal(
-          (ref) => diaries(
-            ref as DiariesRef,
-            fromDate: fromDate,
-            toDate: toDate,
-          ),
-          from: diariesProvider,
-          name: r'diariesProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$diariesHash,
-          dependencies: DiariesFamily._dependencies,
-          allTransitiveDependencies: DiariesFamily._allTransitiveDependencies,
-          fromDate: fromDate,
-          toDate: toDate,
-        );
+  DiariesProvider({required DateTime fromDate, required DateTime toDate})
+    : this._internal(
+        (ref) => diaries(ref as DiariesRef, fromDate: fromDate, toDate: toDate),
+        from: diariesProvider,
+        name: r'diariesProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product')
+                ? null
+                : _$diariesHash,
+        dependencies: DiariesFamily._dependencies,
+        allTransitiveDependencies: DiariesFamily._allTransitiveDependencies,
+        fromDate: fromDate,
+        toDate: toDate,
+      );
 
   DiariesProvider._internal(
     super._createNotifier, {
@@ -218,7 +201,8 @@ mixin DiariesRef on AutoDisposeFutureProviderRef<List<Diary>> {
 }
 
 class _DiariesProviderElement
-    extends AutoDisposeFutureProviderElement<List<Diary>> with DiariesRef {
+    extends AutoDisposeFutureProviderElement<List<Diary>>
+    with DiariesRef {
   _DiariesProviderElement(super.provider);
 
   @override
@@ -227,7 +211,7 @@ class _DiariesProviderElement
   DateTime get toDate => (origin as DiariesProvider).toDate;
 }
 
-String _$cachedDiariesHash() => r'29f52716a1d3b32a32902010895c48c2b03454e0';
+String _$cachedDiariesHash() => r'574d8d16dbca2b8af1dd5f485ff555e288c35f09';
 
 /// Provides a list of diaries with dates within the specified date range.
 ///
@@ -235,14 +219,15 @@ String _$cachedDiariesHash() => r'29f52716a1d3b32a32902010895c48c2b03454e0';
 @ProviderFor(CachedDiaries)
 final cachedDiariesProvider =
     AutoDisposeAsyncNotifierProvider<CachedDiaries, DiariesWithDates>.internal(
-  CachedDiaries.new,
-  name: r'cachedDiariesProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$cachedDiariesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      CachedDiaries.new,
+      name: r'cachedDiariesProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$cachedDiariesHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$CachedDiaries = AutoDisposeAsyncNotifier<DiariesWithDates>;
 // ignore_for_file: type=lint

@@ -16,8 +16,7 @@ enum ProviderEvent {
   dispose,
 
   /// Logs when a provider throws an error.
-  error,
-  ;
+  error;
 
   /// Returns a list of [ProviderEvent] from a comma-separated string of
   /// event names.
@@ -43,10 +42,7 @@ enum ProviderEvent {
 /// {@endtemplate}
 class ProviderLogger implements ProviderObserver {
   /// {@macro provider_utils.ProviderLogger}
-  const ProviderLogger({
-    required this.outputLogTypes,
-    required this.logger,
-  });
+  const ProviderLogger({required this.outputLogTypes, required this.logger});
 
   /// The types of events to log.
   final List<ProviderEvent> outputLogTypes;
@@ -79,11 +75,7 @@ class ProviderLogger implements ProviderObserver {
     Object? value,
     ProviderContainer _,
   ) {
-    _print(
-      providerEvent: ProviderEvent.add,
-      provider: provider,
-      value: value,
-    );
+    _print(providerEvent: ProviderEvent.add, provider: provider, value: value);
   }
 
   @override
@@ -91,7 +83,7 @@ class ProviderLogger implements ProviderObserver {
     ProviderBase<dynamic> provider,
     Object? _,
     Object? newValue,
-    ProviderContainer __,
+    ProviderContainer _,
   ) {
     _print(
       providerEvent: ProviderEvent.update,
@@ -101,14 +93,8 @@ class ProviderLogger implements ProviderObserver {
   }
 
   @override
-  void didDisposeProvider(
-    ProviderBase<dynamic> provider,
-    ProviderContainer _,
-  ) {
-    _print(
-      providerEvent: ProviderEvent.dispose,
-      provider: provider,
-    );
+  void didDisposeProvider(ProviderBase<dynamic> provider, ProviderContainer _) {
+    _print(providerEvent: ProviderEvent.dispose, provider: provider);
   }
 
   @override
@@ -116,7 +102,7 @@ class ProviderLogger implements ProviderObserver {
     ProviderBase<dynamic> provider,
     Object error,
     StackTrace _,
-    ProviderContainer __,
+    ProviderContainer _,
   ) {
     _print(
       providerEvent: ProviderEvent.error,

@@ -10,21 +10,20 @@ import '../../extension/extension.dart';
 ///
 /// - [duration] : The duration of the scroll animation.
 /// - [curve] : The easing curve of the scroll animation.
-typedef ScrollToTodayCallback = Future<void> Function({
-  required Duration duration,
-  required Curve curve,
-});
+typedef ScrollToTodayCallback =
+    Future<void> Function({required Duration duration, required Curve curve});
 
 /// Type definition for a function that scrolls to a specified date.
 ///
 /// - [date] : The target date to scroll to.
 /// - [duration] : The duration of the scroll animation.
 /// - [curve] : The easing curve of the scroll animation.
-typedef ScrollToDateCallback = Future<void> Function(
-  DateTime date, {
-  required Duration duration,
-  required Curve curve,
-});
+typedef ScrollToDateCallback =
+    Future<void> Function(
+      DateTime date, {
+      required Duration duration,
+      required Curve curve,
+    });
 
 /// {@template scroll_calendar.ScrollCalendarController}
 /// Controller for a scrollable calendar.
@@ -145,7 +144,7 @@ class VerticalScrollCalendar extends StatefulWidget {
 
 class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   /// The current date and time.
-  final now = clock.now();
+  final DateTime now = clock.now();
 
   /// List of dates in reverse order.
   ///
@@ -191,8 +190,9 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
 
   @override
   void dispose() {
-    _itemPositionsListener.itemPositions
-        .removeListener(_onItemPositionsChanged);
+    _itemPositionsListener.itemPositions.removeListener(
+      _onItemPositionsChanged,
+    );
     _effectiveScrollCalendarController.detach();
     super.dispose();
   }
@@ -310,9 +310,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
             children: [
               _DateItem(date: date),
               const Gap(16),
-              Expanded(
-                child: widget.dateItemBuilder(context, date),
-              ),
+              Expanded(child: widget.dateItemBuilder(context, date)),
             ],
           ),
         );
@@ -326,9 +324,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
 /// {@endtemplate}
 class _DateItem extends StatelessWidget {
   /// {@macro scroll_calendar._DateItem}
-  const _DateItem({
-    required this.date,
-  });
+  const _DateItem({required this.date});
 
   /// The date to be displayed.
   final DateTime date;
@@ -343,15 +339,11 @@ class _DateItem extends StatelessWidget {
       children: [
         Text(
           date.shortWeekday(locale),
-          style: textTheme.bodyMedium?.copyWith(
-            color: dateColor,
-          ),
+          style: textTheme.bodyMedium?.copyWith(color: dateColor),
         ),
         Text(
           date.day.toString().padLeft(2, '0'),
-          style: textTheme.headlineSmall?.copyWith(
-            color: dateColor,
-          ),
+          style: textTheme.headlineSmall?.copyWith(color: dateColor),
         ),
       ],
     );
