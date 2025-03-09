@@ -9,6 +9,7 @@ home:
   title: "Home"
   license: "License"
   backup: "Backup"
+  scrollToToday: "本日の日記までスクロールしました！"
   errorSavingDiary: "日記の保存中にエラーが発生しました"
   errorSavingDiarySolution: "申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください"
 backup:
