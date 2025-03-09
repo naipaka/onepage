@@ -45,7 +45,7 @@ typedef DiariesWithDates = ({List<Diary> diaries, List<DateTime> dates});
 /// Provides a list of diaries with dates within the specified date range.
 @riverpod
 class CachedDiaries extends _$CachedDiaries {
-  final _now = clock.now();
+  final DateTime _now = clock.now();
 
   DiaryCommand get _diaryCommand => ref.read(diaryCommandProvider);
 
@@ -54,15 +54,9 @@ class CachedDiaries extends _$CachedDiaries {
     final nextMonthDate = DateTime(_now.year, _now.month + 1);
     final dates = _now.datesInMonths(-1, 0)..add(nextMonthDate);
     final diaries = await ref.watch(
-      diariesProvider(
-        fromDate: dates.first,
-        toDate: dates.last,
-      ).future,
+      diariesProvider(fromDate: dates.first, toDate: dates.last).future,
     );
-    return (
-      diaries: diaries,
-      dates: dates,
-    );
+    return (diaries: diaries, dates: dates);
   }
 
   /// Load more older diaries.
@@ -79,12 +73,10 @@ class CachedDiaries extends _$CachedDiaries {
         toDate: current.dates.last,
       ).future,
     );
-    state = AsyncValue.data(
-      (
-        diaries: [...diaries, ...current.diaries],
-        dates: [...previousMonthDates, ...current.dates],
-      ),
-    );
+    state = AsyncValue.data((
+      diaries: [...diaries, ...current.diaries],
+      dates: [...previousMonthDates, ...current.dates],
+    ));
   }
 
   /// Add a new diary entry.
@@ -94,32 +86,23 @@ class CachedDiaries extends _$CachedDiaries {
   }) async {
     final diary = await _diaryCommand.addDiary(date: date, content: content);
     final current = state.requireValue;
-    state = AsyncValue.data(
-      (
-        diaries: [...current.diaries, diary],
-        dates: current.dates,
-      ),
-    );
+    state = AsyncValue.data((
+      diaries: [...current.diaries, diary],
+      dates: current.dates,
+    ));
   }
 
   /// Update an existing diary entry.
-  Future<void> updateDiary({
-    required int id,
-    required String content,
-  }) async {
+  Future<void> updateDiary({required int id, required String content}) async {
     await _diaryCommand.updateDiary(id: id, content: content);
     final current = state.requireValue;
-    final updatedDiaries = current.diaries.map((diary) {
-      if (diary.id == id) {
-        return diary.copyWith(content: content);
-      }
-      return diary;
-    }).toList();
-    state = AsyncValue.data(
-      (
-        diaries: updatedDiaries,
-        dates: current.dates,
-      ),
-    );
+    final updatedDiaries =
+        current.diaries.map((diary) {
+          if (diary.id == id) {
+            return diary.copyWith(content: content);
+          }
+          return diary;
+        }).toList();
+    state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 }

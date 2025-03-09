@@ -4,26 +4,25 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 resolution: workspace
 
 dependencies:
-  # Because flutter_test depends on clock 1.1.1.
-  clock: ^1.1.1
-  drift: ^2.23.1
+  clock: ^1.1.2
+  drift: ^2.26.0
   drift_flutter: ^0.2.4
   flutter:
     sdk: flutter
-  path: ^1.9.0
+  path: ^1.9.1
   path_provider: ^2.1.5
-  sqlite3: ^2.6.0
+  sqlite3: ^2.7.5
 
 dev_dependencies:
-  altive_lints: ^1.18.0
-  build_runner: ^2.4.14
-  custom_lint: ^0.7.0
-  drift_dev: ^2.23.0
-  flutter_test: 
+  altive_lints: ^1.19.1
+  build_runner: ^2.4.15
+  custom_lint: ^0.7.5
+  drift_dev: ^2.26.0
+  flutter_test:
     sdk: flutter
   mockito: ^5.4.5

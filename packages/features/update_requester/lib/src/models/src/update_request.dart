@@ -13,7 +13,7 @@ part 'update_request.g.dart';
 /// This class is used to request an app update from the user.
 /// {@endtemplate}
 @freezed
-class UpdateRequest with _$UpdateRequest {
+abstract class UpdateRequest with _$UpdateRequest {
   /// {@macro update_requester.UpdateRequest}
   const factory UpdateRequest({
     /// The version of the app being requested.

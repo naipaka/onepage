@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 resolution: workspace
 
@@ -12,20 +12,19 @@ dependencies:
   altfire_configurator: ^1.0.0
   flutter:
     sdk: flutter
-  freezed_annotation: ^2.4.4
+  freezed_annotation: ^3.0.0
   json_annotation: ^4.9.0
-  package_info_plus: ^8.1.2
+  package_info_plus: ^8.3.0
   version: ^3.0.2
 
 dev_dependencies:
-  altive_lints: ^1.18.0
-  build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  altive_lints: ^1.19.1
+  build_runner: ^2.4.15
+  custom_lint: ^0.7.5
   flutter_test:
     sdk: flutter
-  freezed: ^2.5.7
-  # Because freezed depends on source_gen 1.4.0.
-  json_serializable: ^6.9.0
+  freezed: ^3.0.3
+  json_serializable: ^6.9.4
   mockito: ^5.4.5
 
 flutter:

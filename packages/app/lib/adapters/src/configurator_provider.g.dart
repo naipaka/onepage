@@ -18,9 +18,10 @@ String _$configuratorInitializingHash() =>
 final configuratorInitializingProvider = FutureProvider<Configurator>.internal(
   configuratorInitializing,
   name: r'configuratorInitializingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$configuratorInitializingHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$configuratorInitializingHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

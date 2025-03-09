@@ -41,9 +41,7 @@ class HomePage extends HookConsumerWidget {
         title: ValueListenableBuilder(
           valueListenable: visibleDateState,
           builder: (context, value, child) {
-            return Text(
-              value.yMMMM(context.locale.languageCode),
-            );
+            return Text(value.yMMMM(context.locale.languageCode));
           },
         ),
         actions: [
@@ -53,10 +51,7 @@ class HomePage extends HookConsumerWidget {
               if (!context.mounted) {
                 return;
               }
-              showSnackBar(
-                context,
-                message: context.t.home.scrollToToday,
-              );
+              showSnackBar(context, message: context.t.home.scrollToToday);
             },
             icon: const Icon(Icons.today_outlined),
           ),
@@ -71,17 +66,15 @@ class HomePage extends HookConsumerWidget {
             final notifier = ref.watch(cachedDiariesProvider.notifier);
             return asyncDiaries.when(
               loading: () => centerLoadingIndicator,
-              error: (error, __) => Center(
-                child: Column(
-                  children: [
-                    Icon(
-                      Icons.error,
-                      color: colorScheme.error,
+              error:
+                  (error, _) => Center(
+                    child: Column(
+                      children: [
+                        Icon(Icons.error, color: colorScheme.error),
+                        Text(error.toString()),
+                      ],
                     ),
-                    Text(error.toString()),
-                  ],
-                ),
-              ),
+                  ),
               data: (diariesWithDates) {
                 final diaries = diariesWithDates.diaries;
                 final dates = diariesWithDates.dates;
@@ -139,7 +132,8 @@ class HomePage extends HookConsumerWidget {
                           }
                           showErrorSnackBar(
                             context,
-                            message: '${t.home.errorSavingDiary}\n'
+                            message:
+                                '${t.home.errorSavingDiary}\n'
                                 '${t.home.errorSavingDiarySolution}',
                           );
                         }
@@ -169,10 +163,7 @@ class _Drawer extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
-                Assets.icon.image(
-                  width: 64,
-                  height: 64,
-                ),
+                Assets.icon.image(width: 64, height: 64),
                 const Gap(4),
                 HeadlineSmallText(
                   t.title,
@@ -182,11 +173,7 @@ class _Drawer extends ConsumerWidget {
             ),
           ),
           const Gap(8),
-          const DashedDivider(
-            dashedHeight: 2,
-            dashedWidth: 2,
-            dashedSpace: 16,
-          ),
+          const DashedDivider(dashedHeight: 2, dashedWidth: 2, dashedSpace: 16),
           const Gap(8),
           ListTile(
             leading: const Icon(Icons.home_outlined),

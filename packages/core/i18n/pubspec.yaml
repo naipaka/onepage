@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 resolution: workspace
 
@@ -13,16 +13,16 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  slang: ^4.4.0
-  slang_flutter: ^4.4.0
+  slang: ^4.5.0
+  slang_flutter: ^4.5.0
 
 dev_dependencies:
-  altive_lints: ^1.18.0
-  build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  altive_lints: ^1.19.1
+  build_runner: ^2.4.15
+  custom_lint: ^0.7.5
   flutter_test:
     sdk: flutter
-  slang_build_runner: ^4.4.0
+  slang_build_runner: ^4.5.0
 
 flutter:
   uses-material-design: true

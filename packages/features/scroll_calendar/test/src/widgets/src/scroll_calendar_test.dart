@@ -28,36 +28,40 @@ void main() {
       controller.detach();
     });
 
-    test('scrollToDate calls the attached callback with correct date',
-        () async {
-      final controller = ScrollCalendarController();
+    test(
+      'scrollToDate calls the attached callback with correct date',
+      () async {
+        final controller = ScrollCalendarController();
 
-      var scrollToDateCalled = false;
-      var targetDate = DateTime(2023, 9);
+        var scrollToDateCalled = false;
+        var targetDate = DateTime(2023, 9);
 
-      controller.attach(
-        scrollToToday: ({required duration, required curve}) async {},
-        scrollToDate: (date, {required duration, required curve}) async {
-          scrollToDateCalled = true;
-          targetDate = date;
-        },
-      );
+        controller.attach(
+          scrollToToday: ({required duration, required curve}) async {},
+          scrollToDate: (date, {required duration, required curve}) async {
+            scrollToDateCalled = true;
+            targetDate = date;
+          },
+        );
 
-      final date = DateTime(2023, 10);
-      await controller.scrollToDate(date);
-      expect(scrollToDateCalled, isTrue);
-      expect(targetDate, date);
+        final date = DateTime(2023, 10);
+        await controller.scrollToDate(date);
+        expect(scrollToDateCalled, isTrue);
+        expect(targetDate, date);
 
-      controller.detach();
-    });
+        controller.detach();
+      },
+    );
 
     test('scrollToToday throws assertion error when not attached', () async {
-      final controller = ScrollCalendarController()
-        ..attach(
-          scrollToToday: ({required duration, required curve}) async {},
-          scrollToDate: (date, {required duration, required curve}) async {},
-        )
-        ..detach();
+      final controller =
+          ScrollCalendarController()
+            ..attach(
+              scrollToToday: ({required duration, required curve}) async {},
+              scrollToDate:
+                  (date, {required duration, required curve}) async {},
+            )
+            ..detach();
 
       expect(
         () async => controller.scrollToToday(),
@@ -66,12 +70,14 @@ void main() {
     });
 
     test('scrollToDate throws assertion error when not attached', () async {
-      final controller = ScrollCalendarController()
-        ..attach(
-          scrollToToday: ({required duration, required curve}) async {},
-          scrollToDate: (date, {required duration, required curve}) async {},
-        )
-        ..detach();
+      final controller =
+          ScrollCalendarController()
+            ..attach(
+              scrollToToday: ({required duration, required curve}) async {},
+              scrollToDate:
+                  (date, {required duration, required curve}) async {},
+            )
+            ..detach();
 
       expect(
         () async => controller.scrollToDate(DateTime(2023, 10)),
@@ -90,9 +96,7 @@ void main() {
       final date = DateTime(2024, 10, 15);
       await withClock(Clock.fixed(date), () async {
         await tester.pumpWidget(
-          _TestVerticalScrollCalendar(
-            dates: date.datesInMonth,
-          ),
+          _TestVerticalScrollCalendar(dates: date.datesInMonth),
         );
 
         expect(find.text('$date'), findsOneWidget);
@@ -105,9 +109,7 @@ void main() {
       final date = DateTime(2024, 10, 2);
       await withClock(Clock.fixed(date), () async {
         await tester.pumpWidget(
-          _TestVerticalScrollCalendar(
-            dates: date.datesInMonth,
-          ),
+          _TestVerticalScrollCalendar(dates: date.datesInMonth),
         );
 
         expect(find.text('$date'), findsOneWidget);
@@ -118,17 +120,16 @@ void main() {
       final date = DateTime(2024, 10, 31);
       await withClock(Clock.fixed(date), () async {
         await tester.pumpWidget(
-          _TestVerticalScrollCalendar(
-            dates: date.datesInMonth,
-          ),
+          _TestVerticalScrollCalendar(dates: date.datesInMonth),
         );
 
         expect(find.text('$date'), findsOneWidget);
       });
     });
 
-    testWidgets('calls loadMoreOlder when end of list is reached',
-        (tester) async {
+    testWidgets('calls loadMoreOlder when end of list is reached', (
+      tester,
+    ) async {
       final date = DateTime(2024, 10, 15);
 
       var loadMoreOlderCalled = false;
@@ -143,18 +144,16 @@ void main() {
           ),
         );
 
-        await tester.drag(
-          find.text('$date'),
-          const Offset(0, 1000),
-        );
+        await tester.drag(find.text('$date'), const Offset(0, 1000));
         await tester.pumpAndSettle();
 
         expect(loadMoreOlderCalled, isTrue);
       });
     });
 
-    testWidgets('scrolls to today when controller.scrollToToday is called',
-        (tester) async {
+    testWidgets('scrolls to today when controller.scrollToToday is called', (
+      tester,
+    ) async {
       final date = DateTime(2024, 10, 15);
 
       await withClock(Clock.fixed(date), () async {
@@ -167,10 +166,7 @@ void main() {
           ),
         );
 
-        await tester.drag(
-          find.text('$date'),
-          const Offset(0, 1000),
-        );
+        await tester.drag(find.text('$date'), const Offset(0, 1000));
         await tester.pumpAndSettle();
 
         expect(find.text('$date'), findsNothing);
@@ -182,8 +178,9 @@ void main() {
       });
     });
 
-    testWidgets('scrolls to date when controller.scrollToDate is called',
-        (tester) async {
+    testWidgets('scrolls to date when controller.scrollToDate is called', (
+      tester,
+    ) async {
       final date = DateTime(2024, 10, 15);
       final targetDate = DateTime(2024, 10, 31);
 
@@ -197,10 +194,7 @@ void main() {
           ),
         );
 
-        await tester.drag(
-          find.text('$date'),
-          const Offset(0, 1000),
-        );
+        await tester.drag(find.text('$date'), const Offset(0, 1000));
         await tester.pumpAndSettle();
 
         expect(find.text('$targetDate'), findsNothing);
@@ -212,8 +206,9 @@ void main() {
       });
     });
 
-    testWidgets('calls onVisibleDateChanged when visible date changes',
-        (tester) async {
+    testWidgets('calls onVisibleDateChanged when visible date changes', (
+      tester,
+    ) async {
       final date = DateTime(2024, 10, 15);
       DateTime? visibleDate;
 
@@ -227,10 +222,7 @@ void main() {
           ),
         );
 
-        await tester.drag(
-          find.text('$date'),
-          const Offset(0, 1000),
-        );
+        await tester.drag(find.text('$date'), const Offset(0, 1000));
         await tester.pumpAndSettle();
 
         expect(visibleDate, isNotNull);
@@ -263,7 +255,7 @@ class _TestVerticalScrollCalendar extends StatelessWidget {
           onVisibleDateChanged: onVisibleDateChanged ?? (date) {},
           loadingIndicator: const SizedBox(),
           dateItemBuilder: (_, date) => Text('$date'),
-          separatorBuilder: (_, __) => const Gap(32),
+          separatorBuilder: (_, _) => const Gap(32),
         ),
       ),
     );
