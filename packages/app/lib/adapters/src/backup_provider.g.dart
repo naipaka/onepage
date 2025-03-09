@@ -17,9 +17,10 @@ String _$backupControllerHash() => r'9c9b909210ff3370e735dd8e7fd8ef765602723a';
 final backupControllerProvider = AutoDisposeProvider<BackupController>.internal(
   backupController,
   name: r'backupControllerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$backupControllerHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$backupControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

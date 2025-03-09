@@ -7,22 +7,17 @@ import '../theme_data/theme_data.dart';
 extension ThemeDataExtension on ThemeData {
   /// Returns a copy of this [ThemeData] with the given fields replaced by the
   /// new values.
-  ThemeData custom({
-    required ColorScheme colorScheme,
-  }) {
+  ThemeData custom({required ColorScheme colorScheme}) {
     return copyWith(
       // 🎨 Color scheme section
       colorScheme: colorScheme,
-      dialogBackgroundColor: colorScheme.scrim,
       primaryColor: colorScheme.primary,
       scaffoldBackgroundColor: colorScheme.surface,
       // 🖋 Text theme section
       primaryTextTheme: textTheme,
       textTheme: textTheme,
       // 🖼 ThemeData section
-      appBarTheme: appBarThemeData(
-        colorScheme: colorScheme,
-      ),
+      appBarTheme: appBarThemeData(colorScheme: colorScheme),
       filledButtonTheme: appFilledButtonThemeData(
         colorScheme: colorScheme,
         textTheme: textTheme,

@@ -16,9 +16,10 @@ String _$packageInfoInitializingHash() =>
 final packageInfoInitializingProvider = FutureProvider<PackageInfo>.internal(
   packageInfoInitializing,
   name: r'packageInfoInitializingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$packageInfoInitializingHash,
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$packageInfoInitializingHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

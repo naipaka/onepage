@@ -1,7 +1,7 @@
 name: onepage_workspace
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 workspace:
   - packages/app
@@ -17,4 +17,4 @@ workspace:
   - packages/features/update_requester
 
 dev_dependencies:
-  melos: ^6.2.0
+  melos: ^6.3.2

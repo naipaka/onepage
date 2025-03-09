@@ -8,8 +8,7 @@ import '../util/provider_container.dart';
 void main() {
   group('packageInfoInitializingProvider', () {
     TestWidgetsFlutterBinding.ensureInitialized();
-    test(
-        'The initial state of packageInfoInitializingProvider '
+    test('The initial state of packageInfoInitializingProvider '
         'should return an instance of PackageInfo', () async {
       final mockPackageInfo = MockPackageInfo();
       when(mockPackageInfo.appName).thenReturn('Test App');
@@ -50,7 +49,7 @@ void main() {
             (ref) => Future.value(mockPackageInfo),
           ),
         ],
-      )..listen(packageInfoInitializingProvider, (_, __) {});
+      )..listen(packageInfoInitializingProvider, (_, _) {});
 
       await container.read(packageInfoInitializingProvider.future);
 

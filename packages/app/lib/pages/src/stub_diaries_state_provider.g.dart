@@ -16,14 +16,15 @@ String _$stubDiariesStateHash() => r'8c101b0f71a422f63a830dc0325b316ac27f29c8';
 @ProviderFor(StubDiariesState)
 final stubDiariesStateProvider =
     AutoDisposeAsyncNotifierProvider<StubDiariesState, List<_Diary>>.internal(
-  StubDiariesState.new,
-  name: r'stubDiariesStateProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$stubDiariesStateHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      StubDiariesState.new,
+      name: r'stubDiariesStateProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$stubDiariesStateHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$StubDiariesState = AutoDisposeAsyncNotifier<List<_Diary>>;
 // ignore_for_file: type=lint

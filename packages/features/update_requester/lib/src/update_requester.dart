@@ -11,11 +11,8 @@ import 'models/models.dart';
 const updateRequestKey = 'update_request';
 
 /// The default value for the [UpdateRequest] configuration.
-final updateRequestDefaultValue = jsonEncode(
-  UpdateRequest(
-    version: Version(1, 0, 0),
-    message: '',
-  ).toJson(),
+final String updateRequestDefaultValue = jsonEncode(
+  UpdateRequest(version: Version(1, 0, 0), message: '').toJson(),
 );
 
 /// {@template update_requester.UpdateRequester}
@@ -34,8 +31,8 @@ class UpdateRequester {
   const UpdateRequester({
     required Configurator configurator,
     required PackageInfo packageInfo,
-  })  : _configurator = configurator,
-        _packageInfo = packageInfo;
+  }) : _configurator = configurator,
+       _packageInfo = packageInfo;
 
   /// The [Configurator] used to fetch configuration data.
   final Configurator _configurator;

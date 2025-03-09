@@ -8,21 +8,19 @@ part of 'update_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$UpdateRequestImpl _$$UpdateRequestImplFromJson(Map<String, dynamic> json) =>
-    $checkedCreate(
-      r'_$UpdateRequestImpl',
-      json,
-      ($checkedConvert) {
-        final val = _$UpdateRequestImpl(
-          version: $checkedConvert(
-              'version', (v) => versionConverter.fromJson(v as String)),
-          message: $checkedConvert('message', (v) => v as String),
-        );
-        return val;
-      },
-    );
+_UpdateRequest _$UpdateRequestFromJson(Map<String, dynamic> json) =>
+    $checkedCreate('_UpdateRequest', json, ($checkedConvert) {
+      final val = _UpdateRequest(
+        version: $checkedConvert(
+          'version',
+          (v) => versionConverter.fromJson(v as String),
+        ),
+        message: $checkedConvert('message', (v) => v as String),
+      );
+      return val;
+    });
 
-Map<String, dynamic> _$$UpdateRequestImplToJson(_$UpdateRequestImpl instance) =>
+Map<String, dynamic> _$UpdateRequestToJson(_UpdateRequest instance) =>
     <String, dynamic>{
       'version': versionConverter.toJson(instance.version),
       'message': instance.message,

@@ -4,13 +4,12 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.6.0
+  sdk: ^3.7.0
 
 resolution: workspace
 
 dependencies:
-  # Because flutter_test depends on clock 1.1.1.
-  clock: ^1.1.1
+  clock: ^1.1.2
   db_client:
     path: ../../core/db_client/
   flutter:
@@ -19,9 +18,8 @@ dependencies:
     path: ../../core/utils/
 
 dev_dependencies:
-  altive_lints: ^1.18.0
-  build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  altive_lints: ^1.19.1
+  build_runner: ^2.4.15
+  custom_lint: ^0.7.5
   mockito: ^5.4.5
-  # Because flutter_test depends on test_api 0.7.3.
-  test: ^1.25.8
+  test: ^1.25.15

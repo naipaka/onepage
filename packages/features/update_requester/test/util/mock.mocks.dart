@@ -27,13 +27,8 @@ import 'package:package_info_plus/package_info_plus.dart' as _i3;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeConfig_0<T> extends _i1.SmartFake implements _i2.Config<T> {
-  _FakeConfig_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeConfig_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [PackageInfo].
@@ -41,76 +36,88 @@ class _FakeConfig_0<T> extends _i1.SmartFake implements _i2.Config<T> {
 /// See the documentation for Mockito's code generation for more information.
 class MockPackageInfo extends _i1.Mock implements _i3.PackageInfo {
   @override
-  String get appName => (super.noSuchMethod(
-        Invocation.getter(#appName),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#appName),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#appName),
-        ),
-      ) as String);
+  String get appName =>
+      (super.noSuchMethod(
+            Invocation.getter(#appName),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#appName),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#appName),
+            ),
+          )
+          as String);
 
   @override
-  String get packageName => (super.noSuchMethod(
-        Invocation.getter(#packageName),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#packageName),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#packageName),
-        ),
-      ) as String);
+  String get packageName =>
+      (super.noSuchMethod(
+            Invocation.getter(#packageName),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#packageName),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#packageName),
+            ),
+          )
+          as String);
 
   @override
-  String get version => (super.noSuchMethod(
-        Invocation.getter(#version),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#version),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#version),
-        ),
-      ) as String);
+  String get version =>
+      (super.noSuchMethod(
+            Invocation.getter(#version),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#version),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#version),
+            ),
+          )
+          as String);
 
   @override
-  String get buildNumber => (super.noSuchMethod(
-        Invocation.getter(#buildNumber),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildNumber),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildNumber),
-        ),
-      ) as String);
+  String get buildNumber =>
+      (super.noSuchMethod(
+            Invocation.getter(#buildNumber),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildNumber),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildNumber),
+            ),
+          )
+          as String);
 
   @override
-  String get buildSignature => (super.noSuchMethod(
-        Invocation.getter(#buildSignature),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildSignature),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildSignature),
-        ),
-      ) as String);
+  String get buildSignature =>
+      (super.noSuchMethod(
+            Invocation.getter(#buildSignature),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildSignature),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildSignature),
+            ),
+          )
+          as String);
 
   @override
-  Map<String, dynamic> get data => (super.noSuchMethod(
-        Invocation.getter(#data),
-        returnValue: <String, dynamic>{},
-        returnValueForMissingStub: <String, dynamic>{},
-      ) as Map<String, dynamic>);
+  Map<String, dynamic> get data =>
+      (super.noSuchMethod(
+            Invocation.getter(#data),
+            returnValue: <String, dynamic>{},
+            returnValueForMissingStub: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
 }
 
 /// A class which mocks [Configurator].
@@ -118,31 +125,32 @@ class MockPackageInfo extends _i1.Mock implements _i3.PackageInfo {
 /// See the documentation for Mockito's code generation for more information.
 class MockConfigurator extends _i1.Mock implements _i5.Configurator {
   @override
-  _i6.Stream<_i7.RemoteConfigUpdate> get onConfigUpdated => (super.noSuchMethod(
-        Invocation.getter(#onConfigUpdated),
-        returnValue: _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
-        returnValueForMissingStub: _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
-      ) as _i6.Stream<_i7.RemoteConfigUpdate>);
+  _i6.Stream<_i7.RemoteConfigUpdate> get onConfigUpdated =>
+      (super.noSuchMethod(
+            Invocation.getter(#onConfigUpdated),
+            returnValue: _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
+            returnValueForMissingStub:
+                _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
+          )
+          as _i6.Stream<_i7.RemoteConfigUpdate>);
 
   @override
-  _i6.Future<bool> fetchAndActivate() => (super.noSuchMethod(
-        Invocation.method(
-          #fetchAndActivate,
-          [],
-        ),
-        returnValue: _i6.Future<bool>.value(false),
-        returnValueForMissingStub: _i6.Future<bool>.value(false),
-      ) as _i6.Future<bool>);
+  _i6.Future<bool> fetchAndActivate() =>
+      (super.noSuchMethod(
+            Invocation.method(#fetchAndActivate, []),
+            returnValue: _i6.Future<bool>.value(false),
+            returnValueForMissingStub: _i6.Future<bool>.value(false),
+          )
+          as _i6.Future<bool>);
 
   @override
-  _i6.Future<bool> activate() => (super.noSuchMethod(
-        Invocation.method(
-          #activate,
-          [],
-        ),
-        returnValue: _i6.Future<bool>.value(false),
-        returnValueForMissingStub: _i6.Future<bool>.value(false),
-      ) as _i6.Future<bool>);
+  _i6.Future<bool> activate() =>
+      (super.noSuchMethod(
+            Invocation.method(#activate, []),
+            returnValue: _i6.Future<bool>.value(false),
+            returnValueForMissingStub: _i6.Future<bool>.value(false),
+          )
+          as _i6.Future<bool>);
 
   @override
   _i6.Future<void> configure({
@@ -150,111 +158,93 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     required Duration? minimumFetchInterval,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #configure,
-          [],
-          {
-            #fetchTimeout: fetchTimeout,
-            #minimumFetchInterval: minimumFetchInterval,
-          },
-        ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+            Invocation.method(#configure, [], {
+              #fetchTimeout: fetchTimeout,
+              #minimumFetchInterval: minimumFetchInterval,
+            }),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 
   @override
   _i6.Future<void> setDefaults(Map<String, Object?>? defaultParameters) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #setDefaults,
-          [defaultParameters],
-        ),
-        returnValue: _i6.Future<void>.value(),
-        returnValueForMissingStub: _i6.Future<void>.value(),
-      ) as _i6.Future<void>);
+            Invocation.method(#setDefaults, [defaultParameters]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
 
   @override
   _i6.Stream<_i7.RemoteConfigUpdate> filteredOnConfigUpdated(String? key) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #filteredOnConfigUpdated,
-          [key],
-        ),
-        returnValue: _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
-        returnValueForMissingStub: _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
-      ) as _i6.Stream<_i7.RemoteConfigUpdate>);
+            Invocation.method(#filteredOnConfigUpdated, [key]),
+            returnValue: _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
+            returnValueForMissingStub:
+                _i6.Stream<_i7.RemoteConfigUpdate>.empty(),
+          )
+          as _i6.Stream<_i7.RemoteConfigUpdate>);
 
   @override
-  String getString(String? key) => (super.noSuchMethod(
-        Invocation.method(
-          #getString,
-          [key],
-        ),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.method(
-            #getString,
-            [key],
-          ),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.method(
-            #getString,
-            [key],
-          ),
-        ),
-      ) as String);
+  String getString(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getString, [key]),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.method(#getString, [key]),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.method(#getString, [key]),
+            ),
+          )
+          as String);
 
   @override
-  int getInt(String? key) => (super.noSuchMethod(
-        Invocation.method(
-          #getInt,
-          [key],
-        ),
-        returnValue: 0,
-        returnValueForMissingStub: 0,
-      ) as int);
+  int getInt(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getInt, [key]),
+            returnValue: 0,
+            returnValueForMissingStub: 0,
+          )
+          as int);
 
   @override
-  double getDouble(String? key) => (super.noSuchMethod(
-        Invocation.method(
-          #getDouble,
-          [key],
-        ),
-        returnValue: 0.0,
-        returnValueForMissingStub: 0.0,
-      ) as double);
+  double getDouble(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getDouble, [key]),
+            returnValue: 0.0,
+            returnValueForMissingStub: 0.0,
+          )
+          as double);
 
   @override
-  bool getBool(String? key) => (super.noSuchMethod(
-        Invocation.method(
-          #getBool,
-          [key],
-        ),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
+  bool getBool(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getBool, [key]),
+            returnValue: false,
+            returnValueForMissingStub: false,
+          )
+          as bool);
 
   @override
-  Map<String, Object?> getJson(String? key) => (super.noSuchMethod(
-        Invocation.method(
-          #getJson,
-          [key],
-        ),
-        returnValue: <String, Object?>{},
-        returnValueForMissingStub: <String, Object?>{},
-      ) as Map<String, Object?>);
+  Map<String, Object?> getJson(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getJson, [key]),
+            returnValue: <String, Object?>{},
+            returnValueForMissingStub: <String, Object?>{},
+          )
+          as Map<String, Object?>);
 
   @override
-  List<Map<String, Object?>> getListJson(String? key) => (super.noSuchMethod(
-        Invocation.method(
-          #getListJson,
-          [key],
-        ),
-        returnValue: <Map<String, Object?>>[],
-        returnValueForMissingStub: <Map<String, Object?>>[],
-      ) as List<Map<String, Object?>>);
+  List<Map<String, Object?>> getListJson(String? key) =>
+      (super.noSuchMethod(
+            Invocation.method(#getListJson, [key]),
+            returnValue: <Map<String, Object?>>[],
+            returnValueForMissingStub: <Map<String, Object?>>[],
+          )
+          as List<Map<String, Object?>>);
 
   @override
   T getData<T extends Object>({
@@ -262,37 +252,17 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     required T Function(Map<String, Object?>)? fromJson,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getData,
-          [],
-          {
-            #key: key,
-            #fromJson: fromJson,
-          },
-        ),
-        returnValue: _i4.dummyValue<T>(
-          this,
-          Invocation.method(
-            #getData,
-            [],
-            {
-              #key: key,
-              #fromJson: fromJson,
-            },
-          ),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<T>(
-          this,
-          Invocation.method(
-            #getData,
-            [],
-            {
-              #key: key,
-              #fromJson: fromJson,
-            },
-          ),
-        ),
-      ) as T);
+            Invocation.method(#getData, [], {#key: key, #fromJson: fromJson}),
+            returnValue: _i4.dummyValue<T>(
+              this,
+              Invocation.method(#getData, [], {#key: key, #fromJson: fromJson}),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<T>(
+              this,
+              Invocation.method(#getData, [], {#key: key, #fromJson: fromJson}),
+            ),
+          )
+          as T);
 
   @override
   _i2.Config<String> getStringConfig(
@@ -300,28 +270,29 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     void Function(String)? onConfigUpdated,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getStringConfig,
-          [key],
-          {#onConfigUpdated: onConfigUpdated},
-        ),
-        returnValue: _FakeConfig_0<String>(
-          this,
-          Invocation.method(
-            #getStringConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-        returnValueForMissingStub: _FakeConfig_0<String>(
-          this,
-          Invocation.method(
-            #getStringConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-      ) as _i2.Config<String>);
+            Invocation.method(
+              #getStringConfig,
+              [key],
+              {#onConfigUpdated: onConfigUpdated},
+            ),
+            returnValue: _FakeConfig_0<String>(
+              this,
+              Invocation.method(
+                #getStringConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+            returnValueForMissingStub: _FakeConfig_0<String>(
+              this,
+              Invocation.method(
+                #getStringConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+          )
+          as _i2.Config<String>);
 
   @override
   _i2.Config<int> getIntConfig(
@@ -329,28 +300,29 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     void Function(int)? onConfigUpdated,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getIntConfig,
-          [key],
-          {#onConfigUpdated: onConfigUpdated},
-        ),
-        returnValue: _FakeConfig_0<int>(
-          this,
-          Invocation.method(
-            #getIntConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-        returnValueForMissingStub: _FakeConfig_0<int>(
-          this,
-          Invocation.method(
-            #getIntConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-      ) as _i2.Config<int>);
+            Invocation.method(
+              #getIntConfig,
+              [key],
+              {#onConfigUpdated: onConfigUpdated},
+            ),
+            returnValue: _FakeConfig_0<int>(
+              this,
+              Invocation.method(
+                #getIntConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+            returnValueForMissingStub: _FakeConfig_0<int>(
+              this,
+              Invocation.method(
+                #getIntConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+          )
+          as _i2.Config<int>);
 
   @override
   _i2.Config<double> getDoubleConfig(
@@ -358,28 +330,29 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     void Function(double)? onConfigUpdated,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getDoubleConfig,
-          [key],
-          {#onConfigUpdated: onConfigUpdated},
-        ),
-        returnValue: _FakeConfig_0<double>(
-          this,
-          Invocation.method(
-            #getDoubleConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-        returnValueForMissingStub: _FakeConfig_0<double>(
-          this,
-          Invocation.method(
-            #getDoubleConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-      ) as _i2.Config<double>);
+            Invocation.method(
+              #getDoubleConfig,
+              [key],
+              {#onConfigUpdated: onConfigUpdated},
+            ),
+            returnValue: _FakeConfig_0<double>(
+              this,
+              Invocation.method(
+                #getDoubleConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+            returnValueForMissingStub: _FakeConfig_0<double>(
+              this,
+              Invocation.method(
+                #getDoubleConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+          )
+          as _i2.Config<double>);
 
   @override
   _i2.Config<bool> getBoolConfig(
@@ -387,28 +360,29 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     void Function(bool)? onConfigUpdated,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getBoolConfig,
-          [key],
-          {#onConfigUpdated: onConfigUpdated},
-        ),
-        returnValue: _FakeConfig_0<bool>(
-          this,
-          Invocation.method(
-            #getBoolConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-        returnValueForMissingStub: _FakeConfig_0<bool>(
-          this,
-          Invocation.method(
-            #getBoolConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-      ) as _i2.Config<bool>);
+            Invocation.method(
+              #getBoolConfig,
+              [key],
+              {#onConfigUpdated: onConfigUpdated},
+            ),
+            returnValue: _FakeConfig_0<bool>(
+              this,
+              Invocation.method(
+                #getBoolConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+            returnValueForMissingStub: _FakeConfig_0<bool>(
+              this,
+              Invocation.method(
+                #getBoolConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+          )
+          as _i2.Config<bool>);
 
   @override
   _i2.Config<Map<String, Object?>> getJsonConfig(
@@ -416,28 +390,29 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     void Function(Map<String, Object?>)? onConfigUpdated,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getJsonConfig,
-          [key],
-          {#onConfigUpdated: onConfigUpdated},
-        ),
-        returnValue: _FakeConfig_0<Map<String, Object?>>(
-          this,
-          Invocation.method(
-            #getJsonConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-        returnValueForMissingStub: _FakeConfig_0<Map<String, Object?>>(
-          this,
-          Invocation.method(
-            #getJsonConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-      ) as _i2.Config<Map<String, Object?>>);
+            Invocation.method(
+              #getJsonConfig,
+              [key],
+              {#onConfigUpdated: onConfigUpdated},
+            ),
+            returnValue: _FakeConfig_0<Map<String, Object?>>(
+              this,
+              Invocation.method(
+                #getJsonConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+            returnValueForMissingStub: _FakeConfig_0<Map<String, Object?>>(
+              this,
+              Invocation.method(
+                #getJsonConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+          )
+          as _i2.Config<Map<String, Object?>>);
 
   @override
   _i2.Config<List<Map<String, Object?>>> getListJsonConfig(
@@ -445,28 +420,30 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     void Function(List<Map<String, Object?>>)? onConfigUpdated,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getListJsonConfig,
-          [key],
-          {#onConfigUpdated: onConfigUpdated},
-        ),
-        returnValue: _FakeConfig_0<List<Map<String, Object?>>>(
-          this,
-          Invocation.method(
-            #getListJsonConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-        returnValueForMissingStub: _FakeConfig_0<List<Map<String, Object?>>>(
-          this,
-          Invocation.method(
-            #getListJsonConfig,
-            [key],
-            {#onConfigUpdated: onConfigUpdated},
-          ),
-        ),
-      ) as _i2.Config<List<Map<String, Object?>>>);
+            Invocation.method(
+              #getListJsonConfig,
+              [key],
+              {#onConfigUpdated: onConfigUpdated},
+            ),
+            returnValue: _FakeConfig_0<List<Map<String, Object?>>>(
+              this,
+              Invocation.method(
+                #getListJsonConfig,
+                [key],
+                {#onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+            returnValueForMissingStub:
+                _FakeConfig_0<List<Map<String, Object?>>>(
+                  this,
+                  Invocation.method(
+                    #getListJsonConfig,
+                    [key],
+                    {#onConfigUpdated: onConfigUpdated},
+                  ),
+                ),
+          )
+          as _i2.Config<List<Map<String, Object?>>>);
 
   @override
   _i2.Config<T> getDataConfig<T extends Object>(
@@ -475,35 +452,27 @@ class MockConfigurator extends _i1.Mock implements _i5.Configurator {
     void Function(T)? onConfigUpdated,
   }) =>
       (super.noSuchMethod(
-        Invocation.method(
-          #getDataConfig,
-          [key],
-          {
-            #fromJson: fromJson,
-            #onConfigUpdated: onConfigUpdated,
-          },
-        ),
-        returnValue: _FakeConfig_0<T>(
-          this,
-          Invocation.method(
-            #getDataConfig,
-            [key],
-            {
-              #fromJson: fromJson,
-              #onConfigUpdated: onConfigUpdated,
-            },
-          ),
-        ),
-        returnValueForMissingStub: _FakeConfig_0<T>(
-          this,
-          Invocation.method(
-            #getDataConfig,
-            [key],
-            {
-              #fromJson: fromJson,
-              #onConfigUpdated: onConfigUpdated,
-            },
-          ),
-        ),
-      ) as _i2.Config<T>);
+            Invocation.method(
+              #getDataConfig,
+              [key],
+              {#fromJson: fromJson, #onConfigUpdated: onConfigUpdated},
+            ),
+            returnValue: _FakeConfig_0<T>(
+              this,
+              Invocation.method(
+                #getDataConfig,
+                [key],
+                {#fromJson: fromJson, #onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+            returnValueForMissingStub: _FakeConfig_0<T>(
+              this,
+              Invocation.method(
+                #getDataConfig,
+                [key],
+                {#fromJson: fromJson, #onConfigUpdated: onConfigUpdated},
+              ),
+            ),
+          )
+          as _i2.Config<T>);
 }

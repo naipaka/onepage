@@ -25,13 +25,8 @@ import 'package:simple_logger/src/simple_logger.dart' as _i5;
 // ignore_for_file: subtype_of_sealed_class
 
 class _FakeLevel_0 extends _i1.SmartFake implements _i2.Level {
-  _FakeLevel_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
+  _FakeLevel_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [PackageInfo].
@@ -39,76 +34,88 @@ class _FakeLevel_0 extends _i1.SmartFake implements _i2.Level {
 /// See the documentation for Mockito's code generation for more information.
 class MockPackageInfo extends _i1.Mock implements _i3.PackageInfo {
   @override
-  String get appName => (super.noSuchMethod(
-        Invocation.getter(#appName),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#appName),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#appName),
-        ),
-      ) as String);
+  String get appName =>
+      (super.noSuchMethod(
+            Invocation.getter(#appName),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#appName),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#appName),
+            ),
+          )
+          as String);
 
   @override
-  String get packageName => (super.noSuchMethod(
-        Invocation.getter(#packageName),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#packageName),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#packageName),
-        ),
-      ) as String);
+  String get packageName =>
+      (super.noSuchMethod(
+            Invocation.getter(#packageName),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#packageName),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#packageName),
+            ),
+          )
+          as String);
 
   @override
-  String get version => (super.noSuchMethod(
-        Invocation.getter(#version),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#version),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#version),
-        ),
-      ) as String);
+  String get version =>
+      (super.noSuchMethod(
+            Invocation.getter(#version),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#version),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#version),
+            ),
+          )
+          as String);
 
   @override
-  String get buildNumber => (super.noSuchMethod(
-        Invocation.getter(#buildNumber),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildNumber),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildNumber),
-        ),
-      ) as String);
+  String get buildNumber =>
+      (super.noSuchMethod(
+            Invocation.getter(#buildNumber),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildNumber),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildNumber),
+            ),
+          )
+          as String);
 
   @override
-  String get buildSignature => (super.noSuchMethod(
-        Invocation.getter(#buildSignature),
-        returnValue: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildSignature),
-        ),
-        returnValueForMissingStub: _i4.dummyValue<String>(
-          this,
-          Invocation.getter(#buildSignature),
-        ),
-      ) as String);
+  String get buildSignature =>
+      (super.noSuchMethod(
+            Invocation.getter(#buildSignature),
+            returnValue: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildSignature),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<String>(
+              this,
+              Invocation.getter(#buildSignature),
+            ),
+          )
+          as String);
 
   @override
-  Map<String, dynamic> get data => (super.noSuchMethod(
-        Invocation.getter(#data),
-        returnValue: <String, dynamic>{},
-        returnValueForMissingStub: <String, dynamic>{},
-      ) as Map<String, dynamic>);
+  Map<String, dynamic> get data =>
+      (super.noSuchMethod(
+            Invocation.getter(#data),
+            returnValue: <String, dynamic>{},
+            returnValueForMissingStub: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
 }
 
 /// A class which mocks [SimpleLogger].
@@ -116,118 +123,110 @@ class MockPackageInfo extends _i1.Mock implements _i3.PackageInfo {
 /// See the documentation for Mockito's code generation for more information.
 class MockSimpleLogger extends _i1.Mock implements _i5.SimpleLogger {
   @override
-  _i5.LoggerMode get mode => (super.noSuchMethod(
-        Invocation.getter(#mode),
-        returnValue: _i5.LoggerMode.log,
-        returnValueForMissingStub: _i5.LoggerMode.log,
-      ) as _i5.LoggerMode);
+  _i5.LoggerMode get mode =>
+      (super.noSuchMethod(
+            Invocation.getter(#mode),
+            returnValue: _i5.LoggerMode.log,
+            returnValueForMissingStub: _i5.LoggerMode.log,
+          )
+          as _i5.LoggerMode);
 
   @override
   set mode(_i5.LoggerMode? _mode) => super.noSuchMethod(
-        Invocation.setter(
-          #mode,
-          _mode,
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.setter(#mode, _mode),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  Map<_i2.Level, String> get levelPrefixes => (super.noSuchMethod(
-        Invocation.getter(#levelPrefixes),
-        returnValue: <_i2.Level, String>{},
-        returnValueForMissingStub: <_i2.Level, String>{},
-      ) as Map<_i2.Level, String>);
+  Map<_i2.Level, String> get levelPrefixes =>
+      (super.noSuchMethod(
+            Invocation.getter(#levelPrefixes),
+            returnValue: <_i2.Level, String>{},
+            returnValueForMissingStub: <_i2.Level, String>{},
+          )
+          as Map<_i2.Level, String>);
 
   @override
   set levelPrefixes(Map<_i2.Level, String>? _levelPrefixes) =>
       super.noSuchMethod(
-        Invocation.setter(
-          #levelPrefixes,
-          _levelPrefixes,
-        ),
+        Invocation.setter(#levelPrefixes, _levelPrefixes),
         returnValueForMissingStub: null,
       );
 
   @override
   set formatter(_i5.Formatter? _formatter) => super.noSuchMethod(
-        Invocation.setter(
-          #formatter,
-          _formatter,
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.setter(#formatter, _formatter),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  _i5.OnLogged get onLogged => (super.noSuchMethod(
-        Invocation.getter(#onLogged),
-        returnValue: (
-          String log,
-          _i6.LogInfo info,
-        ) {},
-        returnValueForMissingStub: (
-          String log,
-          _i6.LogInfo info,
-        ) {},
-      ) as _i5.OnLogged);
+  _i5.OnLogged get onLogged =>
+      (super.noSuchMethod(
+            Invocation.getter(#onLogged),
+            returnValue: (String log, _i6.LogInfo info) {},
+            returnValueForMissingStub: (String log, _i6.LogInfo info) {},
+          )
+          as _i5.OnLogged);
 
   @override
   set onLogged(_i5.OnLogged? _onLogged) => super.noSuchMethod(
-        Invocation.setter(
-          #onLogged,
-          _onLogged,
-        ),
-        returnValueForMissingStub: null,
-      );
+    Invocation.setter(#onLogged, _onLogged),
+    returnValueForMissingStub: null,
+  );
 
   @override
-  _i2.Level get level => (super.noSuchMethod(
-        Invocation.getter(#level),
-        returnValue: _FakeLevel_0(
-          this,
-          Invocation.getter(#level),
-        ),
-        returnValueForMissingStub: _FakeLevel_0(
-          this,
-          Invocation.getter(#level),
-        ),
-      ) as _i2.Level);
+  _i2.Level get level =>
+      (super.noSuchMethod(
+            Invocation.getter(#level),
+            returnValue: _FakeLevel_0(this, Invocation.getter(#level)),
+            returnValueForMissingStub: _FakeLevel_0(
+              this,
+              Invocation.getter(#level),
+            ),
+          )
+          as _i2.Level);
 
   @override
-  _i2.Level get stackTraceLevel => (super.noSuchMethod(
-        Invocation.getter(#stackTraceLevel),
-        returnValue: _FakeLevel_0(
-          this,
-          Invocation.getter(#stackTraceLevel),
-        ),
-        returnValueForMissingStub: _FakeLevel_0(
-          this,
-          Invocation.getter(#stackTraceLevel),
-        ),
-      ) as _i2.Level);
+  _i2.Level get stackTraceLevel =>
+      (super.noSuchMethod(
+            Invocation.getter(#stackTraceLevel),
+            returnValue: _FakeLevel_0(
+              this,
+              Invocation.getter(#stackTraceLevel),
+            ),
+            returnValueForMissingStub: _FakeLevel_0(
+              this,
+              Invocation.getter(#stackTraceLevel),
+            ),
+          )
+          as _i2.Level);
 
   @override
-  bool get includeCallerInfo => (super.noSuchMethod(
-        Invocation.getter(#includeCallerInfo),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
+  bool get includeCallerInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#includeCallerInfo),
+            returnValue: false,
+            returnValueForMissingStub: false,
+          )
+          as bool);
 
   @override
-  int get callerInfoFrameLevelOffset => (super.noSuchMethod(
-        Invocation.getter(#callerInfoFrameLevelOffset),
-        returnValue: 0,
-        returnValueForMissingStub: 0,
-      ) as int);
+  int get callerInfoFrameLevelOffset =>
+      (super.noSuchMethod(
+            Invocation.getter(#callerInfoFrameLevelOffset),
+            returnValue: 0,
+            returnValueForMissingStub: 0,
+          )
+          as int);
 
   @override
-  bool isLoggable(_i2.Level? value) => (super.noSuchMethod(
-        Invocation.method(
-          #isLoggable,
-          [value],
-        ),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
+  bool isLoggable(_i2.Level? value) =>
+      (super.noSuchMethod(
+            Invocation.method(#isLoggable, [value]),
+            returnValue: false,
+            returnValueForMissingStub: false,
+          )
+          as bool);
 
   @override
   void setLevel(
@@ -235,19 +234,18 @@ class MockSimpleLogger extends _i1.Mock implements _i5.SimpleLogger {
     _i2.Level? stackTraceLevel = _i2.Level.SEVERE,
     bool? includeCallerInfo = false,
     int? callerInfoFrameLevelOffset = 0,
-  }) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #setLevel,
-          [level],
-          {
-            #stackTraceLevel: stackTraceLevel,
-            #includeCallerInfo: includeCallerInfo,
-            #callerInfoFrameLevelOffset: callerInfoFrameLevelOffset,
-          },
-        ),
-        returnValueForMissingStub: null,
-      );
+  }) => super.noSuchMethod(
+    Invocation.method(
+      #setLevel,
+      [level],
+      {
+        #stackTraceLevel: stackTraceLevel,
+        #includeCallerInfo: includeCallerInfo,
+        #callerInfoFrameLevelOffset: callerInfoFrameLevelOffset,
+      },
+    ),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void assertOrShout(
@@ -256,22 +254,14 @@ class MockSimpleLogger extends _i1.Mock implements _i5.SimpleLogger {
     DateTime? time,
     Object? error,
     StackTrace? stackTrace,
-  }) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #assertOrShout,
-          [
-            condition,
-            message,
-          ],
-          {
-            #time: time,
-            #error: error,
-            #stackTrace: stackTrace,
-          },
-        ),
-        returnValueForMissingStub: null,
-      );
+  }) => super.noSuchMethod(
+    Invocation.method(
+      #assertOrShout,
+      [condition, message],
+      {#time: time, #error: error, #stackTrace: stackTrace},
+    ),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void log(
@@ -280,20 +270,12 @@ class MockSimpleLogger extends _i1.Mock implements _i5.SimpleLogger {
     DateTime? time,
     Object? error,
     StackTrace? stackTrace,
-  }) =>
-      super.noSuchMethod(
-        Invocation.method(
-          #log,
-          [
-            level,
-            message,
-          ],
-          {
-            #time: time,
-            #error: error,
-            #stackTrace: stackTrace,
-          },
-        ),
-        returnValueForMissingStub: null,
-      );
+  }) => super.noSuchMethod(
+    Invocation.method(
+      #log,
+      [level, message],
+      {#time: time, #error: error, #stackTrace: stackTrace},
+    ),
+    returnValueForMissingStub: null,
+  );
 }

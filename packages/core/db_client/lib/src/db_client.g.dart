@@ -11,74 +11,110 @@ class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _contentMeta =
-      const VerificationMeta('content');
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _contentMeta = const VerificationMeta(
+    'content',
+  );
   @override
   late final GeneratedColumn<String> content = GeneratedColumn<String>(
-      'content', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'content',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
-      'date', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: currentDateAndTime);
-  static const VerificationMeta _updatedAtMeta =
-      const VerificationMeta('updatedAt');
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
   @override
   late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
-      'updated_at', aliasedName, false,
-      type: DriftSqlType.dateTime,
-      requiredDuringInsert: false,
-      defaultValue: currentDateAndTime);
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, content, date, createdAt, updatedAt];
+  List<GeneratedColumn> get $columns => [
+    id,
+    content,
+    date,
+    createdAt,
+    updatedAt,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'diaries';
   @override
-  VerificationContext validateIntegrity(Insertable<Diary> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Diary> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('content')) {
-      context.handle(_contentMeta,
-          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+      context.handle(
+        _contentMeta,
+        content.isAcceptableOrUnknown(data['content']!, _contentMeta),
+      );
     } else if (isInserting) {
       context.missing(_contentMeta);
     }
     if (data.containsKey('date')) {
       context.handle(
-          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
     } else if (isInserting) {
       context.missing(_dateMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     }
     if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
     }
     return context;
   }
@@ -89,16 +125,31 @@ class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
   Diary map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Diary(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      content: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
-      date: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}date'])!,
-      createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
+      id:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.int,
+            data['${effectivePrefix}id'],
+          )!,
+      content:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.string,
+            data['${effectivePrefix}content'],
+          )!,
+      date:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}date'],
+          )!,
+      createdAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}created_at'],
+          )!,
+      updatedAt:
+          attachedDatabase.typeMapping.read(
+            DriftSqlType.dateTime,
+            data['${effectivePrefix}updated_at'],
+          )!,
     );
   }
 
@@ -135,12 +186,13 @@ class Diary extends DataClass implements Insertable<Diary> {
   /// This column stores the timestamp when the diary entry was last updated. It
   /// defaults to the current date and time.
   final DateTime updatedAt;
-  const Diary(
-      {required this.id,
-      required this.content,
-      required this.date,
-      required this.createdAt,
-      required this.updatedAt});
+  const Diary({
+    required this.id,
+    required this.content,
+    required this.date,
+    required this.createdAt,
+    required this.updatedAt,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -162,8 +214,10 @@ class Diary extends DataClass implements Insertable<Diary> {
     );
   }
 
-  factory Diary.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Diary.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Diary(
       id: serializer.fromJson<int>(json['id']),
@@ -185,19 +239,19 @@ class Diary extends DataClass implements Insertable<Diary> {
     };
   }
 
-  Diary copyWith(
-          {int? id,
-          String? content,
-          DateTime? date,
-          DateTime? createdAt,
-          DateTime? updatedAt}) =>
-      Diary(
-        id: id ?? this.id,
-        content: content ?? this.content,
-        date: date ?? this.date,
-        createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
-      );
+  Diary copyWith({
+    int? id,
+    String? content,
+    DateTime? date,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) => Diary(
+    id: id ?? this.id,
+    content: content ?? this.content,
+    date: date ?? this.date,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+  );
   Diary copyWithCompanion(DiariesCompanion data) {
     return Diary(
       id: data.id.present ? data.id.value : this.id,
@@ -252,8 +306,8 @@ class DiariesCompanion extends UpdateCompanion<Diary> {
     required DateTime date,
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-  })  : content = Value(content),
-        date = Value(date);
+  }) : content = Value(content),
+       date = Value(date);
   static Insertable<Diary> custom({
     Expression<int>? id,
     Expression<String>? content,
@@ -270,12 +324,13 @@ class DiariesCompanion extends UpdateCompanion<Diary> {
     });
   }
 
-  DiariesCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? content,
-      Value<DateTime>? date,
-      Value<DateTime>? createdAt,
-      Value<DateTime>? updatedAt}) {
+  DiariesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? content,
+    Value<DateTime>? date,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+  }) {
     return DiariesCompanion(
       id: id ?? this.id,
       content: content ?? this.content,
@@ -330,20 +385,22 @@ abstract class _$DbClient extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [diaries];
 }
 
-typedef $$DiariesTableCreateCompanionBuilder = DiariesCompanion Function({
-  Value<int> id,
-  required String content,
-  required DateTime date,
-  Value<DateTime> createdAt,
-  Value<DateTime> updatedAt,
-});
-typedef $$DiariesTableUpdateCompanionBuilder = DiariesCompanion Function({
-  Value<int> id,
-  Value<String> content,
-  Value<DateTime> date,
-  Value<DateTime> createdAt,
-  Value<DateTime> updatedAt,
-});
+typedef $$DiariesTableCreateCompanionBuilder =
+    DiariesCompanion Function({
+      Value<int> id,
+      required String content,
+      required DateTime date,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+    });
+typedef $$DiariesTableUpdateCompanionBuilder =
+    DiariesCompanion Function({
+      Value<int> id,
+      Value<String> content,
+      Value<DateTime> date,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+    });
 
 class $$DiariesTableFilterComposer extends Composer<_$DbClient, $DiariesTable> {
   $$DiariesTableFilterComposer({
@@ -354,19 +411,29 @@ class $$DiariesTableFilterComposer extends Composer<_$DbClient, $DiariesTable> {
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnFilters(column));
+    column: $table.content,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<DateTime> get date => $composableBuilder(
-      column: $table.date, builder: (column) => ColumnFilters(column));
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
-      column: $table.updatedAt, builder: (column) => ColumnFilters(column));
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$DiariesTableOrderingComposer
@@ -379,19 +446,29 @@ class $$DiariesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnOrderings(column));
+    column: $table.content,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get date => $composableBuilder(
-      column: $table.date, builder: (column) => ColumnOrderings(column));
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
-      column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$DiariesTableAnnotationComposer
@@ -419,75 +496,89 @@ class $$DiariesTableAnnotationComposer
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 }
 
-class $$DiariesTableTableManager extends RootTableManager<
-    _$DbClient,
-    $DiariesTable,
-    Diary,
-    $$DiariesTableFilterComposer,
-    $$DiariesTableOrderingComposer,
-    $$DiariesTableAnnotationComposer,
-    $$DiariesTableCreateCompanionBuilder,
-    $$DiariesTableUpdateCompanionBuilder,
-    (Diary, BaseReferences<_$DbClient, $DiariesTable, Diary>),
-    Diary,
-    PrefetchHooks Function()> {
+class $$DiariesTableTableManager
+    extends
+        RootTableManager<
+          _$DbClient,
+          $DiariesTable,
+          Diary,
+          $$DiariesTableFilterComposer,
+          $$DiariesTableOrderingComposer,
+          $$DiariesTableAnnotationComposer,
+          $$DiariesTableCreateCompanionBuilder,
+          $$DiariesTableUpdateCompanionBuilder,
+          (Diary, BaseReferences<_$DbClient, $DiariesTable, Diary>),
+          Diary,
+          PrefetchHooks Function()
+        > {
   $$DiariesTableTableManager(_$DbClient db, $DiariesTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () =>
-              $$DiariesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$DiariesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$DiariesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> content = const Value.absent(),
-            Value<DateTime> date = const Value.absent(),
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime> updatedAt = const Value.absent(),
-          }) =>
-              DiariesCompanion(
-            id: id,
-            content: content,
-            date: date,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String content,
-            required DateTime date,
-            Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime> updatedAt = const Value.absent(),
-          }) =>
-              DiariesCompanion.insert(
-            id: id,
-            content: content,
-            date: date,
-            createdAt: createdAt,
-            updatedAt: updatedAt,
-          ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
+          createFilteringComposer:
+              () => $$DiariesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer:
+              () => $$DiariesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer:
+              () => $$DiariesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> content = const Value.absent(),
+                Value<DateTime> date = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => DiariesCompanion(
+                id: id,
+                content: content,
+                date: date,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String content,
+                required DateTime date,
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+              }) => DiariesCompanion.insert(
+                id: id,
+                content: content,
+                date: date,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+              ),
+          withReferenceMapper:
+              (p0) =>
+                  p0
+                      .map(
+                        (e) => (
+                          e.readTable(table),
+                          BaseReferences(db, table, e),
+                        ),
+                      )
+                      .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$DiariesTableProcessedTableManager = ProcessedTableManager<
-    _$DbClient,
-    $DiariesTable,
-    Diary,
-    $$DiariesTableFilterComposer,
-    $$DiariesTableOrderingComposer,
-    $$DiariesTableAnnotationComposer,
-    $$DiariesTableCreateCompanionBuilder,
-    $$DiariesTableUpdateCompanionBuilder,
-    (Diary, BaseReferences<_$DbClient, $DiariesTable, Diary>),
-    Diary,
-    PrefetchHooks Function()>;
+typedef $$DiariesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$DbClient,
+      $DiariesTable,
+      Diary,
+      $$DiariesTableFilterComposer,
+      $$DiariesTableOrderingComposer,
+      $$DiariesTableAnnotationComposer,
+      $$DiariesTableCreateCompanionBuilder,
+      $$DiariesTableUpdateCompanionBuilder,
+      (Diary, BaseReferences<_$DbClient, $DiariesTable, Diary>),
+      Diary,
+      PrefetchHooks Function()
+    >;
 
 class $DbClientManager {
   final _$DbClient _db;
