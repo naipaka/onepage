@@ -49,15 +49,15 @@ dependencies:
 dev_dependencies:
   altive_lints: ^1.18.0
   build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.5
   flutter_gen_runner: ^5.8.0
   flutter_launcher_icons: ^0.14.2
   flutter_native_splash: ^2.4.3
   flutter_test:
     sdk: flutter
   go_router_builder: ^2.7.1
-  riverpod_generator: ^2.6.3
-  riverpod_lint: ^2.6.3
+  riverpod_generator: ^2.6.5
+  riverpod_lint: ^2.6.5
 
 flutter_gen:
   enabled: true

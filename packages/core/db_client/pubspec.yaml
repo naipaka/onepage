@@ -22,7 +22,7 @@ dependencies:
 dev_dependencies:
   altive_lints: ^1.18.0
   build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.5
   drift_dev: ^2.23.0
   flutter_test: 
     sdk: flutter

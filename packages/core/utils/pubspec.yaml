@@ -15,7 +15,7 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.18.0
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.5
   # Because flutter_test depends on fake_async 1.3.1.
   fake_async: ^1.3.1
   # Because flutter_test depends on test_api 0.7.3.
