@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// SnackBarを表示する。
+/// Display a SnackBar.
 void showSnackBar(
   BuildContext context, {
   required String message,

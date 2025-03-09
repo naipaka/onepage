@@ -22,10 +22,7 @@ class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
   @override
   late final GeneratedColumn<String> content = GeneratedColumn<String>(
       'content', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(
-          minTextLength: 0, maxTextLength: 1000),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _dateMeta = const VerificationMeta('date');
   @override
   late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
@@ -119,8 +116,7 @@ class Diary extends DataClass implements Insertable<Diary> {
 
   /// The content of the diary entry.
   ///
-  /// This column stores the text content of the diary. The length of the text
-  /// is constrained to be between 0 and 1000 characters.
+  /// This column stores the text content of the diary.
   final String content;
 
   /// The date of the diary entry.

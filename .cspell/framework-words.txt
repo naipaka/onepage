@@ -22,6 +22,7 @@ configurator
 crashlytics
 cupertino
 darkbackground
+dartdoc
 dartx
 dblite
 devicelab
@@ -32,6 +33,7 @@ DSYM
 endforeach
 endtemplate
 fixnum
+fluttercommunity
 flutterfire
 fullscreen
 fvmrc

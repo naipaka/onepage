@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:diary/diary.dart';
@@ -12,6 +14,7 @@ import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
+import '../../gen/assets.gen.dart';
 import '../../router/src/app_routes.dart';
 
 /// {@template onepage.HomePage}
@@ -45,7 +48,16 @@ class HomePage extends HookConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: scrollCalendarController.scrollToToday,
+            onPressed: () async {
+              await scrollCalendarController.scrollToToday();
+              if (!context.mounted) {
+                return;
+              }
+              showSnackBar(
+                context,
+                message: context.t.home.scrollToToday,
+              );
+            },
             icon: const Icon(Icons.today_outlined),
           ),
         ],
@@ -113,13 +125,22 @@ class HomePage extends HookConsumerWidget {
                               content: content,
                             );
                           }
-                        } on Exception catch (e) {
+                        } on Object catch (e) {
+                          final tracker = ref.read(trackerProvider);
+                          unawaited(
+                            tracker.recordError(
+                              e,
+                              StackTrace.current,
+                              fatal: true,
+                            ),
+                          );
                           if (!context.mounted) {
                             return;
                           }
                           showErrorSnackBar(
                             context,
-                            message: e.toString(),
+                            message: '${t.home.errorSavingDiary}\n'
+                                '${t.home.errorSavingDiarySolution}',
                           );
                         }
                       },
@@ -148,8 +169,7 @@ class _Drawer extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
-                Image.asset(
-                  'assets/icon.png',
+                Assets.icon.image(
                   width: 64,
                   height: 64,
                 ),
@@ -186,6 +206,14 @@ class _Drawer extends ConsumerWidget {
             title: Text(t.home.license),
             onTap: () {
               const LicenseRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          ListTile(
+            leading: const Icon(Icons.backup_outlined),
+            title: Text(t.home.backup),
+            onTap: () {
+              const BackupRouteData().go(context);
             },
           ),
         ],

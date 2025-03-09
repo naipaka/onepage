@@ -1,5 +1,12 @@
 platform :ios, '13.0'
 
+# For file_picker: disable media (images/videos) and audio pickers to avoid extra permissions 
+# (e.g. NSPhotoLibraryUsageDescription) since we only need document picking for DB backups.
+# https://github.com/miguelpruivo/flutter_file_picker/wiki/Setup#ios
+Pod::PICKER_MEDIA = false
+Pod::PICKER_AUDIO = false
+# Leave Pod::PICKER_DOCUMENT enabled.
+
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 

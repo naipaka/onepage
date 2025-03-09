@@ -420,6 +420,18 @@ class MockDbClient extends _i1.Mock implements _i2.DbClient {
       ) as _i3.DatabaseConnectionUser);
 
   @override
+  _i5.Future<void> writeBackupToFile({required String? filePath}) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #writeBackupToFile,
+          [],
+          {#filePath: filePath},
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
   _i5.Future<_i2.Diary> insertDiary({
     required String? content,
     required DateTime? date,

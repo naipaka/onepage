@@ -28,5 +28,25 @@ final dbClientProvider = Provider<DbClient>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef DbClientRef = ProviderRef<DbClient>;
+String _$dbConnectionHash() => r'768f16c324dc661e92c4b83ff7d7fc965599c2c6';
+
+/// Provide a [DbConnection] instance.
+///
+/// {@macro db_client.Connection}
+///
+/// Copied from [dbConnection].
+@ProviderFor(dbConnection)
+final dbConnectionProvider = Provider<DbConnection>.internal(
+  dbConnection,
+  name: r'dbConnectionProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$dbConnectionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef DbConnectionRef = ProviderRef<DbConnection>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

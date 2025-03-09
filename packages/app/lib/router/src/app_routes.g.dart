@@ -20,6 +20,10 @@ RouteBase get $homeRouteData => GoRouteData.$route(
           path: 'license',
           factory: $LicenseRouteDataExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: 'backup',
+          factory: $BackupRouteDataExtension._fromState,
+        ),
       ],
     );
 
@@ -46,6 +50,24 @@ extension $LicenseRouteDataExtension on LicenseRouteData {
 
   String get location => GoRouteData.$location(
         '/license',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $BackupRouteDataExtension on BackupRouteData {
+  static BackupRouteData _fromState(GoRouterState state) =>
+      const BackupRouteData();
+
+  String get location => GoRouteData.$location(
+        '/backup',
       );
 
   void go(BuildContext context) => context.go(location);

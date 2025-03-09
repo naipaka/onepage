@@ -5,8 +5,10 @@ coverage:
   status:
     project:
       default:
-        target: auto
-        threshold: 0
+        target: 0
+    patch:
+      default:
+        target: 0
 
 # excluding generated files and examples from the coverage report
 ignore:

@@ -37,6 +37,7 @@ class TranslationsEn implements Translations {
 	@override String get organization => 'NPK Studio';
 	@override late final _TranslationsUpdateRequestEn updateRequest = _TranslationsUpdateRequestEn._(_root);
 	@override late final _TranslationsHomeEn home = _TranslationsHomeEn._(_root);
+	@override late final _TranslationsBackupEn backup = _TranslationsBackupEn._(_root);
 }
 
 // Path: updateRequest
@@ -59,6 +60,28 @@ class _TranslationsHomeEn implements TranslationsHomeJa {
 	// Translations
 	@override String get title => 'Home';
 	@override String get license => 'License';
+	@override String get backup => 'Backup';
+	@override String get scrollToToday => 'Scrolled to Today\'s Diary!';
+	@override String get errorSavingDiary => 'An error occurred while saving your diary';
+	@override String get errorSavingDiarySolution => 'We apologize, but please copy your text and restart the app';
+}
+
+// Path: backup
+class _TranslationsBackupEn implements TranslationsBackupJa {
+	_TranslationsBackupEn._(this._root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Backup';
+	@override String get description => 'Backup for a Smooth Device Switch';
+	@override String get explanation => 'Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.).';
+	@override String get restoreExplanation => 'Simply select the saved backup file to restore your data.\nPlease note: Restoring will overwrite your current data.';
+	@override String get successMessage => 'Backup created successfully!';
+	@override String get failedMessage => 'Failed to create backup';
+	@override String get restoreFailedMessage => 'Failed to restore backup';
+	@override String get restoreSuccess => 'Restoring your backup was successful';
+	@override late final _TranslationsBackupActionsEn actions = _TranslationsBackupActionsEn._(_root);
 }
 
 // Path: updateRequest.button
@@ -69,6 +92,18 @@ class _TranslationsUpdateRequestButtonEn implements TranslationsUpdateRequestBut
 
 	// Translations
 	@override String get updateNow => 'Update Now';
+}
+
+// Path: backup.actions
+class _TranslationsBackupActionsEn implements TranslationsBackupActionsJa {
+	_TranslationsBackupActionsEn._(this._root);
+
+	final TranslationsEn _root; // ignore: unused_field
+
+	// Translations
+	@override String get create => 'Create Backup';
+	@override String get restore => 'Restore Backup';
+	@override String get goToHome => 'Go to Home';
 }
 
 /// Flat map(s) containing all translations.
@@ -82,6 +117,21 @@ extension on TranslationsEn {
 			case 'updateRequest.button.updateNow': return 'Update Now';
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
+			case 'home.backup': return 'Backup';
+			case 'home.scrollToToday': return 'Scrolled to Today\'s Diary!';
+			case 'home.errorSavingDiary': return 'An error occurred while saving your diary';
+			case 'home.errorSavingDiarySolution': return 'We apologize, but please copy your text and restart the app';
+			case 'backup.title': return 'Backup';
+			case 'backup.description': return 'Backup for a Smooth Device Switch';
+			case 'backup.explanation': return 'Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.).';
+			case 'backup.restoreExplanation': return 'Simply select the saved backup file to restore your data.\nPlease note: Restoring will overwrite your current data.';
+			case 'backup.successMessage': return 'Backup created successfully!';
+			case 'backup.failedMessage': return 'Failed to create backup';
+			case 'backup.restoreFailedMessage': return 'Failed to restore backup';
+			case 'backup.restoreSuccess': return 'Restoring your backup was successful';
+			case 'backup.actions.create': return 'Create Backup';
+			case 'backup.actions.restore': return 'Restore Backup';
+			case 'backup.actions.goToHome': return 'Go to Home';
 			default: return null;
 		}
 	}

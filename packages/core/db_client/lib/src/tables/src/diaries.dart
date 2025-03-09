@@ -10,9 +10,8 @@ class Diaries extends Table {
 
   /// The content of the diary entry.
   ///
-  /// This column stores the text content of the diary. The length of the text
-  /// is constrained to be between 0 and 1000 characters.
-  TextColumn get content => text().withLength(min: 0, max: 1000)();
+  /// This column stores the text content of the diary.
+  TextColumn get content => text()();
 
   /// The date of the diary entry.
   ///

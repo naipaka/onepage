@@ -49,6 +49,10 @@ This package provides utility functions for the application.
 
 This package provides generic widgets for the application.
 
+### [features/backup](packages/features/backup)
+
+This package provides the backup feature of the application.
+
 ### [features/diary](packages/features/diary)
 
 This package provides the diary feature of the application.
@@ -68,6 +72,28 @@ make
 ```
 
 The `make` command will install the required Dart packages, such as FVM and Melos.
+
+### Firebase Integration
+Run the following commands to generate Firebase configuration files:
+
+#### For Development Environment
+```shell
+flutterfire configure --out=lib/environment/src/firebase_options_dev.dart --platforms=android,ios --ios-bundle-id=com.naipaka.onepage.dev --android-package-name=com.naipaka.onepage.dev
+```
+
+Move the generated `ios/Runner/GoogleService-Info.plist` to `ios/dev/` directory.
+
+#### For Production Environment
+```shell
+flutterfire configure --out=lib/environment/src/firebase_options_prod.dart --platforms=android,ios --ios-bundle-id=com.naipaka.onepage --android-package-name=com.naipaka.onepage
+```
+
+Move the generated `ios/Runner/GoogleService-Info.plist` to `ios/prod/` directory.
+
+### Environment Variables
+Place the following environment variable files in the `packages/app/dart_defines` directory:
+- `dev.env`: Development environment variables
+- `prod.env`: Production environment variables
 
 ## How to create a new package
 
