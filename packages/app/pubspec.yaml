@@ -25,13 +25,11 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.20.5
-  freezed_annotation: ^2.4.4
   gap: ^3.0.1
   go_router: ^14.6.2
   hooks_riverpod: ^2.6.1
   i18n:
     path: ../core/i18n/
-  json_annotation: ^4.9.0
   package_info_plus: ^8.1.2
   provider_utils:
     path: ../core/provider_utils/
@@ -57,10 +55,7 @@ dev_dependencies:
   flutter_native_splash: ^2.4.3
   flutter_test:
     sdk: flutter
-  freezed: ^2.5.7
   go_router_builder: ^2.7.1
-  # Because freezed depends on source_gen 1.4.0.
-  json_serializable: ^6.9.0
   riverpod_generator: ^2.6.3
   riverpod_lint: ^2.6.3
 
