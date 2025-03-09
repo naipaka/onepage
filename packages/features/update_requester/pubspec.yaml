@@ -20,7 +20,7 @@ dependencies:
 dev_dependencies:
   altive_lints: ^1.18.0
   build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.3
   flutter_test:
     sdk: flutter
   freezed: ^2.5.7

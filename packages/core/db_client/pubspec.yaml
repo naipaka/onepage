@@ -10,7 +10,7 @@ resolution: workspace
 
 dependencies:
   # Because flutter_test depends on clock 1.1.1.
-  clock: ^1.1.1
+  clock: ^1.1.2
   drift: ^2.23.1
   drift_flutter: ^0.2.4
   flutter:
@@ -22,7 +22,7 @@ dependencies:
 dev_dependencies:
   altive_lints: ^1.18.0
   build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.3
   drift_dev: ^2.23.0
   flutter_test: 
     sdk: flutter

@@ -14,7 +14,7 @@ dependencies:
   backup:
     path: ../features/backup/
   # Because flutter_test depends on clock 1.1.1.
-  clock: ^1.1.1
+  clock: ^1.1.2
   # Because flutter_test depends on collection 1.19.0.
   collection: ^1.19.0
   db_client:
@@ -49,10 +49,10 @@ dependencies:
 dev_dependencies:
   altive_lints: ^1.18.0
   build_runner: ^2.4.14
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.3
   flutter_gen_runner: ^5.8.0
-  flutter_launcher_icons: ^0.14.2
-  flutter_native_splash: ^2.4.3
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.5
   flutter_test:
     sdk: flutter
   go_router_builder: ^2.7.1

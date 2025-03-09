@@ -10,7 +10,7 @@ resolution: workspace
 
 dependencies:
   # Because flutter_test depends on clock 1.1.1.
-  clock: ^1.1.1
+  clock: ^1.1.2
   flutter:
     sdk: flutter
   gap: ^3.0.1
@@ -21,7 +21,7 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.18.0
-  custom_lint: ^0.7.0
+  custom_lint: ^0.7.3
   flutter_test:
     sdk: flutter
 
