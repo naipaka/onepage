@@ -20,11 +20,11 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.18.0
-  build_runner: ^2.4.14
+  build_runner: ^2.4.15
   custom_lint: ^0.7.0
   flutter_test:
     sdk: flutter
   mockito: ^5.4.5
-  riverpod_generator: ^2.6.3
+  riverpod_generator: ^2.6.4
   riverpod_lint: ^2.6.3
   
