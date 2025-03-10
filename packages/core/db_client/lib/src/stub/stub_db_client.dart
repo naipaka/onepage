@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:clock/clock.dart';
 
-import '../db_client.dart';
+import '../../db_client.dart';
 
 /// {@template db_client.StubDbClient}
 /// A stub database client for testing purposes.
