@@ -9,7 +9,9 @@ home:
   title: "Home"
   license: "License"
   backup: "Backup"
-  scrollToToday: "Scrolled to Today's Diary!"
+  scrollToTodayTitle: "Go to Today's Diary"
+  scrollToDateTitle: "Go to the Diary for ${date}"
+  scrollToDescription: "Scrolling complete!"
   errorSavingDiary: "An error occurred while saving your diary"
   errorSavingDiarySolution: "We apologize, but please copy your text and restart the app"
 backup:

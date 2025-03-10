@@ -24,9 +24,7 @@ class BackupPage extends ConsumerWidget {
     final controller = ref.watch(backupControllerProvider);
     final t = context.t;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(t.backup.title),
-      ),
+      appBar: AppBar(title: Text(t.backup.title)),
       body: SafeArea(
         // Using [LayoutBuilder] and [ConstrainedBox] to achieve:
         // - Content is centered when scrolling is not needed
@@ -37,18 +35,11 @@ class BackupPage extends ConsumerWidget {
               child: Container(
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Column(
                   children: [
-                    Assets.images.backup.image(
-                      width: 200,
-                      height: 200,
-                    ),
-                    TitleLargeText(
-                      t.backup.description,
-                    ),
+                    Assets.images.backup.image(width: 200, height: 200),
+                    TitleLargeText(t.backup.description),
                     const _Divider(),
                     // Create backup.
                     Padding(
@@ -71,9 +62,10 @@ class BackupPage extends ConsumerWidget {
                           if (!context.mounted) {
                             return;
                           }
-                          showSnackBar(
+                          showSuccessToast(
                             context,
-                            message: t.backup.successMessage,
+                            title: t.backup.successMessage,
+                            icon: const Icon(Icons.backup_outlined),
                           );
                         } on Object catch (e) {
                           final tracker = ref.read(trackerProvider);
@@ -84,9 +76,9 @@ class BackupPage extends ConsumerWidget {
                               fatal: true,
                             ),
                           );
-                          showSnackBar(
+                          showErrorToast(
                             context,
-                            message: t.backup.failedMessage,
+                            title: t.backup.failedMessage,
                           );
                         } finally {
                           ref.hideLoading();
@@ -134,9 +126,9 @@ class BackupPage extends ConsumerWidget {
                               fatal: true,
                             ),
                           );
-                          showSnackBar(
+                          showErrorToast(
                             context,
-                            message: t.backup.restoreFailedMessage,
+                            title: t.backup.restoreFailedMessage,
                           );
                         } finally {
                           ref.hideLoading();
@@ -189,18 +181,13 @@ class _BackupRestoreDialog extends StatelessWidget {
     return PopScope(
       canPop: false,
       child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Container(
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Assets.images.restoredBackup.image(
-                width: 160,
-                height: 160,
-              ),
+              Assets.images.restoredBackup.image(width: 160, height: 160),
               TitleMediumText(
                 t.backup.restoreSuccess,
                 textAlign: TextAlign.center,

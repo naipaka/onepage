@@ -11,6 +11,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
+  toastification: ^3.0.1
 
 dev_dependencies:
   altive_lints: ^1.19.1

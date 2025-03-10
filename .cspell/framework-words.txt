@@ -84,6 +84,7 @@ swiftpm
 Symbolication
 technote
 temurin
+toastification
 Tsvg
 unawaited
 Unfocus
