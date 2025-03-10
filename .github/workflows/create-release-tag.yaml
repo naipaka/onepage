@@ -1,5 +1,8 @@
 name: Create new release tag
 
+permissions:
+  contents: write
+
 on:
   # Trigger when a PR to main is closed.
   pull_request:

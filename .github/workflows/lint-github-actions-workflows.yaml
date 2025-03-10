@@ -1,11 +1,15 @@
 name: Lint GitHub Actions workflows
-on: 
+
+permissions:
+  contents: read
+
+on:
   push:
     branches: [main]
-    paths: ['.github/workflows/**']
+    paths: [".github/workflows/**"]
   pull_request:
     types: [opened, synchronize, reopened]
-    paths: ['.github/workflows/**']
+    paths: [".github/workflows/**"]
   workflow_dispatch:
 
 concurrency:

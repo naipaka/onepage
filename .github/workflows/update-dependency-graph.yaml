@@ -1,5 +1,9 @@
 name: Update Dependency Graph
 
+permissions:
+  contents: write
+  pull-requests: write
+
 on:
   push:
     branches:
@@ -45,7 +49,7 @@ jobs:
         run: |
           melos list
           melos list --gviz > "dependency_graph.dot"
-      
+
       - name: Upload Dependency Graph as Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -158,4 +162,3 @@ jobs:
           title: "doc: Update Dependency Graph"
           body: "This PR updates the dependency graph and SVG image."
         run: gh pr create -B "$GITHUB_REF" -H "${{ env.BRANCH_NAME }}" -t "${{ env.title }}" -b "${{ env.body }}" -a "$GITHUB_ACTOR"
-

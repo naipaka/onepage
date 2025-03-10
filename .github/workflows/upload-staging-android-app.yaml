@@ -1,5 +1,8 @@
 name: Upload staging android app
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: [closed]
