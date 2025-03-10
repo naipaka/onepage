@@ -15,3 +15,5 @@ ignore:
   - "**/gen"
   - "**/*.g.dart"
   - "**/*.freezed.dart"
+  - "**/stub/**"
+  - "**/tables/**"

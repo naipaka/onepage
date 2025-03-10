@@ -216,23 +216,36 @@ packages/
 
 ## Internationalization Guidelines
 
-1. Message Structure:
+1. Framework Usage:
+   - Slang (https://pub.dev/packages/slang) is used for internationalization
+   - Follow the Slang pattern for all translations
+   - Use the code generation workflow for type-safe translations
+   - All translations must be defined in appropriate i18n files
+
+2. Translation Package Structure:
+   - Translations are centralized in the `packages/core/i18n` package
+   - Translation files are located in `lib/src/i18n/` directory
+   - Currently supports English (`app_en.yaml`) and Japanese (`app_ja.yaml`)
+   - New languages should be added as separate YAML files following the same naming convention
+   - Generated code is stored in `lib/src/gen/` directory
+
+3. Message Structure:
    - Provide clear and concise messages
    - Include action items when necessary
    - Maintain appropriate tone for each language (e.g., formal in Japanese, concise in English)
 
-2. Localization Implementation:
+4. Localization Implementation:
    - All user-facing text must be internationalized
    - Account for cultural considerations in each language
    - Maintain consistent message structure across languages
 
-3. i18n File Management:
+5. i18n File Management:
    - Organize messages in appropriate hierarchical structure
    - Group related messages together
    - Consider reusability for common messages
    - Use descriptive keys that reflect the message context
 
-4. Message Handling:
+6. Message Handling:
    - Provide appropriate context in messages
    - Include recovery steps when applicable
    - Prioritize user data protection
