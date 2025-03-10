@@ -61,7 +61,9 @@ class _TranslationsHomeEn implements TranslationsHomeJa {
 	@override String get title => 'Home';
 	@override String get license => 'License';
 	@override String get backup => 'Backup';
-	@override String get scrollToToday => 'Scrolled to Today\'s Diary!';
+	@override String get scrollToTodayTitle => 'Go to Today\'s Diary';
+	@override String scrollToDateTitle({required Object date}) => 'Go to the Diary for ${date}';
+	@override String get scrollToDescription => 'Scrolling complete!';
 	@override String get errorSavingDiary => 'An error occurred while saving your diary';
 	@override String get errorSavingDiarySolution => 'We apologize, but please copy your text and restart the app';
 }
@@ -118,7 +120,9 @@ extension on TranslationsEn {
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
 			case 'home.backup': return 'Backup';
-			case 'home.scrollToToday': return 'Scrolled to Today\'s Diary!';
+			case 'home.scrollToTodayTitle': return 'Go to Today\'s Diary';
+			case 'home.scrollToDateTitle': return ({required Object date}) => 'Go to the Diary for ${date}';
+			case 'home.scrollToDescription': return 'Scrolling complete!';
 			case 'home.errorSavingDiary': return 'An error occurred while saving your diary';
 			case 'home.errorSavingDiarySolution': return 'We apologize, but please copy your text and restart the app';
 			case 'backup.title': return 'Backup';

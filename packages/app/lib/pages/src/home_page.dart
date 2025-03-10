@@ -51,7 +51,12 @@ class HomePage extends HookConsumerWidget {
               if (!context.mounted) {
                 return;
               }
-              showSnackBar(context, message: context.t.home.scrollToToday);
+              showSuccessToast(
+                context,
+                title: context.t.home.scrollToTodayTitle,
+                description: context.t.home.scrollToDescription,
+                icon: const Icon(Icons.calendar_today_outlined),
+              );
             },
             icon: const Icon(Icons.today_outlined),
           ),
@@ -130,11 +135,10 @@ class HomePage extends HookConsumerWidget {
                           if (!context.mounted) {
                             return;
                           }
-                          showErrorSnackBar(
+                          showErrorToast(
                             context,
-                            message:
-                                '${t.home.errorSavingDiary}\n'
-                                '${t.home.errorSavingDiarySolution}',
+                            title: t.home.errorSavingDiary,
+                            description: t.home.errorSavingDiarySolution,
                           );
                         }
                       },

@@ -65,7 +65,9 @@ class TranslationsHomeJa {
 	String get title => 'Home';
 	String get license => 'License';
 	String get backup => 'Backup';
-	String get scrollToToday => '本日の日記までスクロールしました！';
+	String get scrollToTodayTitle => '本日の日記へ';
+	String scrollToDateTitle({required Object date}) => '${date}の日記へ';
+	String get scrollToDescription => 'スクロールが完了しました！';
 	String get errorSavingDiary => '日記の保存中にエラーが発生しました';
 	String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 }
@@ -122,7 +124,9 @@ extension on Translations {
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
 			case 'home.backup': return 'Backup';
-			case 'home.scrollToToday': return '本日の日記までスクロールしました！';
+			case 'home.scrollToTodayTitle': return '本日の日記へ';
+			case 'home.scrollToDateTitle': return ({required Object date}) => '${date}の日記へ';
+			case 'home.scrollToDescription': return 'スクロールが完了しました！';
 			case 'home.errorSavingDiary': return '日記の保存中にエラーが発生しました';
 			case 'home.errorSavingDiarySolution': return '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 			case 'backup.title': return 'Backup';

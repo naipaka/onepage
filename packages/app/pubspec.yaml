@@ -28,7 +28,6 @@ dependencies:
   hooks_riverpod: ^2.6.1
   i18n:
     path: ../core/i18n/
-  package_info_plus: ^8.3.0
   provider_utils:
     path: ../core/provider_utils/
   riverpod_annotation: ^2.6.1
