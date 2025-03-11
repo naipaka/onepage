@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
 
 /// A class representing the table for managing diary entries.
+@TableIndex(name: 'idx_diaries_date', columns: {#date})
 @DataClassName('Diary')
 class Diaries extends Table {
   /// The auto-incrementing primary key.

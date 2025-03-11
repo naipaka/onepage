@@ -132,3 +132,8 @@ melos run build:watch
 ```
 
 This command will build the project for the specified platforms.
+
+## How to DB migration
+
+- https://drift.simonbinder.eu/migrations
+- https://drift.simonbinder.eu/migrations/step_by_step/
