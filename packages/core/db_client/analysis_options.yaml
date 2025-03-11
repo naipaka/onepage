@@ -2,6 +2,8 @@ include: package:altive_lints/altive_lints.yaml
 analyzer:
   plugins:
     - custom_lint
+  exclude:
+    - "**/generated/**.dart"
 linter:
   rules:
     # Temporarily disabled due to a conflict with Dart 3.7.0 formatting.

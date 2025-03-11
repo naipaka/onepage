@@ -3,6 +3,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'db_client.steps.dart';
 import 'tables/tables.dart';
 
 part 'db_client.g.dart';
@@ -11,17 +12,13 @@ part 'db_client.g.dart';
 /// This class represents the database client and provides methods to interact
 /// with the database.
 /// {@endtemplate}
-@DriftDatabase(
-  tables: [
-    Diaries,
-  ],
-)
+@DriftDatabase(tables: [Diaries])
 class DbClient extends _$DbClient {
   /// {@macro db_client.DbClient}
   ///
   /// This constructor initializes the database connection using the
   /// [_openConnection] method.
-  DbClient() : super(_openConnection());
+  DbClient([QueryExecutor? e]) : super(e ?? _openConnection());
 
   /// {@macro db_client.DbClient}
   ///
@@ -31,7 +28,7 @@ class DbClient extends _$DbClient {
   DbClient.forTesting(super.e);
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   /// Opens a connection to the database.
   ///
@@ -42,6 +39,18 @@ class DbClient extends _$DbClient {
       name: 'onepage',
       native: const DriftNativeOptions(
         databaseDirectory: getApplicationSupportDirectory,
+      ),
+    );
+  }
+
+  /// Migrates the database to the latest version.
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onUpgrade: stepByStep(
+        from1To2: (m, scheme) async {
+          await m.createIndex(scheme.idxDiariesDate);
+        },
       ),
     );
   }
@@ -59,14 +68,8 @@ class DbClient extends _$DbClient {
   /// This method takes [content] and [date] as parameters and inserts
   /// a new diary entry into the 'diaries' table.
   /// It returns the inserted diary entry.
-  Future<Diary> insertDiary({
-    required String content,
-    required DateTime date,
-  }) {
-    final diary = DiariesCompanion(
-      content: Value(content),
-      date: Value(date),
-    );
+  Future<Diary> insertDiary({required String content, required DateTime date}) {
+    final diary = DiariesCompanion(content: Value(content), date: Value(date));
     return into(diaries).insertReturning(diary);
   }
 
@@ -89,14 +92,9 @@ class DbClient extends _$DbClient {
   /// This method takes an integer [id] and [content] as parameters.
   /// It updates the diary with the specified ID using the provided content.
   /// It returns the number of rows affected.
-  Future<int> updateDiary({
-    required int id,
-    required String content,
-  }) {
+  Future<int> updateDiary({required int id, required String content}) {
     final query = update(diaries)..where((tbl) => tbl.id.equals(id));
-    final diary = DiariesCompanion(
-      content: Value(content),
-    );
+    final diary = DiariesCompanion(content: Value(content));
     return query.write(diary);
   }
 }

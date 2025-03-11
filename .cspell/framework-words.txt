@@ -8,6 +8,7 @@ APPICON
 appstore
 armeabi
 assetcatalog
+AUTOINCREMENT
 Autolayout
 AUTORELEASING
 autoresizing
@@ -78,6 +79,7 @@ SDKROOT
 sourcecode
 sprintf
 SRCROOT
+strftime
 subprojects
 subviews
 swiftpm

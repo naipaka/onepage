@@ -69,14 +69,14 @@ scripts:
     packageFilters:
       dirExists: lib
       dependsOn: "flutter_launcher_icons"
-  
+
   gen:splash:
     exec: flutter pub run flutter_native_splash:create
     description: Generate splash screen.
     packageFilters:
       dirExists: lib
       dependsOn: "flutter_native_splash"
-  
+
   gen:splash:remove:
     exec: flutter pub run flutter_native_splash:remove
     description: Remove splash screen.
@@ -101,6 +101,15 @@ scripts:
     packageFilters:
       dirExists: lib
       dependsOn: slang
+
+  drift:migrations:
+    run: dart run drift_dev make-migrations
+    exec:
+      concurrency: 1
+    description: Run drift migration.
+    packageFilters:
+      dirExists: lib
+      dependsOn: "drift_dev"
 
   test:
     run: flutter test
