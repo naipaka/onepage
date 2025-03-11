@@ -378,11 +378,15 @@ abstract class _$DbClient extends GeneratedDatabase {
   _$DbClient(QueryExecutor e) : super(e);
   $DbClientManager get managers => $DbClientManager(this);
   late final $DiariesTable diaries = $DiariesTable(this);
+  late final Index idxDiariesDate = Index(
+    'idx_diaries_date',
+    'CREATE INDEX idx_diaries_date ON diaries (date)',
+  );
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [diaries];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [diaries, idxDiariesDate];
 }
 
 typedef $$DiariesTableCreateCompanionBuilder =
