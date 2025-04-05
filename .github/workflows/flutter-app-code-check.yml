@@ -68,6 +68,8 @@ jobs:
         uses: bluefireteam/melos-action@v3
         with:
           run-bootstrap: false
+          # Use temporary melos version to avoid issues with the latest version
+          melos-version: "7.0.0-dev.7"
 
       - name: Install Dependencies
         run: dart pub get --enforce-lockfile
