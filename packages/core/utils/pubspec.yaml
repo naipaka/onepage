@@ -17,5 +17,6 @@ dev_dependencies:
   altive_lints: ^1.19.1
   custom_lint: ^0.7.5
   # Because flutter_test depends on fake_async 1.3.2.
+  # https://github.com/flutter/flutter/blob/stable/packages/flutter_test/pubspec.yaml#L25
   fake_async: ^1.3.2
   test: ^1.25.15
