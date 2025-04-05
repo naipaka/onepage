@@ -1,7 +1,7 @@
 name: onepage_workspace
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.7.2
 
 workspace:
   - packages/app
