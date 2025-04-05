@@ -1,7 +1,7 @@
 name: onepage_workspace
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.7.2
 
 workspace:
   - packages/app
@@ -17,4 +17,203 @@ workspace:
   - packages/features/update_requester
 
 dev_dependencies:
-  melos: ^6.3.2
+  melos: ^7.0.0-dev.7
+
+melos:
+  repository: https://github.com/naipaka/onepage
+  sdkPath: .fvm/flutter_sdk
+
+  packages:
+    - "packages/*"
+    - "packages/core/*"
+    - "packages/features/*"
+
+  command:
+    clean:
+      hooks:
+        post: |
+          melos exec --flutter -- "flutter clean"
+          melos exec --flutter --file-exists="ios/Podfile.lock" -- "cd ios && rm Podfile.lock"
+          melos exec --flutter --file-exists="macos/Podfile.lock" -- "cd macos && rm Podfile.lock"
+    version:
+      branch: main
+      releaseUrl: true
+
+  scripts:
+    custom_lint:
+      exec: dart run custom_lint
+      description: Run custom_lint.
+      packageFilters:
+        dirExists: lib
+        dependsOn: "custom_lint"
+
+    # Issue on file exclusion feature: https://github.com/dart-lang/dart_style/issues/864
+    # NOTE: Using the `exec:` format causes processing to stop
+    format:ci:
+      run: |
+        melos exec -- \
+          dart format --set-exit-if-changed $(find . -name "*.dart" -not \( -name "*.*freezed.dart" -o -name "*.*g.dart" -o -name "*.gen.dart" -o -wholename "./.dart_tool/*" \) )
+      description: Run format.
+      packageFilters:
+        flutter: true
+        dirExists: [lib, test]
+
+    fix:
+      exec: |
+        dart fix --apply lib
+        dart run custom_lint --fix
+      description: Run dart fix.
+      packageFilters:
+        dirExists: lib
+
+    gen:
+      run: dart run build_runner build --delete-conflicting-outputs
+      exec:
+        concurrency: 1
+      description: Run generate code.
+      packageFilters:
+        dirExists: lib
+        dependsOn: "build_runner"
+
+    gen:watch:
+      run: dart run build_runner watch --delete-conflicting-outputs
+      exec:
+        concurrency: 99
+      description: Watch and run generate code.
+      packageFilters:
+        dirExists: lib
+        dependsOn: "build_runner"
+
+    gen:icons:
+      exec: dart run flutter_launcher_icons
+      description: Generate launcher icons.
+      packageFilters:
+        dirExists: lib
+        dependsOn: "flutter_launcher_icons"
+
+    gen:splash:
+      exec: flutter pub run flutter_native_splash:create
+      description: Generate splash screen.
+      packageFilters:
+        dirExists: lib
+        dependsOn: "flutter_native_splash"
+
+    gen:splash:remove:
+      exec: flutter pub run flutter_native_splash:remove
+      description: Remove splash screen.
+      packageFilters:
+        dirExists: lib
+        dependsOn: "flutter_native_splash"
+
+    slang:
+      run: dart run slang
+      exec:
+        concurrency: 1
+      description: Run generate translation code.
+      packageFilters:
+        dirExists: lib
+        dependsOn: slang
+
+    slang:watch:
+      run: dart run slang watch
+      exec:
+        concurrency: 1
+      description: Run generate translation code.
+      packageFilters:
+        dirExists: lib
+        dependsOn: slang
+
+    drift:migrations:
+      run: dart run drift_dev make-migrations
+      exec:
+        concurrency: 1
+      description: Run drift migration.
+      packageFilters:
+        dirExists: lib
+        dependsOn: "drift_dev"
+
+    test:
+      run: flutter test
+      exec:
+        failFast: true
+      description: Run flutter test.
+      packageFilters:
+        dirExists: test
+
+    test:cov:
+      run: |
+        flutter test --coverage
+        lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/new_lcov.info --ignore-errors unused
+        genhtml coverage/new_lcov.info -o coverage/html
+        open coverage/html/index.html
+      exec:
+        failFast: true
+      description: Run flutter test with coverage.
+      packageFilters:
+        dirExists: test
+
+    test:ci:
+      run: flutter test --coverage
+      exec:
+        failFast: true
+      description: Run flutter test for CI.
+      packageFilters:
+        flutter: true
+        dirExists: test
+
+    flutterfire:update:
+      exec: flutterfire update
+      description: Run flutterfire update.
+      packageFilters:
+        flutter: true
+        dirExists: lib
+        dependsOn: "firebase_core"
+
+    pod:
+      exec: |
+        melos run pod:ios --no-select
+        melos run pod:macos --no-select
+      description: Clean install the Pods
+      packageFilters:
+        dirExists: [lib, ios]
+        fileExists: "ios/Podfile"
+
+    pod:ios:
+      exec: |
+        cd ios
+        rm -f Podfile.lock
+        pod install --repo-update
+      description: Run pod install on iOS.
+      packageFilters:
+        dirExists: [lib, ios]
+        fileExists: "ios/Podfile"
+
+    pod:macos:
+      exec: |
+        cd macos
+        rm -f Podfile.lock
+        pod install --repo-update
+      description: Run pod install on macOS.
+      packageFilters:
+        dirExists: [lib, macos]
+        fileExists: "macos/Podfile"
+
+    build:android:prod:
+      run: |
+        flutter build appbundle --dart-define-from-file=dart_defines/prod.env && \
+        sh create_native_debug_symbol.sh
+      exec:
+        concurrency: 1
+      description: Build the AppBundle for the production app.
+      packageFilters:
+        flutter: true
+        dirExists: [lib, android]
+
+    upload:ios:prod:
+      run: flutter build ipa --dart-define-from-file=dart_defines/prod.env --export-options-plist="ios/prod/UploadOptions.plist"
+      exec:
+        concurrency: 1
+      description: Upload the IPA for the production app.
+      packageFilters:
+        flutter: true
+        dirExists: [lib, ios]
