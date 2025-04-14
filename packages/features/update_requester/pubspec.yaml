@@ -23,7 +23,7 @@ dev_dependencies:
   custom_lint: ^0.7.5
   flutter_test:
     sdk: flutter
-  freezed: ^3.0.4
+  freezed: ^3.0.6
   json_serializable: ^6.9.4
   mockito: ^5.4.5
 
