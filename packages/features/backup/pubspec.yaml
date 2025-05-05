@@ -22,7 +22,7 @@ dependencies:
   package_info_plus: ^8.3.0
   path: ^1.9.1
   path_provider: ^2.1.5
-  share_plus: ^10.1.4
+  share_plus: ^11.0.0
 
 dev_dependencies:
   altive_lints: ^1.19.1
