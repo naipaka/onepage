@@ -413,10 +413,10 @@ packages:
     dependency: transitive
     description:
       name: file_picker
-      sha256: "36a1652d99cb6bf8ccc8b9f43aded1fd60b234d23ce78af422c07f950a436ef7"
+      sha256: "77f8e81d22d2a07d0dee2c62e1dda71dc1da73bf43bb2d45af09727406167964"
       url: "https://pub.dev"
     source: hosted
-    version: "10.0.0"
+    version: "10.1.9"
   firebase_analytics:
     dependency: transitive
     description:
