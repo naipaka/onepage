@@ -17,7 +17,7 @@ workspace:
   - packages/features/update_requester
 
 dev_dependencies:
-  melos: ^7.0.0-dev.7
+  melos: ^7.0.0-dev.8
 
 melos:
   repository: https://github.com/naipaka/onepage
@@ -92,14 +92,14 @@ melos:
         dependsOn: "flutter_launcher_icons"
 
     gen:splash:
-      exec: flutter pub run flutter_native_splash:create
+      exec: dart run flutter_native_splash:create
       description: Generate splash screen.
       packageFilters:
         dirExists: lib
         dependsOn: "flutter_native_splash"
 
     gen:splash:remove:
-      exec: flutter pub run flutter_native_splash:remove
+      exec: dart run flutter_native_splash:remove
       description: Remove splash screen.
       packageFilters:
         dirExists: lib
