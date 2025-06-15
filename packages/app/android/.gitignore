@@ -12,3 +12,6 @@ key.properties
 **/*.keystore
 !debug.keystore
 **/*.jks
+
+app/src/main/res/mipmap*/ic_launcher*.*
+app/src/main/res/drawable*/ic_launcher*.*

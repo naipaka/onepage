@@ -55,8 +55,9 @@ void main() {
 
       container.read(provider.notifier).state = 'updated';
 
-      verify(mockLogger.finest('[UPDATE] StateProvider<String> - updated'))
-          .called(1);
+      verify(
+        mockLogger.finest('[UPDATE] StateProvider<String> - updated'),
+      ).called(1);
     });
 
     test('should log dispose event', () {

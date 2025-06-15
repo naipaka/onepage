@@ -18,10 +18,9 @@ final stubDiariesStateProvider =
     AutoDisposeAsyncNotifierProvider<StubDiariesState, List<_Diary>>.internal(
       StubDiariesState.new,
       name: r'stubDiariesStateProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$stubDiariesStateHash,
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$stubDiariesStateHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );

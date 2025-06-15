@@ -15,8 +15,9 @@ String _$isLoadingHash() => r'41b57c5c0e80dad21c8d8b8896e50100d0187725';
 final isLoadingProvider = AutoDisposeNotifierProvider<IsLoading, bool>.internal(
   IsLoading.new,
   name: r'isLoadingProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$isLoadingHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$isLoadingHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

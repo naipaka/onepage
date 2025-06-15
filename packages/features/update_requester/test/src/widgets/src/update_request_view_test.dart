@@ -52,8 +52,9 @@ void main() {
       expect(find.text(buttonText), findsOneWidget);
     });
 
-    testWidgets('should call onButtonPressed when update button is pressed',
-        (tester) async {
+    testWidgets('should call onButtonPressed when update button is pressed', (
+      tester,
+    ) async {
       const title = 'Update Available';
       const message = 'Update available!';
       const buttonText = 'Update Now';

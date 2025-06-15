@@ -33,12 +33,12 @@ class InitializationPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return switch (ref.watch(initializationProvider)) {
       AsyncData(isLoading: false) => _InitializedPage(
-          onInitialized: onInitialized,
-        ),
+        onInitialized: onInitialized,
+      ),
       AsyncError(:final error) => _ErrorPage(
-          error,
-          onRetry: () => ref.invalidate(initializationProvider),
-        ),
+        error,
+        onRetry: () => ref.invalidate(initializationProvider),
+      ),
       _ => const _LoadingPage(),
     };
   }
@@ -87,8 +87,8 @@ class _InitializedPage extends ConsumerWidget {
                   TargetPlatform.iOS =>
                     'https://apps.apple.com/us/app/one-page-simple-diary/id6738889085',
                   _ => throw UnsupportedError(
-                      'Unsupported platform: $platform',
-                    ),
+                    'Unsupported platform: $platform',
+                  ),
                 };
                 final url = Uri.https(urlString);
                 if (await canLaunchUrl(url)) {

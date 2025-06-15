@@ -18,10 +18,9 @@ String _$configuratorInitializingHash() =>
 final configuratorInitializingProvider = FutureProvider<Configurator>.internal(
   configuratorInitializing,
   name: r'configuratorInitializingProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$configuratorInitializingHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$configuratorInitializingHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -38,8 +37,9 @@ String _$configuratorHash() => r'4d570762b760fa3a8a6af236aa327b7a6602714c';
 final configuratorProvider = Provider<Configurator>.internal(
   configurator,
   name: r'configuratorProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$configuratorHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$configuratorHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

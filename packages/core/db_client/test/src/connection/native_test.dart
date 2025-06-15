@@ -46,24 +46,26 @@ void main() {
     });
 
     group('ensureDatabaseFileMigration', () {
-      test('Moves DB file to the new location when an old DB file exists',
-          () async {
-        // Create old DB file
-        final oldDbFile = File(p.join(appDocDir.path, 'onepage.db.sqlite'))
-          ..createSync()
-          ..writeAsStringSync('test data');
+      test(
+        'Moves DB file to the new location when an old DB file exists',
+        () async {
+          // Create old DB file
+          final oldDbFile = File(p.join(appDocDir.path, 'onepage.db.sqlite'))
+            ..createSync()
+            ..writeAsStringSync('test data');
 
-        // Execute migration
-        await connection.ensureDatabaseFileMigration();
+          // Execute migration
+          await connection.ensureDatabaseFileMigration();
 
-        // Verify the old file has been deleted
-        expect(oldDbFile.existsSync(), isFalse);
+          // Verify the old file has been deleted
+          expect(oldDbFile.existsSync(), isFalse);
 
-        // Verify the new file has been created
-        final newDbFile = File(p.join(appSupportDir.path, 'onepage.sqlite'));
-        expect(newDbFile.existsSync(), isTrue);
-        expect(newDbFile.readAsStringSync(), equals('test data'));
-      });
+          // Verify the new file has been created
+          final newDbFile = File(p.join(appSupportDir.path, 'onepage.sqlite'));
+          expect(newDbFile.existsSync(), isTrue);
+          expect(newDbFile.readAsStringSync(), equals('test data'));
+        },
+      );
 
       test('Does nothing when the old DB file does not exist', () async {
         // Execute migration
@@ -112,8 +114,9 @@ void main() {
 
         // Verify mocks
         verify(mockSqlite3.open(backupFilePath)).called(1);
-        verify(mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]))
-            .called(1);
+        verify(
+          mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]),
+        ).called(1);
         verify(mockDatabase.dispose()).called(1);
       });
 

@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.8.1
 
 resolution: workspace
 
@@ -17,7 +17,7 @@ dependencies:
   slang_flutter: ^4.7.0
 
 dev_dependencies:
-  altive_lints: ^1.19.1
+  altive_lints: ^1.21.0
   build_runner: ^2.4.15
   custom_lint: ^0.7.5
   flutter_test:

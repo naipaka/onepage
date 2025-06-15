@@ -10,20 +10,21 @@ void setUpMockPathProvider({
 }) {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(channel, (methodCall) async {
-    switch (methodCall.method) {
-      case 'getTemporaryDirectory':
-        return tempDir;
-      case 'getApplicationSupportDirectory':
-        return appSupportDir;
-      case 'getApplicationDocumentsDirectory':
-        return appDocDir;
-      default:
-        throw PlatformException(
-          code: 'Unimplemented',
-          details: 'The ${methodCall.method} method has not been implemented.',
-        );
-    }
-  });
+        switch (methodCall.method) {
+          case 'getTemporaryDirectory':
+            return tempDir;
+          case 'getApplicationSupportDirectory':
+            return appSupportDir;
+          case 'getApplicationDocumentsDirectory':
+            return appDocDir;
+          default:
+            throw PlatformException(
+              code: 'Unimplemented',
+              details:
+                  'The ${methodCall.method} method has not been implemented.',
+            );
+        }
+      });
 }
 
 void tearDownMockPathProvider() {

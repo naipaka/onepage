@@ -31,8 +31,9 @@ void main() {
         ),
       ];
 
-      when(mockDbClient.getDiaries(from: from, to: to))
-          .thenAnswer((_) async => expectedDiaries);
+      when(
+        mockDbClient.getDiaries(from: from, to: to),
+      ).thenAnswer((_) async => expectedDiaries);
 
       final diaries = await diaryQuery.getDiaries(from: from, to: to);
 
@@ -47,8 +48,9 @@ void main() {
       final from = DateTime(2024);
       final to = DateTime(2024, 1, 31);
 
-      when(mockDbClient.getDiaries(from: from, to: to))
-          .thenAnswer((_) async => []);
+      when(
+        mockDbClient.getDiaries(from: from, to: to),
+      ).thenAnswer((_) async => []);
 
       final diaries = await diaryQuery.getDiaries(from: from, to: to);
 

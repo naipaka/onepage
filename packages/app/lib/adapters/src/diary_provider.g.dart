@@ -19,8 +19,9 @@ String _$diaryCommandHash() => r'ffb780d76c5eff004a8f280f5a8290afb6d36d89';
 final diaryCommandProvider = Provider<DiaryCommand>.internal(
   diaryCommand,
   name: r'diaryCommandProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$diaryCommandHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$diaryCommandHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -39,8 +40,9 @@ String _$diaryQueryHash() => r'c2aaf09175f18fb5ff5d9eefca6e772125fae621';
 final diaryQueryProvider = Provider<DiaryQuery>.internal(
   diaryQuery,
   name: r'diaryQueryProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$diaryQueryHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$diaryQueryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -125,10 +127,9 @@ class DiariesProvider extends AutoDisposeFutureProvider<List<Diary>> {
         (ref) => diaries(ref as DiariesRef, fromDate: fromDate, toDate: toDate),
         from: diariesProvider,
         name: r'diariesProvider',
-        debugGetCreateSourceHash:
-            const bool.fromEnvironment('dart.vm.product')
-                ? null
-                : _$diariesHash,
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$diariesHash,
         dependencies: DiariesFamily._dependencies,
         allTransitiveDependencies: DiariesFamily._allTransitiveDependencies,
         fromDate: fromDate,
@@ -221,10 +222,9 @@ final cachedDiariesProvider =
     AutoDisposeAsyncNotifierProvider<CachedDiaries, DiariesWithDates>.internal(
       CachedDiaries.new,
       name: r'cachedDiariesProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$cachedDiariesHash,
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$cachedDiariesHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );

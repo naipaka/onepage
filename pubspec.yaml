@@ -1,7 +1,7 @@
 name: onepage_workspace
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.8.1
 
 workspace:
   - packages/app
@@ -17,7 +17,7 @@ workspace:
   - packages/features/update_requester
 
 dev_dependencies:
-  melos: ^7.0.0-dev.8
+  melos: ^7.0.0-dev.9
 
 melos:
   repository: https://github.com/naipaka/onepage

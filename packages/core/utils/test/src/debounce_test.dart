@@ -4,23 +4,25 @@ import 'package:utils/src/debounce.dart';
 
 void main() {
   group('Debounce', () {
-    test('Callback is executed if the elapsed time is greater than the delay',
-        () {
-      fakeAsync((async) {
-        final debounce = Debounce(delay: const Duration(milliseconds: 100));
-        var callbackExecuted = false;
+    test(
+      'Callback is executed if the elapsed time is greater than the delay',
+      () {
+        fakeAsync((async) {
+          final debounce = Debounce(delay: const Duration(milliseconds: 100));
+          var callbackExecuted = false;
 
-        debounce(() {
-          callbackExecuted = true;
+          debounce(() {
+            callbackExecuted = true;
+          });
+
+          expect(callbackExecuted, false);
+
+          async.elapse(const Duration(milliseconds: 101));
+
+          expect(callbackExecuted, true);
         });
-
-        expect(callbackExecuted, false);
-
-        async.elapse(const Duration(milliseconds: 101));
-
-        expect(callbackExecuted, true);
-      });
-    });
+      },
+    );
 
     test('Callback is executed if the elapsed time is exactly the delay', () {
       fakeAsync((async) {
@@ -39,42 +41,45 @@ void main() {
       });
     });
 
-    test('Callback is not executed if the elapsed time is less than the delay',
-        () {
-      fakeAsync((async) {
-        final debounce = Debounce(delay: const Duration(milliseconds: 100));
-        var callbackExecuted = false;
+    test(
+      'Callback is not executed if the elapsed time is less than the delay',
+      () {
+        fakeAsync((async) {
+          final debounce = Debounce(delay: const Duration(milliseconds: 100));
+          var callbackExecuted = false;
 
-        debounce(() {
-          callbackExecuted = true;
+          debounce(() {
+            callbackExecuted = true;
+          });
+
+          expect(callbackExecuted, false);
+
+          async.elapse(const Duration(milliseconds: 99));
+
+          expect(callbackExecuted, false);
         });
-
-        expect(callbackExecuted, false);
-
-        async.elapse(const Duration(milliseconds: 99));
-
-        expect(callbackExecuted, false);
-      });
-    });
+      },
+    );
 
     test(
-        'Only the last callback is executed if multiple calls are made quickly',
-        () {
-      fakeAsync((async) {
-        final debounce = Debounce(delay: const Duration(milliseconds: 100));
-        var callbackText = 'Hello';
+      'Only the last callback is executed if multiple calls are made quickly',
+      () {
+        fakeAsync((async) {
+          final debounce = Debounce(delay: const Duration(milliseconds: 100));
+          var callbackText = 'Hello';
 
-        debounce(() => callbackText = '!');
-        debounce(() => callbackText = '.');
-        debounce(() => callbackText = 'World');
+          debounce(() => callbackText = '!');
+          debounce(() => callbackText = '.');
+          debounce(() => callbackText = 'World');
 
-        expect(callbackText, 'Hello');
+          expect(callbackText, 'Hello');
 
-        async.elapse(const Duration(milliseconds: 100));
+          async.elapse(const Duration(milliseconds: 100));
 
-        expect(callbackText, 'World');
-      });
-    });
+          expect(callbackText, 'World');
+        });
+      },
+    );
 
     test('Callback is not executed if the dispose method is called', () {
       fakeAsync((async) {
