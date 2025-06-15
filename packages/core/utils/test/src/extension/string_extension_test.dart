@@ -20,8 +20,7 @@ void main() {
         },
       );
 
-      test(
-          'An exception should be thrown if an invalid maximum length is '
+      test('An exception should be thrown if an invalid maximum length is '
           'specified', () {
         const errorText = 'abcdef';
         expect(() => errorText.trimAtMaxLength(-1), throwsArgumentError);

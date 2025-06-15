@@ -71,15 +71,14 @@ class HomePage extends HookConsumerWidget {
             final notifier = ref.watch(cachedDiariesProvider.notifier);
             return asyncDiaries.when(
               loading: () => centerLoadingIndicator,
-              error:
-                  (error, _) => Center(
-                    child: Column(
-                      children: [
-                        Icon(Icons.error, color: colorScheme.error),
-                        Text(error.toString()),
-                      ],
-                    ),
-                  ),
+              error: (error, _) => Center(
+                child: Column(
+                  children: [
+                    Icon(Icons.error, color: colorScheme.error),
+                    Text(error.toString()),
+                  ],
+                ),
+              ),
               data: (diariesWithDates) {
                 final diaries = diariesWithDates.diaries;
                 final dates = diariesWithDates.dates;

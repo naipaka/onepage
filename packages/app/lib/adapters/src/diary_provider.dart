@@ -96,13 +96,12 @@ class CachedDiaries extends _$CachedDiaries {
   Future<void> updateDiary({required int id, required String content}) async {
     await _diaryCommand.updateDiary(id: id, content: content);
     final current = state.requireValue;
-    final updatedDiaries =
-        current.diaries.map((diary) {
-          if (diary.id == id) {
-            return diary.copyWith(content: content);
-          }
-          return diary;
-        }).toList();
+    final updatedDiaries = current.diaries.map((diary) {
+      if (diary.id == id) {
+        return diary.copyWith(content: content);
+      }
+      return diary;
+    }).toList();
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 }

@@ -14,9 +14,9 @@ dependencies:
   simple_logger: ^1.10.0
 
 dev_dependencies:
-  altive_lints: ^1.19.1
+  altive_lints: ^1.21.0
   custom_lint: ^0.7.5
-  # Because flutter_test depends on fake_async 1.3.2.
+  # Because flutter_test depends on fake_async 1.3.3.
   # https://github.com/flutter/flutter/blob/stable/packages/flutter_test/pubspec.yaml#L25
-  fake_async: ^1.3.2
+  fake_async: ^1.3.3
   test: ^1.25.15

@@ -19,8 +19,9 @@ String _$dbClientHash() => r'0d3ae5cb08dc890911ec54058d256c216459e3a9';
 final dbClientProvider = Provider<DbClient>.internal(
   dbClient,
   name: r'dbClientProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$dbClientHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$dbClientHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -39,8 +40,9 @@ String _$dbConnectionHash() => r'768f16c324dc661e92c4b83ff7d7fc965599c2c6';
 final dbConnectionProvider = Provider<DbConnection>.internal(
   dbConnection,
   name: r'dbConnectionProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$dbConnectionHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$dbConnectionHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );

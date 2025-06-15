@@ -11,10 +11,10 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  toastification: ^3.0.2
+  toastification: ^3.0.3
 
 dev_dependencies:
-  altive_lints: ^1.19.1
+  altive_lints: ^1.21.0
   custom_lint: ^0.7.5
   flutter_test:
     sdk: flutter

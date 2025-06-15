@@ -18,14 +18,15 @@ void main() {
     });
 
     test(
-        'previousMonthDates should return correct dates for the previous month',
-        () {
-      final date = DateTime(2024, 5);
-      final previousMonthDates = date.previousMonthDates;
-      expect(previousMonthDates.length, 30);
-      expect(previousMonthDates.first, DateTime(2024, 4));
-      expect(previousMonthDates.last, DateTime(2024, 4, 30));
-    });
+      'previousMonthDates should return correct dates for the previous month',
+      () {
+        final date = DateTime(2024, 5);
+        final previousMonthDates = date.previousMonthDates;
+        expect(previousMonthDates.length, 30);
+        expect(previousMonthDates.first, DateTime(2024, 4));
+        expect(previousMonthDates.last, DateTime(2024, 4, 30));
+      },
+    );
 
     test('datesInMonths should return correct dates for a range of months', () {
       final date = DateTime(2024, 11);

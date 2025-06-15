@@ -52,13 +52,15 @@ void main() {
           const expectedFileName = 'one page-v1.0.0-20240115123045.backup';
           final expectedFilePath = p.join('/tmp', expectedFileName);
 
-          when(mockDbClient.writeBackupToFile(filePath: expectedFilePath))
-              .thenAnswer((_) async {});
+          when(
+            mockDbClient.writeBackupToFile(filePath: expectedFilePath),
+          ).thenAnswer((_) async {});
 
           await backupController.createBackupFile();
 
-          verify(mockDbClient.writeBackupToFile(filePath: expectedFilePath))
-              .called(1);
+          verify(
+            mockDbClient.writeBackupToFile(filePath: expectedFilePath),
+          ).called(1);
         });
       });
 
@@ -71,8 +73,9 @@ void main() {
           const expectedFileName = 'one page-v1.0.0-20240115123045.backup';
           final expectedFilePath = p.join('/tmp', expectedFileName);
 
-          when(mockDbClient.writeBackupToFile(filePath: expectedFilePath))
-              .thenThrow(Exception('Failed to create backup'));
+          when(
+            mockDbClient.writeBackupToFile(filePath: expectedFilePath),
+          ).thenThrow(Exception('Failed to create backup'));
 
           expect(
             () => backupController.createBackupFile(),
@@ -90,42 +93,44 @@ void main() {
         expect(result, isNull);
       });
 
-      test('returns file path when backup file is successfully restored',
-          () async {
-        const backupFilePath = '/path/to/backup.backup';
-        final validBackupFile = File('/tmp/import.sqlite');
+      test(
+        'returns file path when backup file is successfully restored',
+        () async {
+          const backupFilePath = '/path/to/backup.backup';
+          final validBackupFile = File('/tmp/import.sqlite');
 
-        setMockFilePickerResult(
-          FilePickerResult([
-            PlatformFile(
-              path: backupFilePath,
-              name: 'backup.backup',
-              size: 100,
+          setMockFilePickerResult(
+            FilePickerResult([
+              PlatformFile(
+                path: backupFilePath,
+                name: 'backup.backup',
+                size: 100,
+              ),
+            ]),
+          );
+
+          when(
+            mockDbConnection.createValidBackupFile(
+              backupFilePath: backupFilePath,
             ),
-          ]),
-        );
+          ).thenAnswer((_) async => validBackupFile);
+          when(
+            mockDbConnection.restoreBackup(validBackupFile: validBackupFile),
+          ).thenAnswer((_) async {});
 
-        when(
-          mockDbConnection.createValidBackupFile(
-            backupFilePath: backupFilePath,
-          ),
-        ).thenAnswer((_) async => validBackupFile);
-        when(
-          mockDbConnection.restoreBackup(validBackupFile: validBackupFile),
-        ).thenAnswer((_) async {});
+          final result = await backupController.restoreBackupFile();
+          expect(result, validBackupFile.path);
 
-        final result = await backupController.restoreBackupFile();
-        expect(result, validBackupFile.path);
-
-        verify(
-          mockDbConnection.createValidBackupFile(
-            backupFilePath: backupFilePath,
-          ),
-        ).called(1);
-        verify(
-          mockDbConnection.restoreBackup(validBackupFile: validBackupFile),
-        ).called(1);
-      });
+          verify(
+            mockDbConnection.createValidBackupFile(
+              backupFilePath: backupFilePath,
+            ),
+          ).called(1);
+          verify(
+            mockDbConnection.restoreBackup(validBackupFile: validBackupFile),
+          ).called(1);
+        },
+      );
 
       test('throws exception when backup restoration fails', () async {
         const backupFilePath = '/path/to/backup.backup';

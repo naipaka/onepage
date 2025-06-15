@@ -17,10 +17,9 @@ String _$updateRequesterHash() => r'8e297f3db152629cae40d3cf50de5d8161d02937';
 final updateRequesterProvider = AutoDisposeProvider<UpdateRequester>.internal(
   updateRequester,
   name: r'updateRequesterProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$updateRequesterHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$updateRequesterHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -42,10 +41,9 @@ String _$updateRequestMessageHash() =>
 final updateRequestMessageProvider = AutoDisposeProvider<String?>.internal(
   updateRequestMessage,
   name: r'updateRequestMessageProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$updateRequestMessageHash,
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$updateRequestMessageHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
@@ -66,10 +64,9 @@ final updateRequestStateProvider =
     AutoDisposeNotifierProvider<UpdateRequestState, UpdateRequest>.internal(
       UpdateRequestState.new,
       name: r'updateRequestStateProvider',
-      debugGetCreateSourceHash:
-          const bool.fromEnvironment('dart.vm.product')
-              ? null
-              : _$updateRequestStateHash,
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$updateRequestStateHash,
       dependencies: null,
       allTransitiveDependencies: null,
     );

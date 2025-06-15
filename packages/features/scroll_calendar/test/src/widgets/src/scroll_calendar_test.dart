@@ -54,14 +54,12 @@ void main() {
     );
 
     test('scrollToToday throws assertion error when not attached', () async {
-      final controller =
-          ScrollCalendarController()
-            ..attach(
-              scrollToToday: ({required duration, required curve}) async {},
-              scrollToDate:
-                  (date, {required duration, required curve}) async {},
-            )
-            ..detach();
+      final controller = ScrollCalendarController()
+        ..attach(
+          scrollToToday: ({required duration, required curve}) async {},
+          scrollToDate: (date, {required duration, required curve}) async {},
+        )
+        ..detach();
 
       expect(
         () async => controller.scrollToToday(),
@@ -70,14 +68,12 @@ void main() {
     });
 
     test('scrollToDate throws assertion error when not attached', () async {
-      final controller =
-          ScrollCalendarController()
-            ..attach(
-              scrollToToday: ({required duration, required curve}) async {},
-              scrollToDate:
-                  (date, {required duration, required curve}) async {},
-            )
-            ..detach();
+      final controller = ScrollCalendarController()
+        ..attach(
+          scrollToToday: ({required duration, required curve}) async {},
+          scrollToDate: (date, {required duration, required curve}) async {},
+        )
+        ..detach();
 
       expect(
         () async => controller.scrollToDate(DateTime(2023, 10)),

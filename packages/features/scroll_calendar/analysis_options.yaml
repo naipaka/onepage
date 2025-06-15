@@ -2,9 +2,3 @@ include: package:altive_lints/altive_lints.yaml
 analyzer:
   plugins:
     - custom_lint
-linter:
-  rules:
-    # Temporarily disabled due to a conflict with Dart 3.7.0 formatting.
-    # https://github.com/dart-lang/dart_style/issues/1652
-    # https://github.com/dart-lang/dart_style/issues/1660
-    require_trailing_commas: false

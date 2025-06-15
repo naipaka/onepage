@@ -4,18 +4,17 @@ import 'package:flutter/material.dart';
 FilledButtonThemeData appFilledButtonThemeData({
   required ColorScheme colorScheme,
   required TextTheme textTheme,
-}) =>
-    FilledButtonThemeData(
-      style: FilledButton.styleFrom(
-        minimumSize: const Size(248, 48),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        backgroundColor: colorScheme.secondary,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        textStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
-      ),
-    );
+}) => FilledButtonThemeData(
+  style: FilledButton.styleFrom(
+    minimumSize: const Size(248, 48),
+    padding: const EdgeInsets.symmetric(horizontal: 16),
+    backgroundColor: colorScheme.secondary,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+    ),
+    textStyle: const TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    ),
+  ),
+);

@@ -15,7 +15,7 @@ part 'app_routes.g.dart';
     TypedGoRoute<BackupRouteData>(path: BackupRouteData.path),
   ],
 )
-class HomeRouteData extends GoRouteData {
+class HomeRouteData extends GoRouteData with _$HomeRouteData {
   /// {@macro onepage.HomeRouteData}
   const HomeRouteData();
 
@@ -31,7 +31,7 @@ class HomeRouteData extends GoRouteData {
 /// {@template onepage.LicenseRouteData}
 /// License route data.
 /// {@endtemplate}
-class LicenseRouteData extends GoRouteData {
+class LicenseRouteData extends GoRouteData with _$LicenseRouteData {
   /// {@macro onepage.LicenseRouteData}
   const LicenseRouteData();
 
@@ -47,7 +47,7 @@ class LicenseRouteData extends GoRouteData {
 /// {@template onepage.BackupRouteData}
 /// Backup route data.
 /// {@endtemplate}
-class BackupRouteData extends GoRouteData {
+class BackupRouteData extends GoRouteData with _$BackupRouteData {
   /// {@macro onepage.BackupRouteData}
   const BackupRouteData();
 

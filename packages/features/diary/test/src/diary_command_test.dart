@@ -23,28 +23,32 @@ void main() {
         updatedAt: clock.now(),
       );
 
-      when(mockDbClient.insertDiary(content: content, date: date))
-          .thenAnswer((_) async => diary);
+      when(
+        mockDbClient.insertDiary(content: content, date: date),
+      ).thenAnswer((_) async => diary);
 
       await diaryCommand.addDiary(content: content, date: date);
 
       verify(mockDbClient.insertDiary(content: content, date: date)).called(1);
     });
 
-    test('updateDiary updates an existing diary entry in the database',
-        () async {
-      final mockDbClient = MockDbClient();
-      final diaryCommand = DiaryCommand(dbClient: mockDbClient);
+    test(
+      'updateDiary updates an existing diary entry in the database',
+      () async {
+        final mockDbClient = MockDbClient();
+        final diaryCommand = DiaryCommand(dbClient: mockDbClient);
 
-      const id = 1;
-      const content = 'Updated Diary Entry';
+        const id = 1;
+        const content = 'Updated Diary Entry';
 
-      when(mockDbClient.updateDiary(id: id, content: content))
-          .thenAnswer((_) async => 1);
+        when(
+          mockDbClient.updateDiary(id: id, content: content),
+        ).thenAnswer((_) async => 1);
 
-      await diaryCommand.updateDiary(id: id, content: content);
+        await diaryCommand.updateDiary(id: id, content: content);
 
-      verify(mockDbClient.updateDiary(id: id, content: content)).called(1);
-    });
+        verify(mockDbClient.updateDiary(id: id, content: content)).called(1);
+      },
+    );
   });
 }

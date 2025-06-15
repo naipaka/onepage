@@ -4,9 +4,3 @@ analyzer:
     - custom_lint
   exclude:
     - "**/generated/**.dart"
-linter:
-  rules:
-    # Temporarily disabled due to a conflict with Dart 3.7.0 formatting.
-    # https://github.com/dart-lang/dart_style/issues/1652
-    # https://github.com/dart-lang/dart_style/issues/1660
-    require_trailing_commas: false

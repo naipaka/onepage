@@ -5,5 +5,4 @@ enum Flavor {
 
   /// Production flavor.
   prod,
-  ;
 }

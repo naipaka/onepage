@@ -63,8 +63,9 @@ class ProviderLogger implements ProviderObserver {
     final eventName = providerEvent.name.toUpperCase();
     final providerName = provider.name ?? provider.runtimeType;
 
-    final result =
-        (value == null) ? '' : '- ${value.toString().trimAtMaxLength(100)}';
+    final result = (value == null)
+        ? ''
+        : '- ${value.toString().trimAtMaxLength(100)}';
 
     logger.finest('[$eventName] $providerName $result');
   }

@@ -45,8 +45,7 @@ void main() {
     });
 
     group('updateRequestMessage', () {
-      test(
-          'should return update message if current version is less than '
+      test('should return update message if current version is less than '
           'required version', () {
         final configurator = MockConfigurator();
         final packageInfo = MockPackageInfo();
@@ -65,8 +64,7 @@ void main() {
         expect(message, 'Update required!');
       });
 
-      test(
-          'should return null if current version is greater than or equal to '
+      test('should return null if current version is greater than or equal to '
           'required version', () {
         final configurator = MockConfigurator();
         final packageInfo = MockPackageInfo();
