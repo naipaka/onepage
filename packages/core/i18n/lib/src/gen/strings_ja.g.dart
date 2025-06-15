@@ -4,20 +4,16 @@
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
 
-part of 'strings.g.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+import 'package:slang/generated.dart';
+import 'strings.g.dart';
 
 // Path: <root>
-typedef TranslationsJa = Translations; // ignore: unused_element
-class Translations implements BaseTranslations<AppLocale, Translations> {
-	/// Returns the current translations of the given [context].
-	///
-	/// Usage:
-	/// final t = Translations.of(context);
-	static Translations of(BuildContext context) => InheritedLocaleData.of<AppLocale, Translations>(context).translations;
-
+class TranslationsJa implements Translations {
 	/// You can call this constructor and build your own translation instance of this locale.
 	/// Constructing via the enum [AppLocale.build] is preferred.
-	Translations({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<AppLocale, Translations>? meta})
+	TranslationsJa({Map<String, Node>? overrides, PluralResolver? cardinalResolver, PluralResolver? ordinalResolver, TranslationMetadata<AppLocale, Translations>? meta})
 		: assert(overrides == null, 'Set "translation_overrides: true" in order to enable this feature.'),
 		  $meta = meta ?? TranslationMetadata(
 		    locale: AppLocale.ja,
@@ -32,91 +28,92 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	@override final TranslationMetadata<AppLocale, Translations> $meta;
 
 	/// Access flat map
-	dynamic operator[](String key) => $meta.getTranslation(key);
+	@override dynamic operator[](String key) => $meta.getTranslation(key);
 
-	late final Translations _root = this; // ignore: unused_field
+	late final TranslationsJa _root = this; // ignore: unused_field
 
-	Translations $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => Translations(meta: meta ?? this.$meta);
+	@override 
+	TranslationsJa $copyWith({TranslationMetadata<AppLocale, Translations>? meta}) => TranslationsJa(meta: meta ?? this.$meta);
 
 	// Translations
-	String get title => 'One Page';
-	String get organization => 'NPK Studio';
-	late final TranslationsUpdateRequestJa updateRequest = TranslationsUpdateRequestJa._(_root);
-	late final TranslationsHomeJa home = TranslationsHomeJa._(_root);
-	late final TranslationsBackupJa backup = TranslationsBackupJa._(_root);
+	@override String get title => 'One Page';
+	@override String get organization => 'NPK Studio';
+	@override late final _TranslationsUpdateRequestJa updateRequest = _TranslationsUpdateRequestJa._(_root);
+	@override late final _TranslationsHomeJa home = _TranslationsHomeJa._(_root);
+	@override late final _TranslationsBackupJa backup = _TranslationsBackupJa._(_root);
 }
 
 // Path: updateRequest
-class TranslationsUpdateRequestJa {
-	TranslationsUpdateRequestJa._(this._root);
+class _TranslationsUpdateRequestJa implements TranslationsUpdateRequestEn {
+	_TranslationsUpdateRequestJa._(this._root);
 
-	final Translations _root; // ignore: unused_field
+	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'アップデートのお願い';
-	late final TranslationsUpdateRequestButtonJa button = TranslationsUpdateRequestButtonJa._(_root);
+	@override String get title => 'アップデートのお願い';
+	@override late final _TranslationsUpdateRequestButtonJa button = _TranslationsUpdateRequestButtonJa._(_root);
 }
 
 // Path: home
-class TranslationsHomeJa {
-	TranslationsHomeJa._(this._root);
+class _TranslationsHomeJa implements TranslationsHomeEn {
+	_TranslationsHomeJa._(this._root);
 
-	final Translations _root; // ignore: unused_field
+	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Home';
-	String get license => 'License';
-	String get backup => 'Backup';
-	String get scrollToTodayTitle => '本日の日記へ';
-	String scrollToDateTitle({required Object date}) => '${date}の日記へ';
-	String get scrollToDescription => 'スクロールが完了しました！';
-	String get errorSavingDiary => '日記の保存中にエラーが発生しました';
-	String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
+	@override String get title => 'Home';
+	@override String get license => 'License';
+	@override String get backup => 'Backup';
+	@override String get scrollToTodayTitle => '本日の日記へ';
+	@override String scrollToDateTitle({required Object date}) => '${date}の日記へ';
+	@override String get scrollToDescription => 'スクロールが完了しました！';
+	@override String get errorSavingDiary => '日記の保存中にエラーが発生しました';
+	@override String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 }
 
 // Path: backup
-class TranslationsBackupJa {
-	TranslationsBackupJa._(this._root);
+class _TranslationsBackupJa implements TranslationsBackupEn {
+	_TranslationsBackupJa._(this._root);
 
-	final Translations _root; // ignore: unused_field
+	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Backup';
-	String get description => '機種変更でも安心バックアップ';
-	String get explanation => 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）';
-	String get restoreExplanation => '保存したバックアップファイルを\n選択して復元できます\n復元時は現在のデータが\n上書きされるため注意してください';
-	String get successMessage => 'バックアップが正常に作成されました！';
-	String get failedMessage => 'バックアップの作成に失敗しました';
-	String get restoreFailedMessage => 'バックアップの復元に失敗しました';
-	String get restoreSuccess => '復元が完了しました';
-	late final TranslationsBackupActionsJa actions = TranslationsBackupActionsJa._(_root);
+	@override String get title => 'Backup';
+	@override String get description => '機種変更でも安心バックアップ';
+	@override String get explanation => 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）';
+	@override String get restoreExplanation => '保存したバックアップファイルを\n選択して復元できます\n復元時は現在のデータが\n上書きされるため注意してください';
+	@override String get successMessage => 'バックアップが正常に作成されました！';
+	@override String get failedMessage => 'バックアップの作成に失敗しました';
+	@override String get restoreFailedMessage => 'バックアップの復元に失敗しました';
+	@override String get restoreSuccess => '復元が完了しました';
+	@override late final _TranslationsBackupActionsJa actions = _TranslationsBackupActionsJa._(_root);
 }
 
 // Path: updateRequest.button
-class TranslationsUpdateRequestButtonJa {
-	TranslationsUpdateRequestButtonJa._(this._root);
+class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestButtonEn {
+	_TranslationsUpdateRequestButtonJa._(this._root);
 
-	final Translations _root; // ignore: unused_field
+	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	String get updateNow => '更新する';
+	@override String get updateNow => '更新する';
 }
 
 // Path: backup.actions
-class TranslationsBackupActionsJa {
-	TranslationsBackupActionsJa._(this._root);
+class _TranslationsBackupActionsJa implements TranslationsBackupActionsEn {
+	_TranslationsBackupActionsJa._(this._root);
 
-	final Translations _root; // ignore: unused_field
+	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	String get create => 'バックアップを作成';
-	String get restore => 'バックアップを復元';
-	String get goToHome => 'ホームへ戻る';
+	@override String get create => 'バックアップを作成';
+	@override String get restore => 'バックアップを復元';
+	@override String get goToHome => 'ホームへ戻る';
 }
 
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
-extension on Translations {
+extension on TranslationsJa {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'title': return 'One Page';
