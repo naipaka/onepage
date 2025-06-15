@@ -81,6 +81,7 @@ sourcecode
 sprintf
 SRCROOT
 strftime
+Subproject
 subprojects
 subviews
 swiftpm
