@@ -18,6 +18,7 @@ buildconfig
 buildfeatures
 buildlog
 cfbundle
+Charsets
 COCOAPODS
 configurator
 crashlytics
