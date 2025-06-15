@@ -56,7 +56,7 @@ class BackupController {
 
     // Share the backup file.
     final shareXFile = XFile(backupFile.path);
-    await Share.shareXFiles([shareXFile]);
+    await SharePlus.instance.share(ShareParams(files: [shareXFile]));
   }
 
   /// Restores database from a backup file selected by user.
