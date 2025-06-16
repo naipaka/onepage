@@ -19,7 +19,7 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.21.0
-  build_runner: ^2.4.15
+  build_runner: ^2.5.0
   custom_lint: ^0.7.5
   mockito: ^5.4.6
   # Because flutter_test depends on test_api 0.7.4, test 1.25.x.
