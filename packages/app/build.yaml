@@ -10,27 +10,27 @@ targets:
             - implicit_dynamic_type
             - implicit_dynamic_method
             - strict_raw_type
-      freezed:
-        generate_for:
-          include:
-            - lib/**/entities/*.dart
-            - lib/**/models/**/*.dart
-            - lib/**/*_input.dart
+      # freezed:
+      #   generate_for:
+      #     include:
+      #       - lib/**/entities/*.dart
+      #       - lib/**/models/**/*.dart
+      #       - lib/**/*_input.dart
       go_router_builder:
         generate_for:
           include:
             - lib/**/app_routes.dart
-      json_serializable:
-        generate_for:
-          include:
-            - lib/**/entities/*.dart
-            - lib/**/models/**/*.dart
-        options:
-          # Throw CheckedFromJsonException on exception
-          checked: true
-          # Generate toJson/fromJson methods for nested lists
-          explicit_to_json: true
-          field_rename: snake
+      # json_serializable:
+      #   generate_for:
+      #     include:
+      #       - lib/**/entities/*.dart
+      #       - lib/**/models/**/*.dart
+      #   options:
+      #     # Throw CheckedFromJsonException on exception
+      #     checked: true
+      #     # Generate toJson/fromJson methods for nested lists
+      #     explicit_to_json: true
+      #     field_rename: snake
       riverpod_generator:
         generate_for:
           include:
@@ -38,7 +38,16 @@ targets:
             - lib/**/*provider.dart
         options:
           provider_name_suffix: "Provider" # (default)
-global_options:
-  freezed:
-    runs_before:
-      - json_serializable
+      flutter_gen_runner:
+        options:
+          output: lib/gen/
+          line_length: 80
+          integrations:
+            image: true
+            flutter_svg: true
+            rive: false
+            lottie: false
+# global_options:
+#   freezed:
+#     runs_before:
+#       - json_serializable
