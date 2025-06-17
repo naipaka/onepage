@@ -18,3 +18,9 @@ generate_code:
 
 flutterfire_cli:
 	dart pub global activate flutterfire_cli
+
+worktree:
+	chmod +x scripts/setup_worktree.sh && \
+	scripts/setup_worktree.sh && \
+	fvm install && \
+	dart pub get
