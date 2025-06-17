@@ -45,7 +45,7 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.21.0
-  build_runner: ^2.4.15
+  build_runner: ^2.5.0
   custom_lint: ^0.7.5
   flutter_gen_runner: ^5.10.0
   flutter_launcher_icons: ^0.14.4
@@ -55,15 +55,6 @@ dev_dependencies:
   go_router_builder: ^3.0.0
   riverpod_generator: ^2.6.5
   riverpod_lint: ^2.6.5
-
-flutter_gen:
-  output: lib/gen/
-  line_length: 80
-  integrations:
-    image: true
-    flutter_svg: true
-    rive: false
-    lottie: false
 
 flutter:
   uses-material-design: true
