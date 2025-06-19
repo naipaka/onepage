@@ -44,6 +44,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsUpdateRequestEn updateRequest = TranslationsUpdateRequestEn._(_root);
 	late final TranslationsHomeEn home = TranslationsHomeEn._(_root);
 	late final TranslationsBackupEn backup = TranslationsBackupEn._(_root);
+	late final TranslationsSettingsEn settings = TranslationsSettingsEn._(_root);
 }
 
 // Path: updateRequest
@@ -89,6 +90,23 @@ class TranslationsBackupEn {
 	String get restoreFailedMessage => 'Failed to restore backup';
 	String get restoreSuccess => 'Restoring your backup was successful';
 	late final TranslationsBackupActionsEn actions = TranslationsBackupActionsEn._(_root);
+}
+
+// Path: settings
+class TranslationsSettingsEn {
+	TranslationsSettingsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Settings';
+	String get accessibility => 'Accessibility';
+	String get hapticFeedback => 'Haptic Feedback';
+	String get vibrationSettings => 'Vibration Settings';
+	String get textInput => 'Text Input';
+	String get textInputDescription => 'Vibration settings during text input';
+	String get other => 'Other';
+	String get otherDescription => 'Vibration settings for icon taps and other actions';
 }
 
 // Path: updateRequest.button
@@ -140,6 +158,14 @@ extension on Translations {
 			case 'backup.actions.create': return 'Create Backup';
 			case 'backup.actions.restore': return 'Restore Backup';
 			case 'backup.actions.goToHome': return 'Go to Home';
+			case 'settings.title': return 'Settings';
+			case 'settings.accessibility': return 'Accessibility';
+			case 'settings.hapticFeedback': return 'Haptic Feedback';
+			case 'settings.vibrationSettings': return 'Vibration Settings';
+			case 'settings.textInput': return 'Text Input';
+			case 'settings.textInputDescription': return 'Vibration settings during text input';
+			case 'settings.other': return 'Other';
+			case 'settings.otherDescription': return 'Vibration settings for icon taps and other actions';
 			default: return null;
 		}
 	}

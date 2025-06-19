@@ -254,18 +254,26 @@ class _Drawer extends ConsumerWidget {
           ),
           const Gap(8),
           ListTile(
-            leading: const Icon(Icons.description_outlined),
-            title: Text(t.home.license),
-            onTap: () {
-              const LicenseRouteData().go(context);
-            },
-          ),
-          const Gap(8),
-          ListTile(
             leading: const Icon(Icons.backup_outlined),
             title: Text(t.home.backup),
             onTap: () {
               const BackupRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          ListTile(
+            leading: const Icon(Icons.settings_outlined),
+            title: const Text('Settings'),
+            onTap: () {
+              const SettingsRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          ListTile(
+            leading: const Icon(Icons.description_outlined),
+            title: Text(t.home.license),
+            onTap: () {
+              const LicenseRouteData().go(context);
             },
           ),
         ],

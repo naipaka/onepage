@@ -26,3 +26,12 @@ backup:
     create: "Create Backup"
     restore: "Restore Backup"
     goToHome: "Go to Home"
+settings:
+  title: "Settings"
+  accessibility: "Accessibility"
+  hapticFeedback: "Haptic Feedback"
+  vibrationSettings: "Vibration Settings"
+  textInput: "Text Input"
+  textInputDescription: "Vibration settings during text input"
+  other: "Other"
+  otherDescription: "Vibration settings for icon taps and other actions"

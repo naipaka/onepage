@@ -71,9 +71,14 @@ melos run drift:migrations  # Generate drift migrations
 ### State Management
 - Uses Riverpod with code generation (`@riverpod` annotation)
 - Providers are generated using `riverpod_generator`
-- UI components use `HookConsumerWidget` or `ConsumerWidget`
+- **Widget Selection**:
+  - **HookWidget**: Use for local state management with `useState`, `useEffect`, etc.
+  - **HookConsumerWidget**: Use when you need both hooks and Riverpod providers
+  - **ConsumerWidget**: Use when you only need Riverpod providers (no local state)
+  - **StatelessWidget**: Use for widgets without any state
 - **ref.watch**: Use ONLY in build methods for reactive updates
 - **ref.read**: Use in event handlers/onPressed for one-time reads
+- For local state management, prefer `HookWidget` with `useState` over `StatefulWidget`
 
 ### Database
 - SQLite with Drift ORM
@@ -89,12 +94,59 @@ melos run drift:migrations  # Generate drift migrations
 
 ### Widget Development
 - **Class Widgets ONLY**: Functional widgets are strictly prohibited
-  - Use `StatelessWidget`, `StatefulWidget`, `ConsumerWidget`, `HookConsumerWidget`
+  - Use `StatelessWidget`, `StatefulWidget`, `ConsumerWidget`, `HookConsumerWidget`, `HookWidget`
   - NO `_buildSomething` methods - create separate class widgets instead
   - Better performance optimization, bug prevention, and testability
 - **Static methods**: Use `Widget.show()` inside classes, not global functions
 - **Code organization**: No global private functions - use class methods or inline code
 - **NO Widget Variables**: NEVER use `final child = Widget()` - return widgets directly
+
+### Widget Component Design Rules
+- **Component Padding**: NEVER add padding/margin inside reusable components
+  - Components should NOT contain internal padding or margins
+  - Padding/margin should be added by the CALLER of the component
+  - This ensures components remain flexible and reusable
+  ```dart
+  // ❌ BAD - Component contains internal padding
+  class MyComponent extends StatelessWidget {
+    Widget build(BuildContext context) {
+      return Container(
+        padding: EdgeInsets.all(16), // DON'T DO THIS
+        child: Text('Content'),
+      );
+    }
+  }
+  
+  // ✅ GOOD - Caller controls padding
+  class MyComponent extends StatelessWidget {
+    Widget build(BuildContext context) {
+      return Text('Content'); // Clean component
+    }
+  }
+  
+  // Usage with padding controlled by caller
+  Padding(
+    padding: EdgeInsets.all(16),
+    child: MyComponent(),
+  )
+  ```
+
+- **Padding Widget Usage**: Use `Padding` widget, NOT `Container` for padding-only purposes
+  - `Container` should only be used when you need decoration, constraints, or multiple properties
+  - Use `Padding` when you only need to add padding
+  ```dart
+  // ❌ BAD - Using Container for padding only
+  Container(
+    padding: EdgeInsets.all(16),
+    child: widget,
+  )
+  
+  // ✅ GOOD - Using Padding for padding only
+  Padding(
+    padding: EdgeInsets.all(16),
+    child: widget,
+  )
+  ```
 
 ### Package Dependencies
 - **core/widgets/**: Must NEVER depend on i18n package
@@ -139,6 +191,141 @@ Run `melos run gen` after changes to:
 - Firebase configuration files for dev/prod environments
 - Use `--dart-define-from-file` for builds
 
+## Text Styling Guidelines
+
+### Use App Text Classes (REQUIRED)
+- **NEVER** use `TextStyle` directly - use semantic text classes from `packages/core/theme/lib/src/widgets/src/app_text.dart`
+- **NEVER** specify `fontFamily` - use default fonts only
+- **NEVER** specify `fontSize` directly - use predefined text classes
+
+### Available Text Classes:
+- **Display**: `DisplayLargeText`, `DisplayMediumText`, `DisplaySmallText`
+- **Headline**: `HeadlineLargeText`, `HeadlineMediumText`, `HeadlineSmallText`
+- **Title**: `TitleLargeText`, `TitleMediumText`, `TitleSmallText`
+- **Body**: `BodyLargeText`, `BodyMediumText`, `BodySmallText`
+- **Label**: `LabelLargeText`, `LabelMediumText`, `LabelSmallText`
+
+### Text Class Properties:
+All text classes support:
+- `color` - Text color (only specify when different from theme default)
+- `fontWeight` - Font weight override
+- `textAlign` - Text alignment
+- `maxLines` - Maximum lines with ellipsis
+- `indent` - Left padding
+- `height` - Line height
+
+### Color Usage in Text Widgets:
+- **Default behavior**: Text widgets automatically use appropriate theme colors (`onSurface`, `onPrimary`, etc.)
+- **Only specify `color`** when you need a different color (e.g., `alpha: 0.6` for subtle text)
+- **Available colors** defined in `packages/core/theme/lib/src/style/src/light_color_scheme.dart` and `dark_color_scheme.dart`
+
+### Example Usage:
+```dart
+// ✅ Correct - Default theme colors are applied automatically
+BodyLargeText(
+  'Settings',
+  fontWeight: FontWeight.w700,
+)
+
+// ✅ Correct - Only specify color when you need a different color
+LabelSmallText(
+  'Subtitle',
+  color: colorScheme.onSurface.withValues(alpha: 0.6),
+)
+
+// ❌ Wrong - Don't use TextStyle directly
+Text(
+  'Settings',
+  style: TextStyle(
+    fontSize: 16,
+    fontFamily: 'SF Pro Text',
+    color: colorScheme.onSurface,
+  ),
+)
+
+// ❌ Wrong - Don't specify onSurface explicitly unless needed
+BodyLargeText(
+  'Settings',
+  color: colorScheme.onSurface, // Unnecessary - this is the default
+)
+```
+
+## Theme and Color Guidelines
+
+### Color Usage
+- **NEVER** use hardcoded colors like `Color(0xFF123456)`
+- **ALWAYS** use `colorScheme` colors: `colorScheme.primary`, `colorScheme.onSurface`, etc.
+- Access via `context.colorScheme` extension from theme package
+
+### AppBar Styling
+```dart
+AppBar(
+  backgroundColor: colorScheme.surfaceContainerLowest,
+  titleTextStyle: context.textTheme.headlineSmall, // Uses theme default colors
+)
+```
+
+## Internationalization Requirements
+
+### Hardcoded Text Prevention
+- **NEVER** use hardcoded Japanese text in Dart files
+- **ALWAYS** add strings to `packages/core/i18n/lib/src/i18n/app_ja.yaml` and `app_en.yaml`
+- Use `context.t.section.key` to access translations
+- Run `dart run slang` in i18n package after updating YAML files
+
+### Translation Structure:
+```yaml
+# app_ja.yaml / app_en.yaml
+section:
+  title: "Title Text"
+  description: "Description Text"
+  subsection:
+    item: "Item Text"
+```
+
+### Usage:
+```dart
+// Access translations
+Text(context.t.section.title)
+Text(context.t.section.subsection.item)
+```
+
+## Example HookWidget Usage:
+```dart
+class MyPage extends HookWidget {
+  @override
+  Widget build(BuildContext context) {
+    final isEnabled = useState(true);
+    final controller = useTextEditingController();
+    
+    return Scaffold(
+      body: Switch(
+        value: isEnabled.value,
+        onChanged: (value) => isEnabled.value = value,
+      ),
+    );
+  }
+}
+```
+
+## Quality Assurance Workflow
+
+### Before Completing Any Task:
+1. Run `dart analyze` - must show "No issues found!"
+2. Run `dart run custom_lint` - must show "No issues found!"
+3. Verify no hardcoded Japanese text warnings
+4. Verify no hardcoded color warnings
+5. Verify all TextStyle usage is replaced with app text classes
+
+### Code Generation Commands:
+```bash
+# After route changes
+cd packages/app && dart run build_runner build --delete-conflicting-outputs
+
+# After i18n changes
+cd packages/core/i18n && dart run slang
+```
+
 ## Language Requirements
 
 **STRICT**: Match response language to input language:
@@ -153,4 +340,16 @@ Run `melos run gen` after changes to:
 3. Run tests before committing
 4. Use `melos run custom_lint` to check code quality
 5. Follow package dependency rules (features don't depend on each other)
-6. **Always update CLAUDE.md**: When discovering new patterns, constraints, or best practices during development, immediately update this file
+6. **ALWAYS** check for and resolve all linting warnings before considering a task complete
+
+## Learning and Documentation Protocol
+
+**IMPORTANT**: When discovering new patterns, conventions, or solutions while working on this codebase:
+
+1. **Immediately document findings** in this CLAUDE.md file under the appropriate section
+2. **Add new sections** if the discovery doesn't fit existing categories
+3. **Include both "do" and "don't" examples** for clarity
+4. **Document the reasoning** behind conventions when possible
+5. **Update this file proactively** - don't wait to be asked
+
+This ensures consistent code quality and helps maintain institutional knowledge across all future development work.
