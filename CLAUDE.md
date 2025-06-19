@@ -94,6 +94,7 @@ melos run drift:migrations  # Generate drift migrations
   - Better performance optimization, bug prevention, and testability
 - **Static methods**: Use `Widget.show()` inside classes, not global functions
 - **Code organization**: No global private functions - use class methods or inline code
+- **NO Widget Variables**: NEVER use `final child = Widget()` - return widgets directly
 
 ### Package Dependencies
 - **core/widgets/**: Must NEVER depend on i18n package
@@ -111,6 +112,10 @@ melos run drift:migrations  # Generate drift migrations
   - Use try-catch blocks for scroll operations
 
 ### Testing
+- **100% Test Coverage Required**: All packages except app/ and widgets/ must achieve 100% test coverage
+  - Verify coverage with `flutter test --coverage` in each package
+  - Check lcov.info: LF (Lines Found) = LH (Lines Hit)
+  - Add comprehensive tests for all new functionality
 - Use Mockito for mocking (`@GenerateMocks` annotation)
 - Mock files in `test/utils/mock_*.dart`
 - Platform channel mocks use `TestDefaultBinaryMessengerBinding`

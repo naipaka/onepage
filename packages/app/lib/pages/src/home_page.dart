@@ -82,6 +82,9 @@ class HomePage extends HookConsumerWidget {
 
               // Scroll to selected date
               await scrollCalendarController.scrollToDate(selectedDate);
+              
+              // Highlight the selected date with animation
+              await scrollCalendarController.highlightDate(selectedDate);
             },
             icon: const Icon(Icons.calendar_month_outlined),
           ),

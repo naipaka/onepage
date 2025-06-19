@@ -310,7 +310,7 @@ class _CalendarGrid extends StatelessWidget {
                 ),
                 if (isMarked)
                   Positioned(
-                    bottom: 2,
+                    bottom: 4,
                     child: Container(
                       width: 4,
                       height: 4,

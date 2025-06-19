@@ -25,6 +25,16 @@ typedef ScrollToDateCallback =
       required Curve curve,
     });
 
+/// Type definition for a function that highlights a specified date.
+///
+/// - [date] : The target date to highlight.
+/// - [duration] : The duration of the highlight animation.
+typedef HighlightDateCallback =
+    Future<void> Function(
+      DateTime date, {
+      required Duration duration,
+    });
+
 /// {@template scroll_calendar.ScrollCalendarController}
 /// Controller for a scrollable calendar.
 ///
@@ -37,6 +47,7 @@ class ScrollCalendarController {
 
   ScrollToTodayCallback? _scrollToToday;
   ScrollToDateCallback? _scrollToDate;
+  HighlightDateCallback? _highlightDate;
 
   /// Scrolls to today's date.
   ///
@@ -74,18 +85,39 @@ class ScrollCalendarController {
     await _scrollToDate?.call(date, duration: duration, curve: curve);
   }
 
+  /// Highlights the specified date with an animation.
+  ///
+  /// - [date] : The target date to highlight.
+  /// - [duration] : The duration of the highlight animation.
+  ///   Defaults to 400 milliseconds.
+  Future<void> highlightDate(
+    DateTime date, {
+    Duration duration = const Duration(milliseconds: 400),
+  }) async {
+    assert(
+      _highlightDate != null,
+      'The controller is not attached to any ScrollCalendar.',
+    );
+    await _highlightDate?.call(date, duration: duration);
+  }
+
   /// Attaches the controller to a [VerticalScrollCalendar].
   ///
   /// - [scrollToToday] : Callback function to scroll to today's date.
   /// - [scrollToDate] : Callback function to scroll to a specified date.
+  /// - [highlightDate] : Callback function to highlight a specified date.
   @visibleForTesting
   void attach({
     required ScrollToTodayCallback scrollToToday,
     required ScrollToDateCallback scrollToDate,
+    required HighlightDateCallback highlightDate,
   }) {
-    assert(_scrollToToday == null && _scrollToDate == null);
+    assert(
+      _scrollToToday == null && _scrollToDate == null && _highlightDate == null,
+    );
     _scrollToToday = scrollToToday;
     _scrollToDate = scrollToDate;
+    _highlightDate = highlightDate;
   }
 
   /// Detaches the controller from a [VerticalScrollCalendar].
@@ -95,6 +127,7 @@ class ScrollCalendarController {
   void detach() {
     _scrollToToday = null;
     _scrollToDate = null;
+    _highlightDate = null;
   }
 }
 
@@ -142,7 +175,8 @@ class VerticalScrollCalendar extends StatefulWidget {
   State<VerticalScrollCalendar> createState() => _VerticalScrollCalendarState();
 }
 
-class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
+class _VerticalScrollCalendarState extends State<VerticalScrollCalendar>
+    with TickerProviderStateMixin {
   /// The current date and time.
   final DateTime now = clock.now();
 
@@ -171,6 +205,15 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
   /// The index of the middle visible item.
   int? _middleVisibleIndex;
 
+  /// The currently highlighted date.
+  DateTime? _highlightedDate;
+
+  /// Animation controller for highlight effect.
+  late AnimationController _highlightAnimationController;
+
+  /// Animation for highlight effect.
+  late Animation<double> _highlightAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -181,9 +224,18 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     if (widget.controller == null) {
       _fallbackScrollCalendarController = ScrollCalendarController();
     }
+
+    // Initialize animation controller
+    _highlightAnimationController = AnimationController(vsync: this);
+    _highlightAnimation = Tween<double>(
+      begin: 0,
+      end: 1,
+    ).animate(_highlightAnimationController);
+
     _effectiveScrollCalendarController.attach(
       scrollToToday: _scrollToToday,
       scrollToDate: _scrollToDate,
+      highlightDate: _highlightDate,
     );
     _itemPositionsListener.itemPositions.addListener(_onItemPositionsChanged);
   }
@@ -193,6 +245,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     _itemPositionsListener.itemPositions.removeListener(
       _onItemPositionsChanged,
     );
+    _highlightAnimationController.dispose();
     _effectiveScrollCalendarController.detach();
     super.dispose();
   }
@@ -252,6 +305,28 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
     );
   }
 
+  /// Highlights the specified date with an animation.
+  ///
+  /// - [date] : The target date to highlight.
+  /// - [duration] : The duration of the highlight animation.
+  ///   Defaults to 400 milliseconds.
+  Future<void> _highlightDate(
+    DateTime date, {
+    required Duration duration,
+  }) async {
+    setState(() {
+      _highlightedDate = date;
+    });
+
+    _highlightAnimationController.duration = duration;
+    await _highlightAnimationController.forward();
+    await _highlightAnimationController.reverse();
+
+    setState(() {
+      _highlightedDate = null;
+    });
+  }
+
   /// Callback function to handle the visibility of items in the list.
   void _onItemPositionsChanged() {
     final positions = _itemPositionsListener.itemPositions.value.toList();
@@ -276,6 +351,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return ScrollablePositionedList.separated(
       itemScrollController: _itemScrollController,
       itemPositionsListener: _itemPositionsListener,
@@ -303,15 +379,45 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar> {
           );
         }
         final date = _reversedDates[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _DateItem(date: date),
-              const Gap(16),
-              Expanded(child: widget.dateItemBuilder(context, date)),
-            ],
+        final isHighlighted =
+            _highlightedDate != null &&
+            DateUtils.isSameDay(_highlightedDate, date);
+        return AnimatedBuilder(
+          animation: _highlightAnimation,
+          builder: (context, child) {
+            final value = isHighlighted ? _highlightAnimation.value : 0.0;
+            return Transform.scale(
+              scale: 1.0 + (0.02 * value),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: value > 0 ? colorScheme.surface : null,
+                  borderRadius: BorderRadius.circular(12 * value),
+                  boxShadow: value > 0
+                      ? [
+                          BoxShadow(
+                            color: colorScheme.shadow.withValues(
+                              alpha: 0.08 * value,
+                            ),
+                            blurRadius: 16 * value,
+                            offset: Offset(0, 2 * value),
+                          ),
+                        ]
+                      : null,
+                ),
+                child: child,
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _DateItem(date: date),
+                const Gap(16),
+                Expanded(child: widget.dateItemBuilder(context, date)),
+              ],
+            ),
           ),
         );
       },

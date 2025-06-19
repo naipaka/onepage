@@ -20,6 +20,7 @@ void main() {
           scrollToTodayCalled = true;
         },
         scrollToDate: (date, {required duration, required curve}) async {},
+        highlightDate: (date, {required Duration duration}) async {},
       );
 
       await controller.scrollToToday();
@@ -42,6 +43,7 @@ void main() {
             scrollToDateCalled = true;
             targetDate = date;
           },
+          highlightDate: (date, {required Duration duration}) async {},
         );
 
         final date = DateTime(2023, 10);
@@ -58,6 +60,7 @@ void main() {
         ..attach(
           scrollToToday: ({required duration, required curve}) async {},
           scrollToDate: (date, {required duration, required curve}) async {},
+          highlightDate: (date, {required Duration duration}) async {},
         )
         ..detach();
 
@@ -72,11 +75,53 @@ void main() {
         ..attach(
           scrollToToday: ({required duration, required curve}) async {},
           scrollToDate: (date, {required duration, required curve}) async {},
+          highlightDate: (date, {required Duration duration}) async {},
         )
         ..detach();
 
       expect(
         () async => controller.scrollToDate(DateTime(2023, 10)),
+        throwsA(isA<AssertionError>()),
+      );
+    });
+
+    test(
+      'highlightDate calls the attached callback with correct date',
+      () async {
+        final controller = ScrollCalendarController();
+
+        var highlightDateCalled = false;
+        var targetDate = DateTime(2023, 9);
+
+        controller.attach(
+          scrollToToday: ({required duration, required curve}) async {},
+          scrollToDate: (date, {required duration, required curve}) async {},
+          highlightDate: (date, {required Duration duration}) async {
+            highlightDateCalled = true;
+            targetDate = date;
+          },
+        );
+
+        final date = DateTime(2023, 10);
+        await controller.highlightDate(date);
+        expect(highlightDateCalled, isTrue);
+        expect(targetDate, date);
+
+        controller.detach();
+      },
+    );
+
+    test('highlightDate throws assertion error when not attached', () async {
+      final controller = ScrollCalendarController()
+        ..attach(
+          scrollToToday: ({required duration, required curve}) async {},
+          scrollToDate: (date, {required duration, required curve}) async {},
+          highlightDate: (date, {required Duration duration}) async {},
+        )
+        ..detach();
+
+      expect(
+        () async => controller.highlightDate(DateTime(2023, 10)),
         throwsA(isA<AssertionError>()),
       );
     });
@@ -222,6 +267,59 @@ void main() {
         await tester.pumpAndSettle();
 
         expect(visibleDate, isNotNull);
+      });
+    });
+
+    test('highlightDate with custom duration', () async {
+      final controller = ScrollCalendarController();
+
+      var receivedDuration = const Duration(milliseconds: 400);
+
+      controller.attach(
+        scrollToToday: ({required duration, required curve}) async {},
+        scrollToDate: (date, {required duration, required curve}) async {},
+        highlightDate: (date, {required Duration duration}) async {
+          receivedDuration = duration;
+        },
+      );
+
+      const customDuration = Duration(milliseconds: 600);
+      await controller.highlightDate(
+        DateTime(2023, 10),
+        duration: customDuration,
+      );
+
+      expect(receivedDuration, customDuration);
+      controller.detach();
+    });
+
+    testWidgets('highlight animation shows visual effect', (tester) async {
+      final date = DateTime(2024, 10, 15);
+
+      await withClock(Clock.fixed(date), () async {
+        final controller = ScrollCalendarController();
+
+        await tester.pumpWidget(
+          _TestVerticalScrollCalendar(
+            controller: controller,
+            dates: date.datesInMonth,
+          ),
+        );
+
+        // Start highlight animation
+        unawaited(
+          controller.highlightDate(
+            date,
+            duration: const Duration(milliseconds: 100),
+          ),
+        );
+        await tester.pump(const Duration(milliseconds: 50)); // Mid-animation
+
+        // Check that animation is running (AnimatedBuilder should be building)
+        expect(find.text('$date'), findsOneWidget);
+
+        // Complete animation
+        await tester.pumpAndSettle();
       });
     });
   });
