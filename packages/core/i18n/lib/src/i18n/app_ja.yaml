@@ -9,11 +9,10 @@ home:
   title: "Home"
   license: "License"
   backup: "Backup"
-  scrollToTodayTitle: "本日の日記へ"
-  scrollToDateTitle: "${date}の日記へ"
-  scrollToDescription: "スクロールが完了しました！"
   errorSavingDiary: "日記の保存中にエラーが発生しました"
   errorSavingDiarySolution: "申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください"
+  datePickerCancel: "キャンセル"
+  datePickerConfirm: "決定"
 backup:
   title: "Backup"
   description: "機種変更でも安心バックアップ"

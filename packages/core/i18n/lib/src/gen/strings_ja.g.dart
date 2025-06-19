@@ -64,11 +64,10 @@ class _TranslationsHomeJa implements TranslationsHomeEn {
 	@override String get title => 'Home';
 	@override String get license => 'License';
 	@override String get backup => 'Backup';
-	@override String get scrollToTodayTitle => '本日の日記へ';
-	@override String scrollToDateTitle({required Object date}) => '${date}の日記へ';
-	@override String get scrollToDescription => 'スクロールが完了しました！';
 	@override String get errorSavingDiary => '日記の保存中にエラーが発生しました';
 	@override String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
+	@override String get datePickerCancel => 'キャンセル';
+	@override String get datePickerConfirm => '決定';
 }
 
 // Path: backup
@@ -123,11 +122,10 @@ extension on TranslationsJa {
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
 			case 'home.backup': return 'Backup';
-			case 'home.scrollToTodayTitle': return '本日の日記へ';
-			case 'home.scrollToDateTitle': return ({required Object date}) => '${date}の日記へ';
-			case 'home.scrollToDescription': return 'スクロールが完了しました！';
 			case 'home.errorSavingDiary': return '日記の保存中にエラーが発生しました';
 			case 'home.errorSavingDiarySolution': return '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
+			case 'home.datePickerCancel': return 'キャンセル';
+			case 'home.datePickerConfirm': return '決定';
 			case 'backup.title': return 'Backup';
 			case 'backup.description': return '機種変更でも安心バックアップ';
 			case 'backup.explanation': return 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）';

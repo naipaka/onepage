@@ -67,11 +67,10 @@ class TranslationsHomeEn {
 	String get title => 'Home';
 	String get license => 'License';
 	String get backup => 'Backup';
-	String get scrollToTodayTitle => 'Go to Today\'s Diary';
-	String scrollToDateTitle({required Object date}) => 'Go to the Diary for ${date}';
-	String get scrollToDescription => 'Scrolling complete!';
 	String get errorSavingDiary => 'An error occurred while saving your diary';
 	String get errorSavingDiarySolution => 'We apologize, but please copy your text and restart the app';
+	String get datePickerCancel => 'Cancel';
+	String get datePickerConfirm => 'OK';
 }
 
 // Path: backup
@@ -126,11 +125,10 @@ extension on Translations {
 			case 'home.title': return 'Home';
 			case 'home.license': return 'License';
 			case 'home.backup': return 'Backup';
-			case 'home.scrollToTodayTitle': return 'Go to Today\'s Diary';
-			case 'home.scrollToDateTitle': return ({required Object date}) => 'Go to the Diary for ${date}';
-			case 'home.scrollToDescription': return 'Scrolling complete!';
 			case 'home.errorSavingDiary': return 'An error occurred while saving your diary';
 			case 'home.errorSavingDiarySolution': return 'We apologize, but please copy your text and restart the app';
+			case 'home.datePickerCancel': return 'Cancel';
+			case 'home.datePickerConfirm': return 'OK';
 			case 'backup.title': return 'Backup';
 			case 'backup.description': return 'Backup for a Smooth Device Switch';
 			case 'backup.explanation': return 'Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.).';

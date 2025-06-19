@@ -9,6 +9,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
@@ -47,18 +48,42 @@ class HomePage extends HookConsumerWidget {
         actions: [
           IconButton(
             onPressed: () async {
-              await scrollCalendarController.scrollToToday();
-              if (!context.mounted) {
+              final selectedDate = await showDialog<DateTime>(
+                context: context,
+                builder: (context) => const _DiaryEntryDatePickerDialog(),
+              );
+              if (selectedDate == null || !context.mounted) {
                 return;
               }
-              showSuccessToast(
-                context,
-                title: context.t.home.scrollToTodayTitle,
-                description: context.t.home.scrollToDescription,
-                icon: const Icon(Icons.calendar_today_outlined),
-              );
+
+              ref.showLoading();
+
+              // Ensure the selected date is loaded before scrolling
+              final notifier = ref.read(cachedDiariesProvider.notifier);
+
+              // Load data until the selected date is available
+              var isDateInRange = false;
+              while (!isDateInRange) {
+                final cachedDiaries = await ref.read(
+                  cachedDiariesProvider.future,
+                );
+                final availableDates = cachedDiaries.dates;
+                isDateInRange = availableDates.any(
+                  (date) => DateUtils.isSameDay(date, selectedDate),
+                );
+                if (!isDateInRange) {
+                  await notifier.loadMoreOlder();
+                } else {
+                  break;
+                }
+              }
+
+              ref.hideLoading();
+
+              // Scroll to selected date
+              await scrollCalendarController.scrollToDate(selectedDate);
             },
-            icon: const Icon(Icons.today_outlined),
+            icon: const Icon(Icons.calendar_month_outlined),
           ),
         ],
       ),
@@ -149,6 +174,40 @@ class HomePage extends HookConsumerWidget {
           },
         ),
       ),
+    );
+  }
+}
+
+class _DiaryEntryDatePickerDialog extends ConsumerWidget {
+  const _DiaryEntryDatePickerDialog();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final now = clock.now();
+
+    final diariesWithDates = ref.watch(cachedDiariesProvider).valueOrNull;
+    final notifier = ref.watch(cachedDiariesProvider.notifier);
+
+    final diaries = diariesWithDates?.diaries ?? [];
+    final dates = diariesWithDates?.dates ?? [];
+
+    final entries = diaries.where((diary) => diary.content.trim().isNotEmpty);
+    final entryDates = entries.map((diary) => diary.date).toSet();
+
+    return CalendarDatePickerDialog(
+      initialDate: now,
+      lastDate: dates.lastOrNull ?? DateTime(now.year, now.month + 1),
+      markedDates: entryDates,
+      onMonthChanged: (date) async {
+        if (dates.any((d) => DateUtils.isSameDay(d, date))) {
+          // If the selected month is already in the diary dates, do nothing.
+          return;
+        }
+        // If the selected month is not in the diary dates, load more diaries.
+        await notifier.loadMoreOlder();
+      },
+      cancelLabel: t.home.datePickerCancel,
+      confirmLabel: t.home.datePickerConfirm,
     );
   }
 }
