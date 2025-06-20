@@ -1,0 +1,22 @@
+name: prefs_client
+description: A package that provides a wrapper around shared_preferences for type-safe preference management.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.8.1
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.5.3
+
+dev_dependencies:
+  altive_lints: ^1.21.0
+  build_runner: ^2.5.0
+  custom_lint: ^0.7.5
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.6
