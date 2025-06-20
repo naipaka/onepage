@@ -148,6 +148,55 @@ melos run drift:migrations  # Generate drift migrations
   )
   ```
 
+### Dependency Injection & Architecture
+- **Hide Implementation Details**: Never expose internal dependencies in public APIs
+  - Use private constructors to prevent external instantiation with implementation details
+  - Provide factory methods that encapsulate dependency creation
+  ```dart
+  // ❌ BAD - Exposes SharedPreferences dependency
+  class PrefsClient {
+    PrefsClient(SharedPreferences prefs); // External code can inject any SharedPreferences
+    
+    static Future<PrefsClient> initialize() async {
+      final prefs = await SharedPreferences.getInstance();
+      return PrefsClient(prefs); // Implementation detail exposed
+    }
+  }
+  
+  // ✅ GOOD - Encapsulates implementation details
+  class PrefsClient {
+    PrefsClient._(this._prefs); // Private constructor
+    
+    @visibleForTesting
+    PrefsClient.forTesting(this._prefs); // Test-only access
+    
+    static Future<PrefsClient> initialize() async {
+      final prefs = await SharedPreferences.getInstance();
+      return PrefsClient._(prefs); // Implementation hidden
+    }
+  }
+  ```
+
+- **Constructor Patterns**: Choose the right pattern based on actual needs, not surface-level consistency
+  ```dart
+  // ✅ GOOD - Simple dependency injection (like Haptics)
+  class Haptics {
+    Haptics(this._prefsClient); // Public constructor is fine - no complex initialization
+  }
+  
+  // ❌ BAD - Unnecessary complexity
+  class Haptics {
+    Haptics._(this._prefsClient); // Private for no reason
+    Haptics.forTesting(this._prefsClient); // Redundant when public constructor works
+  }
+  
+  // ✅ GOOD - Complex initialization (like PrefsClient)
+  class PrefsClient {
+    PrefsClient._(this._prefs); // Private because initialization is complex
+    static Future<PrefsClient> initialize() => ...; // Factory handles complexity
+  }
+  ```
+
 ### Package Dependencies
 - **core/widgets/**: Must NEVER depend on i18n package
   - Use `intl` package for localization or pass strings as parameters
@@ -185,6 +234,9 @@ Run `melos run gen` after changes to:
 - **Complete error checking**: Always verify ALL compilation errors before claiming completion
   - Use `mcp__ide__getDiagnostics` to check for actual compilation errors
   - Never claim completion without verifying zero diagnostics
+  - **Check ALL dependent packages**: When modifying a package, verify that ALL packages that depend on it still compile
+    - Example: After changing `haptics` package API, must check `app` package compilation
+    - Run `dart analyze` in each dependent package, not just the modified package
 
 ### Environment Configuration
 - Environment variables in `packages/app/dart_defines/`
@@ -326,12 +378,58 @@ cd packages/app && dart run build_runner build --delete-conflicting-outputs
 cd packages/core/i18n && dart run slang
 ```
 
+## Communication Guidelines
+
+### Response Protocols
+- **When asked "Why?"**: ALWAYS start your response with the reason/explanation first, then provide additional context
+- **Question answering**: Address the core question directly before providing supporting information
+- **Avoid assumptions**: If you're unsure about the user's intent, ask for clarification rather than making assumptions
+
+### Self-Improvement and Learning
+- **Document Mistakes**: When you fail to follow established patterns or make judgment errors:
+  1. Immediately identify what went wrong and why
+  2. Add the learning to this CLAUDE.md file under the appropriate section
+  3. Include both correct and incorrect approaches with clear explanations
+- **Proactive Documentation**: Any time you discover you should have done something differently, document it as a guideline for future reference
+- **Pattern Recognition**: When you notice inconsistencies in your approach or miss obvious solutions, document the correct pattern
+
+### Example of Self-Documentation:
+```markdown
+## Architecture Mistakes to Avoid
+- **DON'T**: Copy architectural patterns without understanding their purpose
+  - Wrong: Making all constructors private just for "consistency"
+  - Right: Use private constructors only when hiding implementation details is necessary
+- **DO**: Evaluate each design decision based on actual requirements
+```
+
 ## Language Requirements
 
 **STRICT**: Match response language to input language:
-- English input → English response
+- English input → English response  
 - Japanese input → Japanese response
 - No exceptions allowed
+
+**Conversation Language Protocol**:
+- Use the same language for ALL communication (questions, explanations, documentation updates, etc.)
+- If user writes in Japanese, respond entirely in Japanese
+- If user writes in English, respond entirely in English
+- Code comments and technical documentation should remain in English for OSS compatibility
+- Only user-facing text in YAML files should be localized
+
+## Package Creation Guidelines
+
+### Creating New Packages
+**ALWAYS** follow the method specified in README.md:
+
+```bash
+# For packages
+flutter create -t package packages/{directory_name} --project-name {project_name}
+
+# For apps  
+flutter create --org jp.co.altive packages/{directory_name} --project-name {project_name}
+```
+
+**NEVER** use manual directory creation or other methods - always use the official Flutter commands documented in README.md.
 
 ## Development Workflow
 
@@ -353,3 +451,35 @@ cd packages/core/i18n && dart run slang
 5. **Update this file proactively** - don't wait to be asked
 
 This ensures consistent code quality and helps maintain institutional knowledge across all future development work.
+
+## Package Documentation Standards
+
+### LICENSE Files
+- **Symbolic Links Required**: All packages must use symbolic links to the root LICENSE file
+- **Core Packages**: Use `ln -s ../../../LICENSE packages/core/{package_name}/LICENSE`
+- **Feature Packages**: Use `ln -s ../../../LICENSE packages/features/{package_name}/LICENSE`
+- **Never Copy**: Do not copy LICENSE content - always use symbolic links for consistency
+
+### README.md Files
+- **Package Name as Header**: Use the package name as the main H1 header
+- **Clear Description**: Provide a concise description of what the package does
+- **Features Section**: List key features and capabilities
+- **Getting Started**: Include dependency setup instructions
+- **Usage Examples**: Provide practical code examples showing how to use the package
+- **Follow Project Patterns**: Study existing package READMEs for consistency
+- **No Generic Text**: Replace all flutter create template text with actual content
+
+### Root README.md Maintenance
+- **Add New Packages**: Always add new package entries to the root README.md
+- **Consistent Format**: Follow the existing format for package descriptions
+- **Alphabetical Order**: Maintain alphabetical order within core/ and features/ sections
+- **Brief Descriptions**: Keep package descriptions concise but informative
+
+### Documentation Workflow
+1. **Create Package**: Use proper flutter create commands
+2. **Create LICENSE Symlink**: 
+   - Core: `rm packages/core/{name}/LICENSE && ln -s ../../../LICENSE packages/core/{name}/LICENSE`
+   - Features: `rm packages/features/{name}/LICENSE && ln -s ../../../LICENSE packages/features/{name}/LICENSE`
+3. **Write README**: Replace template with proper package documentation
+4. **Update Root README**: Add package entry to main project documentation
+5. **Verify Consistency**: Ensure all documentation follows project standards
