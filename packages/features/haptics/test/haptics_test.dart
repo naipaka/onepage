@@ -7,7 +7,7 @@ void main() {
   group('Haptics library exports', () {
     test('exports Haptics class', () {
       final mockPrefsClient = MockPrefsClient();
-      final haptics = Haptics(mockPrefsClient);
+      final haptics = Haptics(prefsClient: mockPrefsClient);
       expect(haptics, isA<Haptics>());
     });
   });

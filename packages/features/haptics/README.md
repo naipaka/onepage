@@ -30,7 +30,7 @@ import 'package:prefs_client/prefs_client.dart';
 void main() async {
   // Initialize dependencies
   final prefsClient = await PrefsClient.initialize();
-  final haptics = Haptics(prefsClient);
+  final haptics = Haptics(prefsClient: prefsClient);
   
   // Trigger haptic feedback for different interaction types
   await haptics.textInputFeedback();    // Light impact for text input

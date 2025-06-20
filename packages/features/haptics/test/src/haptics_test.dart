@@ -15,7 +15,7 @@ void main() {
 
     setUp(() {
       mockPrefsClient = MockPrefsClient();
-      haptics = Haptics(mockPrefsClient);
+      haptics = Haptics(prefsClient: mockPrefsClient);
       methodCalls = [];
 
       // Set up method channel to capture haptic feedback calls
@@ -35,7 +35,7 @@ void main() {
 
     group('constructor', () {
       test('creates instance with PrefsClient', () {
-        final instance = Haptics(mockPrefsClient);
+        final instance = Haptics(prefsClient: mockPrefsClient);
         expect(instance, isA<Haptics>());
       });
     });
