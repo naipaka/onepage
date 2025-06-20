@@ -5,6 +5,7 @@
       "Bash(dart run:*)",
       "Bash(dart pub:*)",
       "Bash(dart analyze:*)",
+      "Bash(dart test:*)",
       "Bash(dart run build_runner build:*)",
       "Bash(flutter pub:*)",
       "Bash(flutter analyze:*)",
@@ -20,12 +21,17 @@
       "Bash(find:*)",
       "Bash(lcov:*)",
       "Bash(ls:*)",
-      "Bash(genhtml:*)",
+      "Bash(ln:*)",
+      "Bash(readlink:*)",
       "Bash(grep:*)",
+      "Bash(genhtml:*)",
       "mcp__ide__getDiagnostics",
       "mcp__ide__executeCode",
       "mcp__Framelink_Figma_MCP__get_figma_data"
     ],
-    "deny": []
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(curl:*)"
+    ]
   }
 }

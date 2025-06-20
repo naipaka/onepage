@@ -197,6 +197,35 @@ melos run drift:migrations  # Generate drift migrations
   }
   ```
 
+- **Provider Architecture Patterns**: Synchronous vs Asynchronous providers based on initialization needs
+  ```dart
+  // ❌ BAD - Unnecessary async providers causing UI complexity
+  @Riverpod(keepAlive: true)
+  Future<PrefsClient> prefsClient(Ref ref) => PrefsClient.initialize();
+  
+  // UI becomes complex with AsyncValue handling
+  prefsClientAsync.when(
+    loading: () => CircularProgressIndicator(),
+    error: (error, stack) => ErrorWidget(),
+    data: (prefsClient) => ActualContent(),
+  );
+  
+  // ✅ GOOD - Synchronous providers with main.dart initialization
+  @Riverpod(keepAlive: true)
+  PrefsClient prefsClient(Ref ref) {
+    throw UnimplementedError('Must be overridden in main.dart');
+  }
+  
+  // main.dart handles initialization with parallel execution
+  final (_, prefsClient) = await (
+    LocaleSettings.useDeviceLocale(),
+    PrefsClient.initialize(),
+  ).wait;
+  
+  // UI becomes simple
+  final prefsClient = ref.watch(prefsClientProvider);
+  ```
+
 ### Package Dependencies
 - **core/widgets/**: Must NEVER depend on i18n package
   - Use `intl` package for localization or pass strings as parameters

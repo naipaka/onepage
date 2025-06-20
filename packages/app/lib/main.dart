@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:prefs_client/prefs_client.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:utils/utils.dart';
 
@@ -29,8 +30,11 @@ Future<void> main() async {
   // Logs errors outside the Flutter environment.
   Isolate.current.addErrorListener(tracker.isolateErrorListener());
 
-  // Set the locale to the device's locale.
-  await LocaleSettings.useDeviceLocale();
+  // Initialize locale and preferences concurrently
+  final (_, prefsClient) = await (
+    LocaleSettings.useDeviceLocale(),
+    PrefsClient.initialize(),
+  ).wait;
 
   const providerLogPrint = String.fromEnvironment('providerLogPrint');
   final outputLogTypes = ProviderEvent.getEventsFromNames(providerLogPrint);
@@ -44,6 +48,7 @@ Future<void> main() async {
       overrides: [
         flavorProvider.overrideWithValue(flavor),
         trackerProvider.overrideWithValue(tracker),
+        prefsClientProvider.overrideWithValue(prefsClient),
       ],
       observers: [providerLogger],
       child: TranslationProvider(

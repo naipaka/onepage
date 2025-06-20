@@ -25,9 +25,13 @@ dependencies:
   flutter_hooks: ^0.21.2
   gap: ^3.0.1
   go_router: ^15.2.0
+  haptics:
+    path: ../features/haptics/
   hooks_riverpod: ^2.6.1
   i18n:
     path: ../core/i18n/
+  prefs_client:
+    path: ../core/prefs_client/
   provider_utils:
     path: ../core/provider_utils/
   riverpod_annotation: ^2.6.1
