@@ -11,6 +11,7 @@ import 'package:widgets/widgets.dart';
 import '../../adapters/adapters.dart';
 import '../../gen/assets.gen.dart';
 import '../../router/router.dart';
+import '../../widgets/widgets.dart';
 
 /// {@template backup_page}
 /// A page that allows the user to back up their data.
@@ -21,8 +22,9 @@ class BackupPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(backupControllerProvider);
     final t = context.t;
+    final controller = ref.watch(backupControllerProvider);
+    final haptics = ref.watch(hapticsProvider);
     return Scaffold(
       appBar: AppBar(title: Text(t.backup.title)),
       body: SafeArea(
@@ -50,7 +52,7 @@ class BackupPage extends ConsumerWidget {
                       ),
                     ),
                     const Gap(24),
-                    FilledButton(
+                    HapticFilledButton(
                       onPressed: () async {
                         try {
                           ref.showLoading();
@@ -62,6 +64,7 @@ class BackupPage extends ConsumerWidget {
                           if (!context.mounted) {
                             return;
                           }
+                          haptics.successFeedback();
                           showSuccessToast(
                             context,
                             title: t.backup.successMessage,
@@ -96,7 +99,7 @@ class BackupPage extends ConsumerWidget {
                       ),
                     ),
                     const Gap(24),
-                    FilledButton(
+                    HapticFilledButton(
                       onPressed: () async {
                         try {
                           ref.showLoading();
@@ -114,6 +117,7 @@ class BackupPage extends ConsumerWidget {
                           if (!context.mounted) {
                             return;
                           }
+                          haptics.successFeedback();
                           // Using unawaited to display the dialog
                           // while handling the loading indicator dismissal.
                           unawaited(_BackupRestoreDialog.show(context));
@@ -193,7 +197,7 @@ class _BackupRestoreDialog extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
               const Gap(24),
-              FilledButton(
+              HapticFilledButton(
                 onPressed: () {
                   const HomeRouteData().replace(context);
                   Navigator.pop(context);

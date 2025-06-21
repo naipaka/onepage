@@ -17,6 +17,7 @@ files=(
     "packages/app/ios/prod/GoogleService-Info.plist"
     "packages/app/ios/dev/firebase_app_id_file.json"
     "packages/app/ios/prod/firebase_app_id_file.json"
+    "packages/app/android/key.properties"
 )
 
 for f in "${files[@]}"; do

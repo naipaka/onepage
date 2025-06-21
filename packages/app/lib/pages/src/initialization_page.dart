@@ -12,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
+import '../../widgets/widgets.dart';
 
 /// Callback to be called when initialization is complete.
 typedef NullableWidgetBuilder = Widget? Function(BuildContext context);
@@ -56,6 +57,7 @@ class _InitializedPage extends ConsumerWidget {
 
     final updateRequestMessage = ref.watch(updateRequestMessageProvider);
     final isLoading = ref.watch(isLoadingProvider);
+    final haptics = ref.watch(hapticsProvider);
 
     final child = onInitialized(context);
 
@@ -80,6 +82,7 @@ class _InitializedPage extends ConsumerWidget {
               message: updateRequestMessage,
               buttonText: t.updateRequest.button.updateNow,
               onButtonPressed: () async {
+                haptics.buttonTapFeedback();
                 final platform = defaultTargetPlatform;
                 final urlString = switch (platform) {
                   TargetPlatform.android =>
@@ -134,7 +137,7 @@ class _ErrorPage extends StatelessWidget {
               style: textTheme.headlineMedium,
             ),
             const Gap(16),
-            FilledButton(
+            HapticFilledButton(
               onPressed: onRetry,
               child: const Text('Retry'),
             ),

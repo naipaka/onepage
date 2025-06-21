@@ -11,14 +11,18 @@ class DiaryListTile extends StatefulWidget {
   const DiaryListTile({
     super.key,
     required this.content,
-    required this.save,
+    this.onChanged,
+    this.save,
   });
 
   /// Content of the diary.
   final String? content;
 
+  /// Callback when the content is changed.
+  final ValueChanged<String>? onChanged;
+
   /// Save diary content callback.
-  final ValueChanged<String> save;
+  final ValueChanged<String>? save;
 
   @override
   State<DiaryListTile> createState() => _DiaryListTileState();
@@ -70,7 +74,7 @@ class _DiaryListTileState extends State<DiaryListTile>
       // When the content is not changed, do nothing.
       return;
     }
-    widget.save(textController.text);
+    widget.save?.call(textController.text);
   }
 
   /// Focus change event handler.
@@ -93,7 +97,10 @@ class _DiaryListTileState extends State<DiaryListTile>
       style: textTheme.bodyLarge,
       minLines: 3,
       maxLines: null,
-      onChanged: (_) => _debounce(_save),
+      onChanged: (text) {
+        widget.onChanged?.call(text);
+        _debounce(_save);
+      },
       onTapOutside: (_) => _focusNode.unfocus(),
     );
   }

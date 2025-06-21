@@ -17,37 +17,50 @@ class Haptics {
   /// Triggers haptic feedback for text input interactions.
   ///
   /// Uses light impact feedback if text input haptic feedback is enabled.
-  Future<void> textInputFeedback() async {
+  void textInputFeedback() {
     if (_prefsClient.textInputHapticEnabled) {
-      await HapticFeedback.lightImpact();
+      HapticFeedback.lightImpact().ignore();
     }
   }
 
   /// Triggers haptic feedback for button tap interactions.
   ///
-  /// Uses medium impact feedback if other haptic feedback is enabled.
-  Future<void> buttonTapFeedback() async {
+  /// Uses light impact feedback if other haptic feedback is enabled.
+  void buttonTapFeedback() {
     if (_prefsClient.otherHapticEnabled) {
-      await HapticFeedback.mediumImpact();
+      HapticFeedback.lightImpact().ignore();
     }
   }
 
   /// Triggers haptic feedback for toggle/switch interactions.
   ///
   /// Uses selection click feedback if other haptic feedback is enabled.
-  Future<void> toggleFeedback() async {
+  void toggleFeedback() {
     if (_prefsClient.otherHapticEnabled) {
-      await HapticFeedback.selectionClick();
+      HapticFeedback.selectionClick().ignore();
     }
   }
 
   /// Triggers haptic feedback for navigation interactions.
   ///
   /// Uses light impact feedback if other haptic feedback is enabled.
-  Future<void> navigationFeedback() async {
+  void navigationFeedback() {
     if (_prefsClient.otherHapticEnabled) {
-      await HapticFeedback.lightImpact();
+      HapticFeedback.lightImpact().ignore();
     }
   }
 
+  /// Triggers haptic feedback for successful actions.
+  ///
+  /// Uses double medium impact feedback (short pause between) if other haptic
+  /// feedback is enabled.
+  void successFeedback() {
+    if (_prefsClient.otherHapticEnabled) {
+      HapticFeedback.mediumImpact().ignore();
+      // Short delay for double tap effect
+      Future.delayed(const Duration(milliseconds: 200), () {
+        HapticFeedback.mediumImpact().ignore();
+      }).ignore();
+    }
+  }
 }

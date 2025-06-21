@@ -45,7 +45,7 @@ void main() {
           () async {
         when(mockPrefsClient.textInputHapticEnabled).thenReturn(true);
 
-        await haptics.textInputFeedback();
+        haptics.textInputFeedback();
 
         expect(methodCalls, hasLength(1));
         expect(methodCalls.first.method, 'HapticFeedback.vibrate');
@@ -55,27 +55,27 @@ void main() {
       test('does not trigger when text input haptic is disabled', () async {
         when(mockPrefsClient.textInputHapticEnabled).thenReturn(false);
 
-        await haptics.textInputFeedback();
+        haptics.textInputFeedback();
 
         expect(methodCalls, isEmpty);
       });
     });
 
     group('buttonTapFeedback', () {
-      test('triggers medium impact when other haptic is enabled', () async {
+      test('triggers light impact when other haptic is enabled', () async {
         when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
-        await haptics.buttonTapFeedback();
+        haptics.buttonTapFeedback();
 
         expect(methodCalls, hasLength(1));
         expect(methodCalls.first.method, 'HapticFeedback.vibrate');
-        expect(methodCalls.first.arguments, 'HapticFeedbackType.mediumImpact');
+        expect(methodCalls.first.arguments, 'HapticFeedbackType.lightImpact');
       });
 
       test('does not trigger when other haptic is disabled', () async {
         when(mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
-        await haptics.buttonTapFeedback();
+        haptics.buttonTapFeedback();
 
         expect(methodCalls, isEmpty);
       });
@@ -85,7 +85,7 @@ void main() {
       test('triggers selection click when other haptic is enabled', () async {
         when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
-        await haptics.toggleFeedback();
+        haptics.toggleFeedback();
 
         expect(methodCalls, hasLength(1));
         expect(methodCalls.first.method, 'HapticFeedback.vibrate');
@@ -96,7 +96,7 @@ void main() {
       test('does not trigger when other haptic is disabled', () async {
         when(mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
-        await haptics.toggleFeedback();
+        haptics.toggleFeedback();
 
         expect(methodCalls, isEmpty);
       });
@@ -106,7 +106,7 @@ void main() {
       test('triggers light impact when other haptic is enabled', () async {
         when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
-        await haptics.navigationFeedback();
+        haptics.navigationFeedback();
 
         expect(methodCalls, hasLength(1));
         expect(methodCalls.first.method, 'HapticFeedback.vibrate');
@@ -116,7 +116,30 @@ void main() {
       test('does not trigger when other haptic is disabled', () async {
         when(mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
-        await haptics.navigationFeedback();
+        haptics.navigationFeedback();
+
+        expect(methodCalls, isEmpty);
+      });
+    });
+
+    group('successFeedback', () {
+      test(
+        'triggers first medium impact immediately when other haptic is enabled',
+        () {
+        when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
+
+        haptics.successFeedback();
+
+        // First impact should be immediate
+        expect(methodCalls, hasLength(1));
+        expect(methodCalls.first.method, 'HapticFeedback.vibrate');
+        expect(methodCalls.first.arguments, 'HapticFeedbackType.mediumImpact');
+      });
+
+      test('does not trigger when other haptic is disabled', () {
+        when(mockPrefsClient.otherHapticEnabled).thenReturn(false);
+
+        haptics.successFeedback();
 
         expect(methodCalls, isEmpty);
       });

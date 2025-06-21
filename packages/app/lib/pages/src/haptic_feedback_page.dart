@@ -15,7 +15,6 @@ class HapticFeedbackPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final haptics = ref.watch(hapticsProvider);
     final textInputHaptic = ref.watch(textInputHapticEnabledProvider);
     final textInputHapticNotifier = ref.watch(
       textInputHapticEnabledProvider.notifier,
@@ -38,10 +37,7 @@ class HapticFeedbackPage extends HookConsumerWidget {
               subtitle: context.t.settings.textInputDescription,
               value: textInputHaptic,
               onChanged: (value) async {
-                // Update the state and persist the change.
                 await textInputHapticNotifier.setEnabled(enabled: value);
-                // Trigger haptic feedback when toggled.
-                await haptics.toggleFeedback();
               },
             ),
             const Gap(16),
@@ -50,10 +46,7 @@ class HapticFeedbackPage extends HookConsumerWidget {
               subtitle: context.t.settings.otherDescription,
               value: otherHaptic,
               onChanged: (value) async {
-                // Update the state and persist the change.
                 await otherHapticNotifier.setEnabled(enabled: value);
-                // Trigger haptic feedback when toggled.
-                await haptics.toggleFeedback();
               },
             ),
           ],
@@ -63,7 +56,7 @@ class HapticFeedbackPage extends HookConsumerWidget {
   }
 }
 
-class _HapticSettingsItem extends StatelessWidget {
+class _HapticSettingsItem extends ConsumerWidget {
   const _HapticSettingsItem({
     required this.title,
     required this.subtitle,
@@ -77,8 +70,9 @@ class _HapticSettingsItem extends StatelessWidget {
   final ValueChanged<bool> onChanged;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = context.colorScheme;
+    final haptics = ref.watch(hapticsProvider);
     return Row(
       children: [
         Expanded(
@@ -97,7 +91,10 @@ class _HapticSettingsItem extends StatelessWidget {
         const Gap(24),
         Switch.adaptive(
           value: value,
-          onChanged: onChanged,
+          onChanged: (value) {
+            onChanged(value);
+            haptics.toggleFeedback();
+          },
           activeColor: colorScheme.primary,
         ),
       ],
