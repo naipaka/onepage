@@ -7,12 +7,14 @@ workspace:
   - packages/app
   - packages/core/db_client
   - packages/core/i18n
+  - packages/core/prefs_client
   - packages/core/provider_utils
   - packages/core/theme
   - packages/core/utils
   - packages/core/widgets
   - packages/features/backup
   - packages/features/diary
+  - packages/features/haptics
   - packages/features/scroll_calendar
   - packages/features/update_requester
 

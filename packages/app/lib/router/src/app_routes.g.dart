@@ -15,8 +15,20 @@ RouteBase get $homeRouteData => GoRouteData.$route(
 
   factory: _$HomeRouteData._fromState,
   routes: [
-    GoRouteData.$route(path: 'license', factory: _$LicenseRouteData._fromState),
     GoRouteData.$route(path: 'backup', factory: _$BackupRouteData._fromState),
+    GoRouteData.$route(
+      path: 'settings',
+
+      factory: _$SettingsRouteData._fromState,
+      routes: [
+        GoRouteData.$route(
+          path: 'haptic-feedback',
+
+          factory: _$HapticFeedbackRouteData._fromState,
+        ),
+      ],
+    ),
+    GoRouteData.$route(path: 'license', factory: _$LicenseRouteData._fromState),
   ],
 );
 
@@ -40,12 +52,12 @@ mixin _$HomeRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$LicenseRouteData on GoRouteData {
-  static LicenseRouteData _fromState(GoRouterState state) =>
-      const LicenseRouteData();
+mixin _$BackupRouteData on GoRouteData {
+  static BackupRouteData _fromState(GoRouterState state) =>
+      const BackupRouteData();
 
   @override
-  String get location => GoRouteData.$location('/license');
+  String get location => GoRouteData.$location('/backup');
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -61,12 +73,54 @@ mixin _$LicenseRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$BackupRouteData on GoRouteData {
-  static BackupRouteData _fromState(GoRouterState state) =>
-      const BackupRouteData();
+mixin _$SettingsRouteData on GoRouteData {
+  static SettingsRouteData _fromState(GoRouterState state) =>
+      const SettingsRouteData();
 
   @override
-  String get location => GoRouteData.$location('/backup');
+  String get location => GoRouteData.$location('/settings');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin _$HapticFeedbackRouteData on GoRouteData {
+  static HapticFeedbackRouteData _fromState(GoRouterState state) =>
+      const HapticFeedbackRouteData();
+
+  @override
+  String get location => GoRouteData.$location('/settings/haptic-feedback');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin _$LicenseRouteData on GoRouteData {
+  static LicenseRouteData _fromState(GoRouterState state) =>
+      const LicenseRouteData();
+
+  @override
+  String get location => GoRouteData.$location('/license');
 
   @override
   void go(BuildContext context) => context.go(location);

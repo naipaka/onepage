@@ -17,6 +17,7 @@ import 'package:widgets/widgets.dart';
 import '../../adapters/adapters.dart';
 import '../../gen/assets.gen.dart';
 import '../../router/src/app_routes.dart';
+import '../../widgets/widgets.dart';
 
 /// {@template onepage.HomePage}
 /// Home page when the app is opened.
@@ -28,6 +29,8 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = context.colorScheme;
+
+    final haptic = ref.watch(hapticsProvider);
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
@@ -46,7 +49,7 @@ class HomePage extends HookConsumerWidget {
           },
         ),
         actions: [
-          IconButton(
+          HapticIconButton(
             onPressed: () async {
               final selectedDate = await showDialog<DateTime>(
                 context: context,
@@ -82,7 +85,8 @@ class HomePage extends HookConsumerWidget {
 
               // Scroll to selected date
               await scrollCalendarController.scrollToDate(selectedDate);
-              
+              // Feedback for successful date selection
+              haptic.successFeedback();
               // Highlight the selected date with animation
               await scrollCalendarController.highlightDate(selectedDate);
             },
@@ -137,6 +141,9 @@ class HomePage extends HookConsumerWidget {
                     );
                     return DiaryListTile(
                       content: diary?.content,
+                      onChanged: (_) {
+                        haptic.textInputFeedback();
+                      },
                       save: (content) async {
                         try {
                           if (diary == null) {
@@ -215,11 +222,11 @@ class _DiaryEntryDatePickerDialog extends ConsumerWidget {
   }
 }
 
-class _Drawer extends ConsumerWidget {
+class _Drawer extends StatelessWidget {
   const _Drawer();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final t = context.t;
     return Drawer(
       child: ListView(
@@ -240,7 +247,7 @@ class _Drawer extends ConsumerWidget {
           const Gap(8),
           const DashedDivider(dashedHeight: 2, dashedWidth: 2, dashedSpace: 16),
           const Gap(8),
-          ListTile(
+          HapticNavigationListTile(
             leading: const Icon(Icons.home_outlined),
             title: Text(t.home.title),
             onTap: () {
@@ -253,19 +260,27 @@ class _Drawer extends ConsumerWidget {
             },
           ),
           const Gap(8),
-          ListTile(
-            leading: const Icon(Icons.description_outlined),
-            title: Text(t.home.license),
-            onTap: () {
-              const LicenseRouteData().go(context);
-            },
-          ),
-          const Gap(8),
-          ListTile(
+          HapticNavigationListTile(
             leading: const Icon(Icons.backup_outlined),
             title: Text(t.home.backup),
             onTap: () {
               const BackupRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          HapticNavigationListTile(
+            leading: const Icon(Icons.settings_outlined),
+            title: const Text('Settings'),
+            onTap: () {
+              const SettingsRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          HapticNavigationListTile(
+            leading: const Icon(Icons.description_outlined),
+            title: Text(t.home.license),
+            onTap: () {
+              const LicenseRouteData().go(context);
             },
           ),
         ],

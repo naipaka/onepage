@@ -1,0 +1,23 @@
+name: haptics
+description: A package that provides haptic feedback functionality with preference-based control.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.8.1
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  prefs_client:
+    path: ../../core/prefs_client
+
+dev_dependencies:
+  altive_lints: ^1.21.0
+  build_runner: ^2.5.0
+  custom_lint: ^0.7.5
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.6

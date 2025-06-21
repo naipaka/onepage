@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(melos run:*)",
+      "Bash(dart run:*)",
+      "Bash(dart pub:*)",
+      "Bash(dart analyze:*)",
+      "Bash(dart test:*)",
+      "Bash(dart run build_runner build:*)",
+      "Bash(flutter pub:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter test:*)",
+      "Bash(flutter create:*)",
+      "Bash(melos clean:*)",
+      "Bash(melos bootstrap:*)",
+      "Bash(melos exec --scope=onepage:*)",
+      "Bash(melos exec:*)",
+      "Bash(melos list:*)",
+      "Bash(/**/packages/**)",
+      "Bash(rg:*)",
+      "Bash(find:*)",
+      "Bash(lcov:*)",
+      "Bash(ls:*)",
+      "Bash(ln:*)",
+      "Bash(readlink:*)",
+      "Bash(grep:*)",
+      "Bash(genhtml:*)",
+      "mcp__ide__getDiagnostics",
+      "mcp__ide__executeCode",
+      "mcp__Framelink_Figma_MCP__get_figma_data"
+    ],
+    "deny": [
+      "Bash(rm:*)",
+      "Bash(curl:*)"
+    ]
+  }
+}

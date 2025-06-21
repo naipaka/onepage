@@ -33,6 +33,10 @@ This package provides a database client for the application.
 
 This package supports the internationalization and localization of the application. All texts for translating the application's text are defined here.
 
+### [core/prefs_client](packages/core/prefs_client)
+
+This package provides a type-safe wrapper around SharedPreferences for the application.
+
 ### [core/provider_utils](packages/core/provider_utils)
 
 This package provides utility functions for the riverpod package.
@@ -56,6 +60,10 @@ This package provides the backup feature of the application.
 ### [features/diary](packages/features/diary)
 
 This package provides the diary feature of the application.
+
+### [features/haptics](packages/features/haptics)
+
+This package provides haptic feedback functionality with preference-based control.
 
 ### [features/scroll_calendar](packages/features/scroll_calendar)
 

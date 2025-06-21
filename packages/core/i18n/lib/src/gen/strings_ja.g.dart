@@ -41,6 +41,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsUpdateRequestJa updateRequest = _TranslationsUpdateRequestJa._(_root);
 	@override late final _TranslationsHomeJa home = _TranslationsHomeJa._(_root);
 	@override late final _TranslationsBackupJa backup = _TranslationsBackupJa._(_root);
+	@override late final _TranslationsSettingsJa settings = _TranslationsSettingsJa._(_root);
 }
 
 // Path: updateRequest
@@ -86,6 +87,23 @@ class _TranslationsBackupJa implements TranslationsBackupEn {
 	@override String get restoreFailedMessage => 'バックアップの復元に失敗しました';
 	@override String get restoreSuccess => '復元が完了しました';
 	@override late final _TranslationsBackupActionsJa actions = _TranslationsBackupActionsJa._(_root);
+}
+
+// Path: settings
+class _TranslationsSettingsJa implements TranslationsSettingsEn {
+	_TranslationsSettingsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Settings';
+	@override String get accessibility => 'アクセシビリティ';
+	@override String get hapticFeedback => '触覚フィードバック';
+	@override String get vibrationSettings => '振動設定';
+	@override String get textInput => '文字入力';
+	@override String get textInputDescription => '文字入力中の振動設定';
+	@override String get other => 'その他';
+	@override String get otherDescription => 'アイコンタップなどの振動設定';
 }
 
 // Path: updateRequest.button
@@ -137,6 +155,14 @@ extension on TranslationsJa {
 			case 'backup.actions.create': return 'バックアップを作成';
 			case 'backup.actions.restore': return 'バックアップを復元';
 			case 'backup.actions.goToHome': return 'ホームへ戻る';
+			case 'settings.title': return 'Settings';
+			case 'settings.accessibility': return 'アクセシビリティ';
+			case 'settings.hapticFeedback': return '触覚フィードバック';
+			case 'settings.vibrationSettings': return '振動設定';
+			case 'settings.textInput': return '文字入力';
+			case 'settings.textInputDescription': return '文字入力中の振動設定';
+			case 'settings.other': return 'その他';
+			case 'settings.otherDescription': return 'アイコンタップなどの振動設定';
 			default: return null;
 		}
 	}
