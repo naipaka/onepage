@@ -72,6 +72,7 @@ perspectivev
 petitparser
 PODFILE
 podspec
+psql
 pubspec
 riverpod
 RUNPATH
