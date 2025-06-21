@@ -12,6 +12,7 @@ class DiaryListTile extends StatefulWidget {
     super.key,
     required this.content,
     this.onChanged,
+    this.onFocusChanged,
     this.save,
   });
 
@@ -20,6 +21,9 @@ class DiaryListTile extends StatefulWidget {
 
   /// Callback when the content is changed.
   final ValueChanged<String>? onChanged;
+
+  /// Callback when focus state changes.
+  final ValueChanged<bool>? onFocusChanged;
 
   /// Save diary content callback.
   final ValueChanged<String>? save;
@@ -79,6 +83,7 @@ class _DiaryListTileState extends State<DiaryListTile>
 
   /// Focus change event handler.
   void _onFocusChange() {
+    widget.onFocusChanged?.call(_focusNode.hasFocus);
     if (!_focusNode.hasFocus) {
       _save();
     }
@@ -101,7 +106,6 @@ class _DiaryListTileState extends State<DiaryListTile>
         widget.onChanged?.call(text);
         _debounce(_save);
       },
-      onTapOutside: (_) => _focusNode.unfocus(),
     );
   }
 }
