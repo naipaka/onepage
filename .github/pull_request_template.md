@@ -1,6 +1,6 @@
 ## 🙌 What's Done
 <!-- What has been accomplished in this Pull Request? -->
-- 
+- closes 
 
 ## ✍️ What's Not Done
 <!-- What is not included in this Pull Request? If none, write "None". -->

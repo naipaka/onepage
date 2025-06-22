@@ -148,84 +148,6 @@ melos run drift:migrations  # Generate drift migrations
   )
   ```
 
-### Dependency Injection & Architecture
-- **Hide Implementation Details**: Never expose internal dependencies in public APIs
-  - Use private constructors to prevent external instantiation with implementation details
-  - Provide factory methods that encapsulate dependency creation
-  ```dart
-  // ❌ BAD - Exposes SharedPreferences dependency
-  class PrefsClient {
-    PrefsClient(SharedPreferences prefs); // External code can inject any SharedPreferences
-    
-    static Future<PrefsClient> initialize() async {
-      final prefs = await SharedPreferences.getInstance();
-      return PrefsClient(prefs); // Implementation detail exposed
-    }
-  }
-  
-  // ✅ GOOD - Encapsulates implementation details
-  class PrefsClient {
-    PrefsClient._(this._prefs); // Private constructor
-    
-    @visibleForTesting
-    PrefsClient.forTesting(this._prefs); // Test-only access
-    
-    static Future<PrefsClient> initialize() async {
-      final prefs = await SharedPreferences.getInstance();
-      return PrefsClient._(prefs); // Implementation hidden
-    }
-  }
-  ```
-
-- **Constructor Patterns**: Choose the right pattern based on actual needs, not surface-level consistency
-  ```dart
-  // ✅ GOOD - Simple dependency injection (like Haptics)
-  class Haptics {
-    Haptics(this._prefsClient); // Public constructor is fine - no complex initialization
-  }
-  
-  // ❌ BAD - Unnecessary complexity
-  class Haptics {
-    Haptics._(this._prefsClient); // Private for no reason
-    Haptics.forTesting(this._prefsClient); // Redundant when public constructor works
-  }
-  
-  // ✅ GOOD - Complex initialization (like PrefsClient)
-  class PrefsClient {
-    PrefsClient._(this._prefs); // Private because initialization is complex
-    static Future<PrefsClient> initialize() => ...; // Factory handles complexity
-  }
-  ```
-
-- **Provider Architecture Patterns**: Synchronous vs Asynchronous providers based on initialization needs
-  ```dart
-  // ❌ BAD - Unnecessary async providers causing UI complexity
-  @Riverpod(keepAlive: true)
-  Future<PrefsClient> prefsClient(Ref ref) => PrefsClient.initialize();
-  
-  // UI becomes complex with AsyncValue handling
-  prefsClientAsync.when(
-    loading: () => CircularProgressIndicator(),
-    error: (error, stack) => ErrorWidget(),
-    data: (prefsClient) => ActualContent(),
-  );
-  
-  // ✅ GOOD - Synchronous providers with main.dart initialization
-  @Riverpod(keepAlive: true)
-  PrefsClient prefsClient(Ref ref) {
-    throw UnimplementedError('Must be overridden in main.dart');
-  }
-  
-  // main.dart handles initialization with parallel execution
-  final (_, prefsClient) = await (
-    LocaleSettings.useDeviceLocale(),
-    PrefsClient.initialize(),
-  ).wait;
-  
-  // UI becomes simple
-  final prefsClient = ref.watch(prefsClientProvider);
-  ```
-
 ### Package Dependencies
 - **core/widgets/**: Must NEVER depend on i18n package
   - Use `intl` package for localization or pass strings as parameters
@@ -271,6 +193,88 @@ Run `melos run gen` after changes to:
 - Environment variables in `packages/app/dart_defines/`
 - Firebase configuration files for dev/prod environments
 - Use `--dart-define-from-file` for builds
+
+## Dependency Injection & Architecture
+
+### Hide Implementation Details
+- Never expose internal dependencies in public APIs
+- Use private constructors to prevent external instantiation with implementation details
+- Provide factory methods that encapsulate dependency creation
+```dart
+// ❌ BAD - Exposes SharedPreferences dependency
+class PrefsClient {
+  PrefsClient(SharedPreferences prefs); // External code can inject any SharedPreferences
+  
+  static Future<PrefsClient> initialize() async {
+    final prefs = await SharedPreferences.getInstance();
+    return PrefsClient(prefs); // Implementation detail exposed
+  }
+}
+
+// ✅ GOOD - Encapsulates implementation details
+class PrefsClient {
+  PrefsClient._(this._prefs); // Private constructor
+  
+  @visibleForTesting
+  PrefsClient.forTesting(this._prefs); // Test-only access
+  
+  static Future<PrefsClient> initialize() async {
+    final prefs = await SharedPreferences.getInstance();
+    return PrefsClient._(prefs); // Implementation hidden
+  }
+}
+```
+
+### Constructor Patterns
+Choose the right pattern based on actual needs, not surface-level consistency
+```dart
+// ✅ GOOD - Simple dependency injection (like Haptics)
+class Haptics {
+  Haptics(this._prefsClient); // Public constructor is fine - no complex initialization
+}
+
+// ❌ BAD - Unnecessary complexity
+class Haptics {
+  Haptics._(this._prefsClient); // Private for no reason
+  Haptics.forTesting(this._prefsClient); // Redundant when public constructor works
+}
+
+// ✅ GOOD - Complex initialization (like PrefsClient)
+class PrefsClient {
+  PrefsClient._(this._prefs); // Private because initialization is complex
+  static Future<PrefsClient> initialize() => ...; // Factory handles complexity
+}
+```
+
+### Provider Architecture Patterns
+Synchronous vs Asynchronous providers based on initialization needs
+```dart
+// ❌ BAD - Unnecessary async providers causing UI complexity
+@Riverpod(keepAlive: true)
+Future<PrefsClient> prefsClient(Ref ref) => PrefsClient.initialize();
+
+// UI becomes complex with AsyncValue handling
+prefsClientAsync.when(
+  loading: () => CircularProgressIndicator(),
+  error: (error, stack) => ErrorWidget(),
+  data: (prefsClient) => ActualContent(),
+);
+
+// ✅ GOOD - Synchronous providers with main.dart initialization
+@Riverpod(keepAlive: true)
+PrefsClient prefsClient(Ref ref) {
+  throw UnimplementedError('Must be overridden in main.dart');
+}
+
+// main.dart handles initialization with parallel execution
+final (_, prefsClient) = await (
+  LocaleSettings.useDeviceLocale(),
+  PrefsClient.initialize(),
+).wait;
+
+// UI becomes simple
+final prefsClient = ref.watch(prefsClientProvider);
+```
 
 ## Text Styling Guidelines
 
@@ -407,6 +411,53 @@ cd packages/app && dart run build_runner build --delete-conflicting-outputs
 cd packages/core/i18n && dart run slang
 ```
 
+## Package Creation Guidelines
+
+### Creating New Packages
+**ALWAYS** follow the method specified in README.md:
+
+```bash
+# For packages
+flutter create -t package packages/{directory_name} --project-name {project_name}
+
+# For apps  
+flutter create --org jp.co.altive packages/{directory_name} --project-name {project_name}
+```
+
+**NEVER** use manual directory creation or other methods - always use the official Flutter commands documented in README.md.
+
+## Package Documentation Standards
+
+### LICENSE Files
+- **Symbolic Links Required**: All packages must use symbolic links to the root LICENSE file
+- **Core Packages**: Use `ln -s ../../../LICENSE packages/core/{package_name}/LICENSE`
+- **Feature Packages**: Use `ln -s ../../../LICENSE packages/features/{package_name}/LICENSE`
+- **Never Copy**: Do not copy LICENSE content - always use symbolic links for consistency
+
+### README.md Files
+- **Package Name as Header**: Use the package name as the main H1 header
+- **Clear Description**: Provide a concise description of what the package does
+- **Features Section**: List key features and capabilities
+- **Getting Started**: Include dependency setup instructions
+- **Usage Examples**: Provide practical code examples showing how to use the package
+- **Follow Project Patterns**: Study existing package READMEs for consistency
+- **No Generic Text**: Replace all flutter create template text with actual content
+
+### Root README.md Maintenance
+- **Add New Packages**: Always add new package entries to the root README.md
+- **Consistent Format**: Follow the existing format for package descriptions
+- **Alphabetical Order**: Maintain alphabetical order within core/ and features/ sections
+- **Brief Descriptions**: Keep package descriptions concise but informative
+
+### Documentation Workflow
+1. **Create Package**: Use proper flutter create commands
+2. **Create LICENSE Symlink**: 
+   - Core: `rm packages/core/{name}/LICENSE && ln -s ../../../LICENSE packages/core/{name}/LICENSE`
+   - Features: `rm packages/features/{name}/LICENSE && ln -s ../../../LICENSE packages/features/{name}/LICENSE`
+3. **Write README**: Replace template with proper package documentation
+4. **Update Root README**: Add package entry to main project documentation
+5. **Verify Consistency**: Ensure all documentation follows project standards
+
 ## Communication Guidelines
 
 ### Response Protocols
@@ -445,21 +496,6 @@ cd packages/core/i18n && dart run slang
 - Code comments and technical documentation should remain in English for OSS compatibility
 - Only user-facing text in YAML files should be localized
 
-## Package Creation Guidelines
-
-### Creating New Packages
-**ALWAYS** follow the method specified in README.md:
-
-```bash
-# For packages
-flutter create -t package packages/{directory_name} --project-name {project_name}
-
-# For apps  
-flutter create --org jp.co.altive packages/{directory_name} --project-name {project_name}
-```
-
-**NEVER** use manual directory creation or other methods - always use the official Flutter commands documented in README.md.
-
 ## Development Workflow
 
 1. Use FVM for Flutter version management
@@ -481,34 +517,13 @@ flutter create --org jp.co.altive packages/{directory_name} --project-name {proj
 
 This ensures consistent code quality and helps maintain institutional knowledge across all future development work.
 
-## Package Documentation Standards
+## Coding Practices
 
-### LICENSE Files
-- **Symbolic Links Required**: All packages must use symbolic links to the root LICENSE file
-- **Core Packages**: Use `ln -s ../../../LICENSE packages/core/{package_name}/LICENSE`
-- **Feature Packages**: Use `ln -s ../../../LICENSE packages/features/{package_name}/LICENSE`
-- **Never Copy**: Do not copy LICENSE content - always use symbolic links for consistency
+### MediaQuery Usage
+- Do NOT use `MediaQuery.of`
+- ALWAYS use `MediaQuery.xxxOf` instead
 
-### README.md Files
-- **Package Name as Header**: Use the package name as the main H1 header
-- **Clear Description**: Provide a concise description of what the package does
-- **Features Section**: List key features and capabilities
-- **Getting Started**: Include dependency setup instructions
-- **Usage Examples**: Provide practical code examples showing how to use the package
-- **Follow Project Patterns**: Study existing package READMEs for consistency
-- **No Generic Text**: Replace all flutter create template text with actual content
-
-### Root README.md Maintenance
-- **Add New Packages**: Always add new package entries to the root README.md
-- **Consistent Format**: Follow the existing format for package descriptions
-- **Alphabetical Order**: Maintain alphabetical order within core/ and features/ sections
-- **Brief Descriptions**: Keep package descriptions concise but informative
-
-### Documentation Workflow
-1. **Create Package**: Use proper flutter create commands
-2. **Create LICENSE Symlink**: 
-   - Core: `rm packages/core/{name}/LICENSE && ln -s ../../../LICENSE packages/core/{name}/LICENSE`
-   - Features: `rm packages/features/{name}/LICENSE && ln -s ../../../LICENSE packages/features/{name}/LICENSE`
-3. **Write README**: Replace template with proper package documentation
-4. **Update Root README**: Add package entry to main project documentation
-5. **Verify Consistency**: Ensure all documentation follows project standards
+### NO Comments Policy
+- **IMPORTANT**: DO NOT ADD ***ANY*** COMMENTS unless asked
+- Code should be self-documenting through clear naming and structure
+- Only add comments when explicitly requested by the user
