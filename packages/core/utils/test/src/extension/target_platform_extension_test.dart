@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:utils/src/extension/src/target_platform_extension.dart';
 
 void main() {

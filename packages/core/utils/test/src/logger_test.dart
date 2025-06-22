@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:simple_logger/simple_logger.dart';
-import 'package:test/test.dart';
 import 'package:utils/src/logger.dart';
 
 void main() {

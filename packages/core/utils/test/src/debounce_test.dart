@@ -1,5 +1,5 @@
 import 'package:fake_async/fake_async.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:utils/src/debounce.dart';
 
 void main() {
