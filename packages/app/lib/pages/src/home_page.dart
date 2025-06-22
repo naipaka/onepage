@@ -12,6 +12,7 @@ import 'package:i18n/i18n.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
+import 'package:utils/utils.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
@@ -158,9 +159,8 @@ class HomePage extends HookConsumerWidget {
 
                           return HookBuilder(
                             builder: (context) {
-                              final undoHistoryController = useMemoized(
-                                UndoHistoryController.new,
-                              );
+                              final undoHistoryController =
+                                  useUndoHistoryController();
                               return DiaryListTile(
                                 content: diary?.content,
                                 undoHistoryController: undoHistoryController,
