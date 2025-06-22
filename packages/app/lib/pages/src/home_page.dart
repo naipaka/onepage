@@ -40,13 +40,10 @@ class HomePage extends HookConsumerWidget {
     // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
 
-    final viewInsets = MediaQuery.viewInsetsOf(context);
-    final keyboardHeight = viewInsets.bottom;
     final hasTextFocus = useState(false);
     final showKeyboardToolbar = hasTextFocus.value;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: ValueListenableBuilder(
           valueListenable: visibleDateState,
@@ -153,8 +150,11 @@ class HomePage extends HookConsumerWidget {
                           onChanged: (_) {
                             haptic.textInputFeedback();
                           },
-                          onFocusChanged: (hasFocus) {
+                          onFocusChanged: (hasFocus) async {
                             hasTextFocus.value = hasFocus;
+                            if (hasFocus) {
+                              await scrollCalendarController.scrollToDate(date);
+                            }
                           },
                           save: (content) async {
                             try {
@@ -197,11 +197,11 @@ class HomePage extends HookConsumerWidget {
             ),
           ),
           if (showKeyboardToolbar)
-            Positioned(
+            const Positioned(
               left: 0,
               right: 0,
-              bottom: keyboardHeight,
-              child: const KeyboardToolbar(),
+              bottom: 0,
+              child: KeyboardToolbar(),
             ),
         ],
       ),
