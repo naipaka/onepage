@@ -30,6 +30,7 @@ digraph packages {
   onepage -> utils [style="filled"; color="#f548cf"];
   onepage -> widgets [style="filled"; color="#3ed5a4"];
   provider_utils -> utils [style="filled"; color="#f548cf"];
+  widgets -> utils [style="filled"; color="#f548cf"];
   subgraph "cluster packages/features" {
     label="packages/features";
     color="#f62736";

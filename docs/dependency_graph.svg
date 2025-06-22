@@ -5,10 +5,10 @@
  -->
 <!-- Title: packages Pages: 1 -->
 <svg width="720pt" height="700pt"
- viewBox="0.00 0.00 720.00 699.79" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ viewBox="0.00 0.00 720.00 699.85" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(0.83 0.83) rotate(0) translate(4 841)">
 <title>packages</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-841 865.41,-841 865.41,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-841 865.32,-841 865.32,4 -4,4"/>
 <g id="clust1" class="cluster">
 <title>cluster packages/features</title>
 <polygon fill="none" stroke="#f62736" points="283,-414.68 283,-605.49 829,-605.49 829,-414.68 283,-414.68"/>
@@ -57,14 +57,14 @@
 <!-- utils -->
 <g id="node12" class="node">
 <title>utils</title>
-<polygon fill="none" stroke="#f548cf" points="594,-104.35 540,-104.35 540,-68.35 594,-68.35 594,-104.35"/>
-<text text-anchor="middle" x="567" y="-82.65" font-family="Times,serif" font-size="14.00">utils</text>
+<polygon fill="none" stroke="#f548cf" points="480,-104.35 426,-104.35 426,-68.35 480,-68.35 480,-104.35"/>
+<text text-anchor="middle" x="453" y="-82.65" font-family="Times,serif" font-size="14.00">utils</text>
 </g>
 <!-- diary&#45;&gt;utils -->
 <g id="edge3" class="edge">
 <title>diary&#45;&gt;utils</title>
-<path fill="none" stroke="#f548cf" d="M630.34,-462.11C626.55,-423.97 616.54,-329.6 603,-251.35 594.61,-202.84 581.62,-146.95 573.75,-114.54"/>
-<polygon fill="#f548cf" stroke="#f548cf" points="577.07,-113.37 571.29,-104.49 570.27,-115.03 577.07,-113.37"/>
+<path fill="none" stroke="#f548cf" d="M633.24,-462.09C635.37,-422.69 636.62,-323.95 603,-251.35 575.68,-192.36 519.34,-139.98 484.02,-111.06"/>
+<polygon fill="#f548cf" stroke="#f548cf" points="485.94,-108.11 475.96,-104.57 481.55,-113.56 485.94,-108.11"/>
 </g>
 <!-- haptics -->
 <g id="node4" class="node">
@@ -183,8 +183,8 @@
 <!-- onepage&#45;&gt;utils -->
 <g id="edge15" class="edge">
 <title>onepage&#45;&gt;utils</title>
-<path fill="none" stroke="#f548cf" d="M346.6,-685.41C457.6,-667.46 773.46,-610.04 833,-529.35 944.65,-378.06 694.27,-177.64 600.57,-110.43"/>
-<polygon fill="#f548cf" stroke="#f548cf" points="602.45,-107.47 592.27,-104.53 598.39,-113.18 602.45,-107.47"/>
+<path fill="none" stroke="#f548cf" d="M346.6,-685.41C457.6,-667.46 773.46,-610.04 833,-529.35 962.02,-354.52 607.3,-162.03 489.53,-104.49"/>
+<polygon fill="#f548cf" stroke="#f548cf" points="490.7,-101.17 480.18,-99.96 487.65,-107.47 490.7,-101.17"/>
 </g>
 <!-- widgets -->
 <g id="node13" class="node">
@@ -201,8 +201,14 @@
 <!-- provider_utils&#45;&gt;utils -->
 <g id="edge17" class="edge">
 <title>provider_utils&#45;&gt;utils</title>
-<path fill="none" stroke="#f548cf" d="M185.61,-251.32C266.87,-216.39 451.43,-137.04 530.23,-103.16"/>
-<polygon fill="#f548cf" stroke="#f548cf" points="531.94,-106.24 539.74,-99.07 529.17,-99.8 531.94,-106.24"/>
+<path fill="none" stroke="#f548cf" d="M174.88,-251.32C231.1,-218.18 355.13,-145.06 416.76,-108.72"/>
+<polygon fill="#f548cf" stroke="#f548cf" points="418.91,-111.52 425.74,-103.42 415.35,-105.49 418.91,-111.52"/>
+</g>
+<!-- widgets&#45;&gt;utils -->
+<g id="edge18" class="edge">
+<title>widgets&#45;&gt;utils</title>
+<path fill="none" stroke="#f548cf" d="M349.72,-251.32C369.75,-219.52 412.96,-150.93 436.65,-113.32"/>
+<polygon fill="#f548cf" stroke="#f548cf" points="439.85,-114.79 442.22,-104.47 433.93,-111.06 439.85,-114.79"/>
 </g>
 </g>
 </svg>
