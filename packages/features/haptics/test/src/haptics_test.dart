@@ -21,9 +21,9 @@ void main() {
       // Set up method channel to capture haptic feedback calls
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(SystemChannels.platform, (call) async {
-        methodCalls.add(call);
-        return null;
-      });
+            methodCalls.add(call);
+            return null;
+          });
     });
 
     tearDown(() {
@@ -41,8 +41,7 @@ void main() {
     });
 
     group('textInputFeedback', () {
-      test('triggers light impact when text input haptic is enabled',
-          () async {
+      test('triggers light impact when text input haptic is enabled', () async {
         when(mockPrefsClient.textInputHapticEnabled).thenReturn(true);
 
         haptics.textInputFeedback();
@@ -89,8 +88,10 @@ void main() {
 
         expect(methodCalls, hasLength(1));
         expect(methodCalls.first.method, 'HapticFeedback.vibrate');
-        expect(methodCalls.first.arguments,
-            'HapticFeedbackType.selectionClick');
+        expect(
+          methodCalls.first.arguments,
+          'HapticFeedbackType.selectionClick',
+        );
       });
 
       test('does not trigger when other haptic is disabled', () async {
@@ -125,23 +126,97 @@ void main() {
     group('successFeedback', () {
       test(
         'triggers first medium impact immediately when other haptic is enabled',
-        () {
-        when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
+        () async {
+          final localMethodCalls = <MethodCall>[];
 
-        haptics.successFeedback();
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+              .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+                localMethodCalls.add(call);
+                return null;
+              });
 
-        // First impact should be immediate
-        expect(methodCalls, hasLength(1));
-        expect(methodCalls.first.method, 'HapticFeedback.vibrate');
-        expect(methodCalls.first.arguments, 'HapticFeedbackType.mediumImpact');
-      });
+          when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
-      test('does not trigger when other haptic is disabled', () {
+          haptics.successFeedback();
+
+          // First impact should be immediate
+          expect(localMethodCalls, hasLength(1));
+          expect(localMethodCalls.first.method, 'HapticFeedback.vibrate');
+          expect(
+            localMethodCalls.first.arguments,
+            'HapticFeedbackType.mediumImpact',
+          );
+
+          // Clean up
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+              .setMockMethodCallHandler(SystemChannels.platform, null);
+
+          // Wait for any pending futures to complete
+          await Future<void>.delayed(const Duration(milliseconds: 250));
+        },
+      );
+
+      test(
+        'triggers double medium impact with delay when other haptic is enabled',
+        () async {
+          final localMethodCalls = <MethodCall>[];
+
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+              .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+                localMethodCalls.add(call);
+                return null;
+              });
+
+          when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
+
+          haptics.successFeedback();
+
+          // First impact should be immediate
+          expect(localMethodCalls, hasLength(1));
+          expect(localMethodCalls.first.method, 'HapticFeedback.vibrate');
+          expect(
+            localMethodCalls.first.arguments,
+            'HapticFeedbackType.mediumImpact',
+          );
+
+          await Future<void>.delayed(const Duration(milliseconds: 220));
+
+          // Second impact should be triggered after delay
+          expect(localMethodCalls, hasLength(2));
+          expect(localMethodCalls[1].method, 'HapticFeedback.vibrate');
+          expect(
+            localMethodCalls[1].arguments,
+            'HapticFeedbackType.mediumImpact',
+          );
+
+          // Clean up
+          TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+              .setMockMethodCallHandler(SystemChannels.platform, null);
+        },
+      );
+
+      test('does not trigger when other haptic is disabled', () async {
+        final localMethodCalls = <MethodCall>[];
+
+        // Set up method channel to capture haptic feedback calls for this test
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(SystemChannels.platform, (call) async {
+              localMethodCalls.add(call);
+              return null;
+            });
+
         when(mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
         haptics.successFeedback();
 
-        expect(methodCalls, isEmpty);
+        expect(localMethodCalls, isEmpty);
+
+        // Clean up
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(SystemChannels.platform, null);
+
+        // Wait for any pending futures to complete
+        await Future<void>.delayed(const Duration(milliseconds: 250));
       });
     });
   });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utils/utils.dart';
 
 /// {@template widgets.UnfocusOnTap}
 /// Widget that allows you to unfocus by tapping the child.
@@ -21,7 +22,7 @@ class UnfocusOnTap extends StatelessWidget {
     return GestureDetector(
       // Necessary to react even with Padding, etc.
       behavior: HitTestBehavior.opaque,
-      onTap: FocusScope.of(context).unfocus,
+      onTap: context.unfocus,
       child: child,
     );
   }
