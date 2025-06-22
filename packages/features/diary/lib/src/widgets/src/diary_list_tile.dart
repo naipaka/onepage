@@ -11,6 +11,7 @@ class DiaryListTile extends StatefulWidget {
   const DiaryListTile({
     super.key,
     required this.content,
+    this.undoHistoryController,
     this.onChanged,
     this.onFocusChanged,
     this.save,
@@ -18,6 +19,9 @@ class DiaryListTile extends StatefulWidget {
 
   /// Content of the diary.
   final String? content;
+
+  /// UndoHistoryController for undo/redo functionality.
+  final UndoHistoryController? undoHistoryController;
 
   /// Callback when the content is changed.
   final ValueChanged<String>? onChanged;
@@ -83,8 +87,9 @@ class _DiaryListTileState extends State<DiaryListTile>
 
   /// Focus change event handler.
   void _onFocusChange() {
-    widget.onFocusChanged?.call(_focusNode.hasFocus);
-    if (!_focusNode.hasFocus) {
+    final hasFocus = _focusNode.hasFocus;
+    widget.onFocusChanged?.call(hasFocus);
+    if (!hasFocus) {
       _save();
     }
   }
@@ -95,6 +100,7 @@ class _DiaryListTileState extends State<DiaryListTile>
     return TextField(
       controller: textController,
       focusNode: _focusNode,
+      undoController: widget.undoHistoryController,
       decoration: const InputDecoration(
         border: InputBorder.none,
         contentPadding: EdgeInsets.zero,
@@ -106,6 +112,7 @@ class _DiaryListTileState extends State<DiaryListTile>
         widget.onChanged?.call(text);
         _debounce(_save);
       },
+      onTapOutside: (_) => _focusNode.unfocus(),
     );
   }
 }

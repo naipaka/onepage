@@ -393,6 +393,18 @@ class MyPage extends HookWidget {
 }
 ```
 
+## Bash Tool Usage Guidelines
+
+### Prohibited Commands
+- **NEVER use `echo` to add newlines to files**: Use proper Edit tool instead
+  ```bash
+  # ❌ FORBIDDEN - Don't use echo to add newlines
+  echo "" >> file.dart
+  
+  # ✅ CORRECT - Use Edit tool to add proper content
+  ```
+- Use Edit tool for all file modifications to maintain proper file formatting
+
 ## Quality Assurance Workflow
 
 ### Before Completing Any Task:
