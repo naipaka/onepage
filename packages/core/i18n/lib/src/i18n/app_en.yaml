@@ -35,3 +35,12 @@ settings:
   textInputDescription: "Vibration settings during text input"
   other: "Other"
   otherDescription: "Vibration settings for icon taps and other actions"
+search:
+  title: "Diary Search"
+  searchHint: "Enter search keyword"
+  placeholder: "Search results will appear here"
+  noResults: "No search results found"
+  searching: "Searching..."
+  loadMoreResults: "Load more"
+  resultsCount: "{count} results"
+  loadDiaryFailed: "Failed to load diary"

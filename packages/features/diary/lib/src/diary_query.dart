@@ -32,4 +32,21 @@ class DiaryQuery {
       to: to,
     );
   }
+
+  /// Searches diaries by content.
+  ///
+  /// - [searchTerm] - The search term to look for in diary content.
+  /// - [limit] - The maximum number of results to return.
+  /// - [offset] - The number of results to skip.
+  Future<List<Diary>> searchDiaries({
+    required String searchTerm,
+    int? limit,
+    int? offset,
+  }) async {
+    return dbClient.searchDiaries(
+      searchTerm: searchTerm,
+      limit: limit,
+      offset: offset,
+    );
+  }
 }

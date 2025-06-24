@@ -105,3 +105,62 @@ class CachedDiaries extends _$CachedDiaries {
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 }
+
+/// Type definition for search result with pagination information.
+typedef SearchResult = ({List<Diary> diaries, bool hasMore, String searchTerm});
+
+/// Provides search functionality for diary entries.
+@Riverpod(keepAlive: true)
+class DiarySearch extends _$DiarySearch {
+  static const int _pageSize = 20;
+
+  @override
+  SearchResult build() {
+    return (diaries: <Diary>[], hasMore: false, searchTerm: '');
+  }
+
+  /// Searches diary entries with the given search term.
+  ///
+  /// If [isLoadMore] is true, it appends results to existing ones.
+  /// Otherwise, it replaces the current results.
+  Future<void> search(String searchTerm, {bool isLoadMore = false}) async {
+    if (searchTerm.trim().isEmpty) {
+      state = (diaries: <Diary>[], hasMore: false, searchTerm: '');
+      return;
+    }
+
+    final diaryQuery = ref.read(diaryQueryProvider);
+    final currentState = state;
+    final offset = isLoadMore ? currentState.diaries.length : 0;
+
+    final results = await diaryQuery.searchDiaries(
+      searchTerm: searchTerm.trim(),
+      limit: _pageSize,
+      offset: offset,
+    );
+
+    final hasMore = results.length == _pageSize;
+    final diaries = isLoadMore
+        ? [...currentState.diaries, ...results]
+        : results;
+
+    state = (
+      diaries: diaries,
+      hasMore: hasMore,
+      searchTerm: searchTerm.trim(),
+    );
+  }
+
+  /// Loads more search results for the current search term.
+  Future<void> loadMore() async {
+    final currentState = state;
+    if (currentState.hasMore && currentState.searchTerm.isNotEmpty) {
+      await search(currentState.searchTerm, isLoadMore: true);
+    }
+  }
+
+  /// Clears the search results.
+  void clear() {
+    state = (diaries: <Diary>[], hasMore: false, searchTerm: '');
+  }
+}

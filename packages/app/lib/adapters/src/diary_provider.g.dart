@@ -230,5 +230,23 @@ final cachedDiariesProvider =
     );
 
 typedef _$CachedDiaries = AutoDisposeAsyncNotifier<DiariesWithDates>;
+String _$diarySearchHash() => r'60025f13d0c957d9f057debd9346700d0bcde2d2';
+
+/// Provides search functionality for diary entries.
+///
+/// Copied from [DiarySearch].
+@ProviderFor(DiarySearch)
+final diarySearchProvider =
+    NotifierProvider<DiarySearch, SearchResult>.internal(
+      DiarySearch.new,
+      name: r'diarySearchProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$diarySearchHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$DiarySearch = Notifier<SearchResult>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

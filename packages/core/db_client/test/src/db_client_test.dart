@@ -132,5 +132,141 @@ void main() {
         );
       });
     });
+
+    group('searchDiaries', () {
+      test('should search diaries by content case-insensitively', () async {
+        final now = clock.now();
+
+        await dbClient.insertDiary(
+          content: 'Today I went to Tokyo',
+          date: now.subtract(const Duration(days: 3)),
+        );
+        await dbClient.insertDiary(
+          content: 'Yesterday I visited Osaka',
+          date: now.subtract(const Duration(days: 2)),
+        );
+        await dbClient.insertDiary(
+          content: 'I love TOKYO very much',
+          date: now.subtract(const Duration(days: 1)),
+        );
+        await dbClient.insertDiary(
+          content: 'Nothing special today',
+          date: now,
+        );
+
+        final searchResults = await dbClient.searchDiaries(
+          searchTerm: 'tokyo',
+        );
+
+        expect(searchResults.length, 2);
+        expect(
+          searchResults.map((d) => d.content),
+          containsAll(['Today I went to Tokyo', 'I love TOKYO very much']),
+        );
+      });
+
+      test('should return results ordered by date descending', () async {
+        final now = clock.now();
+
+        await dbClient.insertDiary(
+          content: 'First diary with keyword',
+          date: now.subtract(const Duration(days: 3)),
+        );
+        await dbClient.insertDiary(
+          content: 'Second diary with keyword',
+          date: now.subtract(const Duration(days: 1)),
+        );
+        await dbClient.insertDiary(
+          content: 'Third diary with keyword',
+          date: now,
+        );
+
+        final searchResults = await dbClient.searchDiaries(
+          searchTerm: 'keyword',
+        );
+
+        expect(searchResults.length, 3);
+        expect(searchResults[0].content, 'Third diary with keyword');
+        expect(searchResults[1].content, 'Second diary with keyword');
+        expect(searchResults[2].content, 'First diary with keyword');
+      });
+
+      test('should respect limit and offset parameters', () async {
+        final now = clock.now();
+
+        for (var i = 0; i < 5; i++) {
+          await dbClient.insertDiary(
+            content: 'Test diary $i',
+            date: now.subtract(Duration(days: i)),
+          );
+        }
+
+        final firstPage = await dbClient.searchDiaries(
+          searchTerm: 'Test',
+          limit: 2,
+          offset: 0,
+        );
+
+        expect(firstPage.length, 2);
+        expect(firstPage[0].content, 'Test diary 0');
+        expect(firstPage[1].content, 'Test diary 1');
+
+        final secondPage = await dbClient.searchDiaries(
+          searchTerm: 'Test',
+          limit: 2,
+          offset: 2,
+        );
+
+        expect(secondPage.length, 2);
+        expect(secondPage[0].content, 'Test diary 2');
+        expect(secondPage[1].content, 'Test diary 3');
+      });
+
+      test('should return empty list when no matches found', () async {
+        final now = clock.now();
+
+        await dbClient.insertDiary(
+          content: 'No matching content here',
+          date: now,
+        );
+
+        final searchResults = await dbClient.searchDiaries(
+          searchTerm: 'nonexistent',
+        );
+
+        expect(searchResults, isEmpty);
+      });
+
+      test('should handle empty search term', () async {
+        final now = clock.now();
+
+        await dbClient.insertDiary(
+          content: 'Some content',
+          date: now,
+        );
+
+        final searchResults = await dbClient.searchDiaries(
+          searchTerm: '',
+        );
+
+        expect(searchResults.length, 1);
+      });
+
+      test('should search partial words', () async {
+        final now = clock.now();
+
+        await dbClient.insertDiary(
+          content: 'Programming is fun',
+          date: now,
+        );
+
+        final searchResults = await dbClient.searchDiaries(
+          searchTerm: 'prog',
+        );
+
+        expect(searchResults.length, 1);
+        expect(searchResults[0].content, 'Programming is fun');
+      });
+    });
   });
 }

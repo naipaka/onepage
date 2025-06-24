@@ -30,6 +30,7 @@ dependencies:
   hooks_riverpod: ^2.6.1
   i18n:
     path: ../core/i18n/
+  intl: ^0.20.1
   prefs_client:
     path: ../core/prefs_client/
   provider_utils:
@@ -44,6 +45,7 @@ dependencies:
   url_launcher: ^6.3.1
   utils:
     path: ../core/utils/
+  visibility_detector: ^0.4.0+2
   widgets:
     path: ../core/widgets/
 
