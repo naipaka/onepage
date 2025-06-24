@@ -438,6 +438,25 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<int>);
 
   @override
+  _i5.Future<List<_i3.Diary>> searchDiaries({
+    required String? searchTerm,
+    int? limit,
+    int? offset,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#searchDiaries, [], {
+              #searchTerm: searchTerm,
+              #limit: limit,
+              #offset: offset,
+            }),
+            returnValue: _i5.Future<List<_i3.Diary>>.value(<_i3.Diary>[]),
+            returnValueForMissingStub: _i5.Future<List<_i3.Diary>>.value(
+              <_i3.Diary>[],
+            ),
+          )
+          as _i5.Future<List<_i3.Diary>>);
+
+  @override
   _i2.Migrator createMigrator() =>
       (super.noSuchMethod(
             Invocation.method(#createMigrator, []),

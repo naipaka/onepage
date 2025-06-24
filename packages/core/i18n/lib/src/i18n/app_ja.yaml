@@ -35,3 +35,7 @@ settings:
   textInputDescription: "文字入力中の振動設定"
   other: "その他"
   otherDescription: "アイコンタップなどの振動設定"
+search:
+  searchHint: "検索キーワードを入力"
+  placeholder: "検索結果がここに表示されます"
+  noResults: "検索結果がありません"

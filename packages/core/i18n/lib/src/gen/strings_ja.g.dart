@@ -42,6 +42,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsHomeJa home = _TranslationsHomeJa._(_root);
 	@override late final _TranslationsBackupJa backup = _TranslationsBackupJa._(_root);
 	@override late final _TranslationsSettingsJa settings = _TranslationsSettingsJa._(_root);
+	@override late final _TranslationsSearchJa search = _TranslationsSearchJa._(_root);
 }
 
 // Path: updateRequest
@@ -106,6 +107,18 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 	@override String get otherDescription => 'アイコンタップなどの振動設定';
 }
 
+// Path: search
+class _TranslationsSearchJa implements TranslationsSearchEn {
+	_TranslationsSearchJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchHint => '検索キーワードを入力';
+	@override String get placeholder => '検索結果がここに表示されます';
+	@override String get noResults => '検索結果がありません';
+}
+
 // Path: updateRequest.button
 class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestButtonEn {
 	_TranslationsUpdateRequestButtonJa._(this._root);
@@ -163,6 +176,9 @@ extension on TranslationsJa {
 			case 'settings.textInputDescription': return '文字入力中の振動設定';
 			case 'settings.other': return 'その他';
 			case 'settings.otherDescription': return 'アイコンタップなどの振動設定';
+			case 'search.searchHint': return '検索キーワードを入力';
+			case 'search.placeholder': return '検索結果がここに表示されます';
+			case 'search.noResults': return '検索結果がありません';
 			default: return null;
 		}
 	}

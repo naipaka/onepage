@@ -97,4 +97,26 @@ class DbClient extends _$DbClient {
     final diary = DiariesCompanion(content: Value(content));
     return query.write(diary);
   }
+
+  /// Searches diary entries by content.
+  ///
+  /// This method takes a [searchTerm] parameter and searches for diary entries
+  /// that contain the search term in their content. The search is
+  /// case-insensitive. Returns a list of [Diary] objects ordered by date in
+  /// descending order.
+  Future<List<Diary>> searchDiaries({
+    required String searchTerm,
+    int? limit,
+    int? offset,
+  }) {
+    final query = select(diaries)
+      ..where(
+        (tbl) => tbl.content.lower().contains(searchTerm.toLowerCase()),
+      )
+      ..orderBy([(tbl) => OrderingTerm.desc(tbl.date)]);
+    if (limit != null) {
+      query.limit(limit, offset: offset);
+    }
+    return query.get();
+  }
 }

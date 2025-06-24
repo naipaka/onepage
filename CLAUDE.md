@@ -539,3 +539,9 @@ This ensures consistent code quality and helps maintain institutional knowledge 
 - **IMPORTANT**: DO NOT ADD ***ANY*** COMMENTS unless asked
 - Code should be self-documenting through clear naming and structure
 - Only add comments when explicitly requested by the user
+
+### Custom Lint Rules
+- **avoid_hardcoded_japanese**: All user-facing text must be internationalized
+  - Use `context.t.section.key` instead of hardcoded Japanese strings
+  - Add new strings to `packages/core/i18n/lib/src/i18n/app_ja.yaml` and `app_en.yaml`
+  - Run `melos run slang` after updating translation files

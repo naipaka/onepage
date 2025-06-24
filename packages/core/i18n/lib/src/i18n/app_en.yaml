@@ -35,3 +35,7 @@ settings:
   textInputDescription: "Vibration settings during text input"
   other: "Other"
   otherDescription: "Vibration settings for icon taps and other actions"
+search:
+  searchHint: "Enter search keyword"
+  placeholder: "Search results will appear here"
+  noResults: "No search results found"
