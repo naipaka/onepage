@@ -1,7 +1,7 @@
 name: onepage
 description: About One-page-only diary app
 publish_to: none
-version: 1.4.0+9
+version: 1.5.0+10
 
 environment:
   sdk: ^3.8.1
