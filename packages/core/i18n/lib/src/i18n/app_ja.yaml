@@ -36,11 +36,6 @@ settings:
   other: "その他"
   otherDescription: "アイコンタップなどの振動設定"
 search:
-  title: "日記検索"
   searchHint: "検索キーワードを入力"
   placeholder: "検索結果がここに表示されます"
   noResults: "検索結果がありません"
-  searching: "検索中..."
-  loadMoreResults: "さらに読み込む"
-  resultsCount: "{count}件の結果"
-  loadDiaryFailed: "日記の読み込みに失敗しました"

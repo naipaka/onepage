@@ -117,14 +117,9 @@ class TranslationsSearchEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get title => 'Diary Search';
 	String get searchHint => 'Enter search keyword';
 	String get placeholder => 'Search results will appear here';
 	String get noResults => 'No search results found';
-	String get searching => 'Searching...';
-	String get loadMoreResults => 'Load more';
-	String get resultsCount => '{count} results';
-	String get loadDiaryFailed => 'Failed to load diary';
 }
 
 // Path: updateRequest.button
@@ -184,14 +179,9 @@ extension on Translations {
 			case 'settings.textInputDescription': return 'Vibration settings during text input';
 			case 'settings.other': return 'Other';
 			case 'settings.otherDescription': return 'Vibration settings for icon taps and other actions';
-			case 'search.title': return 'Diary Search';
 			case 'search.searchHint': return 'Enter search keyword';
 			case 'search.placeholder': return 'Search results will appear here';
 			case 'search.noResults': return 'No search results found';
-			case 'search.searching': return 'Searching...';
-			case 'search.loadMoreResults': return 'Load more';
-			case 'search.resultsCount': return '{count} results';
-			case 'search.loadDiaryFailed': return 'Failed to load diary';
 			default: return null;
 		}
 	}
