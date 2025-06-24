@@ -1,16 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:utils/utils.dart';
 
 /// A toolbar widget that appears above the keyboard with undo/redo and dismiss buttons.
-class KeyboardToolbar extends StatelessWidget {
+///
+/// Wraps the provided child widget and shows a keyboard toolbar when any
+/// TextField within the child gains focus.
+class KeyboardToolbar extends StatefulWidget {
   /// Creates a keyboard toolbar widget.
   const KeyboardToolbar({
     super.key,
-    this.undoHistoryController,
+    required this.child,
   });
 
-  /// The undo history controller for managing undo/redo operations.
-  final UndoHistoryController? undoHistoryController;
+  /// The child widget to wrap with keyboard toolbar functionality.
+  final Widget child;
+
+  @override
+  State<KeyboardToolbar> createState() => _KeyboardToolbarState();
+}
+
+class _KeyboardToolbarState extends State<KeyboardToolbar> {
+  late final FocusScopeNode _scope;
+  bool _showToolbar = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scope = FocusScopeNode();
+    _scope.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _scope
+      ..removeListener(_onFocusChange)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    final shouldShowToolbar = _scope.hasFocus && _scope.focusedChild != null;
+    if (_showToolbar != shouldShowToolbar) {
+      setState(() {
+        _showToolbar = shouldShowToolbar;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        FocusScope(
+          node: _scope,
+          child: widget.child,
+        ),
+        if (_showToolbar)
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: _KeyboardToolbarContent(scope: _scope),
+          ),
+      ],
+    );
+  }
+}
+
+/// The actual toolbar content widget.
+class _KeyboardToolbarContent extends StatelessWidget {
+  const _KeyboardToolbarContent({
+    required this.scope,
+  });
+
+  final FocusScopeNode scope;
 
   @override
   Widget build(BuildContext context) {
@@ -29,41 +91,109 @@ class KeyboardToolbar extends StatelessWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                  if (undoHistoryController
-                      case final UndoHistoryController controller) ...[
-                    ListenableBuilder(
-                      listenable: controller,
-                      builder: (context, child) {
-                        return IconButton(
-                          onPressed: controller.value.canUndo
-                              ? controller.undo
-                              : null,
-                          icon: const Icon(Icons.undo),
-                        );
-                      },
-                    ),
-                    ListenableBuilder(
-                      listenable: controller,
-                      builder: (context, child) {
-                        return IconButton(
-                          onPressed: controller.value.canRedo
-                              ? controller.redo
-                              : null,
-                          icon: const Icon(Icons.redo),
-                        );
-                      },
-                    ),
-                  ],
+                  _TextHistoryActionButton.undo(scope: scope),
+                  _TextHistoryActionButton.redo(scope: scope),
                 ],
               ),
             ),
             IconButton(
-              onPressed: context.unfocus,
+              onPressed: scope.unfocus,
               icon: const Icon(Icons.keyboard_hide),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Action type for text history buttons.
+enum _TextHistoryAction {
+  /// Undo action.
+  undo,
+
+  /// Redo action.
+  redo,
+}
+
+/// A button widget that performs undo/redo actions on the currently focused text field.
+class _TextHistoryActionButton extends StatelessWidget {
+  /// Creates a text history action button.
+  const _TextHistoryActionButton._({
+    super.key,
+    required this.action,
+    required this.icon,
+    required this.scope,
+  });
+
+  /// Creates an undo button.
+  const _TextHistoryActionButton.undo({Key? key, required FocusScopeNode scope})
+    : this._(
+        key: key,
+        action: _TextHistoryAction.undo,
+        icon: Icons.undo,
+        scope: scope,
+      );
+
+  /// Creates a redo button.
+  const _TextHistoryActionButton.redo({Key? key, required FocusScopeNode scope})
+    : this._(
+        key: key,
+        action: _TextHistoryAction.redo,
+        icon: Icons.redo,
+        scope: scope,
+      );
+
+  /// The action this button performs.
+  final _TextHistoryAction action;
+
+  /// The icon to display.
+  final IconData icon;
+
+  /// The focus scope node to monitor.
+  final FocusScopeNode scope;
+
+  /// Gets the current undo controller for the focused text field.
+  UndoHistoryController? get _currentController {
+    if (!scope.hasFocus) {
+      return null;
+    }
+    final focusedContext = scope.focusedChild?.context;
+    if (focusedContext == null) {
+      return null;
+    }
+    final state = focusedContext.findAncestorStateOfType<EditableTextState>();
+    return state?.widget.undoController;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: FocusManager.instance,
+      builder: (context, child) {
+        final controller = _currentController;
+        if (controller == null) {
+          // Return disabled button when no controller is available
+          return IconButton(
+            onPressed: null,
+            icon: Icon(icon),
+          );
+        }
+        return ListenableBuilder(
+          listenable: controller,
+          builder: (context, child) {
+            return IconButton(
+              onPressed: switch (action) {
+                _TextHistoryAction.undo =>
+                  controller.value.canUndo ? controller.undo : null,
+                _TextHistoryAction.redo =>
+                  controller.value.canRedo ? controller.redo : null,
+              },
+              icon: Icon(icon),
+            );
+          },
+        );
+      },
     );
   }
 }

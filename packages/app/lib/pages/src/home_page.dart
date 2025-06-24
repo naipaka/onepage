@@ -12,7 +12,6 @@ import 'package:i18n/i18n.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
-import 'package:utils/utils.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
@@ -40,14 +39,6 @@ class HomePage extends HookConsumerWidget {
 
     // Create a controller to manage the scroll position of the calendar.
     final scrollCalendarController = useMemoized(ScrollCalendarController.new);
-
-    // Track whether any diary text field has focus.
-    final hasTextFocus = useState(false);
-    // Show keyboard toolbar when any text field is focused.
-    final showKeyboardToolbar = hasTextFocus.value;
-
-    // Track the UndoHistoryController of the currently focused text field
-    final focusedUndoHistoryController = useState<UndoHistoryController?>(null);
 
     return Scaffold(
       appBar: AppBar(
@@ -105,134 +96,111 @@ class HomePage extends HookConsumerWidget {
         ],
       ),
       drawer: const _Drawer(),
-      body: Stack(
-        children: [
-          SafeArea(
-            bottom: false,
-            child: Consumer(
-              builder: (context, ref, child) {
-                final asyncDiaries = ref.watch(cachedDiariesProvider);
-                final notifier = ref.watch(cachedDiariesProvider.notifier);
-                return asyncDiaries.when(
-                  loading: () => centerLoadingIndicator,
-                  error: (error, _) => Center(
-                    child: Column(
-                      children: [
-                        Icon(Icons.error, color: colorScheme.error),
-                        Text(error.toString()),
-                      ],
-                    ),
+      body: KeyboardToolbar(
+        child: SafeArea(
+          bottom: false,
+          child: Consumer(
+            builder: (context, ref, child) {
+              final asyncDiaries = ref.watch(cachedDiariesProvider);
+              final notifier = ref.watch(cachedDiariesProvider.notifier);
+              return asyncDiaries.when(
+                loading: () => centerLoadingIndicator,
+                error: (error, _) => Center(
+                  child: Column(
+                    children: [
+                      Icon(Icons.error, color: colorScheme.error),
+                      Text(error.toString()),
+                    ],
                   ),
-                  data: (diariesWithDates) {
-                    final diaries = diariesWithDates.diaries;
-                    final dates = diariesWithDates.dates;
-                    // Wrapped with [TextFieldTapRegion] to prevent keyboard
-                    // hiding when tapping text fields during scroll.
-                    // By wrapping with [TextFieldTapRegion],
-                    // the TextField's onTapOutside event will not fire.
-                    return TextFieldTapRegion(
-                      child: VerticalScrollCalendar(
-                        controller: scrollCalendarController,
-                        dates: dates,
-                        loadMoreOlder: notifier.loadMoreOlder,
-                        onVisibleDateChanged: (date) {
-                          visibleDateState.value = date;
-                        },
-                        loadingIndicator: centerLoadingIndicator,
-                        separatorBuilder: (_, date) {
-                          if (date.day != 1) {
-                            return const Gap(32);
-                          }
-                          return const Padding(
-                            padding: EdgeInsets.all(32),
-                            child: DashedDivider(
-                              dashedHeight: 2,
-                              dashedWidth: 2,
-                              dashedSpace: 16,
-                            ),
-                          );
-                        },
-                        dateItemBuilder: (_, date) {
-                          final diary = diaries.firstWhereOrNull(
-                            (e) => DateUtils.isSameDay(e.date, date),
-                          );
+                ),
+                data: (diariesWithDates) {
+                  final diaries = diariesWithDates.diaries;
+                  final dates = diariesWithDates.dates;
+                  // Wrapped with [TextFieldTapRegion] to prevent keyboard
+                  // hiding when tapping text fields during scroll.
+                  // By wrapping with [TextFieldTapRegion],
+                  // the TextField's onTapOutside event will not fire.
+                  return TextFieldTapRegion(
+                    child: VerticalScrollCalendar(
+                      controller: scrollCalendarController,
+                      dates: dates,
+                      loadMoreOlder: notifier.loadMoreOlder,
+                      onVisibleDateChanged: (date) {
+                        visibleDateState.value = date;
+                      },
+                      loadingIndicator: centerLoadingIndicator,
+                      separatorBuilder: (_, date) {
+                        if (date.day != 1) {
+                          return const Gap(32);
+                        }
+                        return const Padding(
+                          padding: EdgeInsets.all(32),
+                          child: DashedDivider(
+                            dashedHeight: 2,
+                            dashedWidth: 2,
+                            dashedSpace: 16,
+                          ),
+                        );
+                      },
+                      dateItemBuilder: (_, date) {
+                        final diary = diaries.firstWhereOrNull(
+                          (e) => DateUtils.isSameDay(e.date, date),
+                        );
 
-                          return HookBuilder(
-                            builder: (context) {
-                              final undoHistoryController =
-                                  useUndoHistoryController();
-                              return DiaryListTile(
-                                content: diary?.content,
-                                undoHistoryController: undoHistoryController,
-                                onChanged: (_) {
-                                  haptic.textInputFeedback();
-                                },
-                                onFocusChanged: (hasFocus) async {
-                                  hasTextFocus.value = hasFocus;
-                                  if (!hasFocus) {
-                                    focusedUndoHistoryController.value = null;
-                                    return;
-                                  }
-                                  await scrollCalendarController.scrollToDate(
-                                    date,
-                                  );
-                                  focusedUndoHistoryController.value =
-                                      undoHistoryController;
-                                },
-                                save: (content) async {
-                                  try {
-                                    if (diary == null) {
-                                      await notifier.addDiary(
-                                        date: date,
-                                        content: content,
-                                      );
-                                    } else {
-                                      await notifier.updateDiary(
-                                        id: diary.id,
-                                        content: content,
-                                      );
-                                    }
-                                  } on Object catch (e) {
-                                    final tracker = ref.read(trackerProvider);
-                                    unawaited(
-                                      tracker.recordError(
-                                        e,
-                                        StackTrace.current,
-                                        fatal: true,
-                                      ),
-                                    );
-                                    if (!context.mounted) {
-                                      return;
-                                    }
-                                    showErrorToast(
-                                      context,
-                                      title: t.home.errorSavingDiary,
-                                      description:
-                                          t.home.errorSavingDiarySolution,
-                                    );
-                                  }
-                                },
+                        return DiaryListTile(
+                          content: diary?.content,
+                          onChanged: (_) {
+                            haptic.textInputFeedback();
+                          },
+                          onFocusChanged: (hasFocus) async {
+                            if (!hasFocus) {
+                              return;
+                            }
+                            await scrollCalendarController.scrollToDate(
+                              date,
+                            );
+                          },
+                          save: (content) async {
+                            try {
+                              if (diary == null) {
+                                await notifier.addDiary(
+                                  date: date,
+                                  content: content,
+                                );
+                              } else {
+                                await notifier.updateDiary(
+                                  id: diary.id,
+                                  content: content,
+                                );
+                              }
+                            } on Object catch (e) {
+                              final tracker = ref.read(trackerProvider);
+                              unawaited(
+                                tracker.recordError(
+                                  e,
+                                  StackTrace.current,
+                                  fatal: true,
+                                ),
                               );
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
+                              if (!context.mounted) {
+                                return;
+                              }
+                              showErrorToast(
+                                context,
+                                title: t.home.errorSavingDiary,
+                                description: t.home.errorSavingDiarySolution,
+                              );
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
           ),
-          if (showKeyboardToolbar)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: KeyboardToolbar(
-                undoHistoryController: focusedUndoHistoryController.value,
-              ),
-            ),
-        ],
+        ),
       ),
     );
   }
