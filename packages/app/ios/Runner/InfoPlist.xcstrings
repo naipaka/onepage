@@ -1,23 +1,7 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "NSUserTrackingUsageDescription" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "This identifier will be used to deliver personalized ads to you."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "許可するとお客様に最適化された広告が表示されます。"
-          }
-        }
-      }
-    }
+
   },
   "version" : "1.0"
 }
