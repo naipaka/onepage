@@ -56,31 +56,30 @@ class HomePage extends HookConsumerWidget {
       final notifier = ref.read(cachedDiariesProvider.notifier);
 
       // Load data until the selected date is available.
-      var isDateInRange = false;
-      while (!isDateInRange) {
+      await Future.doWhile(() async {
         final cachedDiaries = await ref.read(
           cachedDiariesProvider.future,
         );
         final availableDates = cachedDiaries.dates;
-        isDateInRange = availableDates.any(
-          (date) => DateUtils.isSameDay(date, date),
-        );
-        if (!isDateInRange) {
-          await notifier.loadMoreOlder();
-        } else {
-          break;
+        if (availableDates.any((d) => DateUtils.isSameDay(d, date))) {
+          return false;
         }
-      }
+        await notifier.loadMoreOlder();
+        return true;
+      });
 
-      ref.hideLoading();
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        ref.hideLoading();
 
-      // Scroll to selected date.
-      await scrollCalendarController.scrollToDate(date);
-      // Feedback for successful date selection.
-      haptic.successFeedback();
+        // Scroll to selected date.
+        await scrollCalendarController.scrollToDate(date);
 
-      // Highlight the selected date with animation.
-      await scrollCalendarController.highlightDate(date);
+        // Feedback for successful date selection.
+        haptic.successFeedback();
+
+        // Highlight the selected date with animation.
+        await scrollCalendarController.highlightDate(date);
+      });
     }
 
     return Scaffold(
