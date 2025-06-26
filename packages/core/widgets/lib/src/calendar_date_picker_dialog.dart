@@ -167,13 +167,31 @@ class _CalendarDatePickerDialogState extends State<CalendarDatePickerDialog> {
       ),
       content: SizedBox(
         width: dialogWidth,
-        child: _CalendarGrid(
-          displayDate: _displayDate,
-          selectedDate: _selectedDate,
-          firstDate: widget.firstDate,
-          lastDate: widget.lastDate,
-          markedDates: widget.markedDates,
-          onDateSelected: _selectDate,
+        child: AnimatedSize(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          // Use GestureDetector instead of PageView for swipe functionality
+          // because PageView forces all pages to have the same height,
+          // preventing dynamic height changes based on calendar content.
+          child: GestureDetector(
+            onHorizontalDragEnd: (details) {
+              if (details.primaryVelocity! > 0) {
+                // Swipe right - previous month
+                _previousMonth();
+              } else if (details.primaryVelocity! < 0) {
+                // Swipe left - next month
+                _nextMonth();
+              }
+            },
+            child: _CalendarGrid(
+              displayDate: _displayDate,
+              selectedDate: _selectedDate,
+              firstDate: widget.firstDate,
+              lastDate: widget.lastDate,
+              markedDates: widget.markedDates,
+              onDateSelected: _selectDate,
+            ),
+          ),
         ),
       ),
       actions: [

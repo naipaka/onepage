@@ -105,6 +105,7 @@ class HomePage extends HookConsumerWidget {
             onPressed: () async {
               final selectedDate = await _DiaryEntryDatePickerDialog.show(
                 context,
+                initialDate: visibleDateState.value,
               );
               if (!context.mounted || selectedDate == null) {
                 return;
@@ -294,16 +295,23 @@ class _Drawer extends StatelessWidget {
 }
 
 class _DiaryEntryDatePickerDialog extends ConsumerWidget {
-  const _DiaryEntryDatePickerDialog();
+  const _DiaryEntryDatePickerDialog({
+    required this.initialDate,
+  });
+
+  final DateTime initialDate;
 
   /// Shows a dialog to select a date for a diary entry.
   static Future<DateTime?> show(
-    BuildContext context,
-  ) {
+    BuildContext context, {
+    required DateTime initialDate,
+  }) {
     return showDialog<DateTime>(
       context: context,
       builder: (context) {
-        return const _DiaryEntryDatePickerDialog();
+        return _DiaryEntryDatePickerDialog(
+          initialDate: initialDate,
+        );
       },
     );
   }
@@ -322,7 +330,7 @@ class _DiaryEntryDatePickerDialog extends ConsumerWidget {
     final entryDates = entries.map((diary) => diary.date).toSet();
 
     return CalendarDatePickerDialog(
-      initialDate: now,
+      initialDate: initialDate,
       lastDate: dates.lastOrNull ?? DateTime(now.year, now.month + 1),
       markedDates: entryDates,
       onMonthChanged: (date) async {
