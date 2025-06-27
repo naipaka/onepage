@@ -14,4 +14,10 @@ enum PrefsKey {
 
   /// Whether other haptic feedback (icon taps, etc.) is enabled.
   otherHaptic,
+
+  /// Notification settings stored as JSON string.
+  notificationSettings,
+
+  /// Whether to skip notifications if diary entry already exists.
+  skipNotificationIfDiaryExists,
 }

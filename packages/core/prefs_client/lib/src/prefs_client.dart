@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -53,4 +55,37 @@ class PrefsClient {
   /// Sets whether other haptic feedback is enabled.
   Future<bool> setOtherHapticEnabled({required bool enabled}) =>
       _prefs.setBool(PrefsKey.otherHaptic.name, enabled);
+
+  /// Gets notification settings as a JSON list.
+  ///
+  /// Returns an empty list if no value has been saved or if decoding fails.
+  List<Map<String, dynamic>> get notificationSettings {
+    final jsonString = _prefs.getString(PrefsKey.notificationSettings.name);
+    if (jsonString == null || jsonString.isEmpty) {
+      return [];
+    }
+
+    try {
+      final jsonList = json.decode(jsonString) as List<dynamic>;
+      return jsonList.cast<Map<String, dynamic>>();
+    } on Exception {
+      return [];
+    }
+  }
+
+  /// Saves notification settings as a JSON list.
+  Future<bool> setNotificationSettings(List<Map<String, dynamic>> settings) {
+    final jsonString = json.encode(settings);
+    return _prefs.setString(PrefsKey.notificationSettings.name, jsonString);
+  }
+
+  /// Gets whether to skip notifications if diary entry already exists.
+  ///
+  /// Returns `false` by default if no value has been set.
+  bool get skipNotificationIfDiaryExists =>
+      _prefs.getBool(PrefsKey.skipNotificationIfDiaryExists.name) ?? false;
+
+  /// Sets whether to skip notifications if diary entry already exists.
+  Future<bool> setSkipNotificationIfDiaryExists({required bool skip}) =>
+      _prefs.setBool(PrefsKey.skipNotificationIfDiaryExists.name, skip);
 }
