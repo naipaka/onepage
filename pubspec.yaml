@@ -7,6 +7,7 @@ workspace:
   - packages/app
   - packages/core/db_client
   - packages/core/i18n
+  - packages/core/notification_client
   - packages/core/prefs_client
   - packages/core/provider_utils
   - packages/core/theme
@@ -72,6 +73,7 @@ melos:
       run: dart run build_runner build --delete-conflicting-outputs
       exec:
         concurrency: 1
+        orderDependents: true
       description: Run generate code.
       packageFilters:
         dirExists: lib
@@ -81,6 +83,7 @@ melos:
       run: dart run build_runner watch --delete-conflicting-outputs
       exec:
         concurrency: 99
+        orderDependents: true
       description: Watch and run generate code.
       packageFilters:
         dirExists: lib

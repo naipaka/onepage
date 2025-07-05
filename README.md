@@ -33,6 +33,10 @@ This package provides a database client for the application.
 
 This package supports the internationalization and localization of the application. All texts for translating the application's text are defined here.
 
+### [core/notification_client](packages/core/notification_client)
+
+This package provides local notification functionality for diary reminders with timezone-aware scheduling.
+
 ### [core/prefs_client](packages/core/prefs_client)
 
 This package provides a type-safe wrapper around SharedPreferences for the application.

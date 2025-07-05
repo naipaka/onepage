@@ -2,6 +2,45 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## ABSOLUTE MANDATORY RULE - READ TOOL ENFORCEMENT
+
+**CRITICAL - NON-NEGOTIABLE PROTOCOL**: Before starting ANY task or responding to ANY instruction:
+
+### STEP 1: READ TOOL USAGE (MANDATORY)
+**YOU MUST USE THE READ TOOL TO READ THIS FILE BEFORE ANY OTHER ACTION**
+- Use: Read tool with file_path: /Users/ryota/work/personal/apps/onepage.worktree/30-reminder-notification/CLAUDE.md
+- This is NOT optional - it is REQUIRED every single time
+- Do not proceed without reading the file first
+
+### STEP 2: DECLARATION (MANDATORY)
+After reading, you MUST declare: "CLAUDE.md file reading completion declared."
+
+### STEP 3: PROMISE (MANDATORY) 
+After reading, you MUST promise: "I promise to read this file again at the start of the next conversation/chat session."
+
+### STEP 4: PROCEED WITH TASK
+Only after completing steps 1-3, proceed with the actual user request.
+
+**ABSOLUTE REQUIREMENTS:**
+- NO EXCEPTIONS - This applies to every single response
+- NO SHORTCUTS - Cannot skip the Read tool
+- NO ASSUMPTIONS - Must actually read the file each time
+- VISIBLE IN LOGS - The Read tool call must appear in the conversation logs
+
+**AUTOMATIC ENFORCEMENT MECHANISM:**
+Every response MUST begin with these exact phrases or the response is considered INVALID:
+1. "CLAUDE.md file reading completion declared."
+2. "I promise to read this file again at the start of the next conversation/chat session."
+
+**VALIDATION CHECK:**
+If ANY response from Claude Code does not start with these two phrases, the user MUST immediately point out the protocol violation, and Claude Code MUST:
+1. Acknowledge the violation
+2. Re-read this CLAUDE.md file
+3. Provide the missing declarations
+4. Only then proceed with the original request
+
+Failure to follow this protocol is unacceptable and will result in incomplete work.
+
 ## Project Overview
 
 One Page is a Flutter diary app with a unique "one page only" concept. It uses a monorepo architecture with Melos for package management and is organized into feature-based packages.
@@ -168,10 +207,13 @@ melos run drift:migrations  # Generate drift migrations
   - Verify coverage with `flutter test --coverage` in each package
   - Check lcov.info: LF (Lines Found) = LH (Lines Hit)
   - Add comprehensive tests for all new functionality
+  - **NEVER compromise on this requirement**: When user specifies 100% coverage, it must be achieved regardless of technical difficulty
+  - **Platform-specific code coverage**: Use appropriate mocking strategies to cover all code paths, including platform-specific implementations
 - Use Mockito for mocking (`@GenerateMocks` annotation)
 - Mock files in `test/utils/mock_*.dart`
 - Platform channel mocks use `TestDefaultBinaryMessengerBinding`
 - Always clean up mocks in `tearDown`
+- **All tests must pass**: Failing tests are not acceptable for task completion
 
 ### Code Generation Dependencies
 Run `melos run gen` after changes to:
@@ -187,7 +229,7 @@ Run `melos run gen` after changes to:
   - Never claim completion without verifying zero diagnostics
   - **Check ALL dependent packages**: When modifying a package, verify that ALL packages that depend on it still compile
     - Example: After changing `haptics` package API, must check `app` package compilation
-    - Run `dart analyze` in each dependent package, not just the modified package
+    - **USE PUB WORKSPACES**: Run `dart analyze` from root directory to check ALL packages at once - do NOT cd into subdirectories
 
 ### Environment Configuration
 - Environment variables in `packages/app/dart_defines/`
@@ -484,6 +526,8 @@ flutter create --org jp.co.altive packages/{directory_name} --project-name {proj
   3. Include both correct and incorrect approaches with clear explanations
 - **Proactive Documentation**: Any time you discover you should have done something differently, document it as a guideline for future reference
 - **Pattern Recognition**: When you notice inconsistencies in your approach or miss obvious solutions, document the correct pattern
+- **Never compromise on explicit user requirements**: Technical difficulties are obstacles to overcome, not reasons to give up or compromise
+- **Persist through challenges**: Try multiple approaches when facing technical issues rather than accepting partial solutions
 
 ### Example of Self-Documentation:
 ```markdown
@@ -545,3 +589,94 @@ This ensures consistent code quality and helps maintain institutional knowledge 
   - Use `context.t.section.key` instead of hardcoded Japanese strings
   - Add new strings to `packages/core/i18n/lib/src/i18n/app_ja.yaml` and `app_en.yaml`
   - Run `melos run slang` after updating translation files
+
+## Pub Workspaces Configuration
+
+### Workspace Setup Requirements
+This project uses **Pub Workspaces** for dependency management:
+
+- **Root pubspec.yaml**: Must include all packages in the `workspace:` section
+- **Package pubspec.yaml**: Must include `resolution: workspace` 
+- **New packages**: Always add to both locations when creating packages
+
+### Workspace Structure:
+```yaml
+# Root pubspec.yaml
+workspace:
+  - packages/app
+  - packages/core/notification_client  # Add new packages here
+  - packages/core/prefs_client
+  # ... other packages
+
+# Package pubspec.yaml  
+name: notification_client
+resolution: workspace  # Required for workspace packages
+```
+
+## Package Architecture Patterns
+
+### Domain-Specific vs Generic APIs
+When creating utility packages that need to store domain-specific data:
+
+#### ❌ BAD - Generic method names with external keys
+```dart
+class PrefsClient {
+  List<Map<String, dynamic>> getJsonList(String key) { ... }
+  Future<bool> setJsonList(String key, List<Map<String, dynamic>> data) { ... }
+}
+
+// Usage requires external key management
+final settings = prefsClient.getJsonList('notificationSettings');
+```
+
+#### ✅ GOOD - Domain-specific methods with internal key management
+```dart
+class PrefsClient {
+  List<Map<String, dynamic>> getNotificationSettings() {
+    return getJsonList(PrefsKey.notificationSettings.name);
+  }
+  
+  Future<bool> setNotificationSettings(List<Map<String, dynamic>> settings) {
+    return setJsonList(PrefsKey.notificationSettings.name, settings);
+  }
+}
+
+// Usage is cleaner and safer
+final settings = prefsClient.getNotificationSettings();
+```
+
+**Reasoning**: Domain-specific methods provide better encapsulation, prevent key typos, and make the API more intuitive.
+
+## Notification Package Guidelines
+
+### Permission Handling
+- **DO NOT use permission_handler**: Too broad, use flutter_local_notifications built-in permission APIs
+- **Use platform-specific implementations**: AndroidFlutterLocalNotificationsPlugin and IOSFlutterLocalNotificationsPlugin
+- **Handle permissions gracefully**: Check status before requesting
+
+### Freezed vs JsonSerializable
+- **Use Freezed** for data models when possible - provides immutability, copyWith, equality, and JSON serialization
+- **Avoid manual JsonSerializable** - Freezed includes it automatically
+- **Consistent dependency versions**: Match freezed versions across packages
+
+### Latest Package Versions
+- **flutter_local_notifications**: Use latest version (19.3.0+)
+- **freezed**: Use latest major version (3.0.6+)
+- **altive_lints**: Use project standard (1.21.0) instead of flutter_lints
+
+## Lint Configuration Standards
+
+### Required Linting Setup
+- **Use altive_lints**: NOT flutter_lints - this is project standard
+- **Custom lint integration**: Include custom_lint dependency
+- **Version consistency**: Match lint versions across all packages
+
+### Standard Dev Dependencies Pattern:
+```yaml
+dev_dependencies:
+  altive_lints: ^1.21.0
+  build_runner: ^2.5.4
+  custom_lint: ^0.7.5
+  flutter_test:
+    sdk: flutter
+```

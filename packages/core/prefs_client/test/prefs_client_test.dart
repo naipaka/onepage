@@ -187,48 +187,5 @@ void main() {
         });
       });
     });
-
-    group('skip notification if diary exists', () {
-      group('skipNotificationIfDiaryExists', () {
-        test('returns false when no value stored', () {
-          when(
-            mockSharedPreferences.getBool('skipNotificationIfDiaryExists'),
-          ).thenReturn(null);
-
-          expect(prefsClient.skipNotificationIfDiaryExists, isFalse);
-        });
-
-        test('returns stored value when present', () {
-          when(
-            mockSharedPreferences.getBool('skipNotificationIfDiaryExists'),
-          ).thenReturn(true);
-
-          expect(prefsClient.skipNotificationIfDiaryExists, isTrue);
-        });
-      });
-
-      group('setSkipNotificationIfDiaryExists', () {
-        test('stores the provided value', () async {
-          when(
-            mockSharedPreferences.setBool(
-              'skipNotificationIfDiaryExists',
-              true,
-            ),
-          ).thenAnswer((_) async => true);
-
-          final result = await prefsClient.setSkipNotificationIfDiaryExists(
-            skip: true,
-          );
-
-          expect(result, isTrue);
-          verify(
-            mockSharedPreferences.setBool(
-              'skipNotificationIfDiaryExists',
-              true,
-            ),
-          ).called(1);
-        });
-      });
-    });
   });
 }

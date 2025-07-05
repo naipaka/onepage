@@ -55,14 +55,6 @@ class MockPrefsClient extends _i1.Mock implements _i2.PrefsClient {
           as List<Map<String, dynamic>>);
 
   @override
-  bool get skipNotificationIfDiaryExists =>
-      (super.noSuchMethod(
-            Invocation.getter(#skipNotificationIfDiaryExists),
-            returnValue: false,
-          )
-          as bool);
-
-  @override
   _i3.Future<bool> setTextInputHapticEnabled({required bool? enabled}) =>
       (super.noSuchMethod(
             Invocation.method(#setTextInputHapticEnabled, [], {
@@ -86,16 +78,6 @@ class MockPrefsClient extends _i1.Mock implements _i2.PrefsClient {
   ) =>
       (super.noSuchMethod(
             Invocation.method(#setNotificationSettings, [settings]),
-            returnValue: _i3.Future<bool>.value(false),
-          )
-          as _i3.Future<bool>);
-
-  @override
-  _i3.Future<bool> setSkipNotificationIfDiaryExists({required bool? skip}) =>
-      (super.noSuchMethod(
-            Invocation.method(#setSkipNotificationIfDiaryExists, [], {
-              #skip: skip,
-            }),
             returnValue: _i3.Future<bool>.value(false),
           )
           as _i3.Future<bool>);

@@ -78,14 +78,4 @@ class PrefsClient {
     final jsonString = json.encode(settings);
     return _prefs.setString(PrefsKey.notificationSettings.name, jsonString);
   }
-
-  /// Gets whether to skip notifications if diary entry already exists.
-  ///
-  /// Returns `false` by default if no value has been set.
-  bool get skipNotificationIfDiaryExists =>
-      _prefs.getBool(PrefsKey.skipNotificationIfDiaryExists.name) ?? false;
-
-  /// Sets whether to skip notifications if diary entry already exists.
-  Future<bool> setSkipNotificationIfDiaryExists({required bool skip}) =>
-      _prefs.setBool(PrefsKey.skipNotificationIfDiaryExists.name, skip);
 }

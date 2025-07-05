@@ -17,7 +17,4 @@ enum PrefsKey {
 
   /// Notification settings stored as JSON string.
   notificationSettings,
-
-  /// Whether to skip notifications if diary entry already exists.
-  skipNotificationIfDiaryExists,
 }
