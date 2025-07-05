@@ -8,7 +8,11 @@ part of 'app_lifecycle_provider.dart';
 
 String _$appLifecycleHash() => r'e8bcd1ac977780523d4ade8f877914568a785840';
 
-/// See also [AppLifecycle].
+/// {@template appLifecycleProvider}
+/// Provider for app lifecycle state.
+/// {@endtemplate}
+///
+/// Copied from [AppLifecycle].
 @ProviderFor(AppLifecycle)
 final appLifecycleProvider =
     AutoDisposeNotifierProvider<AppLifecycle, AppLifecycleState>.internal(
