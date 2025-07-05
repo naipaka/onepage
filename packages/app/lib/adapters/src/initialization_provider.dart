@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'configurator_provider.dart';
 import 'db_client_provider.dart';
+import 'notification_client_provider.dart';
 
 part 'initialization_provider.g.dart';
 
@@ -14,12 +15,16 @@ Future<void> initialization(Ref ref) async {
     // Clean up
     ref
       ..invalidate(packageInfoInitializingProvider)
-      ..invalidate(configuratorInitializingProvider);
+      ..invalidate(configuratorInitializingProvider)
+      ..invalidate(notificationClientInitializingProvider);
   });
   // Concurrent initialization
   await Future.wait([
     ref.watch(dbConnectionProvider).ensureDatabaseFileMigration(),
     ref.watch(packageInfoInitializingProvider.future),
     ref.watch(configuratorInitializingProvider.future),
+    ref.watch(notificationClientInitializingProvider.future),
   ]);
+  // Schedule notifications
+  ref.watch(notificationSchedulerProvider);
 }

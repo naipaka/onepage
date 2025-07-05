@@ -46,6 +46,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsBackupEn backup = TranslationsBackupEn._(_root);
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn._(_root);
 	late final TranslationsSearchEn search = TranslationsSearchEn._(_root);
+	late final TranslationsNotificationEn notification = TranslationsNotificationEn._(_root);
 }
 
 // Path: updateRequest
@@ -122,6 +123,23 @@ class TranslationsSearchEn {
 	String get noResults => 'No search results found';
 }
 
+// Path: notification
+class TranslationsNotificationEn {
+	TranslationsNotificationEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Notifications';
+	String get addTime => 'Add time';
+	String get maxTimesReached => 'Maximum 3 notification times allowed';
+	String get channelName => 'Diary Reminder';
+	String get channelDescription => 'Daily reminders to write in your diary';
+	late final TranslationsNotificationPermissionEn permission = TranslationsNotificationPermissionEn._(_root);
+	String get notificationTitle => 'Have you written your diary today?';
+	String get notificationBody => 'Take a moment to jot down your thoughts and feelings';
+}
+
 // Path: updateRequest.button
 class TranslationsUpdateRequestButtonEn {
 	TranslationsUpdateRequestButtonEn._(this._root);
@@ -142,6 +160,18 @@ class TranslationsBackupActionsEn {
 	String get create => 'Create Backup';
 	String get restore => 'Restore Backup';
 	String get goToHome => 'Go to Home';
+}
+
+// Path: notification.permission
+class TranslationsNotificationPermissionEn {
+	TranslationsNotificationPermissionEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get deniedTitle => 'Notification Permission Required';
+	String get deniedMessage => 'Please enable notifications in your device settings to receive reminders';
+	String get openSettings => 'Open Settings';
 }
 
 /// Flat map(s) containing all translations.
@@ -182,6 +212,16 @@ extension on Translations {
 			case 'search.searchHint': return 'Enter search keyword';
 			case 'search.placeholder': return 'Search results will appear here';
 			case 'search.noResults': return 'No search results found';
+			case 'notification.title': return 'Notifications';
+			case 'notification.addTime': return 'Add time';
+			case 'notification.maxTimesReached': return 'Maximum 3 notification times allowed';
+			case 'notification.channelName': return 'Diary Reminder';
+			case 'notification.channelDescription': return 'Daily reminders to write in your diary';
+			case 'notification.permission.deniedTitle': return 'Notification Permission Required';
+			case 'notification.permission.deniedMessage': return 'Please enable notifications in your device settings to receive reminders';
+			case 'notification.permission.openSettings': return 'Open Settings';
+			case 'notification.notificationTitle': return 'Have you written your diary today?';
+			case 'notification.notificationBody': return 'Take a moment to jot down your thoughts and feelings';
 			default: return null;
 		}
 	}

@@ -39,3 +39,15 @@ search:
   searchHint: "Enter search keyword"
   placeholder: "Search results will appear here"
   noResults: "No search results found"
+notification:
+  title: "Notifications"
+  addTime: "Add time"
+  maxTimesReached: "Maximum 3 notification times allowed"
+  channelName: "Diary Reminder"
+  channelDescription: "Daily reminders to write in your diary"
+  permission:
+    deniedTitle: "Notification Permission Required"
+    deniedMessage: "Please enable notifications in your device settings to receive reminders"
+    openSettings: "Open Settings"
+  notificationTitle: "Have you written your diary today?"
+  notificationBody: "Take a moment to jot down your thoughts and feelings"

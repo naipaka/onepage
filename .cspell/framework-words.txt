@@ -37,6 +37,7 @@ endtemplate
 fixnum
 fluttercommunity
 flutterfire
+flutterlocalnotifications
 Framelink
 fullscreen
 fvmrc
@@ -72,8 +73,10 @@ perspectivev
 petitparser
 PODFILE
 podspec
+POWERON
 psql
 pubspec
+QUICKBOOT
 riverpod
 RUNPATH
 rxdart

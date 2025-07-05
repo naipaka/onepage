@@ -11,6 +11,7 @@ resolution: workspace
 dependencies:
   altfire_configurator: ^1.0.1
   altfire_tracker: ^1.0.0
+  app_settings: ^6.1.1
   backup:
     path: ../features/backup/
   clock: ^1.1.2
@@ -31,6 +32,8 @@ dependencies:
   i18n:
     path: ../core/i18n/
   intl: ^0.20.1
+  notification_client:
+    path: ../core/notification_client/
   prefs_client:
     path: ../core/prefs_client/
   provider_utils:
@@ -59,6 +62,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^3.0.0
+  mockito: ^5.4.4
   riverpod_generator: ^2.6.5
   riverpod_lint: ^2.6.5
 

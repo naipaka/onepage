@@ -39,3 +39,15 @@ search:
   searchHint: "検索キーワードを入力"
   placeholder: "検索結果がここに表示されます"
   noResults: "検索結果がありません"
+notification:
+  title: "Notifications"
+  addTime: "時間を追加"
+  maxTimesReached: "通知時間は最大3つまでです"
+  channelName: "日記リマインダー"
+  channelDescription: "日記を書くための日々のリマインダー"
+  permission:
+    deniedTitle: "通知権限が必要です"
+    deniedMessage: "アプリの通知を有効にするには、端末の設定で通知を許可してください"
+    openSettings: "設定を開く"
+  notificationTitle: "今日の日記は書きましたか？"
+  notificationBody: "1日の出来事や気持ちを書き留めておきましょう"
