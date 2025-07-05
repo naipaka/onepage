@@ -89,9 +89,6 @@ class NotificationClient {
       final granted = await androidImplementation
           .requestNotificationsPermission();
 
-      // Also request exact alarm permission for scheduled notifications
-      await androidImplementation.requestExactAlarmsPermission();
-
       return granted ?? false;
     }
 

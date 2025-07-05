@@ -343,9 +343,6 @@ void main() {
         when(
           mockAndroid.requestNotificationsPermission(),
         ).thenAnswer((_) async => true);
-        when(
-          mockAndroid.requestExactAlarmsPermission(),
-        ).thenAnswer((_) async => true);
 
         final client = NotificationClient.forTesting(
           notificationsPlugin: mockPlugin,

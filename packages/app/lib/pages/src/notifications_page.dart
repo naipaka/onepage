@@ -38,6 +38,68 @@ class NotificationsPage extends HookConsumerWidget {
   }
 }
 
+/// Widget to display notification permission status and request permission.
+class _NotificationPermissionStatus extends HookConsumerWidget {
+  const _NotificationPermissionStatus();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final permissionState = ref.watch(notificationPermissionGrantedProvider);
+    return permissionState.when(
+      data: (isGranted) {
+        if (isGranted) {
+          return const SizedBox.shrink(); // Don't show anything if granted
+        }
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.notifications_off,
+                    color: context.colorScheme.error,
+                  ),
+                  const Gap(8),
+                  Expanded(
+                    child: Text(
+                      context.t.notification.permission.deniedTitle,
+                      style: context.textTheme.titleMedium,
+                    ),
+                  ),
+                ],
+              ),
+              const Gap(8),
+              Text(
+                context.t.notification.permission.deniedMessage,
+                style: context.textTheme.bodyMedium,
+              ),
+              const Gap(16),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  onPressed: () async {
+                    await AppSettings.openAppSettings(
+                      type: AppSettingsType.notification,
+                    );
+                  },
+                  child: Text(
+                    context.t.notification.permission.openSettings,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stack) => const SizedBox.shrink(),
+    );
+  }
+}
+
 /// Widget to display list of notification settings.
 class _NotificationSettingsList extends HookConsumerWidget {
   const _NotificationSettingsList();
@@ -178,68 +240,6 @@ class _NotificationSettingTile extends StatelessWidget {
           onChanged: onToggle,
         ),
       ),
-    );
-  }
-}
-
-/// Widget to display notification permission status and request permission.
-class _NotificationPermissionStatus extends HookConsumerWidget {
-  const _NotificationPermissionStatus();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final permissionState = ref.watch(notificationPermissionGrantedProvider);
-    return permissionState.when(
-      data: (isGranted) {
-        if (isGranted) {
-          return const SizedBox.shrink(); // Don't show anything if granted
-        }
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.notifications_off,
-                    color: context.colorScheme.error,
-                  ),
-                  const Gap(8),
-                  Expanded(
-                    child: Text(
-                      context.t.notification.permission.deniedTitle,
-                      style: context.textTheme.titleMedium,
-                    ),
-                  ),
-                ],
-              ),
-              const Gap(8),
-              Text(
-                context.t.notification.permission.deniedMessage,
-                style: context.textTheme.bodyMedium,
-              ),
-              const Gap(16),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () async {
-                    await AppSettings.openAppSettings(
-                      type: AppSettingsType.notification,
-                    );
-                  },
-                  child: Text(
-                    context.t.notification.permission.openSettings,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => const SizedBox.shrink(),
     );
   }
 }
