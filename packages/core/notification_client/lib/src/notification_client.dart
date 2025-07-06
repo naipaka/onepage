@@ -55,7 +55,7 @@ class NotificationClient {
     tz.setLocalLocation(tz.getLocation(localTimeZone));
 
     const initializationSettingsAndroid = AndroidInitializationSettings(
-      '@mipmap/ic_launcher',
+      '@drawable/ic_notification',
     );
 
     const initializationSettingsIOS = DarwinInitializationSettings(
