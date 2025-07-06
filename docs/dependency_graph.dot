@@ -5,6 +5,7 @@ digraph packages {
   diary [shape="box"; color="#2c56bd"];
   haptics [shape="box"; color="#26343c"];
   i18n [shape="box"; color="#d7afc5"];
+  notification_client [shape="box"; color="#4d6b02"];
   onepage [shape="box"; color="#08802d"];
   prefs_client [shape="box"; color="#080f51"];
   provider_utils [shape="box"; color="#f445c4"];
@@ -17,11 +18,13 @@ digraph packages {
   diary -> db_client [style="filled"; color="#c4fbfc"];
   diary -> utils [style="filled"; color="#f548cf"];
   haptics -> prefs_client [style="filled"; color="#080f51"];
+  notification_client -> prefs_client [style="filled"; color="#080f51"];
   onepage -> backup [style="filled"; color="#022013"];
   onepage -> db_client [style="filled"; color="#c4fbfc"];
   onepage -> diary [style="filled"; color="#2c56bd"];
   onepage -> haptics [style="filled"; color="#26343c"];
   onepage -> i18n [style="filled"; color="#d7afc5"];
+  onepage -> notification_client [style="filled"; color="#4d6b02"];
   onepage -> prefs_client [style="filled"; color="#080f51"];
   onepage -> provider_utils [style="filled"; color="#f445c4"];
   onepage -> scroll_calendar [style="filled"; color="#713e2e"];
@@ -45,6 +48,7 @@ digraph packages {
     color="#7bbd47";
     db_client;
     i18n;
+    notification_client;
     prefs_client;
     provider_utils;
     theme;
