@@ -17,6 +17,11 @@ RouteBase get $homeRouteData => GoRouteData.$route(
   routes: [
     GoRouteData.$route(path: 'backup', factory: _$BackupRouteData._fromState),
     GoRouteData.$route(
+      path: 'notifications',
+
+      factory: _$NotificationsRouteData._fromState,
+    ),
+    GoRouteData.$route(
       path: 'settings',
 
       factory: _$SettingsRouteData._fromState,
@@ -58,6 +63,27 @@ mixin _$BackupRouteData on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/backup');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin _$NotificationsRouteData on GoRouteData {
+  static NotificationsRouteData _fromState(GoRouterState state) =>
+      const NotificationsRouteData();
+
+  @override
+  String get location => GoRouteData.$location('/notifications');
 
   @override
   void go(BuildContext context) => context.go(location);

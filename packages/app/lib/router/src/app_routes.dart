@@ -11,7 +11,12 @@ part 'app_routes.g.dart';
 @TypedGoRoute<HomeRouteData>(
   path: HomeRouteData.path,
   routes: [
-    TypedGoRoute<BackupRouteData>(path: BackupRouteData.path),
+    TypedGoRoute<BackupRouteData>(
+      path: BackupRouteData.path,
+    ),
+    TypedGoRoute<NotificationsRouteData>(
+      path: NotificationsRouteData.path,
+    ),
     TypedGoRoute<SettingsRouteData>(
       path: SettingsRouteData.path,
       routes: [
@@ -20,7 +25,9 @@ part 'app_routes.g.dart';
         ),
       ],
     ),
-    TypedGoRoute<LicenseRouteData>(path: LicenseRouteData.path),
+    TypedGoRoute<LicenseRouteData>(
+      path: LicenseRouteData.path,
+    ),
   ],
 )
 class HomeRouteData extends GoRouteData with _$HomeRouteData {
@@ -49,6 +56,22 @@ class BackupRouteData extends GoRouteData with _$BackupRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const BackupPage();
+  }
+}
+
+/// {@template onepage.NotificationsRouteData}
+/// Notifications route data.
+/// {@endtemplate}
+class NotificationsRouteData extends GoRouteData with _$NotificationsRouteData {
+  /// {@macro onepage.NotificationsRouteData}
+  const NotificationsRouteData();
+
+  /// The notifications route path.
+  static const path = 'notifications';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NotificationsPage();
   }
 }
 

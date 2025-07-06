@@ -75,5 +75,29 @@ final otherHapticEnabledProvider =
     );
 
 typedef _$OtherHapticEnabled = AutoDisposeNotifier<bool>;
+String _$notificationSettingsHash() =>
+    r'5f87bb0bc7e58b63f567698d8ca924fd0d4665dc';
+
+/// {@template onepage.NotificationSettingsNotifier}
+/// Notifier for managing notification settings.
+/// {@endtemplate}
+///
+/// Copied from [NotificationSettings].
+@ProviderFor(NotificationSettings)
+final notificationSettingsProvider =
+    AutoDisposeNotifierProvider<
+      NotificationSettings,
+      List<NotificationSetting>
+    >.internal(
+      NotificationSettings.new,
+      name: r'notificationSettingsProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$notificationSettingsHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$NotificationSettings = AutoDisposeNotifier<List<NotificationSetting>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -274,6 +274,14 @@ class _Drawer extends StatelessWidget {
           ),
           const Gap(8),
           HapticNavigationListTile(
+            leading: const Icon(Icons.notifications_outlined),
+            title: Text(t.notification.title),
+            onTap: () {
+              const NotificationsRouteData().go(context);
+            },
+          ),
+          const Gap(8),
+          HapticNavigationListTile(
             leading: const Icon(Icons.settings_outlined),
             title: const Text('Settings'),
             onTap: () {

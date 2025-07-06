@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:prefs_client/prefs_client.dart';
@@ -110,6 +112,79 @@ void main() {
         final result = await prefsClient.setOtherHapticEnabled(enabled: false);
 
         expect(result, isFalse);
+      });
+    });
+
+    group('JSON list operations', () {
+      group('getNotificationSettings', () {
+        test('returns empty list when no value stored', () {
+          when(
+            mockSharedPreferences.getString('notificationSettings'),
+          ).thenReturn(null);
+
+          final result = prefsClient.notificationSettings;
+          expect(result, isEmpty);
+        });
+
+        test('returns empty list when empty string stored', () {
+          when(
+            mockSharedPreferences.getString('notificationSettings'),
+          ).thenReturn('');
+
+          final result = prefsClient.notificationSettings;
+          expect(result, isEmpty);
+        });
+
+        test('returns parsed JSON list when valid JSON stored', () {
+          final testData = [
+            {'id': 1, 'name': 'test1'},
+            {'id': 2, 'name': 'test2'},
+          ];
+          final jsonString = json.encode(testData);
+
+          when(
+            mockSharedPreferences.getString('notificationSettings'),
+          ).thenReturn(jsonString);
+
+          final result = prefsClient.notificationSettings;
+          expect(result, equals(testData));
+        });
+
+        test('returns empty list when invalid JSON stored', () {
+          when(
+            mockSharedPreferences.getString('notificationSettings'),
+          ).thenReturn('invalid json');
+
+          final result = prefsClient.notificationSettings;
+          expect(result, isEmpty);
+        });
+      });
+
+      group('setNotificationSettings', () {
+        test('stores JSON list successfully', () async {
+          final testData = [
+            {'id': 1, 'name': 'test1'},
+            {'id': 2, 'name': 'test2'},
+          ];
+          final expectedJson = json.encode(testData);
+
+          when(
+            mockSharedPreferences.setString(
+              'notificationSettings',
+              expectedJson,
+            ),
+          ).thenAnswer((_) async => true);
+
+          final result = await prefsClient.setNotificationSettings(testData);
+
+          expect(result, isTrue);
+          verify(
+            mockSharedPreferences.setString(
+              'notificationSettings',
+              expectedJson,
+            ),
+          ).called(1);
+        });
       });
     });
   });

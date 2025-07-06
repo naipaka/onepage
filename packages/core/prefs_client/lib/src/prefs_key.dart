@@ -14,4 +14,7 @@ enum PrefsKey {
 
   /// Whether other haptic feedback (icon taps, etc.) is enabled.
   otherHaptic,
+
+  /// Notification settings stored as JSON string.
+  notificationSettings,
 }

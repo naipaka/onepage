@@ -43,6 +43,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsBackupJa backup = _TranslationsBackupJa._(_root);
 	@override late final _TranslationsSettingsJa settings = _TranslationsSettingsJa._(_root);
 	@override late final _TranslationsSearchJa search = _TranslationsSearchJa._(_root);
+	@override late final _TranslationsNotificationJa notification = _TranslationsNotificationJa._(_root);
 }
 
 // Path: updateRequest
@@ -119,6 +120,23 @@ class _TranslationsSearchJa implements TranslationsSearchEn {
 	@override String get noResults => '検索結果がありません';
 }
 
+// Path: notification
+class _TranslationsNotificationJa implements TranslationsNotificationEn {
+	_TranslationsNotificationJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Notifications';
+	@override String get addTime => '時間を追加';
+	@override String get maxTimesReached => '通知時間は最大3つまでです';
+	@override String get channelName => '日記リマインダー';
+	@override String get channelDescription => '日記を書くための日々のリマインダー';
+	@override late final _TranslationsNotificationPermissionJa permission = _TranslationsNotificationPermissionJa._(_root);
+	@override String get notificationTitle => '今日の日記は書きましたか？';
+	@override String get notificationBody => '1日の出来事や気持ちを書き留めておきましょう';
+}
+
 // Path: updateRequest.button
 class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestButtonEn {
 	_TranslationsUpdateRequestButtonJa._(this._root);
@@ -139,6 +157,18 @@ class _TranslationsBackupActionsJa implements TranslationsBackupActionsEn {
 	@override String get create => 'バックアップを作成';
 	@override String get restore => 'バックアップを復元';
 	@override String get goToHome => 'ホームへ戻る';
+}
+
+// Path: notification.permission
+class _TranslationsNotificationPermissionJa implements TranslationsNotificationPermissionEn {
+	_TranslationsNotificationPermissionJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get deniedTitle => '通知権限が必要です';
+	@override String get deniedMessage => 'アプリの通知を有効にするには、端末の設定で通知を許可してください';
+	@override String get openSettings => '設定を開く';
 }
 
 /// Flat map(s) containing all translations.
@@ -179,6 +209,16 @@ extension on TranslationsJa {
 			case 'search.searchHint': return '検索キーワードを入力';
 			case 'search.placeholder': return '検索結果がここに表示されます';
 			case 'search.noResults': return '検索結果がありません';
+			case 'notification.title': return 'Notifications';
+			case 'notification.addTime': return '時間を追加';
+			case 'notification.maxTimesReached': return '通知時間は最大3つまでです';
+			case 'notification.channelName': return '日記リマインダー';
+			case 'notification.channelDescription': return '日記を書くための日々のリマインダー';
+			case 'notification.permission.deniedTitle': return '通知権限が必要です';
+			case 'notification.permission.deniedMessage': return 'アプリの通知を有効にするには、端末の設定で通知を許可してください';
+			case 'notification.permission.openSettings': return '設定を開く';
+			case 'notification.notificationTitle': return '今日の日記は書きましたか？';
+			case 'notification.notificationBody': return '1日の出来事や気持ちを書き留めておきましょう';
 			default: return null;
 		}
 	}

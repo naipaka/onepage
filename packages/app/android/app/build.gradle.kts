@@ -66,6 +66,9 @@ android {
     ndkVersion = "27.0.12077973"
 
     compileOptions {
+        // For Flutter Local Notifications.
+        isCoreLibraryDesugaringEnabled = true
+        // Sets Java compatibility to Java 11
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
@@ -124,6 +127,9 @@ flutter {
 }
 
 dependencies {
+    // For Flutter Local Notifications.
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+    
     // Import the Firebase BoM.
     // When using BoM, it is not necessary to specify the version in each Firebase library dependency.
     implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
