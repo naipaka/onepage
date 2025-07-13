@@ -5,6 +5,7 @@ export 'src/diary_provider.dart';
 export 'src/haptics_provider.dart';
 export 'src/initialization_provider.dart';
 export 'src/notification_client_provider.dart';
+export 'src/pdf_export_provider.dart';
 export 'src/prefs_client_provider.dart';
 export 'src/tracker_provider.dart';
 export 'src/update_requester_provider.dart';

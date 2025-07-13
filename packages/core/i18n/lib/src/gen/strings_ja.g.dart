@@ -44,6 +44,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsSettingsJa settings = _TranslationsSettingsJa._(_root);
 	@override late final _TranslationsSearchJa search = _TranslationsSearchJa._(_root);
 	@override late final _TranslationsNotificationJa notification = _TranslationsNotificationJa._(_root);
+	@override late final _TranslationsExportJa export = _TranslationsExportJa._(_root);
 }
 
 // Path: updateRequest
@@ -65,8 +66,11 @@ class _TranslationsHomeJa implements TranslationsHomeEn {
 
 	// Translations
 	@override String get title => 'Home';
-	@override String get license => 'License';
+	@override String get notifications => 'Notifications';
 	@override String get backup => 'Backup';
+	@override String get export => 'Export';
+	@override String get settings => 'Settings';
+	@override String get license => 'License';
 	@override String get errorSavingDiary => '日記の保存中にエラーが発生しました';
 	@override String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 	@override String get datePickerCancel => 'キャンセル';
@@ -137,6 +141,27 @@ class _TranslationsNotificationJa implements TranslationsNotificationEn {
 	@override String get notificationBody => '1日の出来事や気持ちを書き留めておきましょう';
 }
 
+// Path: export
+class _TranslationsExportJa implements TranslationsExportEn {
+	_TranslationsExportJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Export';
+	@override String get description => '日記をPDFで出力';
+	@override String get explanation => '月ごとに日記をPDFファイルで\nエクスポートできます';
+	@override String get successMessage => 'PDFエクスポートが完了しました！';
+	@override String get failedMessage => 'PDFエクスポートに失敗しました';
+	@override String get monthFormat => 'yyyy年MM月';
+	@override String get formatSelection => 'エクスポート形式';
+	@override String get monthSelection => '月を選択';
+	@override String get year => '年';
+	@override String get month => '月';
+	@override String get comingSoon => '今後追加予定です';
+	@override late final _TranslationsExportActionsJa actions = _TranslationsExportActionsJa._(_root);
+}
+
 // Path: updateRequest.button
 class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestButtonEn {
 	_TranslationsUpdateRequestButtonJa._(this._root);
@@ -171,6 +196,17 @@ class _TranslationsNotificationPermissionJa implements TranslationsNotificationP
 	@override String get openSettings => '設定を開く';
 }
 
+// Path: export.actions
+class _TranslationsExportActionsJa implements TranslationsExportActionsEn {
+	_TranslationsExportActionsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get exportMonth => '月別エクスポート';
+	@override String get export => 'エクスポート';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on TranslationsJa {
@@ -181,8 +217,11 @@ extension on TranslationsJa {
 			case 'updateRequest.title': return 'アップデートのお願い';
 			case 'updateRequest.button.updateNow': return '更新する';
 			case 'home.title': return 'Home';
-			case 'home.license': return 'License';
+			case 'home.notifications': return 'Notifications';
 			case 'home.backup': return 'Backup';
+			case 'home.export': return 'Export';
+			case 'home.settings': return 'Settings';
+			case 'home.license': return 'License';
 			case 'home.errorSavingDiary': return '日記の保存中にエラーが発生しました';
 			case 'home.errorSavingDiarySolution': return '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 			case 'home.datePickerCancel': return 'キャンセル';
@@ -219,6 +258,19 @@ extension on TranslationsJa {
 			case 'notification.permission.openSettings': return '設定を開く';
 			case 'notification.notificationTitle': return '今日の日記は書きましたか？';
 			case 'notification.notificationBody': return '1日の出来事や気持ちを書き留めておきましょう';
+			case 'export.title': return 'Export';
+			case 'export.description': return '日記をPDFで出力';
+			case 'export.explanation': return '月ごとに日記をPDFファイルで\nエクスポートできます';
+			case 'export.successMessage': return 'PDFエクスポートが完了しました！';
+			case 'export.failedMessage': return 'PDFエクスポートに失敗しました';
+			case 'export.monthFormat': return 'yyyy年MM月';
+			case 'export.formatSelection': return 'エクスポート形式';
+			case 'export.monthSelection': return '月を選択';
+			case 'export.year': return '年';
+			case 'export.month': return '月';
+			case 'export.comingSoon': return '今後追加予定です';
+			case 'export.actions.exportMonth': return '月別エクスポート';
+			case 'export.actions.export': return 'エクスポート';
 			default: return null;
 		}
 	}

@@ -11,11 +11,14 @@ part 'app_routes.g.dart';
 @TypedGoRoute<HomeRouteData>(
   path: HomeRouteData.path,
   routes: [
+    TypedGoRoute<NotificationsRouteData>(
+      path: NotificationsRouteData.path,
+    ),
     TypedGoRoute<BackupRouteData>(
       path: BackupRouteData.path,
     ),
-    TypedGoRoute<NotificationsRouteData>(
-      path: NotificationsRouteData.path,
+    TypedGoRoute<ExportRouteData>(
+      path: ExportRouteData.path,
     ),
     TypedGoRoute<SettingsRouteData>(
       path: SettingsRouteData.path,
@@ -43,6 +46,22 @@ class HomeRouteData extends GoRouteData with _$HomeRouteData {
   }
 }
 
+/// {@template onepage.NotificationsRouteData}
+/// Notifications route data.
+/// {@endtemplate}
+class NotificationsRouteData extends GoRouteData with _$NotificationsRouteData {
+  /// {@macro onepage.NotificationsRouteData}
+  const NotificationsRouteData();
+
+  /// The notifications route path.
+  static const path = 'notifications';
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const NotificationsPage();
+  }
+}
+
 /// {@template onepage.BackupRouteData}
 /// Backup route data.
 /// {@endtemplate}
@@ -59,19 +78,19 @@ class BackupRouteData extends GoRouteData with _$BackupRouteData {
   }
 }
 
-/// {@template onepage.NotificationsRouteData}
-/// Notifications route data.
+/// {@template onepage.ExportRouteData}
+/// Export route data.
 /// {@endtemplate}
-class NotificationsRouteData extends GoRouteData with _$NotificationsRouteData {
-  /// {@macro onepage.NotificationsRouteData}
-  const NotificationsRouteData();
+class ExportRouteData extends GoRouteData with _$ExportRouteData {
+  /// {@macro onepage.ExportRouteData}
+  const ExportRouteData();
 
-  /// The notifications route path.
-  static const path = 'notifications';
+  /// The export route path.
+  static const path = 'export';
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const NotificationsPage();
+    return const ExportPage();
   }
 }
 

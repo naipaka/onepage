@@ -151,3 +151,6 @@ pubspec_overrides.yaml
 
 # mason
 .mason
+
+# Claude Code
+.claude/prompts
