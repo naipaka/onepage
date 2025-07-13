@@ -3,6 +3,7 @@ digraph packages {
   backup [shape="box"; color="#022013"];
   db_client [shape="box"; color="#c4fbfc"];
   diary [shape="box"; color="#2c56bd"];
+  exporter [shape="box"; color="#3e99a6"];
   haptics [shape="box"; color="#26343c"];
   i18n [shape="box"; color="#d7afc5"];
   notification_client [shape="box"; color="#4d6b02"];
@@ -17,11 +18,13 @@ digraph packages {
   backup -> db_client [style="filled"; color="#c4fbfc"];
   diary -> db_client [style="filled"; color="#c4fbfc"];
   diary -> utils [style="filled"; color="#f548cf"];
+  exporter -> db_client [style="filled"; color="#c4fbfc"];
   haptics -> prefs_client [style="filled"; color="#080f51"];
   notification_client -> prefs_client [style="filled"; color="#080f51"];
   onepage -> backup [style="filled"; color="#022013"];
   onepage -> db_client [style="filled"; color="#c4fbfc"];
   onepage -> diary [style="filled"; color="#2c56bd"];
+  onepage -> exporter [style="filled"; color="#3e99a6"];
   onepage -> haptics [style="filled"; color="#26343c"];
   onepage -> i18n [style="filled"; color="#d7afc5"];
   onepage -> notification_client [style="filled"; color="#4d6b02"];
@@ -39,6 +42,7 @@ digraph packages {
     color="#f62736";
     backup;
     diary;
+    exporter;
     haptics;
     scroll_calendar;
     update_requester;
