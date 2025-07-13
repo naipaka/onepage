@@ -47,6 +47,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsSettingsEn settings = TranslationsSettingsEn._(_root);
 	late final TranslationsSearchEn search = TranslationsSearchEn._(_root);
 	late final TranslationsNotificationEn notification = TranslationsNotificationEn._(_root);
+	late final TranslationsExportEn export = TranslationsExportEn._(_root);
 }
 
 // Path: updateRequest
@@ -68,8 +69,11 @@ class TranslationsHomeEn {
 
 	// Translations
 	String get title => 'Home';
-	String get license => 'License';
+	String get notifications => 'Notifications';
 	String get backup => 'Backup';
+	String get export => 'Export';
+	String get settings => 'Settings';
+	String get license => 'License';
 	String get errorSavingDiary => 'An error occurred while saving your diary';
 	String get errorSavingDiarySolution => 'We apologize, but please copy your text and restart the app';
 	String get datePickerCancel => 'Cancel';
@@ -140,6 +144,27 @@ class TranslationsNotificationEn {
 	String get notificationBody => 'Take a moment to jot down your thoughts and feelings';
 }
 
+// Path: export
+class TranslationsExportEn {
+	TranslationsExportEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Export';
+	String get description => 'Export diary to PDF';
+	String get explanation => 'Export your diary entries as PDF files\norganized by month';
+	String get successMessage => 'PDF export completed successfully!';
+	String get failedMessage => 'PDF export failed';
+	String get monthFormat => 'MMMM yyyy';
+	String get formatSelection => 'Export Format';
+	String get monthSelection => 'Select Month';
+	String get year => 'Year';
+	String get month => 'Month';
+	String get comingSoon => 'Coming in future updates';
+	late final TranslationsExportActionsEn actions = TranslationsExportActionsEn._(_root);
+}
+
 // Path: updateRequest.button
 class TranslationsUpdateRequestButtonEn {
 	TranslationsUpdateRequestButtonEn._(this._root);
@@ -174,6 +199,17 @@ class TranslationsNotificationPermissionEn {
 	String get openSettings => 'Open Settings';
 }
 
+// Path: export.actions
+class TranslationsExportActionsEn {
+	TranslationsExportActionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get exportMonth => 'Export by Month';
+	String get export => 'Export';
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 extension on Translations {
@@ -184,8 +220,11 @@ extension on Translations {
 			case 'updateRequest.title': return 'Update Request';
 			case 'updateRequest.button.updateNow': return 'Update Now';
 			case 'home.title': return 'Home';
-			case 'home.license': return 'License';
+			case 'home.notifications': return 'Notifications';
 			case 'home.backup': return 'Backup';
+			case 'home.export': return 'Export';
+			case 'home.settings': return 'Settings';
+			case 'home.license': return 'License';
 			case 'home.errorSavingDiary': return 'An error occurred while saving your diary';
 			case 'home.errorSavingDiarySolution': return 'We apologize, but please copy your text and restart the app';
 			case 'home.datePickerCancel': return 'Cancel';
@@ -222,6 +261,19 @@ extension on Translations {
 			case 'notification.permission.openSettings': return 'Open Settings';
 			case 'notification.notificationTitle': return 'Have you written your diary today?';
 			case 'notification.notificationBody': return 'Take a moment to jot down your thoughts and feelings';
+			case 'export.title': return 'Export';
+			case 'export.description': return 'Export diary to PDF';
+			case 'export.explanation': return 'Export your diary entries as PDF files\norganized by month';
+			case 'export.successMessage': return 'PDF export completed successfully!';
+			case 'export.failedMessage': return 'PDF export failed';
+			case 'export.monthFormat': return 'MMMM yyyy';
+			case 'export.formatSelection': return 'Export Format';
+			case 'export.monthSelection': return 'Select Month';
+			case 'export.year': return 'Year';
+			case 'export.month': return 'Month';
+			case 'export.comingSoon': return 'Coming in future updates';
+			case 'export.actions.exportMonth': return 'Export by Month';
+			case 'export.actions.export': return 'Export';
 			default: return null;
 		}
 	}
