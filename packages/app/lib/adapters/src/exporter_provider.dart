@@ -20,3 +20,11 @@ CsvExporter csvExporter(Ref ref) {
     packageInfo: ref.watch(packageInfoProvider),
   );
 }
+
+/// {@macro exporter.MarkdownExporter}
+@riverpod
+MarkdownExporter markdownExporter(Ref ref) {
+  return MarkdownExporter(
+    packageInfo: ref.watch(packageInfoProvider),
+  );
+}
