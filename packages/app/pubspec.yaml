@@ -50,7 +50,7 @@ dependencies:
     path: ../core/theme/
   update_requester:
     path: ../features/update_requester/
-  url_launcher: ^6.3.1
+  url_launcher: ^6.3.2
   utils:
     path: ../core/utils/
   visibility_detector: ^0.4.0+2
