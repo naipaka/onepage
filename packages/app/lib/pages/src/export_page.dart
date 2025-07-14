@@ -31,6 +31,7 @@ class ExportPage extends HookConsumerWidget {
     final t = context.t;
     final colorScheme = context.colorScheme;
     final pdfExporter = ref.watch(pdfExporterProvider);
+    final csvExporter = ref.watch(csvExporterProvider);
     final dbClient = ref.watch(dbClientProvider);
     final haptics = ref.watch(hapticsProvider);
     
@@ -40,22 +41,25 @@ class ExportPage extends HookConsumerWidget {
     final selectedMonth = useState(now.month);
     
     VoidCallback? onExportPressed;
-    if (selectedFormat.value == const ExportFormat.pdf()) {
+    if (selectedFormat.value == const ExportFormat.pdf() ||
+        selectedFormat.value == const ExportFormat.csv()) {
       onExportPressed = () {
         haptics.buttonTapFeedback();
-        _exportPdf(
+        _export(
           ref: ref,
           context: context,
           selectedYear: selectedYear.value,
           selectedMonth: selectedMonth.value,
           dbClient: dbClient,
           pdfExporter: pdfExporter,
+          csvExporter: csvExporter,
           haptics: haptics,
           t: t,
+          format: selectedFormat.value,
         );
       };
     }
-    // CSV/Markdownが選択されている場合はnullのまま（非活性）
+    // Markdownが選択されている場合はnullのまま（非活性）
     
     return Scaffold(
       appBar: AppBar(title: Text(t.export.title)),
@@ -167,7 +171,7 @@ class ExportPage extends HookConsumerWidget {
                   ],
                 ),
               ),
-              if (selectedFormat.value != const ExportFormat.pdf()) ...[
+              if (selectedFormat.value == const ExportFormat.markdown()) ...[
                 const Gap(12),
                 LabelSmallText(
                   t.export.comingSoon,
@@ -182,15 +186,17 @@ class ExportPage extends HookConsumerWidget {
     );
   }
 
-  void _exportPdf({
+  void _export({
     required WidgetRef ref,
     required BuildContext context,
     required int selectedYear,
     required int selectedMonth,
     required DbClient dbClient,
     required PdfExporter pdfExporter,
+    required CsvExporter csvExporter,
     required Haptics haptics,
     required Translations t,
+    required ExportFormat format,
   }) {
     unawaited(
       _performExport(
@@ -200,8 +206,10 @@ class ExportPage extends HookConsumerWidget {
         selectedMonth: selectedMonth,
         dbClient: dbClient,
         pdfExporter: pdfExporter,
+        csvExporter: csvExporter,
         haptics: haptics,
         t: t,
+        format: format,
       ),
     );
   }
@@ -213,8 +221,10 @@ class ExportPage extends HookConsumerWidget {
     required int selectedMonth,
     required DbClient dbClient,
     required PdfExporter pdfExporter,
+    required CsvExporter csvExporter,
     required Haptics haptics,
     required Translations t,
+    required ExportFormat format,
   }) async {
     try {
       ref.showLoading();
@@ -243,17 +253,34 @@ class ExportPage extends HookConsumerWidget {
         );
       }).toList();
       
-      final pdfFile = await pdfExporter.exportMonth(
-        entries: entries,
-        year: selectedYear,
-        month: selectedMonth,
-      );
+      final File exportedFile;
+      final Icon successIcon;
+      
+      if (format == const ExportFormat.pdf()) {
+        exportedFile = await pdfExporter.exportMonth(
+          entries: entries,
+          year: selectedYear,
+          month: selectedMonth,
+        );
+        successIcon = const Icon(Icons.picture_as_pdf_outlined);
+      } else if (format == const ExportFormat.csv()) {
+        exportedFile = await csvExporter.exportMonth(
+          entries: entries,
+          year: selectedYear,
+          month: selectedMonth,
+        );
+        successIcon = const Icon(Icons.table_chart_outlined);
+      } else {
+        throw UnimplementedError(
+          '${format.displayName} export not yet implemented',
+        );
+      }
 
       if (!context.mounted) {
         return;
       }
 
-      final shareXFile = XFile(pdfFile.path);
+      final shareXFile = XFile(exportedFile.path);
       await SharePlus.instance.share(
         ShareParams(files: [shareXFile]),
       );
@@ -263,7 +290,7 @@ class ExportPage extends HookConsumerWidget {
         showSuccessToast(
           context,
           title: t.export.successMessage,
-          icon: const Icon(Icons.picture_as_pdf_outlined),
+          icon: successIcon,
         );
       }
     } on Object catch (e) {

@@ -154,8 +154,8 @@ class TranslationsExportEn {
 	String get title => 'Export';
 	String get description => 'Export diary to PDF';
 	String get explanation => 'Export your diary entries as PDF files\norganized by month';
-	String get successMessage => 'PDF export completed successfully!';
-	String get failedMessage => 'PDF export failed';
+	String get successMessage => 'Export completed successfully!';
+	String get failedMessage => 'Export failed';
 	String get monthFormat => 'MMMM yyyy';
 	String get formatSelection => 'Export Format';
 	String get monthSelection => 'Select Month';
@@ -264,8 +264,8 @@ extension on Translations {
 			case 'export.title': return 'Export';
 			case 'export.description': return 'Export diary to PDF';
 			case 'export.explanation': return 'Export your diary entries as PDF files\norganized by month';
-			case 'export.successMessage': return 'PDF export completed successfully!';
-			case 'export.failedMessage': return 'PDF export failed';
+			case 'export.successMessage': return 'Export completed successfully!';
+			case 'export.failedMessage': return 'Export failed';
 			case 'export.monthFormat': return 'MMMM yyyy';
 			case 'export.formatSelection': return 'Export Format';
 			case 'export.monthSelection': return 'Select Month';
