@@ -151,8 +151,8 @@ class _TranslationsExportJa implements TranslationsExportEn {
 	@override String get title => 'Export';
 	@override String get description => '日記をPDFで出力';
 	@override String get explanation => '月ごとに日記をPDFファイルで\nエクスポートできます';
-	@override String get successMessage => 'PDFエクスポートが完了しました！';
-	@override String get failedMessage => 'PDFエクスポートに失敗しました';
+	@override String get successMessage => 'エクスポートが完了しました！';
+	@override String get failedMessage => 'エクスポートに失敗しました';
 	@override String get monthFormat => 'yyyy年MM月';
 	@override String get formatSelection => 'エクスポート形式';
 	@override String get monthSelection => '月を選択';
@@ -261,8 +261,8 @@ extension on TranslationsJa {
 			case 'export.title': return 'Export';
 			case 'export.description': return '日記をPDFで出力';
 			case 'export.explanation': return '月ごとに日記をPDFファイルで\nエクスポートできます';
-			case 'export.successMessage': return 'PDFエクスポートが完了しました！';
-			case 'export.failedMessage': return 'PDFエクスポートに失敗しました';
+			case 'export.successMessage': return 'エクスポートが完了しました！';
+			case 'export.failedMessage': return 'エクスポートに失敗しました';
 			case 'export.monthFormat': return 'yyyy年MM月';
 			case 'export.formatSelection': return 'エクスポート形式';
 			case 'export.monthSelection': return '月を選択';
