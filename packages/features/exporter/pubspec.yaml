@@ -14,15 +14,15 @@ dependencies:
     path: ../../core/db_client/
   flutter:
     sdk: flutter
-  freezed_annotation: ^3.0.0
+  freezed_annotation: ^3.1.0
   gap: ^3.0.1
   intl: ^0.20.2
   json_annotation: ^4.9.0
   package_info_plus: ^8.3.0
   path: ^1.9.1
   path_provider: ^2.1.5
-  pdf: ^3.11.1
-  printing: ^5.13.4
+  pdf: ^3.11.3
+  printing: ^5.14.2
   share_plus: ^11.0.0
 
 dev_dependencies:
@@ -31,6 +31,6 @@ dev_dependencies:
   custom_lint: ^0.7.5
   flutter_test:
     sdk: flutter
-  freezed: ^3.0.6
+  freezed: ^3.1.0
   json_serializable: ^6.9.5
   mockito: ^5.4.6
