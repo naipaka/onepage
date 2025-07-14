@@ -32,6 +32,7 @@ class ExportPage extends HookConsumerWidget {
     final colorScheme = context.colorScheme;
     final pdfExporter = ref.watch(pdfExporterProvider);
     final csvExporter = ref.watch(csvExporterProvider);
+    final markdownExporter = ref.watch(markdownExporterProvider);
     final dbClient = ref.watch(dbClientProvider);
     final haptics = ref.watch(hapticsProvider);
     
@@ -42,7 +43,8 @@ class ExportPage extends HookConsumerWidget {
     
     VoidCallback? onExportPressed;
     if (selectedFormat.value == const ExportFormat.pdf() ||
-        selectedFormat.value == const ExportFormat.csv()) {
+        selectedFormat.value == const ExportFormat.csv() ||
+        selectedFormat.value == const ExportFormat.markdown()) {
       onExportPressed = () {
         haptics.buttonTapFeedback();
         _export(
@@ -53,13 +55,13 @@ class ExportPage extends HookConsumerWidget {
           dbClient: dbClient,
           pdfExporter: pdfExporter,
           csvExporter: csvExporter,
+          markdownExporter: markdownExporter,
           haptics: haptics,
           t: t,
           format: selectedFormat.value,
         );
       };
     }
-    // Markdownが選択されている場合はnullのまま（非活性）
     
     return Scaffold(
       appBar: AppBar(title: Text(t.export.title)),
@@ -171,14 +173,6 @@ class ExportPage extends HookConsumerWidget {
                   ],
                 ),
               ),
-              if (selectedFormat.value == const ExportFormat.markdown()) ...[
-                const Gap(12),
-                LabelSmallText(
-                  t.export.comingSoon,
-                  color: colorScheme.onSurface.withValues(alpha: 0.6),
-                  textAlign: TextAlign.center,
-                ),
-              ],
             ],
           ),
         ),
@@ -194,6 +188,7 @@ class ExportPage extends HookConsumerWidget {
     required DbClient dbClient,
     required PdfExporter pdfExporter,
     required CsvExporter csvExporter,
+    required MarkdownExporter markdownExporter,
     required Haptics haptics,
     required Translations t,
     required ExportFormat format,
@@ -207,6 +202,7 @@ class ExportPage extends HookConsumerWidget {
         dbClient: dbClient,
         pdfExporter: pdfExporter,
         csvExporter: csvExporter,
+        markdownExporter: markdownExporter,
         haptics: haptics,
         t: t,
         format: format,
@@ -222,6 +218,7 @@ class ExportPage extends HookConsumerWidget {
     required DbClient dbClient,
     required PdfExporter pdfExporter,
     required CsvExporter csvExporter,
+    required MarkdownExporter markdownExporter,
     required Haptics haptics,
     required Translations t,
     required ExportFormat format,
@@ -270,6 +267,13 @@ class ExportPage extends HookConsumerWidget {
           month: selectedMonth,
         );
         successIcon = const Icon(Icons.table_chart_outlined);
+      } else if (format == const ExportFormat.markdown()) {
+        exportedFile = await markdownExporter.exportMonth(
+          entries: entries,
+          year: selectedYear,
+          month: selectedMonth,
+        );
+        successIcon = const Icon(Icons.text_snippet_outlined);
       } else {
         throw UnimplementedError(
           '${format.displayName} export not yet implemented',
