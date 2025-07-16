@@ -6,6 +6,7 @@ digraph packages {
   exporter [shape="box"; color="#3e99a6"];
   haptics [shape="box"; color="#26343c"];
   i18n [shape="box"; color="#d7afc5"];
+  in_app_reviewer [shape="box"; color="#1253da"];
   notification_client [shape="box"; color="#4d6b02"];
   onepage [shape="box"; color="#08802d"];
   prefs_client [shape="box"; color="#080f51"];
@@ -20,6 +21,7 @@ digraph packages {
   diary -> utils [style="filled"; color="#f548cf"];
   exporter -> db_client [style="filled"; color="#c4fbfc"];
   haptics -> prefs_client [style="filled"; color="#080f51"];
+  in_app_reviewer -> prefs_client [style="filled"; color="#080f51"];
   notification_client -> prefs_client [style="filled"; color="#080f51"];
   onepage -> backup [style="filled"; color="#022013"];
   onepage -> db_client [style="filled"; color="#c4fbfc"];
@@ -27,6 +29,7 @@ digraph packages {
   onepage -> exporter [style="filled"; color="#3e99a6"];
   onepage -> haptics [style="filled"; color="#26343c"];
   onepage -> i18n [style="filled"; color="#d7afc5"];
+  onepage -> in_app_reviewer [style="filled"; color="#1253da"];
   onepage -> notification_client [style="filled"; color="#4d6b02"];
   onepage -> prefs_client [style="filled"; color="#080f51"];
   onepage -> provider_utils [style="filled"; color="#f445c4"];
@@ -44,6 +47,7 @@ digraph packages {
     diary;
     exporter;
     haptics;
+    in_app_reviewer;
     scroll_calendar;
     update_requester;
   }
