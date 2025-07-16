@@ -49,6 +49,14 @@ This package provides utility functions for the riverpod package.
 
 This package is responsible for the appearance of `ThemeData` and other appearance-related data used in Flutter apps.
 
+### [core/configurator](packages/core/configurator)
+
+This package provides Firebase Remote Config functionality for the application.
+
+### [core/tracker](packages/core/tracker)
+
+This package provides event tracking functionality for the application.
+
 ### [core/utils](packages/core/utils)
 
 This package provides utility functions for the application.
@@ -65,9 +73,17 @@ This package provides the backup feature of the application.
 
 This package provides the diary feature of the application.
 
+### [features/exporter](packages/features/exporter)
+
+This package provides data export functionality supporting multiple formats (CSV, PDF, Markdown).
+
 ### [features/haptics](packages/features/haptics)
 
 This package provides haptic feedback functionality with preference-based control.
+
+### [features/in_app_reviewer](packages/features/in_app_reviewer)
+
+This package provides in-app review functionality for the application.
 
 ### [features/scroll_calendar](packages/features/scroll_calendar)
 
