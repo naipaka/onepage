@@ -69,10 +69,3 @@ export:
   actions:
     exportMonth: "Export by Month"
     export: "Export"
-inAppReview:
-  title: "Rate Our App"
-  message: "Are you enjoying One Page?\nWe'd love if you could rate us on the Store."
-  actions:
-    review: "Rate Now"
-    notNow: "Not Now"
-    never: "Don't Ask Again"

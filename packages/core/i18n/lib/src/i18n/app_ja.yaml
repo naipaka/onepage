@@ -69,10 +69,3 @@ export:
   actions:
     exportMonth: "月別エクスポート"
     export: "エクスポート"
-inAppReview:
-  title: "アプリの評価"
-  message: "One Pageを気に入っていただけていますか？\nよろしければStoreでの評価をお願いします。"
-  actions:
-    review: "評価する"
-    notNow: "今はしない"
-    never: "今後表示しない"
