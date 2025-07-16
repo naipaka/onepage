@@ -45,6 +45,7 @@ class TranslationsJa implements Translations {
 	@override late final _TranslationsSearchJa search = _TranslationsSearchJa._(_root);
 	@override late final _TranslationsNotificationJa notification = _TranslationsNotificationJa._(_root);
 	@override late final _TranslationsExportJa export = _TranslationsExportJa._(_root);
+	@override late final _TranslationsInAppReviewJa inAppReview = _TranslationsInAppReviewJa._(_root);
 }
 
 // Path: updateRequest
@@ -162,6 +163,18 @@ class _TranslationsExportJa implements TranslationsExportEn {
 	@override late final _TranslationsExportActionsJa actions = _TranslationsExportActionsJa._(_root);
 }
 
+// Path: inAppReview
+class _TranslationsInAppReviewJa implements TranslationsInAppReviewEn {
+	_TranslationsInAppReviewJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'アプリの評価';
+	@override String get message => 'One Pageを気に入っていただけていますか？\nよろしければStoreでの評価をお願いします。';
+	@override late final _TranslationsInAppReviewActionsJa actions = _TranslationsInAppReviewActionsJa._(_root);
+}
+
 // Path: updateRequest.button
 class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestButtonEn {
 	_TranslationsUpdateRequestButtonJa._(this._root);
@@ -205,6 +218,18 @@ class _TranslationsExportActionsJa implements TranslationsExportActionsEn {
 	// Translations
 	@override String get exportMonth => '月別エクスポート';
 	@override String get export => 'エクスポート';
+}
+
+// Path: inAppReview.actions
+class _TranslationsInAppReviewActionsJa implements TranslationsInAppReviewActionsEn {
+	_TranslationsInAppReviewActionsJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get review => '評価する';
+	@override String get notNow => '今はしない';
+	@override String get never => '今後表示しない';
 }
 
 /// Flat map(s) containing all translations.
@@ -271,6 +296,11 @@ extension on TranslationsJa {
 			case 'export.comingSoon': return '今後追加予定です';
 			case 'export.actions.exportMonth': return '月別エクスポート';
 			case 'export.actions.export': return 'エクスポート';
+			case 'inAppReview.title': return 'アプリの評価';
+			case 'inAppReview.message': return 'One Pageを気に入っていただけていますか？\nよろしければStoreでの評価をお願いします。';
+			case 'inAppReview.actions.review': return '評価する';
+			case 'inAppReview.actions.notNow': return '今はしない';
+			case 'inAppReview.actions.never': return '今後表示しない';
 			default: return null;
 		}
 	}

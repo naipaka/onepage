@@ -49,4 +49,19 @@ class DiaryQuery {
       offset: offset,
     );
   }
+
+  /// Counts unique days with diary entries containing non-empty content within
+  /// a date range.
+  ///
+  /// - [from] - The start date of the date range.
+  /// - [to] - The end date of the date range.
+  Future<int> countUniqueDaysWithContentInRange({
+    required DateTime from,
+    required DateTime to,
+  }) async {
+    return dbClient.countUniqueDaysWithContentInRange(
+      from: from,
+      to: to,
+    );
+  }
 }

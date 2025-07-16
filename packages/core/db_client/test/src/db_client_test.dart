@@ -268,5 +268,130 @@ void main() {
         expect(searchResults[0].content, 'Programming is fun');
       });
     });
+
+    group('countUniqueDaysWithContentInRange', () {
+      test('should count unique days with non-empty content', () async {
+        final now = clock.now();
+        final startDate = now.subtract(const Duration(days: 10));
+        final endDate = now.add(const Duration(days: 1));
+
+        // Insert entries with content
+        await dbClient.insertDiary(
+          content: 'Day 1 content',
+          date: now.subtract(const Duration(days: 5)),
+        );
+        await dbClient.insertDiary(
+          content: 'Day 2 content',
+          date: now.subtract(const Duration(days: 3)),
+        );
+        await dbClient.insertDiary(
+          content: 'Day 3 content',
+          date: now.subtract(const Duration(days: 1)),
+        );
+
+        final count = await dbClient.countUniqueDaysWithContentInRange(
+          from: startDate,
+          to: endDate,
+        );
+
+        expect(count, 3);
+      });
+
+      test('should exclude empty content entries', () async {
+        final now = clock.now();
+        final startDate = now.subtract(const Duration(days: 10));
+        final endDate = now.add(const Duration(days: 1));
+
+        // Insert entries with content
+        await dbClient.insertDiary(
+          content: 'Valid content',
+          date: now.subtract(const Duration(days: 5)),
+        );
+        // Insert empty content entry
+        await dbClient.insertDiary(
+          content: '',
+          date: now.subtract(const Duration(days: 3)),
+        );
+
+        final count = await dbClient.countUniqueDaysWithContentInRange(
+          from: startDate,
+          to: endDate,
+        );
+
+        expect(count, 1);
+      });
+
+      test('should exclude whitespace-only content entries', () async {
+        final now = clock.now();
+        final startDate = now.subtract(const Duration(days: 10));
+        final endDate = now.add(const Duration(days: 1));
+
+        // Insert entries with content
+        await dbClient.insertDiary(
+          content: 'Valid content',
+          date: now.subtract(const Duration(days: 5)),
+        );
+        // Insert whitespace-only content entry
+        await dbClient.insertDiary(
+          content: '   \n\t  ',
+          date: now.subtract(const Duration(days: 3)),
+        );
+
+        final count = await dbClient.countUniqueDaysWithContentInRange(
+          from: startDate,
+          to: endDate,
+        );
+
+        expect(count, 1);
+      });
+
+      test('should respect date range boundaries', () async {
+        final now = clock.now();
+        final startDate = now.subtract(const Duration(days: 5));
+        final endDate = now.subtract(const Duration(days: 1));
+
+        // Insert entry before range
+        await dbClient.insertDiary(
+          content: 'Before range',
+          date: now.subtract(const Duration(days: 10)),
+        );
+        // Insert entry in range
+        await dbClient.insertDiary(
+          content: 'In range',
+          date: now.subtract(const Duration(days: 3)),
+        );
+        // Insert entry after range
+        await dbClient.insertDiary(
+          content: 'After range',
+          date: now,
+        );
+
+        final count = await dbClient.countUniqueDaysWithContentInRange(
+          from: startDate,
+          to: endDate,
+        );
+
+        expect(count, 1);
+      });
+
+      test('should return 0 when no entries match criteria', () async {
+        final now = clock.now();
+        final startDate = now.subtract(const Duration(days: 10));
+        final endDate = now.add(const Duration(days: 1));
+
+        // Insert only empty content entry
+        await dbClient.insertDiary(
+          content: '',
+          date: now.subtract(const Duration(days: 5)),
+        );
+
+        final count = await dbClient.countUniqueDaysWithContentInRange(
+          from: startDate,
+          to: endDate,
+        );
+
+        expect(count, 0);
+      });
+    });
   });
 }

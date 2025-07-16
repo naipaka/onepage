@@ -9,10 +9,14 @@ class KeyboardToolbar extends StatefulWidget {
   const KeyboardToolbar({
     super.key,
     required this.child,
+    this.onDismiss,
   });
 
   /// The child widget to wrap with keyboard toolbar functionality.
   final Widget child;
+  
+  /// Called when the keyboard is dismissed via the dismiss button.
+  final VoidCallback? onDismiss;
 
   @override
   State<KeyboardToolbar> createState() => _KeyboardToolbarState();
@@ -59,7 +63,10 @@ class _KeyboardToolbarState extends State<KeyboardToolbar> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: _KeyboardToolbarContent(scope: _scope),
+            child: _KeyboardToolbarContent(
+              scope: _scope,
+              onDismiss: widget.onDismiss,
+            ),
           ),
       ],
     );
@@ -70,9 +77,11 @@ class _KeyboardToolbarState extends State<KeyboardToolbar> {
 class _KeyboardToolbarContent extends StatelessWidget {
   const _KeyboardToolbarContent({
     required this.scope,
+    this.onDismiss,
   });
 
   final FocusScopeNode scope;
+  final VoidCallback? onDismiss;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +106,10 @@ class _KeyboardToolbarContent extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: scope.unfocus,
+              onPressed: () {
+                scope.unfocus();
+                onDismiss?.call();
+              },
               icon: const Icon(Icons.keyboard_hide),
             ),
           ],

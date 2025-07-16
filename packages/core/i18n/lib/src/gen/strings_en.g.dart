@@ -48,6 +48,7 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 	late final TranslationsSearchEn search = TranslationsSearchEn._(_root);
 	late final TranslationsNotificationEn notification = TranslationsNotificationEn._(_root);
 	late final TranslationsExportEn export = TranslationsExportEn._(_root);
+	late final TranslationsInAppReviewEn inAppReview = TranslationsInAppReviewEn._(_root);
 }
 
 // Path: updateRequest
@@ -165,6 +166,18 @@ class TranslationsExportEn {
 	late final TranslationsExportActionsEn actions = TranslationsExportActionsEn._(_root);
 }
 
+// Path: inAppReview
+class TranslationsInAppReviewEn {
+	TranslationsInAppReviewEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Rate Our App';
+	String get message => 'Are you enjoying One Page?\nWe\'d love if you could rate us on the Store.';
+	late final TranslationsInAppReviewActionsEn actions = TranslationsInAppReviewActionsEn._(_root);
+}
+
 // Path: updateRequest.button
 class TranslationsUpdateRequestButtonEn {
 	TranslationsUpdateRequestButtonEn._(this._root);
@@ -208,6 +221,18 @@ class TranslationsExportActionsEn {
 	// Translations
 	String get exportMonth => 'Export by Month';
 	String get export => 'Export';
+}
+
+// Path: inAppReview.actions
+class TranslationsInAppReviewActionsEn {
+	TranslationsInAppReviewActionsEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get review => 'Rate Now';
+	String get notNow => 'Not Now';
+	String get never => 'Don\'t Ask Again';
 }
 
 /// Flat map(s) containing all translations.
@@ -274,6 +299,11 @@ extension on Translations {
 			case 'export.comingSoon': return 'Coming in future updates';
 			case 'export.actions.exportMonth': return 'Export by Month';
 			case 'export.actions.export': return 'Export';
+			case 'inAppReview.title': return 'Rate Our App';
+			case 'inAppReview.message': return 'Are you enjoying One Page?\nWe\'d love if you could rate us on the Store.';
+			case 'inAppReview.actions.review': return 'Rate Now';
+			case 'inAppReview.actions.notNow': return 'Not Now';
+			case 'inAppReview.actions.never': return 'Don\'t Ask Again';
 			default: return null;
 		}
 	}

@@ -15,8 +15,9 @@ workspace:
   - packages/core/widgets
   - packages/features/backup
   - packages/features/diary
-  - packages/features/haptics
   - packages/features/exporter
+  - packages/features/haptics
+  - packages/features/in_app_reviewer
   - packages/features/scroll_calendar
   - packages/features/update_requester
 
