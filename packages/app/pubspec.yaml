@@ -9,13 +9,13 @@ environment:
 resolution: workspace
 
 dependencies:
-  altfire_configurator: ^1.0.1
-  altfire_tracker: ^1.0.0
   app_settings: ^6.1.1
   backup:
     path: ../features/backup/
   clock: ^1.1.2
   collection: ^1.19.1
+  configurator:
+    path: ../core/configurator/
   db_client:
     path: ../core/db_client/
   diary:
@@ -50,6 +50,8 @@ dependencies:
   share_plus: ^11.0.0
   theme:
     path: ../core/theme/
+  tracker:
+    path: ../core/tracker/
   update_requester:
     path: ../features/update_requester/
   url_launcher: ^6.3.2

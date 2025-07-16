@@ -1,0 +1,27 @@
+name: configurator
+description: A Flutter package for Firebase Remote Config wrapper functionality.
+version: 0.0.1
+resolution: workspace
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  firebase_remote_config: ^5.4.7
+  flutter:
+    sdk: flutter
+  # Because flutter depends on intl 1.16.0  .
+  # https://github.com/flutter/flutter/blob/stable/packages/flutter/pubspec.yaml#L16
+  meta: ^1.16.0
+
+dev_dependencies:
+  altive_lints: ^1.21.0
+  build_runner: ^2.5.4
+  custom_lint: ^0.7.5
+  firebase_core: ^3.15.1
+  firebase_core_platform_interface: ^6.0.0
+  firebase_remote_config_platform_interface: ^1.5.7
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.6
+  plugin_platform_interface: ^2.1.8

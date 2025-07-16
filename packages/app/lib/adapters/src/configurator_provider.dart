@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:altfire_configurator/altfire_configurator.dart';
+import 'package:configurator/configurator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:update_requester/update_requester.dart';
