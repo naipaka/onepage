@@ -1,0 +1,26 @@
+name: tracker
+description: A Flutter package for Firebase Analytics wrapper functionality.
+version: 0.0.1
+resolution: workspace
+
+environment:
+  sdk: ^3.8.1
+  flutter: ">=3.32.6"
+
+dependencies:
+  firebase_analytics: ^11.3.4
+  firebase_crashlytics: ^4.1.5
+  flutter:
+    sdk: flutter
+  meta: ^1.12.0
+
+dev_dependencies:
+  altive_lints: ^1.21.0
+  build_runner: ^2.5.4
+  custom_lint: ^0.7.5
+  firebase_analytics_platform_interface: any
+  firebase_core: any
+  firebase_core_platform_interface: any
+  flutter_test:
+    sdk: flutter
+  mockito: ^5.4.5

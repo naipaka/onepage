@@ -5,12 +5,14 @@ environment:
 
 workspace:
   - packages/app
+  - packages/core/configurator
   - packages/core/db_client
   - packages/core/i18n
   - packages/core/notification_client
   - packages/core/prefs_client
   - packages/core/provider_utils
   - packages/core/theme
+  - packages/core/tracker
   - packages/core/utils
   - packages/core/widgets
   - packages/features/backup
