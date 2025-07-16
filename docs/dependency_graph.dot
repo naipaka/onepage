@@ -1,6 +1,7 @@
 digraph packages {
   size="10"; ratio=fill;
   backup [shape="box"; color="#022013"];
+  configurator [shape="box"; color="#205f06"];
   db_client [shape="box"; color="#c4fbfc"];
   diary [shape="box"; color="#2c56bd"];
   exporter [shape="box"; color="#3e99a6"];
@@ -13,6 +14,7 @@ digraph packages {
   provider_utils [shape="box"; color="#f445c4"];
   scroll_calendar [shape="box"; color="#713e2e"];
   theme [shape="box"; color="#1214e6"];
+  tracker [shape="box"; color="#a0eb6a"];
   update_requester [shape="box"; color="#a2aa60"];
   utils [shape="box"; color="#f548cf"];
   widgets [shape="box"; color="#3ed5a4"];
@@ -24,6 +26,7 @@ digraph packages {
   in_app_reviewer -> prefs_client [style="filled"; color="#080f51"];
   notification_client -> prefs_client [style="filled"; color="#080f51"];
   onepage -> backup [style="filled"; color="#022013"];
+  onepage -> configurator [style="filled"; color="#205f06"];
   onepage -> db_client [style="filled"; color="#c4fbfc"];
   onepage -> diary [style="filled"; color="#2c56bd"];
   onepage -> exporter [style="filled"; color="#3e99a6"];
@@ -35,10 +38,12 @@ digraph packages {
   onepage -> provider_utils [style="filled"; color="#f445c4"];
   onepage -> scroll_calendar [style="filled"; color="#713e2e"];
   onepage -> theme [style="filled"; color="#1214e6"];
+  onepage -> tracker [style="filled"; color="#a0eb6a"];
   onepage -> update_requester [style="filled"; color="#a2aa60"];
   onepage -> utils [style="filled"; color="#f548cf"];
   onepage -> widgets [style="filled"; color="#3ed5a4"];
   provider_utils -> utils [style="filled"; color="#f548cf"];
+  update_requester -> configurator [style="filled"; color="#205f06"];
   widgets -> utils [style="filled"; color="#f548cf"];
   subgraph "cluster packages/features" {
     label="packages/features";
@@ -54,12 +59,14 @@ digraph packages {
   subgraph "cluster packages/core" {
     label="packages/core";
     color="#7bbd47";
+    configurator;
     db_client;
     i18n;
     notification_client;
     prefs_client;
     provider_utils;
     theme;
+    tracker;
     utils;
     widgets;
   }
