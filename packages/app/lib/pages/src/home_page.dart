@@ -82,6 +82,26 @@ class HomePage extends HookConsumerWidget {
       });
     }
 
+    // Function to check for in-app review eligibility
+    Future<void> checkInAppReview() async {
+      unawaited(
+        Future.microtask(() async {
+          try {
+            final reviewer = await ref.read(inAppReviewerProvider.future);
+            await reviewer.checkAndShowReviewIfEligible();
+          } on Exception catch (e) {
+            final tracker = ref.read(trackerProvider);
+            unawaited(
+              tracker.recordError(
+                e,
+                StackTrace.current,
+              ),
+            );
+          }
+        }),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: ValueListenableBuilder(
@@ -118,6 +138,7 @@ class HomePage extends HookConsumerWidget {
       ),
       drawer: const _Drawer(),
       body: KeyboardToolbar(
+        onDismiss: checkInAppReview,
         child: SafeArea(
           bottom: false,
           child: Consumer(
@@ -174,12 +195,11 @@ class HomePage extends HookConsumerWidget {
                             haptic.textInputFeedback();
                           },
                           onFocusChanged: (hasFocus) async {
-                            if (!hasFocus) {
-                              return;
+                            if (hasFocus) {
+                              await scrollCalendarController.scrollToDate(
+                                date,
+                              );
                             }
-                            await scrollCalendarController.scrollToDate(
-                              date,
-                            );
                           },
                           save: (content) async {
                             try {

@@ -17,4 +17,10 @@ enum PrefsKey {
 
   /// Notification settings stored as JSON string.
   notificationSettings,
+
+  /// Timestamp of the last time the in-app review was shown.
+  lastInAppReviewShownAt,
+
+  /// Whether the user has already been asked for review and declined.
+  hasDeclinedInAppReview,
 }

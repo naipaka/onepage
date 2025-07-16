@@ -443,6 +443,21 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<List<_i3.Diary>>);
 
   @override
+  _i5.Future<int> countUniqueDaysWithContentInRange({
+    required DateTime? from,
+    required DateTime? to,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#countUniqueDaysWithContentInRange, [], {
+              #from: from,
+              #to: to,
+            }),
+            returnValue: _i5.Future<int>.value(0),
+            returnValueForMissingStub: _i5.Future<int>.value(0),
+          )
+          as _i5.Future<int>);
+
+  @override
   _i2.Migrator createMigrator() =>
       (super.noSuchMethod(
             Invocation.method(#createMigrator, []),

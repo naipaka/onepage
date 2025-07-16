@@ -187,5 +187,113 @@ void main() {
         });
       });
     });
+
+    group('lastInAppReviewShownAt', () {
+      test('returns null when no value is stored', () {
+        when(
+          mockSharedPreferences.getInt('lastInAppReviewShownAt'),
+        ).thenReturn(null);
+
+        expect(prefsClient.lastInAppReviewShownAt, isNull);
+      });
+
+      test('returns stored timestamp when value is present', () {
+        const testTimestamp = 1704067200; // 2024-01-01 00:00:00 UTC
+        when(
+          mockSharedPreferences.getInt('lastInAppReviewShownAt'),
+        ).thenReturn(testTimestamp);
+
+        final result = prefsClient.lastInAppReviewShownAt;
+        expect(result, equals(testTimestamp));
+      });
+    });
+
+    group('setLastInAppReviewShownAt', () {
+      test('stores timestamp successfully', () async {
+        const testTimestamp = 1704067200; // 2024-01-01 00:00:00 UTC
+
+        when(
+          mockSharedPreferences.setInt(
+            'lastInAppReviewShownAt',
+            testTimestamp,
+          ),
+        ).thenAnswer((_) async => true);
+
+        final result = await prefsClient.setLastInAppReviewShownAt(
+          timestamp: testTimestamp,
+        );
+
+        expect(result, isTrue);
+        verify(
+          mockSharedPreferences.setInt(
+            'lastInAppReviewShownAt',
+            testTimestamp,
+          ),
+        ).called(1);
+      });
+
+      test('returns false when storage fails', () async {
+        const testTimestamp = 1704067200;
+        when(
+          mockSharedPreferences.setInt(
+            'lastInAppReviewShownAt',
+            testTimestamp,
+          ),
+        ).thenAnswer((_) async => false);
+
+        final result = await prefsClient.setLastInAppReviewShownAt(
+          timestamp: testTimestamp,
+        );
+
+        expect(result, isFalse);
+      });
+    });
+
+    group('hasDeclinedInAppReview', () {
+      test('returns false when no value is stored', () {
+        when(
+          mockSharedPreferences.getBool('hasDeclinedInAppReview'),
+        ).thenReturn(null);
+
+        expect(prefsClient.hasDeclinedInAppReview, isFalse);
+      });
+
+      test('returns stored value when present', () {
+        when(
+          mockSharedPreferences.getBool('hasDeclinedInAppReview'),
+        ).thenReturn(true);
+
+        expect(prefsClient.hasDeclinedInAppReview, isTrue);
+      });
+    });
+
+    group('setHasDeclinedInAppReview', () {
+      test('stores the provided value', () async {
+        when(
+          mockSharedPreferences.setBool('hasDeclinedInAppReview', true),
+        ).thenAnswer((_) async => true);
+
+        final result = await prefsClient.setHasDeclinedInAppReview(
+          value: true,
+        );
+
+        expect(result, isTrue);
+        verify(
+          mockSharedPreferences.setBool('hasDeclinedInAppReview', true),
+        ).called(1);
+      });
+
+      test('returns false when storage fails', () async {
+        when(
+          mockSharedPreferences.setBool('hasDeclinedInAppReview', false),
+        ).thenAnswer((_) async => false);
+
+        final result = await prefsClient.setHasDeclinedInAppReview(
+          value: false,
+        );
+
+        expect(result, isFalse);
+      });
+    });
   });
 }

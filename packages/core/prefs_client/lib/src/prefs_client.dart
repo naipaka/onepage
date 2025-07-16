@@ -78,4 +78,24 @@ class PrefsClient {
     final jsonString = json.encode(settings);
     return _prefs.setString(PrefsKey.notificationSettings.name, jsonString);
   }
+
+  /// Gets whether the user has declined in-app review.
+  ///
+  /// Returns `false` by default if no value has been set.
+  bool get hasDeclinedInAppReview =>
+      _prefs.getBool(PrefsKey.hasDeclinedInAppReview.name) ?? false;
+
+  /// Sets whether the user has declined in-app review.
+  Future<bool> setHasDeclinedInAppReview({required bool value}) =>
+      _prefs.setBool(PrefsKey.hasDeclinedInAppReview.name, value);
+
+  /// Gets the timestamp of the last time in-app review was shown.
+  ///
+  /// Returns null if no value has been set.
+  int? get lastInAppReviewShownAt =>
+      _prefs.getInt(PrefsKey.lastInAppReviewShownAt.name);
+
+  /// Sets the timestamp of the last time in-app review was shown.
+  Future<bool> setLastInAppReviewShownAt({required int timestamp}) =>
+      _prefs.setInt(PrefsKey.lastInAppReviewShownAt.name, timestamp);
 }

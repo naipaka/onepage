@@ -119,4 +119,27 @@ class DbClient extends _$DbClient {
     }
     return query.get();
   }
+
+  /// Counts unique days with diary entries containing non-empty content within
+  /// a date range.
+  ///
+  /// This method takes two [DateTime] objects, [from] and [to], as parameters
+  /// and returns the count of unique days that have diary entries with
+  /// non-empty content within the specified date range.
+  Future<int> countUniqueDaysWithContentInRange({
+    required DateTime from,
+    required DateTime to,
+  }) async {
+    final countExpr = countAll();
+    final query = selectOnly(diaries)
+      ..addColumns([countExpr])
+      ..where(
+        diaries.date.isBetweenValues(from, to) & 
+        diaries.content.isNotValue('') &
+        const CustomExpression<bool>("TRIM(content, ' \t\n\r') != ''"),
+      );
+    
+    final result = await query.getSingle();
+    return result.read(countExpr) ?? 0;
+  }
 }

@@ -23,11 +23,27 @@ void main() {
       expect(names.length, equals(PrefsKey.values.length));
     });
 
+    test('lastInAppReviewShownAt has correct name', () {
+      expect(
+        PrefsKey.lastInAppReviewShownAt.name,
+        equals('lastInAppReviewShownAt'),
+      );
+    });
+
+    test('hasDeclinedInAppReview has correct name', () {
+      expect(
+        PrefsKey.hasDeclinedInAppReview.name,
+        equals('hasDeclinedInAppReview'),
+      );
+    });
+
     test('enum values are correctly defined', () {
-      expect(PrefsKey.values, hasLength(3));
+      expect(PrefsKey.values, hasLength(5));
       expect(PrefsKey.values, contains(PrefsKey.textInputHaptic));
       expect(PrefsKey.values, contains(PrefsKey.otherHaptic));
       expect(PrefsKey.values, contains(PrefsKey.notificationSettings));
+      expect(PrefsKey.values, contains(PrefsKey.lastInAppReviewShownAt));
+      expect(PrefsKey.values, contains(PrefsKey.hasDeclinedInAppReview));
     });
   });
 }
