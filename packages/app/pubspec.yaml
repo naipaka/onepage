@@ -33,6 +33,8 @@ dependencies:
   hooks_riverpod: ^2.6.1
   i18n:
     path: ../core/i18n/
+  in_app_reviewer:
+    path: ../features/in_app_reviewer/
   # Because flutter depends on intl 0.20.2.
   # https://github.com/flutter/flutter/blob/stable/packages/flutter/pubspec.yaml#L42
   intl: ^0.20.2
