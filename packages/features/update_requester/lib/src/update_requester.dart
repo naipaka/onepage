@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:altfire_configurator/altfire_configurator.dart';
+import 'package:configurator/configurator.dart';
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:version/version.dart';

@@ -2,13 +2,13 @@ import 'dart:async';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:altfire_tracker/altfire_tracker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:prefs_client/prefs_client.dart';
 import 'package:provider_utils/provider_utils.dart';
+import 'package:tracker/tracker.dart';
 import 'package:utils/utils.dart';
 
 import 'adapters/adapters.dart';

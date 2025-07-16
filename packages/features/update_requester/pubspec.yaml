@@ -9,7 +9,8 @@ environment:
 resolution: workspace
 
 dependencies:
-  altfire_configurator: ^1.0.1
+  configurator:
+    path: ../../core/configurator/
   flutter:
     sdk: flutter
   freezed_annotation: ^3.1.0
