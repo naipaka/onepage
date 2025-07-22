@@ -162,22 +162,22 @@ melos:
         dirExists: test
 
     test:ci:
-      run: flutter test --coverage
+      run: flutter test --coverage --exclude-tags=golden
       exec:
         failFast: true
-      description: Run flutter test for CI.
+      description: Run flutter test for CI (excluding golden tests).
       packageFilters:
         flutter: true
         dirExists: test
 
     golden:
-      exec: flutter test test/golden
+      exec: flutter test --tags=golden
       description: Run golden tests to verify UI has not changed.
       packageFilters:
         dirExists: test/golden
 
     golden:update:
-      exec: flutter test test/golden --update-goldens
+      exec: flutter test --tags=golden --update-goldens
       description: Update golden test images when UI has changed.
       packageFilters:
         dirExists: test/golden

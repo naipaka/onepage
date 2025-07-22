@@ -1,3 +1,6 @@
+@Tags(['golden'])
+library;
+
 // Test files do not need to specify provider dependencies
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
