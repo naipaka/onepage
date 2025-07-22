@@ -170,6 +170,18 @@ melos:
         flutter: true
         dirExists: test
 
+    golden:
+      exec: flutter test test/golden
+      description: Run golden tests to verify UI has not changed.
+      packageFilters:
+        dirExists: test/golden
+
+    golden:update:
+      exec: flutter test test/golden --update-goldens
+      description: Update golden test images when UI has changed.
+      packageFilters:
+        dirExists: test/golden
+
     flutterfire:update:
       exec: flutterfire update
       description: Run flutterfire update.

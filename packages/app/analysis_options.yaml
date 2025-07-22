@@ -6,3 +6,12 @@ analyzer:
     - "**/l10n/*.dart"
     - "**/gen/*.dart"
     - "**/firebase_options_*.dart"
+    - "**/*.mocks.dart"
+linter:
+  rules:
+    discarded_futures: false # Disabled for golden tests
+    avoid_classes_with_only_static_members: false # Disabled for test helpers
+    eol_at_end_of_file: false # Disabled for test files
+custom_lint:
+  rules:
+    scoped_providers_should_specify_dependencies: false # Disabled for test files

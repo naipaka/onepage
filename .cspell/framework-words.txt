@@ -44,6 +44,7 @@ fvmrc
 genhtml
 ghcp
 gifs
+goldens
 gradlew
 Graphviz
 gviz

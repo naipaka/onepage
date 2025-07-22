@@ -401,6 +401,7 @@ class ExportPage extends HookConsumerWidget {
           vertical: 16,
         ),
       ),
+      isExpanded: true,
       items: years.map((year) {
         return DropdownMenuItem(
           value: year,
@@ -518,13 +519,17 @@ class ExportPage extends HookConsumerWidget {
           vertical: 16,
         ),
       ),
+      isExpanded: true,
       items: months.map((month) {
         final monthName = DateFormat.MMMM(
           Localizations.localeOf(context).languageCode,
         ).format(DateTime(2024, month));
         return DropdownMenuItem(
           value: month,
-          child: Text(monthName),
+          child: Text(
+            monthName,
+            overflow: TextOverflow.ellipsis,
+          ),
         );
       }).toList(),
       onChanged: (value) {
