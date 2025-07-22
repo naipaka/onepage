@@ -162,7 +162,7 @@ melos:
         dirExists: test
 
     test:ci:
-      run: flutter test --coverage --exclude-tags=golden
+      run: flutter test --exclude-tags=golden --coverage
       exec:
         failFast: true
       description: Run flutter test for CI (excluding golden tests).
