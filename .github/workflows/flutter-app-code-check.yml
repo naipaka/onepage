@@ -114,3 +114,30 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: coverage/lcov.info
+
+  golden:
+    needs: check
+    if: needs.check.outputs.flutter == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter with FVM
+        id: setup-flutter
+        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+
+      - name: Prepare Melos
+        run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
+
+      - name: Install Melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          run-bootstrap: false
+
+      - name: Install Dependencies
+        run: dart pub get --enforce-lockfile
+
+      - name: Run golden tests
+        run: melos run golden --no-select
