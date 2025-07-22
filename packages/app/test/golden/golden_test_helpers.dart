@@ -153,7 +153,7 @@ abstract final class GoldenTestHelpers {
       // Find all Image widgets and precache them
       final imageFinder = find.byType(Image);
       final imageElements = imageFinder.evaluate();
-      
+
       for (final element in imageElements) {
         final imageWidget = element.widget as Image;
         if (imageWidget.image is AssetImage) {
