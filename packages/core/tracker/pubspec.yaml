@@ -18,7 +18,7 @@ dev_dependencies:
   altive_lints: ^1.21.0
   build_runner: ^2.5.4
   custom_lint: ^0.7.5
-  firebase_analytics_platform_interface: any
+  firebase_analytics_platform_interface: 4.4.3
   firebase_core: any
   firebase_core_platform_interface: any
   flutter_test:
