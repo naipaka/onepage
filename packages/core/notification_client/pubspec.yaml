@@ -12,7 +12,7 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^19.3.0
+  flutter_local_notifications: ^19.4.0
   flutter_timezone: ^4.1.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
