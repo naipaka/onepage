@@ -19,7 +19,7 @@ dependencies:
   # Because flutter depends on intl 0.20.2.
   # https://github.com/flutter/flutter/blob/stable/packages/flutter/pubspec.yaml#L42
   intl: ^0.20.2
-  package_info_plus: ^8.3.0
+  package_info_plus: ^8.3.1
   path: ^1.9.1
   path_provider: ^2.1.5
   share_plus: ^11.0.0
