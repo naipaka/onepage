@@ -19,15 +19,15 @@ dependencies:
   # Because flutter depends on intl 0.20.2.
   # https://github.com/flutter/flutter/blob/stable/packages/flutter/pubspec.yaml#L42
   intl: ^0.20.2
-  package_info_plus: ^8.3.0
+  package_info_plus: ^8.3.1
   path: ^1.9.1
   path_provider: ^2.1.5
   share_plus: ^11.0.0
 
 dev_dependencies:
-  altive_lints: ^1.21.0
-  build_runner: ^2.5.4
-  custom_lint: ^0.7.5
+  altive_lints: ^1.22.1
+  build_runner: ^2.6.0
+  custom_lint: ^0.8.0
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.6
+  mockito: ^5.5.0

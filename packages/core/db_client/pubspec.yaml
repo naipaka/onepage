@@ -10,8 +10,8 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  drift: ^2.28.0
-  drift_flutter: ^0.2.4
+  drift: ^2.28.1
+  drift_flutter: ^0.2.6
   flutter:
     sdk: flutter
   path: ^1.9.1
@@ -19,10 +19,10 @@ dependencies:
   sqlite3: ^2.7.6
 
 dev_dependencies:
-  altive_lints: ^1.21.0
-  build_runner: ^2.5.4
-  custom_lint: ^0.7.5
-  drift_dev: ^2.28.0
+  altive_lints: ^1.22.1
+  build_runner: ^2.6.0
+  custom_lint: ^0.8.0
+  drift_dev: ^2.28.2
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.6
+  mockito: ^5.5.0
