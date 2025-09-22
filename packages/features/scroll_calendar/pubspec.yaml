@@ -20,8 +20,8 @@ dependencies:
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:
-  altive_lints: ^1.21.0
-  custom_lint: ^0.7.5
+  altive_lints: ^1.23.0
+  custom_lint: ^0.8.0
   flutter_test:
     sdk: flutter
 
