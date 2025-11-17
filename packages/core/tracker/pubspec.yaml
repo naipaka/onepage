@@ -20,7 +20,7 @@ dev_dependencies:
   custom_lint: ^0.7.5
   firebase_analytics_platform_interface: any
   firebase_core: any
-  firebase_core_platform_interface: any
+  firebase_core_platform_interface: ^6.0.2
   flutter_test:
     sdk: flutter
   mockito: ^5.4.5
