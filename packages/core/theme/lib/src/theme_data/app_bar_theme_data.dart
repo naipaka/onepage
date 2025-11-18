@@ -5,7 +5,7 @@ AppBarTheme appBarThemeData({
   required ColorScheme colorScheme,
 }) {
   return AppBarTheme(
-    color: colorScheme.surface,
+    backgroundColor: colorScheme.surface,
     scrolledUnderElevation: 0,
     iconTheme: IconThemeData(color: colorScheme.onSurface),
     centerTitle: true,
