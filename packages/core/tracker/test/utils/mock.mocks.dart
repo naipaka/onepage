@@ -344,23 +344,6 @@ class MockFirebaseAnalytics extends _i1.Mock implements _i6.FirebaseAnalytics {
           as _i4.Future<void>);
 
   @override
-  _i4.Future<void> setCurrentScreen({
-    required String? screenName,
-    String? screenClassOverride = 'Flutter',
-    _i7.AnalyticsCallOptions? callOptions,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#setCurrentScreen, [], {
-              #screenName: screenName,
-              #screenClassOverride: screenClassOverride,
-              #callOptions: callOptions,
-            }),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
-          )
-          as _i4.Future<void>);
-
-  @override
   _i4.Future<void> setUserProperty({
     required String? name,
     required String? value,
@@ -676,23 +659,6 @@ class MockFirebaseAnalytics extends _i1.Mock implements _i6.FirebaseAnalytics {
               #success: success,
               #parameters: parameters,
               #callOptions: callOptions,
-            }),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
-          )
-          as _i4.Future<void>);
-
-  @override
-  _i4.Future<void> logSetCheckoutOption({
-    required int? checkoutStep,
-    required String? checkoutOption,
-    Map<String, Object>? parameters,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#logSetCheckoutOption, [], {
-              #checkoutStep: checkoutStep,
-              #checkoutOption: checkoutOption,
-              #parameters: parameters,
             }),
             returnValue: _i4.Future<void>.value(),
             returnValueForMissingStub: _i4.Future<void>.value(),

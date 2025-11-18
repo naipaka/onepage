@@ -13,16 +13,16 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  slang: ^4.7.3
-  slang_flutter: ^4.7.0
+  slang: ^4.10.1
+  slang_flutter: ^4.10.0
 
 dev_dependencies:
-  altive_lints: ^1.21.0
+  altive_lints: ^1.22.0
   build_runner: ^2.5.4
-  custom_lint: ^0.7.5
+  custom_lint: ^0.7.6
   flutter_test:
     sdk: flutter
-  slang_build_runner: ^4.7.0
+  slang_build_runner: ^4.10.0
 
 flutter:
   uses-material-design: true

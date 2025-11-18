@@ -12,16 +12,16 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1
-  package_info_plus: ^8.3.0
+  package_info_plus: ^9.0.0
   riverpod_annotation: ^2.6.1
   simple_logger: ^1.10.0
   utils:
     path: ../utils
 
 dev_dependencies:
-  altive_lints: ^1.21.0
+  altive_lints: ^1.22.0
   build_runner: ^2.5.4
-  custom_lint: ^0.7.5
+  custom_lint: ^0.7.6
   flutter_test:
     sdk: flutter
   mockito: ^5.4.6

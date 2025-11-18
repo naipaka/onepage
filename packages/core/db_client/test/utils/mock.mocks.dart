@@ -242,6 +242,15 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
           as _i8.Stream<_i7.SqliteUpdate>);
 
   @override
+  _i8.Stream<_i7.SqliteUpdate> get updatesSync =>
+      (super.noSuchMethod(
+            Invocation.getter(#updatesSync),
+            returnValue: _i8.Stream<_i7.SqliteUpdate>.empty(),
+            returnValueForMissingStub: _i8.Stream<_i7.SqliteUpdate>.empty(),
+          )
+          as _i8.Stream<_i7.SqliteUpdate>);
+
+  @override
   _i8.Stream<void> get commits =>
       (super.noSuchMethod(
             Invocation.getter(#commits),
@@ -394,6 +403,7 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
         const _i9.AllowedArgumentCount.any(),
     bool? deterministic = false,
     bool? directOnly = true,
+    bool? subtype = false,
   }) => super.noSuchMethod(
     Invocation.method(#createFunction, [], {
       #functionName: functionName,
@@ -401,6 +411,7 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
       #argumentCount: argumentCount,
       #deterministic: deterministic,
       #directOnly: directOnly,
+      #subtype: subtype,
     }),
     returnValueForMissingStub: null,
   );
@@ -413,6 +424,7 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
         const _i9.AllowedArgumentCount.any(),
     bool? deterministic = false,
     bool? directOnly = true,
+    bool? subtype = false,
   }) => super.noSuchMethod(
     Invocation.method(#createAggregateFunction, [], {
       #functionName: functionName,
@@ -420,6 +432,7 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
       #argumentCount: argumentCount,
       #deterministic: deterministic,
       #directOnly: directOnly,
+      #subtype: subtype,
     }),
     returnValueForMissingStub: null,
   );

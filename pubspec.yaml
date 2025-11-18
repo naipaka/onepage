@@ -24,7 +24,7 @@ workspace:
   - packages/features/update_requester
 
 dev_dependencies:
-  melos: ^7.0.0-dev.9
+  melos: ^7.3.0
 
 melos:
   repository: https://github.com/naipaka/onepage

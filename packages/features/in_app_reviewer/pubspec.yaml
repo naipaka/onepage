@@ -12,14 +12,14 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  in_app_review: ^2.0.10
+  in_app_review: ^2.0.11
   prefs_client:
     path: ../../core/prefs_client
 
 dev_dependencies:
-  altive_lints: ^1.21.0
+  altive_lints: ^1.22.0
   build_runner: ^2.5.4
-  custom_lint: ^0.7.5
+  custom_lint: ^0.7.6
   flutter_test:
     sdk: flutter
   mockito: ^5.4.6

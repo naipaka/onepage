@@ -52,7 +52,7 @@ class NotificationClient {
     // Initialize timezone data
     tz.initializeTimeZones();
     final localTimeZone = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(localTimeZone));
+    tz.setLocalLocation(tz.getLocation(localTimeZone.identifier));
 
     const initializationSettingsAndroid = AndroidInitializationSettings(
       '@drawable/ic_notification',

@@ -12,8 +12,8 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^19.3.0
-  flutter_timezone: ^4.1.1
+  flutter_local_notifications: ^19.5.0
+  flutter_timezone: ^5.0.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   prefs_client:
@@ -21,9 +21,9 @@ dependencies:
   timezone: ^0.10.1
 
 dev_dependencies:
-  altive_lints: ^1.21.0
+  altive_lints: ^1.22.0
   build_runner: ^2.5.4
-  custom_lint: ^0.7.5
+  custom_lint: ^0.7.6
   flutter_test:
     sdk: flutter
   freezed: ^3.1.0
