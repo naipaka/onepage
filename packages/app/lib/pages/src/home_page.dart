@@ -35,6 +35,8 @@ class HomePage extends HookConsumerWidget {
     final colorScheme = context.colorScheme;
 
     final haptic = ref.watch(hapticsProvider);
+    final inAppReview = ref.watch(inAppReviewerProvider);
+    final tracker = ref.watch(trackerProvider);
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
@@ -84,22 +86,14 @@ class HomePage extends HookConsumerWidget {
 
     // Function to check for in-app review eligibility
     Future<void> checkInAppReview() async {
-      unawaited(
-        Future.microtask(() async {
-          try {
-            final reviewer = await ref.read(inAppReviewerProvider.future);
-            await reviewer.checkAndShowReviewIfEligible();
-          } on Exception catch (e) {
-            final tracker = ref.read(trackerProvider);
-            unawaited(
-              tracker.recordError(
-                e,
-                StackTrace.current,
-              ),
-            );
-          }
-        }),
-      );
+      await switch (inAppReview) {
+        AsyncData(:final value) => value.checkAndShowReviewIfEligible(),
+        AsyncError(:final error, :final stackTrace) => tracker.recordError(
+          error,
+          stackTrace,
+        ),
+        _ => Future<void>.value(),
+      };
     }
 
     return Scaffold(
@@ -215,7 +209,6 @@ class HomePage extends HookConsumerWidget {
                                 );
                               }
                             } on Object catch (e) {
-                              final tracker = ref.read(trackerProvider);
                               unawaited(
                                 tracker.recordError(
                                   e,

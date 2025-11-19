@@ -23,11 +23,11 @@ plugins {
     id("com.android.application") version "8.10.1" apply false
     // Check the latest version here: Kotlin Releases
     // https://kotlinlang.org/docs/releases.html#release-details
-    id("org.jetbrains.kotlin.android") version "2.1.21" apply false
+    id("org.jetbrains.kotlin.android") version "2.2.21" apply false
     // Check the latest version here: Firebase Android SDK Release Notes
     // https://firebase.google.com/support/release-notes/android
-    id("com.google.gms.google-services") version "4.4.2" apply false // For Firebase.
-    id("com.google.firebase.crashlytics") version "3.0.4" apply false // For Crashlytics.
+    id("com.google.gms.google-services") version "4.4.4" apply false // For Firebase.
+    id("com.google.firebase.crashlytics") version "3.0.6" apply false // For Crashlytics.
 }
 
 include(":app")
