@@ -16,7 +16,7 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^1.25.0
-  build_runner: ^2.10.3
+  build_runner: ^2.10.4
   custom_lint: ^0.8.1
   firebase_analytics_platform_interface: ^5.0.4
   firebase_core: ^4.2.1
