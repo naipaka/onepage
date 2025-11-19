@@ -28,6 +28,7 @@ import 'package:sqlite3/sqlite3.dart' as _i6;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeMigrationStrategy_0 extends _i1.SmartFake
     implements _i2.MigrationStrategy {
@@ -35,19 +36,19 @@ class _FakeMigrationStrategy_0 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _Fake$DiariesTable_1 extends _i1.SmartFake implements _i3.$DiariesTable {
-  _Fake$DiariesTable_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _FakeIndex_2 extends _i1.SmartFake implements _i2.Index {
-  _FakeIndex_2(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
-}
-
-class _Fake$DbClientManager_3 extends _i1.SmartFake
+class _Fake$DbClientManager_1 extends _i1.SmartFake
     implements _i3.$DbClientManager {
-  _Fake$DbClientManager_3(Object parent, Invocation parentInvocation)
+  _Fake$DbClientManager_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _Fake$DiariesTable_2 extends _i1.SmartFake implements _i3.$DiariesTable {
+  _Fake$DiariesTable_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeIndex_3 extends _i1.SmartFake implements _i2.Index {
+  _FakeIndex_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -195,14 +196,29 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i2.MigrationStrategy);
 
   @override
+  _i3.$DbClientManager get managers =>
+      (super.noSuchMethod(
+            Invocation.getter(#managers),
+            returnValue: _Fake$DbClientManager_1(
+              this,
+              Invocation.getter(#managers),
+            ),
+            returnValueForMissingStub: _Fake$DbClientManager_1(
+              this,
+              Invocation.getter(#managers),
+            ),
+          )
+          as _i3.$DbClientManager);
+
+  @override
   _i3.$DiariesTable get diaries =>
       (super.noSuchMethod(
             Invocation.getter(#diaries),
-            returnValue: _Fake$DiariesTable_1(
+            returnValue: _Fake$DiariesTable_2(
               this,
               Invocation.getter(#diaries),
             ),
-            returnValueForMissingStub: _Fake$DiariesTable_1(
+            returnValueForMissingStub: _Fake$DiariesTable_2(
               this,
               Invocation.getter(#diaries),
             ),
@@ -213,28 +229,13 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   _i2.Index get idxDiariesDate =>
       (super.noSuchMethod(
             Invocation.getter(#idxDiariesDate),
-            returnValue: _FakeIndex_2(this, Invocation.getter(#idxDiariesDate)),
-            returnValueForMissingStub: _FakeIndex_2(
+            returnValue: _FakeIndex_3(this, Invocation.getter(#idxDiariesDate)),
+            returnValueForMissingStub: _FakeIndex_3(
               this,
               Invocation.getter(#idxDiariesDate),
             ),
           )
           as _i2.Index);
-
-  @override
-  _i3.$DbClientManager get managers =>
-      (super.noSuchMethod(
-            Invocation.getter(#managers),
-            returnValue: _Fake$DbClientManager_3(
-              this,
-              Invocation.getter(#managers),
-            ),
-            returnValueForMissingStub: _Fake$DbClientManager_3(
-              this,
-              Invocation.getter(#managers),
-            ),
-          )
-          as _i3.$DbClientManager);
 
   @override
   Iterable<_i2.TableInfo<_i2.Table, Object?>> get allTables =>
@@ -1075,8 +1076,8 @@ class MockDbConnection extends _i1.Mock implements _i9.DbConnection {
           as _i6.Sqlite3);
 
   @override
-  set sqlite3Instance(_i6.Sqlite3? _sqlite3Instance) => super.noSuchMethod(
-    Invocation.setter(#sqlite3Instance, _sqlite3Instance),
+  set sqlite3Instance(_i6.Sqlite3? value) => super.noSuchMethod(
+    Invocation.setter(#sqlite3Instance, value),
     returnValueForMissingStub: null,
   );
 

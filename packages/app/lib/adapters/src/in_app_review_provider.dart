@@ -1,5 +1,4 @@
 import 'package:clock/clock.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_reviewer/in_app_reviewer.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

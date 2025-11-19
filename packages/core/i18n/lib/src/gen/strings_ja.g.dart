@@ -3,6 +3,7 @@
 ///
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
+// dart format off
 
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -207,72 +208,79 @@ class _TranslationsExportActionsJa implements TranslationsExportActionsEn {
 	@override String get export => 'エクスポート';
 }
 
-/// Flat map(s) containing all translations.
+/// The flat map containing all translations for locale <ja>.
 /// Only for edge cases! For simple maps, use the map function of this library.
+///
+/// The Dart AOT compiler has issues with very large switch statements,
+/// so the map is split into smaller functions (512 entries each).
 extension on TranslationsJa {
 	dynamic _flatMapFunction(String path) {
-		switch (path) {
-			case 'title': return 'One Page';
-			case 'organization': return 'NPK Studio';
-			case 'updateRequest.title': return 'アップデートのお願い';
-			case 'updateRequest.button.updateNow': return '更新する';
-			case 'home.title': return 'Home';
-			case 'home.notifications': return 'Notifications';
-			case 'home.backup': return 'Backup';
-			case 'home.export': return 'Export';
-			case 'home.settings': return 'Settings';
-			case 'home.license': return 'License';
-			case 'home.errorSavingDiary': return '日記の保存中にエラーが発生しました';
-			case 'home.errorSavingDiarySolution': return '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
-			case 'home.datePickerCancel': return 'キャンセル';
-			case 'home.datePickerConfirm': return '決定';
-			case 'backup.title': return 'Backup';
-			case 'backup.description': return '機種変更でも安心バックアップ';
-			case 'backup.explanation': return 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）';
-			case 'backup.restoreExplanation': return '保存したバックアップファイルを\n選択して復元できます\n復元時は現在のデータが\n上書きされるため注意してください';
-			case 'backup.successMessage': return 'バックアップが正常に作成されました！';
-			case 'backup.failedMessage': return 'バックアップの作成に失敗しました';
-			case 'backup.restoreFailedMessage': return 'バックアップの復元に失敗しました';
-			case 'backup.restoreSuccess': return '復元が完了しました';
-			case 'backup.actions.create': return 'バックアップを作成';
-			case 'backup.actions.restore': return 'バックアップを復元';
-			case 'backup.actions.goToHome': return 'ホームへ戻る';
-			case 'settings.title': return 'Settings';
-			case 'settings.accessibility': return 'アクセシビリティ';
-			case 'settings.hapticFeedback': return '触覚フィードバック';
-			case 'settings.vibrationSettings': return '振動設定';
-			case 'settings.textInput': return '文字入力';
-			case 'settings.textInputDescription': return '文字入力中の振動設定';
-			case 'settings.other': return 'その他';
-			case 'settings.otherDescription': return 'アイコンタップなどの振動設定';
-			case 'search.searchHint': return '検索キーワードを入力';
-			case 'search.placeholder': return '検索結果がここに表示されます';
-			case 'search.noResults': return '検索結果がありません';
-			case 'notification.title': return 'Notifications';
-			case 'notification.addTime': return '時間を追加';
-			case 'notification.maxTimesReached': return '通知時間は最大3つまでです';
-			case 'notification.channelName': return '日記リマインダー';
-			case 'notification.channelDescription': return '日記を書くための日々のリマインダー';
-			case 'notification.permission.deniedTitle': return '通知権限が必要です';
-			case 'notification.permission.deniedMessage': return 'アプリの通知を有効にするには、端末の設定で通知を許可してください';
-			case 'notification.permission.openSettings': return '設定を開く';
-			case 'notification.notificationTitle': return '今日の日記は書きましたか？';
-			case 'notification.notificationBody': return '1日の出来事や気持ちを書き留めておきましょう';
-			case 'export.title': return 'Export';
-			case 'export.description': return '日記をPDFで出力';
-			case 'export.explanation': return '月ごとに日記をPDFファイルで\nエクスポートできます';
-			case 'export.successMessage': return 'エクスポートが完了しました！';
-			case 'export.failedMessage': return 'エクスポートに失敗しました';
-			case 'export.monthFormat': return 'yyyy年MM月';
-			case 'export.formatSelection': return 'エクスポート形式';
-			case 'export.monthSelection': return '月を選択';
-			case 'export.year': return '年';
-			case 'export.month': return '月';
-			case 'export.comingSoon': return '今後追加予定です';
-			case 'export.actions.exportMonth': return '月別エクスポート';
-			case 'export.actions.export': return 'エクスポート';
-			default: return null;
-		}
+		return _flatMapFunction$0(path);
+	}
+
+	dynamic _flatMapFunction$0(String path) {
+		return switch (path) {
+			'title' => 'One Page',
+			'organization' => 'NPK Studio',
+			'updateRequest.title' => 'アップデートのお願い',
+			'updateRequest.button.updateNow' => '更新する',
+			'home.title' => 'Home',
+			'home.notifications' => 'Notifications',
+			'home.backup' => 'Backup',
+			'home.export' => 'Export',
+			'home.settings' => 'Settings',
+			'home.license' => 'License',
+			'home.errorSavingDiary' => '日記の保存中にエラーが発生しました',
+			'home.errorSavingDiarySolution' => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください',
+			'home.datePickerCancel' => 'キャンセル',
+			'home.datePickerConfirm' => '決定',
+			'backup.title' => 'Backup',
+			'backup.description' => '機種変更でも安心バックアップ',
+			'backup.explanation' => 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）',
+			'backup.restoreExplanation' => '保存したバックアップファイルを\n選択して復元できます\n復元時は現在のデータが\n上書きされるため注意してください',
+			'backup.successMessage' => 'バックアップが正常に作成されました！',
+			'backup.failedMessage' => 'バックアップの作成に失敗しました',
+			'backup.restoreFailedMessage' => 'バックアップの復元に失敗しました',
+			'backup.restoreSuccess' => '復元が完了しました',
+			'backup.actions.create' => 'バックアップを作成',
+			'backup.actions.restore' => 'バックアップを復元',
+			'backup.actions.goToHome' => 'ホームへ戻る',
+			'settings.title' => 'Settings',
+			'settings.accessibility' => 'アクセシビリティ',
+			'settings.hapticFeedback' => '触覚フィードバック',
+			'settings.vibrationSettings' => '振動設定',
+			'settings.textInput' => '文字入力',
+			'settings.textInputDescription' => '文字入力中の振動設定',
+			'settings.other' => 'その他',
+			'settings.otherDescription' => 'アイコンタップなどの振動設定',
+			'search.searchHint' => '検索キーワードを入力',
+			'search.placeholder' => '検索結果がここに表示されます',
+			'search.noResults' => '検索結果がありません',
+			'notification.title' => 'Notifications',
+			'notification.addTime' => '時間を追加',
+			'notification.maxTimesReached' => '通知時間は最大3つまでです',
+			'notification.channelName' => '日記リマインダー',
+			'notification.channelDescription' => '日記を書くための日々のリマインダー',
+			'notification.permission.deniedTitle' => '通知権限が必要です',
+			'notification.permission.deniedMessage' => 'アプリの通知を有効にするには、端末の設定で通知を許可してください',
+			'notification.permission.openSettings' => '設定を開く',
+			'notification.notificationTitle' => '今日の日記は書きましたか？',
+			'notification.notificationBody' => '1日の出来事や気持ちを書き留めておきましょう',
+			'export.title' => 'Export',
+			'export.description' => '日記をPDFで出力',
+			'export.explanation' => '月ごとに日記をPDFファイルで\nエクスポートできます',
+			'export.successMessage' => 'エクスポートが完了しました！',
+			'export.failedMessage' => 'エクスポートに失敗しました',
+			'export.monthFormat' => 'yyyy年MM月',
+			'export.formatSelection' => 'エクスポート形式',
+			'export.monthSelection' => '月を選択',
+			'export.year' => '年',
+			'export.month' => '月',
+			'export.comingSoon' => '今後追加予定です',
+			'export.actions.exportMonth' => '月別エクスポート',
+			'export.actions.export' => 'エクスポート',
+			_ => null,
+		};
 	}
 }
 

@@ -1,7 +1,6 @@
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 

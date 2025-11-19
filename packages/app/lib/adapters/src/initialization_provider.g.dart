@@ -8,24 +8,42 @@ part of 'initialization_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$initializationHash() => r'd1c9475238fb5c85714023db6ac60c5ccdc71c15';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Providers that need to initialize asynchronously only once at startup.
+
+@ProviderFor(initialization)
+const initializationProvider = InitializationProvider._();
 
 /// Providers that need to initialize asynchronously only once at startup.
-///
-/// Copied from [initialization].
-@ProviderFor(initialization)
-final initializationProvider = FutureProvider<void>.internal(
-  initialization,
-  name: r'initializationProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$initializationHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef InitializationRef = FutureProviderRef<void>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class InitializationProvider
+    extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
+    with $FutureModifier<void>, $FutureProvider<void> {
+  /// Providers that need to initialize asynchronously only once at startup.
+  const InitializationProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'initializationProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$initializationHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<void> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<void> create(Ref ref) {
+    return initialization(ref);
+  }
+}
+
+String _$initializationHash() => r'd1c9475238fb5c85714023db6ac60c5ccdc71c15';

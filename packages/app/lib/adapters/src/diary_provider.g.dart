@@ -8,245 +8,312 @@ part of 'diary_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$diaryCommandHash() => r'ffb780d76c5eff004a8f280f5a8290afb6d36d89';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// A provider that creates a [DiaryCommand] instance.
+///
+/// {@macro diary.DiaryCommand}
+
+@ProviderFor(diaryCommand)
+const diaryCommandProvider = DiaryCommandProvider._();
 
 /// A provider that creates a [DiaryCommand] instance.
 ///
 /// {@macro diary.DiaryCommand}
-///
-/// Copied from [diaryCommand].
-@ProviderFor(diaryCommand)
-final diaryCommandProvider = Provider<DiaryCommand>.internal(
-  diaryCommand,
-  name: r'diaryCommandProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$diaryCommandHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DiaryCommandRef = ProviderRef<DiaryCommand>;
-String _$diaryQueryHash() => r'c2aaf09175f18fb5ff5d9eefca6e772125fae621';
+final class DiaryCommandProvider
+    extends $FunctionalProvider<DiaryCommand, DiaryCommand, DiaryCommand>
+    with $Provider<DiaryCommand> {
+  /// A provider that creates a [DiaryCommand] instance.
+  ///
+  /// {@macro diary.DiaryCommand}
+  const DiaryCommandProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'diaryCommandProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$diaryCommandHash();
+
+  @$internal
+  @override
+  $ProviderElement<DiaryCommand> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  DiaryCommand create(Ref ref) {
+    return diaryCommand(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DiaryCommand value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DiaryCommand>(value),
+    );
+  }
+}
+
+String _$diaryCommandHash() => r'ffb780d76c5eff004a8f280f5a8290afb6d36d89';
 
 /// A provider that creates a [DiaryQuery] instance.
 ///
 /// {@macro diary.DiaryQuery}
-///
-/// Copied from [diaryQuery].
+
 @ProviderFor(diaryQuery)
-final diaryQueryProvider = Provider<DiaryQuery>.internal(
-  diaryQuery,
-  name: r'diaryQueryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$diaryQueryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const diaryQueryProvider = DiaryQueryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DiaryQueryRef = ProviderRef<DiaryQuery>;
-String _$diariesHash() => r'8637096a0bd9d9fce1e2e15c6d3a14b7f226ca84';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// Provides a list of diaries within the specified date range.
+/// A provider that creates a [DiaryQuery] instance.
 ///
-/// Copied from [diaries].
-@ProviderFor(diaries)
-const diariesProvider = DiariesFamily();
+/// {@macro diary.DiaryQuery}
 
-/// Provides a list of diaries within the specified date range.
-///
-/// Copied from [diaries].
-class DiariesFamily extends Family<AsyncValue<List<Diary>>> {
-  /// Provides a list of diaries within the specified date range.
+final class DiaryQueryProvider
+    extends $FunctionalProvider<DiaryQuery, DiaryQuery, DiaryQuery>
+    with $Provider<DiaryQuery> {
+  /// A provider that creates a [DiaryQuery] instance.
   ///
-  /// Copied from [diaries].
-  const DiariesFamily();
-
-  /// Provides a list of diaries within the specified date range.
-  ///
-  /// Copied from [diaries].
-  DiariesProvider call({required DateTime fromDate, required DateTime toDate}) {
-    return DiariesProvider(fromDate: fromDate, toDate: toDate);
-  }
-
-  @override
-  DiariesProvider getProviderOverride(covariant DiariesProvider provider) {
-    return call(fromDate: provider.fromDate, toDate: provider.toDate);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'diariesProvider';
-}
-
-/// Provides a list of diaries within the specified date range.
-///
-/// Copied from [diaries].
-class DiariesProvider extends AutoDisposeFutureProvider<List<Diary>> {
-  /// Provides a list of diaries within the specified date range.
-  ///
-  /// Copied from [diaries].
-  DiariesProvider({required DateTime fromDate, required DateTime toDate})
-    : this._internal(
-        (ref) => diaries(ref as DiariesRef, fromDate: fromDate, toDate: toDate),
-        from: diariesProvider,
-        name: r'diariesProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$diariesHash,
-        dependencies: DiariesFamily._dependencies,
-        allTransitiveDependencies: DiariesFamily._allTransitiveDependencies,
-        fromDate: fromDate,
-        toDate: toDate,
+  /// {@macro diary.DiaryQuery}
+  const DiaryQueryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'diaryQueryProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  DiariesProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.fromDate,
-    required this.toDate,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$diaryQueryHash();
 
-  final DateTime fromDate;
-  final DateTime toDate;
+  @$internal
+  @override
+  $ProviderElement<DiaryQuery> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    FutureOr<List<Diary>> Function(DiariesRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: DiariesProvider._internal(
-        (ref) => create(ref as DiariesRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        fromDate: fromDate,
-        toDate: toDate,
-      ),
-    );
+  DiaryQuery create(Ref ref) {
+    return diaryQuery(ref);
   }
 
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DiaryQuery value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DiaryQuery>(value),
+    );
+  }
+}
+
+String _$diaryQueryHash() => r'c2aaf09175f18fb5ff5d9eefca6e772125fae621';
+
+/// Provides a list of diaries within the specified date range.
+
+@ProviderFor(diaries)
+const diariesProvider = DiariesFamily._();
+
+/// Provides a list of diaries within the specified date range.
+
+final class DiariesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Diary>>,
+          List<Diary>,
+          FutureOr<List<Diary>>
+        >
+    with $FutureModifier<List<Diary>>, $FutureProvider<List<Diary>> {
+  /// Provides a list of diaries within the specified date range.
+  const DiariesProvider._({
+    required DiariesFamily super.from,
+    required ({DateTime fromDate, DateTime toDate}) super.argument,
+  }) : super(
+         retry: null,
+         name: r'diariesProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
   @override
-  AutoDisposeFutureProviderElement<List<Diary>> createElement() {
-    return _DiariesProviderElement(this);
+  String debugGetCreateSourceHash() => _$diariesHash();
+
+  @override
+  String toString() {
+    return r'diariesProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Diary>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Diary>> create(Ref ref) {
+    final argument = this.argument as ({DateTime fromDate, DateTime toDate});
+    return diaries(ref, fromDate: argument.fromDate, toDate: argument.toDate);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is DiariesProvider &&
-        other.fromDate == fromDate &&
-        other.toDate == toDate;
+    return other is DiariesProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, fromDate.hashCode);
-    hash = _SystemHash.combine(hash, toDate.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin DiariesRef on AutoDisposeFutureProviderRef<List<Diary>> {
-  /// The parameter `fromDate` of this provider.
-  DateTime get fromDate;
+String _$diariesHash() => r'8637096a0bd9d9fce1e2e15c6d3a14b7f226ca84';
 
-  /// The parameter `toDate` of this provider.
-  DateTime get toDate;
+/// Provides a list of diaries within the specified date range.
+
+final class DiariesFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<Diary>>,
+          ({DateTime fromDate, DateTime toDate})
+        > {
+  const DiariesFamily._()
+    : super(
+        retry: null,
+        name: r'diariesProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provides a list of diaries within the specified date range.
+
+  DiariesProvider call({
+    required DateTime fromDate,
+    required DateTime toDate,
+  }) => DiariesProvider._(
+    argument: (fromDate: fromDate, toDate: toDate),
+    from: this,
+  );
+
+  @override
+  String toString() => r'diariesProvider';
 }
 
-class _DiariesProviderElement
-    extends AutoDisposeFutureProviderElement<List<Diary>>
-    with DiariesRef {
-  _DiariesProviderElement(super.provider);
+/// Provides a list of diaries with dates within the specified date range.
+
+@ProviderFor(CachedDiaries)
+const cachedDiariesProvider = CachedDiariesProvider._();
+
+/// Provides a list of diaries with dates within the specified date range.
+final class CachedDiariesProvider
+    extends $AsyncNotifierProvider<CachedDiaries, DiariesWithDates> {
+  /// Provides a list of diaries with dates within the specified date range.
+  const CachedDiariesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'cachedDiariesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
-  DateTime get fromDate => (origin as DiariesProvider).fromDate;
+  String debugGetCreateSourceHash() => _$cachedDiariesHash();
+
+  @$internal
   @override
-  DateTime get toDate => (origin as DiariesProvider).toDate;
+  CachedDiaries create() => CachedDiaries();
 }
 
 String _$cachedDiariesHash() => r'574d8d16dbca2b8af1dd5f485ff555e288c35f09';
 
 /// Provides a list of diaries with dates within the specified date range.
-///
-/// Copied from [CachedDiaries].
-@ProviderFor(CachedDiaries)
-final cachedDiariesProvider =
-    AutoDisposeAsyncNotifierProvider<CachedDiaries, DiariesWithDates>.internal(
-      CachedDiaries.new,
-      name: r'cachedDiariesProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$cachedDiariesHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$CachedDiaries = AutoDisposeAsyncNotifier<DiariesWithDates>;
+abstract class _$CachedDiaries extends $AsyncNotifier<DiariesWithDates> {
+  FutureOr<DiariesWithDates> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<DiariesWithDates>, DiariesWithDates>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DiariesWithDates>, DiariesWithDates>,
+              AsyncValue<DiariesWithDates>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Provides search functionality for diary entries.
+
+@ProviderFor(DiarySearch)
+const diarySearchProvider = DiarySearchProvider._();
+
+/// Provides search functionality for diary entries.
+final class DiarySearchProvider
+    extends $NotifierProvider<DiarySearch, SearchResult> {
+  /// Provides search functionality for diary entries.
+  const DiarySearchProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'diarySearchProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$diarySearchHash();
+
+  @$internal
+  @override
+  DiarySearch create() => DiarySearch();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SearchResult value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SearchResult>(value),
+    );
+  }
+}
+
 String _$diarySearchHash() => r'60025f13d0c957d9f057debd9346700d0bcde2d2';
 
 /// Provides search functionality for diary entries.
-///
-/// Copied from [DiarySearch].
-@ProviderFor(DiarySearch)
-final diarySearchProvider =
-    NotifierProvider<DiarySearch, SearchResult>.internal(
-      DiarySearch.new,
-      name: r'diarySearchProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$diarySearchHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$DiarySearch = Notifier<SearchResult>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$DiarySearch extends $Notifier<SearchResult> {
+  SearchResult build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<SearchResult, SearchResult>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<SearchResult, SearchResult>,
+              SearchResult,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

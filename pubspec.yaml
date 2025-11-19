@@ -1,7 +1,7 @@
 name: onepage_workspace
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.10.0
 
 workspace:
   - packages/app
@@ -24,7 +24,7 @@ workspace:
   - packages/features/update_requester
 
 dev_dependencies:
-  melos: ^7.0.0-dev.9
+  melos: ^7.3.0
 
 melos:
   repository: https://github.com/naipaka/onepage
@@ -164,6 +164,7 @@ melos:
     test:ci:
       run: flutter test --exclude-tags=golden --coverage
       exec:
+        concurrency: 1
         failFast: true
       description: Run flutter test for CI (excluding golden tests).
       packageFilters:

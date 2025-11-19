@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.10.0
 
 resolution: workspace
 
@@ -12,22 +12,22 @@ dependencies:
   clock: ^1.1.2
   db_client:
     path: ../../core/db_client/
-  file_picker: ^10.2.0
+  file_picker: ^10.3.6
   flutter:
     sdk: flutter
   gap: ^3.0.1
   # Because flutter depends on intl 0.20.2.
   # https://github.com/flutter/flutter/blob/stable/packages/flutter/pubspec.yaml#L42
   intl: ^0.20.2
-  package_info_plus: ^8.3.0
+  package_info_plus: ^9.0.0
   path: ^1.9.1
   path_provider: ^2.1.5
-  share_plus: ^11.0.0
+  share_plus: ^12.0.1
 
 dev_dependencies:
-  altive_lints: ^1.21.0
-  build_runner: ^2.5.4
-  custom_lint: ^0.7.5
+  altive_lints: ^1.25.0
+  build_runner: ^2.10.3
+  custom_lint: ^0.8.1
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.6
+  mockito: ^5.5.1

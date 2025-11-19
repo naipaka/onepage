@@ -87,7 +87,7 @@ android {
     defaultConfig {
         applicationId = dartDefines["appId"]
         // For Firebase.
-        minSdk = 23
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -132,7 +132,7 @@ dependencies {
     
     // Import the Firebase BoM.
     // When using BoM, it is not necessary to specify the version in each Firebase library dependency.
-    implementation(platform("com.google.firebase:firebase-bom:33.15.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
 
     // See https://firebase.google.com/docs/android/setup#available-libraries
     implementation("com.google.firebase:firebase-analytics")

@@ -52,6 +52,7 @@ import 'package:timezone/timezone.dart' as _i7;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 /// A class which mocks [FlutterLocalNotificationsPlugin].
 ///
@@ -636,6 +637,7 @@ class MockIOSFlutterLocalNotificationsPlugin extends _i1.Mock
     bool? badge = false,
     bool? provisional = false,
     bool? critical = false,
+    bool? providesAppNotificationSettings = false,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#requestPermissions, [], {
@@ -644,6 +646,7 @@ class MockIOSFlutterLocalNotificationsPlugin extends _i1.Mock
               #badge: badge,
               #provisional: provisional,
               #critical: critical,
+              #providesAppNotificationSettings: providesAppNotificationSettings,
             }),
             returnValue: _i3.Future<bool?>.value(),
             returnValueForMissingStub: _i3.Future<bool?>.value(),

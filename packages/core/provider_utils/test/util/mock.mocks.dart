@@ -23,6 +23,7 @@ import 'package:simple_logger/src/simple_logger.dart' as _i5;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeLevel_0 extends _i1.SmartFake implements _i2.Level {
   _FakeLevel_0(Object parent, Invocation parentInvocation)
@@ -123,33 +124,6 @@ class MockPackageInfo extends _i1.Mock implements _i3.PackageInfo {
 /// See the documentation for Mockito's code generation for more information.
 class MockSimpleLogger extends _i1.Mock implements _i5.SimpleLogger {
   @override
-  _i5.LoggerMode get mode =>
-      (super.noSuchMethod(
-            Invocation.getter(#mode),
-            returnValue: _i5.LoggerMode.log,
-            returnValueForMissingStub: _i5.LoggerMode.log,
-          )
-          as _i5.LoggerMode);
-
-  @override
-  Map<_i2.Level, String> get levelPrefixes =>
-      (super.noSuchMethod(
-            Invocation.getter(#levelPrefixes),
-            returnValue: <_i2.Level, String>{},
-            returnValueForMissingStub: <_i2.Level, String>{},
-          )
-          as Map<_i2.Level, String>);
-
-  @override
-  _i5.OnLogged get onLogged =>
-      (super.noSuchMethod(
-            Invocation.getter(#onLogged),
-            returnValue: (String log, _i6.LogInfo info) {},
-            returnValueForMissingStub: (String log, _i6.LogInfo info) {},
-          )
-          as _i5.OnLogged);
-
-  @override
   _i2.Level get level =>
       (super.noSuchMethod(
             Invocation.getter(#level),
@@ -177,6 +151,15 @@ class MockSimpleLogger extends _i1.Mock implements _i5.SimpleLogger {
           as _i2.Level);
 
   @override
+  _i5.LoggerMode get mode =>
+      (super.noSuchMethod(
+            Invocation.getter(#mode),
+            returnValue: _i5.LoggerMode.log,
+            returnValueForMissingStub: _i5.LoggerMode.log,
+          )
+          as _i5.LoggerMode);
+
+  @override
   bool get includeCallerInfo =>
       (super.noSuchMethod(
             Invocation.getter(#includeCallerInfo),
@@ -195,27 +178,44 @@ class MockSimpleLogger extends _i1.Mock implements _i5.SimpleLogger {
           as int);
 
   @override
-  set mode(_i5.LoggerMode? _mode) => super.noSuchMethod(
-    Invocation.setter(#mode, _mode),
+  Map<_i2.Level, String> get levelPrefixes =>
+      (super.noSuchMethod(
+            Invocation.getter(#levelPrefixes),
+            returnValue: <_i2.Level, String>{},
+            returnValueForMissingStub: <_i2.Level, String>{},
+          )
+          as Map<_i2.Level, String>);
+
+  @override
+  _i5.OnLogged get onLogged =>
+      (super.noSuchMethod(
+            Invocation.getter(#onLogged),
+            returnValue: (String log, _i6.LogInfo info) {},
+            returnValueForMissingStub: (String log, _i6.LogInfo info) {},
+          )
+          as _i5.OnLogged);
+
+  @override
+  set mode(_i5.LoggerMode? value) => super.noSuchMethod(
+    Invocation.setter(#mode, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set levelPrefixes(Map<_i2.Level, String>? _levelPrefixes) =>
-      super.noSuchMethod(
-        Invocation.setter(#levelPrefixes, _levelPrefixes),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  set formatter(_i5.Formatter? _formatter) => super.noSuchMethod(
-    Invocation.setter(#formatter, _formatter),
+  set levelPrefixes(Map<_i2.Level, String>? value) => super.noSuchMethod(
+    Invocation.setter(#levelPrefixes, value),
     returnValueForMissingStub: null,
   );
 
   @override
-  set onLogged(_i5.OnLogged? _onLogged) => super.noSuchMethod(
-    Invocation.setter(#onLogged, _onLogged),
+  set formatter(_i5.Formatter? value) => super.noSuchMethod(
+    Invocation.setter(#formatter, value),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  set onLogged(_i5.OnLogged? value) => super.noSuchMethod(
+    Invocation.setter(#onLogged, value),
     returnValueForMissingStub: null,
   );
 

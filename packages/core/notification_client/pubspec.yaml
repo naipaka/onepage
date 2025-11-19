@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.8.1
+  sdk: ^3.10.0
 
 resolution: workspace
 
@@ -12,8 +12,8 @@ dependencies:
   clock: ^1.1.2
   flutter:
     sdk: flutter
-  flutter_local_notifications: ^19.3.0
-  flutter_timezone: ^4.1.1
+  flutter_local_notifications: ^19.5.0
+  flutter_timezone: ^5.0.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   prefs_client:
@@ -21,11 +21,11 @@ dependencies:
   timezone: ^0.10.1
 
 dev_dependencies:
-  altive_lints: ^1.21.0
-  build_runner: ^2.5.4
-  custom_lint: ^0.7.5
+  altive_lints: ^1.25.0
+  build_runner: ^2.10.3
+  custom_lint: ^0.8.1
   flutter_test:
     sdk: flutter
-  freezed: ^3.1.0
-  json_serializable: ^6.9.5
-  mockito: ^5.4.6
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
+  mockito: ^5.5.1

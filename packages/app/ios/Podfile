@@ -1,4 +1,4 @@
-platform :ios, '13.0'
+platform :ios, '15.0'
 
 # For file_picker: disable media (images/videos) and audio pickers to avoid extra permissions 
 # (e.g. NSPhotoLibraryUsageDescription) since we only need document picking for DB backups.

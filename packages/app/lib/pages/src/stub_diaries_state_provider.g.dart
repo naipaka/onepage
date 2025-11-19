@@ -8,23 +8,55 @@ part of 'stub_diaries_state_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// For mocking diaries state.
+
+@ProviderFor(StubDiariesState)
+const stubDiariesStateProvider = StubDiariesStateProvider._();
+
+/// For mocking diaries state.
+final class StubDiariesStateProvider
+    extends $AsyncNotifierProvider<StubDiariesState, List<_Diary>> {
+  /// For mocking diaries state.
+  const StubDiariesStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'stubDiariesStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$stubDiariesStateHash();
+
+  @$internal
+  @override
+  StubDiariesState create() => StubDiariesState();
+}
+
 String _$stubDiariesStateHash() => r'8c101b0f71a422f63a830dc0325b316ac27f29c8';
 
 /// For mocking diaries state.
-///
-/// Copied from [StubDiariesState].
-@ProviderFor(StubDiariesState)
-final stubDiariesStateProvider =
-    AutoDisposeAsyncNotifierProvider<StubDiariesState, List<_Diary>>.internal(
-      StubDiariesState.new,
-      name: r'stubDiariesStateProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$stubDiariesStateHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$StubDiariesState = AutoDisposeAsyncNotifier<List<_Diary>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$StubDiariesState extends $AsyncNotifier<List<_Diary>> {
+  FutureOr<List<_Diary>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<List<_Diary>>, List<_Diary>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<_Diary>>, List<_Diary>>,
+              AsyncValue<List<_Diary>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

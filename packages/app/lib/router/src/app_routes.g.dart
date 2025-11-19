@@ -12,33 +12,29 @@ List<RouteBase> get $appRoutes => [$homeRouteData];
 
 RouteBase get $homeRouteData => GoRouteData.$route(
   path: '/',
-
-  factory: _$HomeRouteData._fromState,
+  factory: $HomeRouteData._fromState,
   routes: [
     GoRouteData.$route(
       path: 'notifications',
-
-      factory: _$NotificationsRouteData._fromState,
+      factory: $NotificationsRouteData._fromState,
     ),
-    GoRouteData.$route(path: 'backup', factory: _$BackupRouteData._fromState),
-    GoRouteData.$route(path: 'export', factory: _$ExportRouteData._fromState),
+    GoRouteData.$route(path: 'backup', factory: $BackupRouteData._fromState),
+    GoRouteData.$route(path: 'export', factory: $ExportRouteData._fromState),
     GoRouteData.$route(
       path: 'settings',
-
-      factory: _$SettingsRouteData._fromState,
+      factory: $SettingsRouteData._fromState,
       routes: [
         GoRouteData.$route(
           path: 'haptic-feedback',
-
-          factory: _$HapticFeedbackRouteData._fromState,
+          factory: $HapticFeedbackRouteData._fromState,
         ),
       ],
     ),
-    GoRouteData.$route(path: 'license', factory: _$LicenseRouteData._fromState),
+    GoRouteData.$route(path: 'license', factory: $LicenseRouteData._fromState),
   ],
 );
 
-mixin _$HomeRouteData on GoRouteData {
+mixin $HomeRouteData on GoRouteData {
   static HomeRouteData _fromState(GoRouterState state) => const HomeRouteData();
 
   @override
@@ -58,7 +54,7 @@ mixin _$HomeRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$NotificationsRouteData on GoRouteData {
+mixin $NotificationsRouteData on GoRouteData {
   static NotificationsRouteData _fromState(GoRouterState state) =>
       const NotificationsRouteData();
 
@@ -79,7 +75,7 @@ mixin _$NotificationsRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$BackupRouteData on GoRouteData {
+mixin $BackupRouteData on GoRouteData {
   static BackupRouteData _fromState(GoRouterState state) =>
       const BackupRouteData();
 
@@ -100,7 +96,7 @@ mixin _$BackupRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$ExportRouteData on GoRouteData {
+mixin $ExportRouteData on GoRouteData {
   static ExportRouteData _fromState(GoRouterState state) =>
       const ExportRouteData();
 
@@ -121,7 +117,7 @@ mixin _$ExportRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$SettingsRouteData on GoRouteData {
+mixin $SettingsRouteData on GoRouteData {
   static SettingsRouteData _fromState(GoRouterState state) =>
       const SettingsRouteData();
 
@@ -142,7 +138,7 @@ mixin _$SettingsRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$HapticFeedbackRouteData on GoRouteData {
+mixin $HapticFeedbackRouteData on GoRouteData {
   static HapticFeedbackRouteData _fromState(GoRouterState state) =>
       const HapticFeedbackRouteData();
 
@@ -163,7 +159,7 @@ mixin _$HapticFeedbackRouteData on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin _$LicenseRouteData on GoRouteData {
+mixin $LicenseRouteData on GoRouteData {
   static LicenseRouteData _fromState(GoRouterState state) =>
       const LicenseRouteData();
 

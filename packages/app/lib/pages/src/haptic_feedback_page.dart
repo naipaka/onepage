@@ -95,7 +95,8 @@ class _HapticSettingsItem extends ConsumerWidget {
             onChanged(value);
             haptics.toggleFeedback();
           },
-          activeColor: colorScheme.primary,
+          activeThumbColor: colorScheme.onPrimary,
+          activeTrackColor: colorScheme.primary,
         ),
       ],
     );

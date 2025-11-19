@@ -44,7 +44,13 @@ void main() {
       final container = ProviderContainer();
       expect(
         () => container.read(prefsClientProvider),
-        throwsA(isA<UnimplementedError>()),
+        throwsA(
+          predicate(
+            (e) =>
+                e.toString().contains('UnimplementedError') ||
+                (e is Error && e.toString().contains('UnimplementedError')),
+          ),
+        ),
       );
       container.dispose();
     });
