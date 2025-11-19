@@ -19,7 +19,7 @@ jobs:
     outputs:
       has_diff: ${{ steps.check_diff.outputs.has_diff }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup Flutter with FVM
         uses: kuhnroyal/flutter-fvm-config-action/setup@v3
@@ -51,7 +51,7 @@ jobs:
           melos list --gviz > "dependency_graph.dot"
 
       - name: Upload Dependency Graph as Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dependency_graph
           path: dependency_graph.dot
@@ -73,7 +73,7 @@ jobs:
     outputs:
       branch_exists: ${{ steps.check-branch.outputs.branch_exists }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check if branch already exists
         id: check-branch
@@ -97,12 +97,12 @@ jobs:
     needs: create-branch
     if: needs.create-branch.outputs.branch_exists != 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: ${{ env.BRANCH_NAME }}
 
       - name: Download Dependency Graph Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: dependency_graph
 
@@ -147,7 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: commit-changes
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Generate GitHub App token
         id: generate_token
