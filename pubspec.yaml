@@ -162,7 +162,7 @@ melos:
         dirExists: test
 
     test:ci:
-      run: very_good test --coverage --exclude-tags=golden
+      run: flutter test --exclude-tags=golden --coverage
       exec:
         concurrency: 1
         failFast: true
