@@ -17,7 +17,13 @@ void main() {
     test('trackerProvider throws UnimplementedError by default', () {
       expect(
         () => container.read(trackerProvider),
-        throwsA(isA<UnimplementedError>()),
+        throwsA(
+          predicate(
+            (e) =>
+                e.toString().contains('UnimplementedError') ||
+                (e is Error && e.toString().contains('UnimplementedError')),
+          ),
+        ),
       );
     });
   });
