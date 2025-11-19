@@ -5,19 +5,28 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
 import 'dart:io' as _i7;
+import 'dart:isolate' as _i8;
 
-import 'package:backup/src/backup_controller.dart' as _i10;
+import 'package:backup/src/backup_controller.dart' as _i12;
 import 'package:db_client/db_client.dart' as _i3;
 import 'package:drift/drift.dart' as _i2;
 import 'package:drift/src/runtime/executor/stream_queries.dart' as _i4;
-import 'package:exporter/src/csv_exporter.dart' as _i13;
-import 'package:exporter/src/markdown_exporter.dart' as _i14;
-import 'package:exporter/src/models/models.dart' as _i12;
-import 'package:exporter/src/pdf_exporter.dart' as _i11;
+import 'package:exporter/src/csv_exporter.dart' as _i15;
+import 'package:exporter/src/markdown_exporter.dart' as _i16;
+import 'package:exporter/src/models/models.dart' as _i14;
+import 'package:exporter/src/pdf_exporter.dart' as _i13;
+import 'package:firebase_analytics/firebase_analytics.dart' as _i21;
+import 'package:flutter/foundation.dart' as _i20;
+import 'package:flutter/material.dart' as _i9;
+import 'package:haptics/src/haptics.dart' as _i17;
+import 'package:in_app_reviewer/src/in_app_reviewer.dart' as _i18;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i9;
+import 'package:mockito/src/dummies.dart' as _i11;
+import 'package:notification_client/src/models/models.dart' as _i23;
+import 'package:notification_client/src/notification_client.dart' as _i22;
 import 'package:package_info_plus/package_info_plus.dart' as _i6;
-import 'package:prefs_client/src/prefs_client.dart' as _i8;
+import 'package:prefs_client/prefs_client.dart' as _i10;
+import 'package:tracker/src/tracker.dart' as _i19;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -181,10 +190,21 @@ class _FakeFile_25 extends _i1.SmartFake implements _i7.File {
     : super(parent, parentInvocation);
 }
 
+class _FakeSendPort_26 extends _i1.SmartFake implements _i8.SendPort {
+  _FakeSendPort_26(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeNavigatorObserver_27 extends _i1.SmartFake
+    implements _i9.NavigatorObserver {
+  _FakeNavigatorObserver_27(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [PrefsClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPrefsClient extends _i1.Mock implements _i8.PrefsClient {
+class MockPrefsClient extends _i1.Mock implements _i10.PrefsClient {
   MockPrefsClient() {
     _i1.throwOnMissingStub(this);
   }
@@ -386,7 +406,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   _i2.SqlTypes get typeMapping =>
       (super.noSuchMethod(
             Invocation.getter(#typeMapping),
-            returnValue: _i9.dummyValue<_i2.SqlTypes>(
+            returnValue: _i11.dummyValue<_i2.SqlTypes>(
               this,
               Invocation.getter(#typeMapping),
             ),
@@ -552,7 +572,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   T alias<T, D>(_i2.ResultSetImplementation<T, D>? table, String? alias) =>
       (super.noSuchMethod(
             Invocation.method(#alias, [table, alias]),
-            returnValue: _i9.dummyValue<T>(
+            returnValue: _i11.dummyValue<T>(
               this,
               Invocation.method(#alias, [table, alias]),
             ),
@@ -589,8 +609,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       (super.noSuchMethod(
             Invocation.method(#doWhenOpened, [fn]),
             returnValue:
-                _i9.ifNotNull(
-                  _i9.dummyValueOrNull<T>(
+                _i11.ifNotNull(
+                  _i11.dummyValueOrNull<T>(
                     this,
                     Invocation.method(#doWhenOpened, [fn]),
                   ),
@@ -805,8 +825,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               {#requireNew: requireNew},
             ),
             returnValue:
-                _i9.ifNotNull(
-                  _i9.dummyValueOrNull<T>(
+                _i11.ifNotNull(
+                  _i11.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #transaction,
@@ -832,8 +852,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       (super.noSuchMethod(
             Invocation.method(#exclusively, [action]),
             returnValue:
-                _i9.ifNotNull(
-                  _i9.dummyValueOrNull<T>(
+                _i11.ifNotNull(
+                  _i11.dummyValueOrNull<T>(
                     this,
                     Invocation.method(#exclusively, [action]),
                   ),
@@ -867,8 +887,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               {#interceptor: interceptor},
             ),
             returnValue:
-                _i9.ifNotNull(
-                  _i9.dummyValueOrNull<T>(
+                _i11.ifNotNull(
+                  _i11.dummyValueOrNull<T>(
                     this,
                     Invocation.method(
                       #runWithInterceptor,
@@ -942,7 +962,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   String $expandVar(int? start, int? amount) =>
       (super.noSuchMethod(
             Invocation.method(#$expandVar, [start, amount]),
-            returnValue: _i9.dummyValue<String>(
+            returnValue: _i11.dummyValue<String>(
               this,
               Invocation.method(#$expandVar, [start, amount]),
             ),
@@ -953,7 +973,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
 /// A class which mocks [BackupController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockBackupController extends _i1.Mock implements _i10.BackupController {
+class MockBackupController extends _i1.Mock implements _i12.BackupController {
   MockBackupController() {
     _i1.throwOnMissingStub(this);
   }
@@ -992,7 +1012,7 @@ class MockBackupController extends _i1.Mock implements _i10.BackupController {
   String get appName =>
       (super.noSuchMethod(
             Invocation.getter(#appName),
-            returnValue: _i9.dummyValue<String>(
+            returnValue: _i11.dummyValue<String>(
               this,
               Invocation.getter(#appName),
             ),
@@ -1003,7 +1023,7 @@ class MockBackupController extends _i1.Mock implements _i10.BackupController {
   String get version =>
       (super.noSuchMethod(
             Invocation.getter(#version),
-            returnValue: _i9.dummyValue<String>(
+            returnValue: _i11.dummyValue<String>(
               this,
               Invocation.getter(#version),
             ),
@@ -1031,7 +1051,7 @@ class MockBackupController extends _i1.Mock implements _i10.BackupController {
 /// A class which mocks [PdfExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPdfExporter extends _i1.Mock implements _i11.PdfExporter {
+class MockPdfExporter extends _i1.Mock implements _i13.PdfExporter {
   MockPdfExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1048,7 +1068,7 @@ class MockPdfExporter extends _i1.Mock implements _i11.PdfExporter {
           as _i6.PackageInfo);
 
   @override
-  _i5.Future<_i7.File> export({required List<_i12.DiaryEntry>? entries}) =>
+  _i5.Future<_i7.File> export({required List<_i14.DiaryEntry>? entries}) =>
       (super.noSuchMethod(
             Invocation.method(#export, [], {#entries: entries}),
             returnValue: _i5.Future<_i7.File>.value(
@@ -1062,7 +1082,7 @@ class MockPdfExporter extends _i1.Mock implements _i11.PdfExporter {
 
   @override
   _i5.Future<_i7.File> exportMonth({
-    required List<_i12.DiaryEntry>? entries,
+    required List<_i14.DiaryEntry>? entries,
     required int? year,
     required int? month,
   }) =>
@@ -1087,7 +1107,7 @@ class MockPdfExporter extends _i1.Mock implements _i11.PdfExporter {
 
   @override
   _i5.Future<_i7.File> exportDateRange({
-    required List<_i12.DiaryEntry>? entries,
+    required List<_i14.DiaryEntry>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) =>
@@ -1114,7 +1134,7 @@ class MockPdfExporter extends _i1.Mock implements _i11.PdfExporter {
 /// A class which mocks [CsvExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCsvExporter extends _i1.Mock implements _i13.CsvExporter {
+class MockCsvExporter extends _i1.Mock implements _i15.CsvExporter {
   MockCsvExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1131,7 +1151,7 @@ class MockCsvExporter extends _i1.Mock implements _i13.CsvExporter {
           as _i6.PackageInfo);
 
   @override
-  _i5.Future<_i7.File> export({required List<_i12.DiaryEntry>? entries}) =>
+  _i5.Future<_i7.File> export({required List<_i14.DiaryEntry>? entries}) =>
       (super.noSuchMethod(
             Invocation.method(#export, [], {#entries: entries}),
             returnValue: _i5.Future<_i7.File>.value(
@@ -1145,7 +1165,7 @@ class MockCsvExporter extends _i1.Mock implements _i13.CsvExporter {
 
   @override
   _i5.Future<_i7.File> exportMonth({
-    required List<_i12.DiaryEntry>? entries,
+    required List<_i14.DiaryEntry>? entries,
     required int? year,
     required int? month,
   }) =>
@@ -1170,7 +1190,7 @@ class MockCsvExporter extends _i1.Mock implements _i13.CsvExporter {
 
   @override
   _i5.Future<_i7.File> exportDateRange({
-    required List<_i12.DiaryEntry>? entries,
+    required List<_i14.DiaryEntry>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) =>
@@ -1197,7 +1217,7 @@ class MockCsvExporter extends _i1.Mock implements _i13.CsvExporter {
 /// A class which mocks [MarkdownExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMarkdownExporter extends _i1.Mock implements _i14.MarkdownExporter {
+class MockMarkdownExporter extends _i1.Mock implements _i16.MarkdownExporter {
   MockMarkdownExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1214,7 +1234,7 @@ class MockMarkdownExporter extends _i1.Mock implements _i14.MarkdownExporter {
           as _i6.PackageInfo);
 
   @override
-  _i5.Future<_i7.File> export({required List<_i12.DiaryEntry>? entries}) =>
+  _i5.Future<_i7.File> export({required List<_i14.DiaryEntry>? entries}) =>
       (super.noSuchMethod(
             Invocation.method(#export, [], {#entries: entries}),
             returnValue: _i5.Future<_i7.File>.value(
@@ -1228,7 +1248,7 @@ class MockMarkdownExporter extends _i1.Mock implements _i14.MarkdownExporter {
 
   @override
   _i5.Future<_i7.File> exportMonth({
-    required List<_i12.DiaryEntry>? entries,
+    required List<_i14.DiaryEntry>? entries,
     required int? year,
     required int? month,
   }) =>
@@ -1253,7 +1273,7 @@ class MockMarkdownExporter extends _i1.Mock implements _i14.MarkdownExporter {
 
   @override
   _i5.Future<_i7.File> exportDateRange({
-    required List<_i12.DiaryEntry>? entries,
+    required List<_i14.DiaryEntry>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) =>
@@ -1275,4 +1295,316 @@ class MockMarkdownExporter extends _i1.Mock implements _i14.MarkdownExporter {
             ),
           )
           as _i5.Future<_i7.File>);
+}
+
+/// A class which mocks [Haptics].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockHaptics extends _i1.Mock implements _i17.Haptics {
+  MockHaptics() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  void textInputFeedback() => super.noSuchMethod(
+    Invocation.method(#textInputFeedback, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void buttonTapFeedback() => super.noSuchMethod(
+    Invocation.method(#buttonTapFeedback, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void toggleFeedback() => super.noSuchMethod(
+    Invocation.method(#toggleFeedback, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void navigationFeedback() => super.noSuchMethod(
+    Invocation.method(#navigationFeedback, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void successFeedback() => super.noSuchMethod(
+    Invocation.method(#successFeedback, []),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [InAppReviewer].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockInAppReviewer extends _i1.Mock implements _i18.InAppReviewer {
+  MockInAppReviewer() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<bool> shouldShowReviewPrompt() =>
+      (super.noSuchMethod(
+            Invocation.method(#shouldShowReviewPrompt, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<void> requestReview() =>
+      (super.noSuchMethod(
+            Invocation.method(#requestReview, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> openStoreListing() =>
+      (super.noSuchMethod(
+            Invocation.method(#openStoreListing, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> checkAndShowReviewIfEligible() =>
+      (super.noSuchMethod(
+            Invocation.method(#checkAndShowReviewIfEligible, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> markAsDeclined() =>
+      (super.noSuchMethod(
+            Invocation.method(#markAsDeclined, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> recordReviewShown() =>
+      (super.noSuchMethod(
+            Invocation.method(#recordReviewShown, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+}
+
+/// A class which mocks [Tracker].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockTracker extends _i1.Mock implements _i19.Tracker {
+  MockTracker() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<void> onFlutterError(
+    _i20.FlutterErrorDetails? flutterErrorDetails, {
+    bool? fatal = false,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #onFlutterError,
+              [flutterErrorDetails],
+              {#fatal: fatal},
+            ),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  bool onPlatformError(Object? error, StackTrace? stack) =>
+      (super.noSuchMethod(
+            Invocation.method(#onPlatformError, [error, stack]),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  _i8.SendPort isolateErrorListener() =>
+      (super.noSuchMethod(
+            Invocation.method(#isolateErrorListener, []),
+            returnValue: _FakeSendPort_26(
+              this,
+              Invocation.method(#isolateErrorListener, []),
+            ),
+          )
+          as _i8.SendPort);
+
+  @override
+  _i5.Future<void> recordError(
+    Object? exception,
+    StackTrace? stack, {
+    bool? fatal = false,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #recordError,
+              [exception, stack],
+              {#fatal: fatal},
+            ),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setUserId(String? userId) =>
+      (super.noSuchMethod(
+            Invocation.method(#setUserId, [userId]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> clearUserId() =>
+      (super.noSuchMethod(
+            Invocation.method(#clearUserId, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> setUserProperties(Map<String, String?>? properties) =>
+      (super.noSuchMethod(
+            Invocation.method(#setUserProperties, [properties]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i9.NavigatorObserver navigatorObserver({
+    String? Function(_i9.RouteSettings)? nameExtractor =
+        _i21.defaultNameExtractor,
+    bool Function(_i9.Route<dynamic>?)? routeFilter = _i21.defaultRouteFilter,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#navigatorObserver, [], {
+              #nameExtractor: nameExtractor,
+              #routeFilter: routeFilter,
+            }),
+            returnValue: _FakeNavigatorObserver_27(
+              this,
+              Invocation.method(#navigatorObserver, [], {
+                #nameExtractor: nameExtractor,
+                #routeFilter: routeFilter,
+              }),
+            ),
+          )
+          as _i9.NavigatorObserver);
+
+  @override
+  List<_i9.NavigatorObserver> navigatorObservers({
+    String? Function(_i9.RouteSettings)? nameExtractor =
+        _i21.defaultNameExtractor,
+    bool Function(_i9.Route<dynamic>?)? routeFilter = _i21.defaultRouteFilter,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#navigatorObservers, [], {
+              #nameExtractor: nameExtractor,
+              #routeFilter: routeFilter,
+            }),
+            returnValue: <_i9.NavigatorObserver>[],
+          )
+          as List<_i9.NavigatorObserver>);
+
+  @override
+  _i5.Future<void> trackScreenView(String? screenName) =>
+      (super.noSuchMethod(
+            Invocation.method(#trackScreenView, [screenName]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> logEvent(
+    String? eventName, {
+    Map<String, Object>? parameters,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #logEvent,
+              [eventName],
+              {#parameters: parameters},
+            ),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+}
+
+/// A class which mocks [NotificationClient].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockNotificationClient extends _i1.Mock
+    implements _i22.NotificationClient {
+  MockNotificationClient() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<void> initialize() =>
+      (super.noSuchMethod(
+            Invocation.method(#initialize, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<bool> requestPermissions() =>
+      (super.noSuchMethod(
+            Invocation.method(#requestPermissions, []),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<void> scheduleNotifications(
+    List<_i23.NotificationSetting>? settings, {
+    required String? title,
+    required String? message,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #scheduleNotifications,
+              [settings],
+              {#title: title, #message: message},
+            ),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> cancelAllNotifications() =>
+      (super.noSuchMethod(
+            Invocation.method(#cancelAllNotifications, []),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> cancelNotification(int? id) =>
+      (super.noSuchMethod(
+            Invocation.method(#cancelNotification, [id]),
+            returnValue: _i5.Future<void>.value(),
+            returnValueForMissingStub: _i5.Future<void>.value(),
+          )
+          as _i5.Future<void>);
 }

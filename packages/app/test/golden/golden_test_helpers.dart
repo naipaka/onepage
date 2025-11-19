@@ -8,15 +8,19 @@ import 'package:exporter/exporter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:haptics/haptics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:in_app_reviewer/in_app_reviewer.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:notification_client/notification_client.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:prefs_client/prefs_client.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
+import 'package:tracker/tracker.dart';
 
 @GenerateMocks([
   PrefsClient,
@@ -25,6 +29,10 @@ import 'package:theme/theme.dart';
   PdfExporter,
   CsvExporter,
   MarkdownExporter,
+  Haptics,
+  InAppReviewer,
+  Tracker,
+  NotificationClient,
 ])
 import 'golden_test_helpers.mocks.dart';
 
@@ -40,6 +48,10 @@ abstract final class GoldenTestHelpers {
     final mockPdfExporter = MockPdfExporter();
     final mockCsvExporter = MockCsvExporter();
     final mockMarkdownExporter = MockMarkdownExporter();
+    final mockHaptics = MockHaptics();
+    final mockInAppReviewer = MockInAppReviewer();
+    final mockTracker = MockTracker();
+    final mockNotificationClient = MockNotificationClient();
 
     when(mockPrefsClient.textInputHapticEnabled).thenReturn(true);
     when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
@@ -60,6 +72,12 @@ abstract final class GoldenTestHelpers {
       pdfExporterProvider.overrideWithValue(mockPdfExporter),
       csvExporterProvider.overrideWithValue(mockCsvExporter),
       markdownExporterProvider.overrideWithValue(mockMarkdownExporter),
+      hapticsProvider.overrideWithValue(mockHaptics),
+      inAppReviewerProvider.overrideWith((ref) async => mockInAppReviewer),
+      trackerProvider.overrideWithValue(mockTracker),
+      notificationClientInitializingProvider.overrideWith(
+        (ref) async => mockNotificationClient,
+      ),
       packageInfoProvider.overrideWithValue(
         PackageInfo(
           appName: 'OnePage',
