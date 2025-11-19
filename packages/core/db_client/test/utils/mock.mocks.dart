@@ -28,6 +28,7 @@ import 'package:sqlite3/src/vfs.dart' as _i6;
 // ignore_for_file: unnecessary_parenthesis
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
+// ignore_for_file: invalid_use_of_internal_member
 
 class _FakeDatabase_0 extends _i1.SmartFake implements _i2.Database {
   _FakeDatabase_0(Object parent, Invocation parentInvocation)
@@ -60,8 +61,8 @@ class MockSqlite3 extends _i1.Mock implements _i2.Sqlite3 {
           as _i3.Version);
 
   @override
-  set tempDirectory(String? _tempDirectory) => super.noSuchMethod(
-    Invocation.setter(#tempDirectory, _tempDirectory),
+  set tempDirectory(String? value) => super.noSuchMethod(
+    Invocation.setter(#tempDirectory, value),
     returnValueForMissingStub: null,
   );
 
@@ -191,15 +192,6 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
           as _i5.Pointer<void>);
 
   @override
-  int get userVersion =>
-      (super.noSuchMethod(
-            Invocation.getter(#userVersion),
-            returnValue: 0,
-            returnValueForMissingStub: 0,
-          )
-          as int);
-
-  @override
   _i7.DatabaseConfig get config =>
       (super.noSuchMethod(
             Invocation.getter(#config),
@@ -213,6 +205,15 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
             ),
           )
           as _i7.DatabaseConfig);
+
+  @override
+  int get userVersion =>
+      (super.noSuchMethod(
+            Invocation.getter(#userVersion),
+            returnValue: 0,
+            returnValueForMissingStub: 0,
+          )
+          as int);
 
   @override
   int get lastInsertRowId =>
@@ -278,8 +279,8 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
           as bool);
 
   @override
-  set userVersion(int? _userVersion) => super.noSuchMethod(
-    Invocation.setter(#userVersion, _userVersion),
+  set userVersion(int? value) => super.noSuchMethod(
+    Invocation.setter(#userVersion, value),
     returnValueForMissingStub: null,
   );
 
