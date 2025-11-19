@@ -1,5 +1,4 @@
 import 'package:haptics/haptics.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'prefs_client_provider.dart';

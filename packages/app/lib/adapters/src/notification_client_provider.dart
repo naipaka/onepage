@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:notification_client/notification_client.dart';
 import 'package:provider_utils/provider_utils.dart';

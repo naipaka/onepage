@@ -8,44 +8,95 @@ part of 'configurator_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Initialize the [Configurator] and set the default values.
+
+@ProviderFor(configuratorInitializing)
+const configuratorInitializingProvider = ConfiguratorInitializingProvider._();
+
+/// Initialize the [Configurator] and set the default values.
+
+final class ConfiguratorInitializingProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Configurator>,
+          Configurator,
+          FutureOr<Configurator>
+        >
+    with $FutureModifier<Configurator>, $FutureProvider<Configurator> {
+  /// Initialize the [Configurator] and set the default values.
+  const ConfiguratorInitializingProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'configuratorInitializingProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$configuratorInitializingHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Configurator> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Configurator> create(Ref ref) {
+    return configuratorInitializing(ref);
+  }
+}
+
 String _$configuratorInitializingHash() =>
     r'29c83e1a62006388d30891211dbc0e539c86df9a';
 
-/// Initialize the [Configurator] and set the default values.
-///
-/// Copied from [configuratorInitializing].
-@ProviderFor(configuratorInitializing)
-final configuratorInitializingProvider = FutureProvider<Configurator>.internal(
-  configuratorInitializing,
-  name: r'configuratorInitializingProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$configuratorInitializingHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// A provider that manages the [Configurator].
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ConfiguratorInitializingRef = FutureProviderRef<Configurator>;
-String _$configuratorHash() => r'4d570762b760fa3a8a6af236aa327b7a6602714c';
+@ProviderFor(configurator)
+const configuratorProvider = ConfiguratorProvider._();
 
 /// A provider that manages the [Configurator].
-///
-/// Copied from [configurator].
-@ProviderFor(configurator)
-final configuratorProvider = Provider<Configurator>.internal(
-  configurator,
-  name: r'configuratorProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$configuratorHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ConfiguratorRef = ProviderRef<Configurator>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class ConfiguratorProvider
+    extends $FunctionalProvider<Configurator, Configurator, Configurator>
+    with $Provider<Configurator> {
+  /// A provider that manages the [Configurator].
+  const ConfiguratorProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'configuratorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$configuratorHash();
+
+  @$internal
+  @override
+  $ProviderElement<Configurator> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Configurator create(Ref ref) {
+    return configurator(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Configurator value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Configurator>(value),
+    );
+  }
+}
+
+String _$configuratorHash() => r'4d570762b760fa3a8a6af236aa327b7a6602714c';

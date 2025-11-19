@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:simple_logger/simple_logger.dart';
 import 'package:utils/utils.dart';
 
@@ -16,7 +17,20 @@ enum ProviderEvent {
   dispose,
 
   /// Logs when a provider throws an error.
-  error;
+  error,
+
+  /// Logs when a mutation starts.
+  mutationStart,
+
+  /// Logs when a mutation succeeds.
+  mutationSuccess,
+
+  /// Logs when a mutation fails.
+  mutationError,
+
+  /// Logs when a mutation is reset.
+  mutationReset
+  ;
 
   /// Returns a list of [ProviderEvent] from a comma-separated string of
   /// event names.
@@ -40,7 +54,7 @@ enum ProviderEvent {
 /// {@template provider_utils.ProviderLogger}
 /// A class that logs events of `Provider`.
 /// {@endtemplate}
-class ProviderLogger implements ProviderObserver {
+base class ProviderLogger extends ProviderObserver {
   /// {@macro provider_utils.ProviderLogger}
   const ProviderLogger({required this.outputLogTypes, required this.logger});
 
@@ -72,43 +86,94 @@ class ProviderLogger implements ProviderObserver {
 
   @override
   void didAddProvider(
-    ProviderBase<dynamic> provider,
+    ProviderObserverContext context,
     Object? value,
-    ProviderContainer _,
   ) {
-    _print(providerEvent: ProviderEvent.add, provider: provider, value: value);
+    _print(
+      providerEvent: ProviderEvent.add,
+      provider: context.provider,
+      value: value,
+    );
   }
 
   @override
   void didUpdateProvider(
-    ProviderBase<dynamic> provider,
-    Object? _,
+    ProviderObserverContext context,
+    Object? previousValue,
     Object? newValue,
-    ProviderContainer _,
   ) {
     _print(
       providerEvent: ProviderEvent.update,
-      provider: provider,
+      provider: context.provider,
       value: newValue,
     );
   }
 
   @override
-  void didDisposeProvider(ProviderBase<dynamic> provider, ProviderContainer _) {
-    _print(providerEvent: ProviderEvent.dispose, provider: provider);
+  void didDisposeProvider(
+    ProviderObserverContext context,
+  ) {
+    _print(
+      providerEvent: ProviderEvent.dispose,
+      provider: context.provider,
+    );
   }
 
   @override
   void providerDidFail(
-    ProviderBase<dynamic> provider,
+    ProviderObserverContext context,
     Object error,
-    StackTrace _,
-    ProviderContainer _,
+    StackTrace stackTrace,
   ) {
     _print(
       providerEvent: ProviderEvent.error,
-      provider: provider,
+      provider: context.provider,
       value: error,
+    );
+  }
+
+  @override
+  void mutationStart(ProviderObserverContext context, Object? mutation) {
+    _print(
+      providerEvent: ProviderEvent.mutationStart,
+      provider: context.provider,
+      value: mutation,
+    );
+  }
+
+  @override
+  void mutationSuccess(
+    ProviderObserverContext context,
+    Object? mutation,
+    Object? result,
+  ) {
+    _print(
+      providerEvent: ProviderEvent.mutationSuccess,
+      provider: context.provider,
+      value: result,
+    );
+  }
+
+  @override
+  void mutationError(
+    ProviderObserverContext context,
+    Object? mutation,
+    Object error,
+    StackTrace stackTrace,
+  ) {
+    _print(
+      providerEvent: ProviderEvent.mutationError,
+      provider: context.provider,
+      value: error,
+    );
+  }
+
+  @override
+  void mutationReset(ProviderObserverContext context, Object? mutation) {
+    _print(
+      providerEvent: ProviderEvent.mutationReset,
+      provider: context.provider,
+      value: mutation,
     );
   }
 }

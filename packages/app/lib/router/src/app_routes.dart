@@ -33,7 +33,7 @@ part 'app_routes.g.dart';
     ),
   ],
 )
-class HomeRouteData extends GoRouteData with _$HomeRouteData {
+class HomeRouteData extends GoRouteData with $HomeRouteData {
   /// {@macro onepage.HomeRouteData}
   const HomeRouteData();
 
@@ -49,7 +49,7 @@ class HomeRouteData extends GoRouteData with _$HomeRouteData {
 /// {@template onepage.NotificationsRouteData}
 /// Notifications route data.
 /// {@endtemplate}
-class NotificationsRouteData extends GoRouteData with _$NotificationsRouteData {
+class NotificationsRouteData extends GoRouteData with $NotificationsRouteData {
   /// {@macro onepage.NotificationsRouteData}
   const NotificationsRouteData();
 
@@ -65,7 +65,7 @@ class NotificationsRouteData extends GoRouteData with _$NotificationsRouteData {
 /// {@template onepage.BackupRouteData}
 /// Backup route data.
 /// {@endtemplate}
-class BackupRouteData extends GoRouteData with _$BackupRouteData {
+class BackupRouteData extends GoRouteData with $BackupRouteData {
   /// {@macro onepage.BackupRouteData}
   const BackupRouteData();
 
@@ -81,7 +81,7 @@ class BackupRouteData extends GoRouteData with _$BackupRouteData {
 /// {@template onepage.ExportRouteData}
 /// Export route data.
 /// {@endtemplate}
-class ExportRouteData extends GoRouteData with _$ExportRouteData {
+class ExportRouteData extends GoRouteData with $ExportRouteData {
   /// {@macro onepage.ExportRouteData}
   const ExportRouteData();
 
@@ -97,7 +97,7 @@ class ExportRouteData extends GoRouteData with _$ExportRouteData {
 /// {@template onepage.SettingsRouteData}
 /// Settings route data.
 /// {@endtemplate}
-class SettingsRouteData extends GoRouteData with _$SettingsRouteData {
+class SettingsRouteData extends GoRouteData with $SettingsRouteData {
   /// {@macro onepage.SettingsRouteData}
   const SettingsRouteData();
 
@@ -113,8 +113,8 @@ class SettingsRouteData extends GoRouteData with _$SettingsRouteData {
 /// {@template onepage.HapticFeedbackRouteData}
 /// Haptic feedback route data.
 /// {@endtemplate}
-class HapticFeedbackRouteData extends GoRouteData
-    with _$HapticFeedbackRouteData {
+class HapticFeedbackRouteData extends GoRouteData with $HapticFeedbackRouteData
+    {
   /// {@macro onepage.HapticFeedbackRouteData}
   const HapticFeedbackRouteData();
 
@@ -130,7 +130,7 @@ class HapticFeedbackRouteData extends GoRouteData
 /// {@template onepage.LicenseRouteData}
 /// License route data.
 /// {@endtemplate}
-class LicenseRouteData extends GoRouteData with _$LicenseRouteData {
+class LicenseRouteData extends GoRouteData with $LicenseRouteData {
   /// {@macro onepage.LicenseRouteData}
   const LicenseRouteData();
 

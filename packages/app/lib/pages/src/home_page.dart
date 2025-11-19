@@ -356,7 +356,7 @@ class _DiaryEntryDatePickerDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final now = clock.now();
 
-    final diariesWithDates = ref.watch(cachedDiariesProvider).valueOrNull;
+    final diariesWithDates = ref.watch(cachedDiariesProvider).value;
     final notifier = ref.watch(cachedDiariesProvider.notifier);
 
     final diaries = diariesWithDates?.diaries ?? [];

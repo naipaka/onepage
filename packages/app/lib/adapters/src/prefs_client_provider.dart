@@ -1,4 +1,3 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:notification_client/notification_client.dart';
 import 'package:prefs_client/prefs_client.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -67,7 +66,7 @@ class OtherHapticEnabled extends _$OtherHapticEnabled {
 /// {@template onepage.NotificationSettingsNotifier}
 /// Notifier for managing notification settings.
 /// {@endtemplate}
-@riverpod
+@Riverpod(keepAlive: true)
 class NotificationSettings extends _$NotificationSettings {
   @override
   List<NotificationSetting> build() {

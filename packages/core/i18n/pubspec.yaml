@@ -17,9 +17,9 @@ dependencies:
   slang_flutter: ^4.10.0
 
 dev_dependencies:
-  altive_lints: ^1.22.0
-  build_runner: ^2.5.4
-  custom_lint: ^0.7.6
+  altive_lints: ^1.25.0
+  build_runner: ^2.10.3
+  custom_lint: ^0.8.1
   flutter_test:
     sdk: flutter
   slang_build_runner: ^4.10.0

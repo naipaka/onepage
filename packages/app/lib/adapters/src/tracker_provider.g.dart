@@ -8,24 +8,50 @@ part of 'tracker_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trackerHash() => r'8b77cc11d593f46376606aaa14800a713c90d7c9';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// [Tracker] provider.
+
+@ProviderFor(tracker)
+const trackerProvider = TrackerProvider._();
 
 /// [Tracker] provider.
-///
-/// Copied from [tracker].
-@ProviderFor(tracker)
-final trackerProvider = Provider<Tracker>.internal(
-  tracker,
-  name: r'trackerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$trackerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef TrackerRef = ProviderRef<Tracker>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class TrackerProvider
+    extends $FunctionalProvider<Tracker, Tracker, Tracker>
+    with $Provider<Tracker> {
+  /// [Tracker] provider.
+  const TrackerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'trackerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$trackerHash();
+
+  @$internal
+  @override
+  $ProviderElement<Tracker> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Tracker create(Ref ref) {
+    return tracker(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Tracker value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Tracker>(value),
+    );
+  }
+}
+
+String _$trackerHash() => r'8b77cc11d593f46376606aaa14800a713c90d7c9';

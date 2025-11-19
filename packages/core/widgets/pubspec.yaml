@@ -18,10 +18,8 @@ dependencies:
     path: ../utils
 
 dev_dependencies:
-  altive_lints: ^1.22.0
-  custom_lint: ^0.7.6
-  flutter_test:
-    sdk: flutter
+  altive_lints: ^1.25.0
+  custom_lint: ^0.8.1
 
 flutter:
   uses-material-design: true

@@ -10,18 +10,16 @@ dependencies:
   firebase_remote_config: ^6.1.2
   flutter:
     sdk: flutter
-  # Because flutter depends on intl 1.16.0  .
-  # https://github.com/flutter/flutter/blob/stable/packages/flutter/pubspec.yaml#L16
-  meta: ^1.16.0
+  meta: ^1.17.0
 
 dev_dependencies:
-  altive_lints: ^1.22.0
-  build_runner: ^2.5.4
-  custom_lint: ^0.7.6
+  altive_lints: ^1.25.0
+  build_runner: ^2.10.3
+  custom_lint: ^0.8.1
   firebase_core: ^4.2.1
   firebase_core_platform_interface: ^6.0.2
   firebase_remote_config_platform_interface: ^2.0.5
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.6
+  mockito: ^5.5.1
   plugin_platform_interface: ^2.1.8
