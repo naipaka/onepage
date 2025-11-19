@@ -164,6 +164,7 @@ melos:
     test:ci:
       run: flutter test --exclude-tags=golden --coverage
       exec:
+        concurrency: 1
         failFast: true
       description: Run flutter test for CI (excluding golden tests).
       packageFilters:
