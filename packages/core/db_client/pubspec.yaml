@@ -11,7 +11,7 @@ resolution: workspace
 dependencies:
   clock: ^1.1.2
   drift: ^2.29.0
-  drift_flutter: ^0.2.7
+  drift_flutter: ^0.2.8
   flutter:
     sdk: flutter
   path: ^1.9.1
