@@ -19,7 +19,7 @@ jobs:
     outputs:
       has_diff: ${{ steps.check_diff.outputs.has_diff }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Setup Flutter with FVM
         uses: kuhnroyal/flutter-fvm-config-action/setup@v3
@@ -73,7 +73,7 @@ jobs:
     outputs:
       branch_exists: ${{ steps.check-branch.outputs.branch_exists }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Check if branch already exists
         id: check-branch
@@ -97,7 +97,7 @@ jobs:
     needs: create-branch
     if: needs.create-branch.outputs.branch_exists != 'true'
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.BRANCH_NAME }}
 
@@ -147,7 +147,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: commit-changes
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Generate GitHub App token
         id: generate_token
