@@ -697,10 +697,10 @@ packages:
     dependency: transitive
     description:
       name: go_router_builder
-      sha256: e0646fb5586e04e1df92678f539059f38e4314848f06dd4f3cd87fed434e16b5
+      sha256: "8f1dd8cc23850dba4223104231682a9410576720cb24693fb0eb925c49b2abe3"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.1"
+    version: "4.1.3"
   graphs:
     dependency: transitive
     description:
@@ -841,10 +841,10 @@ packages:
     dependency: transitive
     description:
       name: json_serializable
-      sha256: "33a040668b31b320aafa4822b7b1e177e163fc3c1e835c6750319d4ab23aa6fe"
+      sha256: c5b2ee75210a0f263c6c7b9eeea80553dbae96ea1bf57f02484e806a3ffdffa3
       url: "https://pub.dev"
     source: hosted
-    version: "6.11.1"
+    version: "6.11.2"
   leak_tracker:
     dependency: transitive
     description:
@@ -921,10 +921,10 @@ packages:
     dependency: transitive
     description:
       name: mockito
-      sha256: "4feb43bc4eb6c03e832f5fcd637d1abb44b98f9cfa245c58e27382f58859f8f6"
+      sha256: dac24d461418d363778d53198d9ac0510b9d073869f078450f195766ec48d05e
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.1"
+    version: "5.6.1"
   mustache_template:
     dependency: transitive
     description:
@@ -1334,26 +1334,26 @@ packages:
     dependency: transitive
     description:
       name: slang
-      sha256: "68019686145c141cfbad52697ed70960957429930c858570248ed23c6d6f859a"
+      sha256: "8f5ae507de811e245b7a3187d3191e9eefe7d8f2c22f150663f15bb0f1559367"
       url: "https://pub.dev"
     source: hosted
-    version: "4.10.1"
+    version: "4.11.0"
   slang_build_runner:
     dependency: transitive
     description:
       name: slang_build_runner
-      sha256: bc376c67b539458230bc33f7e20b8e1e46c39b6dc6b4535bfaa6e16253f7f32f
+      sha256: e2433fd4eebed4e701c369afbd851a8e2d39a46bcb4c5e2e720ff11a3640a32c
       url: "https://pub.dev"
     source: hosted
-    version: "4.10.0"
+    version: "4.11.0"
   slang_flutter:
     dependency: transitive
     description:
       name: slang_flutter
-      sha256: "7eff3f37dc3fcdc0f76d461540915b6431408f15df5b5d78d137c8ffc90bc60e"
+      sha256: a6ebc0a855faa62053f44d333ae3b3cde24945357e88506d1d3e7fb0d3fc0c70
       url: "https://pub.dev"
     source: hosted
-    version: "4.10.0"
+    version: "4.11.0"
   source_gen:
     dependency: transitive
     description:
