@@ -51,7 +51,7 @@ jobs:
           melos list --gviz > "dependency_graph.dot"
 
       - name: Upload Dependency Graph as Artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: dependency_graph
           path: dependency_graph.dot
@@ -102,7 +102,7 @@ jobs:
           ref: ${{ env.BRANCH_NAME }}
 
       - name: Download Dependency Graph Artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: dependency_graph
 
