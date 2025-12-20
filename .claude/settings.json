@@ -30,8 +30,8 @@
       "mcp__Framelink_Figma_MCP__get_figma_data"
     ],
     "deny": [
-      "Bash(sudo: *)",
-      "Bash(rm: *)",
+      "Bash(sudo: :*)",
+      "Bash(rm: :*)",
       "Bash(rm -rf:*)",
       "Bash(git push:*)",
       "Bash(git commit:*)",

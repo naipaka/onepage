@@ -34,6 +34,7 @@ dorny
 DSYM
 endforeach
 endtemplate
+Firestore
 fixnum
 fluttercommunity
 flutterfire
