@@ -132,6 +132,13 @@ class HomePage extends HookConsumerWidget {
       ),
       drawer: const _Drawer(),
       body: KeyboardToolbar(
+        actions: (scope) {
+          return [
+            // Undo/Redo buttons for text editing.
+            TextHistoryActionButton.undo(scope: scope),
+            TextHistoryActionButton.redo(scope: scope),
+          ];
+        },
         onDismiss: checkInAppReview,
         child: SafeArea(
           bottom: false,

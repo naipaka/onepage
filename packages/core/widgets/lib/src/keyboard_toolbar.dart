@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// A toolbar widget that appears above the keyboard with undo/redo and dismiss buttons.
+/// A toolbar widget that appears above the keyboard with action buttons and
+/// dismiss button.
 ///
 /// Wraps the provided child widget and shows a keyboard toolbar when any
 /// TextField within the child gains focus.
@@ -9,12 +10,20 @@ class KeyboardToolbar extends StatefulWidget {
   const KeyboardToolbar({
     super.key,
     required this.child,
+    required this.actions,
     this.onDismiss,
   });
 
   /// The child widget to wrap with keyboard toolbar functionality.
   final Widget child;
-  
+
+  /// A function that returns a list of action widgets to display in the
+  /// toolbar.
+  ///
+  /// The function receives the [FocusScopeNode] to enable actions that need
+  /// to interact with the focused text field (e.g., undo/redo).
+  final List<Widget> Function(FocusScopeNode scope) actions;
+
   /// Called when the keyboard is dismissed via the dismiss button.
   final VoidCallback? onDismiss;
 
@@ -65,6 +74,7 @@ class _KeyboardToolbarState extends State<KeyboardToolbar> {
             bottom: 0,
             child: _KeyboardToolbarContent(
               scope: _scope,
+              actions: widget.actions,
               onDismiss: widget.onDismiss,
             ),
           ),
@@ -77,10 +87,12 @@ class _KeyboardToolbarState extends State<KeyboardToolbar> {
 class _KeyboardToolbarContent extends StatelessWidget {
   const _KeyboardToolbarContent({
     required this.scope,
+    required this.actions,
     this.onDismiss,
   });
 
   final FocusScopeNode scope;
+  final List<Widget> Function(FocusScopeNode scope) actions;
   final VoidCallback? onDismiss;
 
   @override
@@ -99,10 +111,7 @@ class _KeyboardToolbarContent extends StatelessWidget {
             Expanded(
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  _TextHistoryActionButton.undo(scope: scope),
-                  _TextHistoryActionButton.redo(scope: scope),
-                ],
+                children: actions(scope),
               ),
             ),
             IconButton(
@@ -115,97 +124,6 @@ class _KeyboardToolbarContent extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-/// Action type for text history buttons.
-enum _TextHistoryAction {
-  /// Undo action.
-  undo,
-
-  /// Redo action.
-  redo,
-}
-
-/// A button widget that performs undo/redo actions on the currently focused text field.
-class _TextHistoryActionButton extends StatelessWidget {
-  /// Creates a text history action button.
-  const _TextHistoryActionButton._({
-    super.key,
-    required this.action,
-    required this.icon,
-    required this.scope,
-  });
-
-  /// Creates an undo button.
-  const _TextHistoryActionButton.undo({Key? key, required FocusScopeNode scope})
-    : this._(
-        key: key,
-        action: _TextHistoryAction.undo,
-        icon: Icons.undo,
-        scope: scope,
-      );
-
-  /// Creates a redo button.
-  const _TextHistoryActionButton.redo({Key? key, required FocusScopeNode scope})
-    : this._(
-        key: key,
-        action: _TextHistoryAction.redo,
-        icon: Icons.redo,
-        scope: scope,
-      );
-
-  /// The action this button performs.
-  final _TextHistoryAction action;
-
-  /// The icon to display.
-  final IconData icon;
-
-  /// The focus scope node to monitor.
-  final FocusScopeNode scope;
-
-  /// Gets the current undo controller for the focused text field.
-  UndoHistoryController? get _currentController {
-    if (!scope.hasFocus) {
-      return null;
-    }
-    final focusedContext = scope.focusedChild?.context;
-    if (focusedContext == null) {
-      return null;
-    }
-    final state = focusedContext.findAncestorStateOfType<EditableTextState>();
-    return state?.widget.undoController;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: FocusManager.instance,
-      builder: (context, child) {
-        final controller = _currentController;
-        if (controller == null) {
-          // Return disabled button when no controller is available
-          return IconButton(
-            onPressed: null,
-            icon: Icon(icon),
-          );
-        }
-        return ListenableBuilder(
-          listenable: controller,
-          builder: (context, child) {
-            return IconButton(
-              onPressed: switch (action) {
-                _TextHistoryAction.undo =>
-                  controller.value.canUndo ? controller.undo : null,
-                _TextHistoryAction.redo =>
-                  controller.value.canRedo ? controller.redo : null,
-              },
-              icon: Icon(icon),
-            );
-          },
-        );
-      },
     );
   }
 }
