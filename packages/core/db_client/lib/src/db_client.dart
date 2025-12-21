@@ -12,7 +12,7 @@ part 'db_client.g.dart';
 /// This class represents the database client and provides methods to interact
 /// with the database.
 /// {@endtemplate}
-@DriftDatabase(tables: [Diaries])
+@DriftDatabase(tables: [Diaries, DiaryImages])
 class DbClient extends _$DbClient {
   /// {@macro db_client.DbClient}
   ///
@@ -28,7 +28,7 @@ class DbClient extends _$DbClient {
   DbClient.forTesting(super.e);
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   /// Opens a connection to the database.
   ///
@@ -50,6 +50,10 @@ class DbClient extends _$DbClient {
       onUpgrade: stepByStep(
         from1To2: (m, scheme) async {
           await m.createIndex(scheme.idxDiariesDate);
+        },
+        from2To3: (m, schema) async {
+          await m.createTable(schema.diaryImages);
+          await m.createIndex(schema.idxDiaryImagesDiaryId);
         },
       ),
     );
@@ -134,11 +138,11 @@ class DbClient extends _$DbClient {
     final query = selectOnly(diaries)
       ..addColumns([countExpr])
       ..where(
-        diaries.date.isBetweenValues(from, to) & 
-        diaries.content.isNotValue('') &
-        const CustomExpression<bool>("TRIM(content, ' \t\n\r') != ''"),
+        diaries.date.isBetweenValues(from, to) &
+            diaries.content.isNotValue('') &
+            const CustomExpression<bool>("TRIM(content, ' \t\n\r') != ''"),
       );
-    
+
     final result = await query.getSingle();
     return result.read(countExpr) ?? 0;
   }
