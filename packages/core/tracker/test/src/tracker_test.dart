@@ -17,32 +17,32 @@ void main() {
         TestWidgetsFlutterBinding.ensureInitialized();
         setupFirebaseCoreMocks();
         await Firebase.initializeApp();
-        
+
         final tracker = Tracker();
         expect(tracker, isA<Tracker>());
       });
-      
+
       test('Can create an instance with custom trackers', () async {
         TestWidgetsFlutterBinding.ensureInitialized();
         setupFirebaseCoreMocks();
         await Firebase.initializeApp();
-        
+
         final mockTracker = MockTrackable();
         final tracker = Tracker(trackers: [mockTracker]);
         expect(tracker, isA<Tracker>());
       });
-      
+
       test('Can create an instance for testing', () {
         final crashlytics = MockFirebaseCrashlytics();
         final analytics = MockFirebaseAnalytics();
         final mockTracker = MockTrackable();
-        
+
         final tracker = Tracker.forTesting(
           crashlytics: crashlytics,
           analytics: analytics,
           trackers: [mockTracker],
         );
-        
+
         expect(tracker, isA<Tracker>());
       });
     });

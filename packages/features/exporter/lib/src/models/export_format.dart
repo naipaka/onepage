@@ -21,15 +21,15 @@ abstract class ExportFormat with _$ExportFormat {
 
   /// Gets the display name for this export format.
   String get displayName => when(
-        pdf: () => 'PDF',
-        csv: () => 'CSV',
-        markdown: () => 'Markdown',
-      );
+    pdf: () => 'PDF',
+    csv: () => 'CSV',
+    markdown: () => 'Markdown',
+  );
 
   /// Gets the file extension for this export format.
   String get fileExtension => when(
-        pdf: () => '.pdf',
-        csv: () => '.csv',
-        markdown: () => '.md',
-      );
+    pdf: () => '.pdf',
+    csv: () => '.csv',
+    markdown: () => '.md',
+  );
 }

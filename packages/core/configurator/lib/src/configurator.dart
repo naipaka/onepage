@@ -8,15 +8,15 @@ import 'config.dart';
 /// Callback function type for value change notifications.
 typedef _ValueChanged<T> = void Function(T value);
 
-/// A wrapper for Firebase Remote Config that simplifies configuration 
+/// A wrapper for Firebase Remote Config that simplifies configuration
 /// management.
 ///
-/// This class provides a high-level interface for retrieving configuration 
-/// values from Firebase Remote Config with type safety and automatic value 
-/// conversion. It supports real-time configuration updates through reactive 
+/// This class provides a high-level interface for retrieving configuration
+/// values from Firebase Remote Config with type safety and automatic value
+/// conversion. It supports real-time configuration updates through reactive
 /// Config objects.
 class Configurator {
-  /// Creates a Configurator instance using the default Firebase Remote 
+  /// Creates a Configurator instance using the default Firebase Remote
   /// Config.
   Configurator() : _rc = FirebaseRemoteConfig.instance;
 
