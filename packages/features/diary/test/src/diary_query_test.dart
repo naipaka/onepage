@@ -154,26 +154,27 @@ void main() {
     test(
       'countUniqueDaysWithContentInRange returns count from dbClient',
       () async {
-      final mockDbClient = MockDbClient();
-      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
+        final mockDbClient = MockDbClient();
+        final diaryQuery = DiaryQuery(dbClient: mockDbClient);
 
-      final from = DateTime(2024);
-      final to = DateTime(2024, 1, 31);
-      const expectedCount = 5;
+        final from = DateTime(2024);
+        final to = DateTime(2024, 1, 31);
+        const expectedCount = 5;
 
-      when(
-        mockDbClient.countUniqueDaysWithContentInRange(from: from, to: to),
-      ).thenAnswer((_) async => expectedCount);
+        when(
+          mockDbClient.countUniqueDaysWithContentInRange(from: from, to: to),
+        ).thenAnswer((_) async => expectedCount);
 
-      final count = await diaryQuery.countUniqueDaysWithContentInRange(
-        from: from,
-        to: to,
-      );
+        final count = await diaryQuery.countUniqueDaysWithContentInRange(
+          from: from,
+          to: to,
+        );
 
-      expect(count, equals(expectedCount));
-      verify(
-        mockDbClient.countUniqueDaysWithContentInRange(from: from, to: to),
-      ).called(1);
-    });
+        expect(count, equals(expectedCount));
+        verify(
+          mockDbClient.countUniqueDaysWithContentInRange(from: from, to: to),
+        ).called(1);
+      },
+    );
   });
 }

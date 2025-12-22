@@ -80,7 +80,7 @@ void main() {
         const pdfFormat = ExportFormat.pdf();
         const csvFormat = ExportFormat.csv();
         const markdownFormat = ExportFormat.markdown();
-        
+
         expect(pdfFormat, isNot(equals(csvFormat)));
         expect(pdfFormat, isNot(equals(markdownFormat)));
         expect(csvFormat, isNot(equals(markdownFormat)));

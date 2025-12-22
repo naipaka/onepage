@@ -28,7 +28,7 @@ class CsvExporter extends Exporter {
     final title = _generateTitle(entries);
     final fileName = _generateFileName(title);
     final content = _generateCsvContent(entries);
-    
+
     return _saveToFile(content, fileName);
   }
 
@@ -45,7 +45,7 @@ class CsvExporter extends Exporter {
     final title = DateFormat.yMMMM().format(DateTime(year, month));
     final fileName = _generateFileName(title);
     final content = _generateCsvContentForMonth(filteredEntries, year, month);
-    
+
     return _saveToFile(content, fileName);
   }
 
@@ -64,23 +64,22 @@ class CsvExporter extends Exporter {
     final title = _generateDateRangeTitle(startDate, endDate);
     final fileName = _generateFileName(title);
     final content = _generateCsvContent(filteredEntries);
-    
+
     return _saveToFile(content, fileName);
   }
 
   String _generateCsvContent(List<DiaryEntry> entries) {
-    final buffer = StringBuffer()
-      ..writeln('Date,Content');
-    
+    final buffer = StringBuffer()..writeln('Date,Content');
+
     final sortedEntries = entries.toList()
       ..sort((a, b) => a.date.compareTo(b.date));
-    
+
     for (final entry in sortedEntries) {
       final dateStr = DateFormat('yyyy-MM-dd').format(entry.date);
       final escapedContent = _escapeCsvField(entry.content);
       buffer.writeln('$dateStr,$escapedContent');
     }
-    
+
     return buffer.toString();
   }
 
@@ -89,18 +88,17 @@ class CsvExporter extends Exporter {
     int year,
     int month,
   ) {
-    final buffer = StringBuffer()
-      ..writeln('Date,Content');
-    
+    final buffer = StringBuffer()..writeln('Date,Content');
+
     final daysInMonth = DateTime(year, month + 1, 0).day;
     final entryMap = <int, DiaryEntry>{};
-    
+
     for (final entry in entries) {
       if (entry.date.year == year && entry.date.month == month) {
         entryMap[entry.date.day] = entry;
       }
     }
-    
+
     for (var day = 1; day <= daysInMonth; day++) {
       final date = DateTime(year, month, day);
       final dateStr = DateFormat('yyyy-MM-dd').format(date);
@@ -109,7 +107,7 @@ class CsvExporter extends Exporter {
       final escapedContent = _escapeCsvField(content);
       buffer.writeln('$dateStr,$escapedContent');
     }
-    
+
     return buffer.toString();
   }
 
@@ -141,18 +139,18 @@ class CsvExporter extends Exporter {
   }
 
   String _generateDateRangeTitle(DateTime startDate, DateTime endDate) {
-    if (startDate.year == endDate.year && 
+    if (startDate.year == endDate.year &&
         startDate.month == endDate.month &&
         startDate.day == endDate.day) {
       return DateFormat.yMMMEd().format(startDate);
     }
-    
+
     if (startDate.year == endDate.year && startDate.month == endDate.month) {
       return DateFormat.yMMMM().format(startDate);
     }
-    
+
     return '${DateFormat.yMMMd().format(startDate)} - '
-           '${DateFormat.yMMMd().format(endDate)}';
+        '${DateFormat.yMMMd().format(endDate)}';
   }
 
   String _generateFileName(String title) {
@@ -162,7 +160,9 @@ class CsvExporter extends Exporter {
       clock.now(),
     );
 
-    final sanitizedTitle = title.replaceAll(RegExp(r'[^\w\s-]'), '').replaceAll(RegExp(r'\s+'), ' ');
+    final sanitizedTitle = title
+        .replaceAll(RegExp(r'[^\w\s-]'), '')
+        .replaceAll(RegExp(r'\s+'), ' ');
     return '${appName}_${sanitizedTitle}_v$version-$timestamp.csv';
   }
 

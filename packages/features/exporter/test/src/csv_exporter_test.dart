@@ -16,14 +16,14 @@ void main() {
     setUp(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-        const MethodChannel('plugins.flutter.io/path_provider'),
-        (MethodCall methodCall) async {
-          if (methodCall.method == 'getTemporaryDirectory') {
-            return tempDirPath;
-          }
-          return null;
-        },
-      );
+            const MethodChannel('plugins.flutter.io/path_provider'),
+            (MethodCall methodCall) async {
+              if (methodCall.method == 'getTemporaryDirectory') {
+                return tempDirPath;
+              }
+              return null;
+            },
+          );
       packageInfo = PackageInfo(
         appName: 'OnePage',
         packageName: 'com.example.onepage',
@@ -36,9 +36,9 @@ void main() {
     tearDown(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-        const MethodChannel('plugins.flutter.io/path_provider'),
-        null,
-      );
+            const MethodChannel('plugins.flutter.io/path_provider'),
+            null,
+          );
     });
 
     test('is an instance of Exporter', () {
@@ -431,7 +431,7 @@ void main() {
     group('file handling', () {
       test('saves to temporary directory', () async {
         final file = await exporter.export(entries: []);
-        
+
         expect(file.path, startsWith(tempDirPath));
       });
 
@@ -444,13 +444,13 @@ void main() {
         ];
 
         final file = await exporter.export(entries: entries);
-        
+
         expect(file.existsSync(), true);
       });
 
       test('sanitizes filename', () async {
         final now = DateTime(2024, 3, 15, 12, 30);
-        
+
         packageInfo = PackageInfo(
           appName: 'One/Page:App',
           packageName: 'com.example.onepage',

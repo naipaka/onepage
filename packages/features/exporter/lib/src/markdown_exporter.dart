@@ -28,7 +28,7 @@ class MarkdownExporter extends Exporter {
     final title = _generateTitle(entries);
     final fileName = _generateFileName(title);
     final content = _generateMarkdownContent(entries, title);
-    
+
     return _saveToFile(content, fileName);
   }
 
@@ -50,7 +50,7 @@ class MarkdownExporter extends Exporter {
       year,
       month,
     );
-    
+
     return _saveToFile(content, fileName);
   }
 
@@ -69,7 +69,7 @@ class MarkdownExporter extends Exporter {
     final title = _generateDateRangeTitle(startDate, endDate);
     final fileName = _generateFileName(title);
     final content = _generateMarkdownContent(filteredEntries, title);
-    
+
     return _saveToFile(content, fileName);
   }
 
@@ -78,16 +78,16 @@ class MarkdownExporter extends Exporter {
       ..writeln('# $title')
       ..writeln()
       ..writeln(
-          'Exported from ${packageInfo.appName} v${packageInfo.version}',
-        )
+        'Exported from ${packageInfo.appName} v${packageInfo.version}',
+      )
       ..writeln(DateFormat.yMMMd().add_jm().format(clock.now()))
       ..writeln()
       ..writeln('---')
       ..writeln();
-    
+
     final sortedEntries = entries.toList()
       ..sort((a, b) => a.date.compareTo(b.date));
-    
+
     for (final entry in sortedEntries) {
       buffer
         ..writeln('## ${DateFormat.yMMMEd().format(entry.date)}')
@@ -95,7 +95,7 @@ class MarkdownExporter extends Exporter {
         ..writeln(entry.content)
         ..writeln();
     }
-    
+
     return buffer.toString();
   }
 
@@ -109,38 +109,38 @@ class MarkdownExporter extends Exporter {
       ..writeln('# $title')
       ..writeln()
       ..writeln(
-          'Exported from ${packageInfo.appName} v${packageInfo.version}',
-        )
+        'Exported from ${packageInfo.appName} v${packageInfo.version}',
+      )
       ..writeln(DateFormat.yMMMd().add_jm().format(clock.now()))
       ..writeln()
       ..writeln('---')
       ..writeln();
-    
+
     final daysInMonth = DateTime(year, month + 1, 0).day;
     final entryMap = <int, DiaryEntry>{};
-    
+
     for (final entry in entries) {
       if (entry.date.year == year && entry.date.month == month) {
         entryMap[entry.date.day] = entry;
       }
     }
-    
+
     for (var day = 1; day <= daysInMonth; day++) {
       final date = DateTime(year, month, day);
       buffer
         ..writeln('## ${DateFormat.yMMMEd().format(date)}')
         ..writeln();
-      
+
       final entry = entryMap[day];
       if (entry != null && entry.content.isNotEmpty) {
         buffer.writeln(entry.content);
       } else {
         buffer.writeln('No entry');
       }
-      
+
       buffer.writeln();
     }
-    
+
     return buffer.toString();
   }
 
@@ -162,18 +162,18 @@ class MarkdownExporter extends Exporter {
   }
 
   String _generateDateRangeTitle(DateTime startDate, DateTime endDate) {
-    if (startDate.year == endDate.year && 
+    if (startDate.year == endDate.year &&
         startDate.month == endDate.month &&
         startDate.day == endDate.day) {
       return DateFormat.yMMMEd().format(startDate);
     }
-    
+
     if (startDate.year == endDate.year && startDate.month == endDate.month) {
       return DateFormat.yMMMM().format(startDate);
     }
-    
+
     return '${DateFormat.yMMMd().format(startDate)} - '
-           '${DateFormat.yMMMd().format(endDate)}';
+        '${DateFormat.yMMMd().format(endDate)}';
   }
 
   String _generateFileName(String title) {

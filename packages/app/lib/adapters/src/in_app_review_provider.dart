@@ -42,7 +42,7 @@ Future<bool> isEligibleForInAppReview(Ref ref) async {
 Future<InAppReviewer> inAppReviewer(Ref ref) async {
   final isEligible = await ref.watch(isEligibleForInAppReviewProvider.future);
   final prefsClient = ref.watch(prefsClientProvider);
-  
+
   return InAppReviewer(
     isEligible: isEligible,
     prefsClient: prefsClient,

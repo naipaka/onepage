@@ -16,14 +16,14 @@ void main() {
     setUp(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-        const MethodChannel('plugins.flutter.io/path_provider'),
-        (MethodCall methodCall) async {
-          if (methodCall.method == 'getTemporaryDirectory') {
-            return tempDirPath;
-          }
-          return null;
-        },
-      );
+            const MethodChannel('plugins.flutter.io/path_provider'),
+            (MethodCall methodCall) async {
+              if (methodCall.method == 'getTemporaryDirectory') {
+                return tempDirPath;
+              }
+              return null;
+            },
+          );
       packageInfo = PackageInfo(
         appName: 'OnePage',
         packageName: 'com.example.onepage',
@@ -36,9 +36,9 @@ void main() {
     tearDown(() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-        const MethodChannel('plugins.flutter.io/path_provider'),
-        null,
-      );
+            const MethodChannel('plugins.flutter.io/path_provider'),
+            null,
+          );
     });
 
     test('is an instance of Exporter', () {
@@ -109,11 +109,11 @@ void main() {
         final lines = content.split('\n');
 
         expect(content, contains('# January 2024'));
-        
+
         final firstIndex = lines.indexOf('## Wed, Jan 10, 2024');
         final secondIndex = lines.indexOf('## Sat, Jan 20, 2024');
         final thirdIndex = lines.indexOf('## Tue, Jan 30, 2024');
-        
+
         expect(firstIndex, lessThan(secondIndex));
         expect(secondIndex, lessThan(thirdIndex));
       });
@@ -165,9 +165,9 @@ void main() {
           ];
 
           final file = await exporter.export(entries: entries);
-          const expectedFileName = 
+          const expectedFileName =
               'OnePage_January 2024_v1.0.0-20240315144530.md';
-          
+
           expect(p.basename(file.path), equals(expectedFileName));
         });
       });
@@ -184,7 +184,7 @@ void main() {
         );
 
         final file = await specialExporter.export(entries: []);
-        
+
         expect(file.path, contains('OnePage_'));
         expect(file.path, isNot(contains('@')));
         expect(file.path, isNot(contains('!')));
@@ -203,7 +203,7 @@ void main() {
 
           expect(file.path, contains('.md'));
           expect(file.path, contains('January 2024'));
-          
+
           final content = await file.readAsString();
           expect(content, contains('# January 2024'));
           expect(content, contains('Exported from OnePage v1.0.0'));
@@ -227,9 +227,9 @@ void main() {
           year: 2024,
           month: 1,
         );
-        
+
         final content = await file.readAsString();
-        
+
         expect(content, contains('## Mon, Jan 1, 2024'));
         expect(content, contains('New Year entry'));
         expect(content, contains('## Mon, Jan 15, 2024'));
@@ -249,17 +249,15 @@ void main() {
           year: 2024,
           month: 2,
         );
-        
+
         final content = await file.readAsString();
-        
+
         expect(content, contains('## Thu, Feb 1, 2024'));
         expect(content, contains('## Thu, Feb 15, 2024'));
         expect(content, contains('February entry'));
         expect(content, contains('## Thu, Feb 29, 2024'));
-        
-        final noEntryCount = 'No entry'
-            .allMatches(content)
-            .length;
+
+        final noEntryCount = 'No entry'.allMatches(content).length;
         expect(noEntryCount, equals(28));
       });
 
@@ -280,9 +278,9 @@ void main() {
           year: 2024,
           month: 1,
         );
-        
+
         final content = await file.readAsString();
-        
+
         expect(content, contains('January entry'));
         expect(content, isNot(contains('February entry')));
       });
@@ -300,9 +298,9 @@ void main() {
           year: 2024,
           month: 1,
         );
-        
+
         final content = await file.readAsString();
-        
+
         expect(content, contains('## Mon, Jan 15, 2024'));
         expect(content, contains('No entry'));
       });
@@ -315,10 +313,10 @@ void main() {
             year: 2024,
             month: 2,
           );
-          
-          const expectedFileName = 
+
+          const expectedFileName =
               'OnePage_February 2024_v1.0.0-20240315144530.md';
-          
+
           expect(p.basename(file.path), equals(expectedFileName));
         });
       });
@@ -328,13 +326,13 @@ void main() {
       test('exports empty date range', () async {
         final startDate = DateTime(2024);
         final endDate = DateTime(2024, 1, 31);
-        
+
         final file = await exporter.exportDateRange(
           entries: [],
           startDate: startDate,
           endDate: endDate,
         );
-        
+
         final content = await file.readAsString();
         expect(content, contains('# January 2024'));
       });
@@ -364,9 +362,9 @@ void main() {
           startDate: DateTime(2024),
           endDate: DateTime(2024, 1, 31),
         );
-        
+
         final content = await file.readAsString();
-        
+
         expect(content, contains('Within range'));
         expect(content, contains('Also within'));
         expect(content, isNot(contains('Before range')));
@@ -390,22 +388,22 @@ void main() {
           startDate: DateTime(2024),
           endDate: DateTime(2024, 1, 31),
         );
-        
+
         final content = await file.readAsString();
-        
+
         expect(content, contains('Start date entry'));
         expect(content, contains('End date entry'));
       });
 
       test('generates title for same day range', () async {
         final date = DateTime(2024, 1, 15);
-        
+
         final file = await exporter.exportDateRange(
           entries: [],
           startDate: date,
           endDate: date,
         );
-        
+
         final content = await file.readAsString();
         expect(content, contains('# Mon, Jan 15, 2024'));
       });
@@ -416,7 +414,7 @@ void main() {
           startDate: DateTime(2024, 1, 15),
           endDate: DateTime(2024, 2, 15),
         );
-        
+
         final content = await file.readAsString();
         expect(content, contains('# Jan 15, 2024 - Feb 15, 2024'));
       });
@@ -429,10 +427,10 @@ void main() {
             startDate: DateTime(2024, 1, 15),
             endDate: DateTime(2024, 2, 15),
           );
-          
-          const expectedFileName = 
+
+          const expectedFileName =
               'OnePage_Jan 15 2024 - Feb 15 2024_v1.0.0-20240315144530.md';
-          
+
           expect(p.basename(file.path), equals(expectedFileName));
         });
       });
@@ -454,13 +452,13 @@ void main() {
           startDate: DateTime(2024),
           endDate: DateTime(2024, 1, 31),
         );
-        
+
         final content = await file.readAsString();
         final lines = content.split('\n');
-        
+
         final firstIndex = lines.indexOf('First');
         final secondIndex = lines.indexOf('Second');
-        
+
         expect(firstIndex, lessThan(secondIndex));
       });
     });
@@ -478,7 +476,7 @@ void main() {
         );
 
         final file = await specialExporter.export(entries: []);
-        
+
         final fileName = p.basename(file.path);
         expect(fileName, isNot(contains('/')));
         expect(fileName, isNot(contains(r'\')));
@@ -487,7 +485,7 @@ void main() {
 
       test('preserves file path structure', () async {
         final file = await exporter.export(entries: []);
-        
+
         expect(file.path, startsWith(tempDirPath));
         expect(file.path, endsWith('.md'));
       });

@@ -113,8 +113,8 @@ class SettingsRouteData extends GoRouteData with $SettingsRouteData {
 /// {@template onepage.HapticFeedbackRouteData}
 /// Haptic feedback route data.
 /// {@endtemplate}
-class HapticFeedbackRouteData extends GoRouteData with $HapticFeedbackRouteData
-    {
+class HapticFeedbackRouteData extends GoRouteData
+    with $HapticFeedbackRouteData {
   /// {@macro onepage.HapticFeedbackRouteData}
   const HapticFeedbackRouteData();
 

@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
+import 'generated/schema_v3.dart' as v3;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -80,6 +81,69 @@ void main() {
         final indexes = await newDb.customSelect(selectIndexQuery).get();
         expect(indexes.length, 1);
         expect(indexes.first.data['name'], 'idx_diaries_date');
+      },
+    );
+  });
+
+  test('migration from v2 to v3 does not corrupt data', () async {
+    final date = DateTime(2024);
+    final oldDiariesData = <v2.DiariesData>[
+      v2.DiariesData(
+        id: 1,
+        content: 'Test diary',
+        date: date,
+        createdAt: date,
+        updatedAt: date,
+      ),
+    ];
+    final expectedNewDiariesData = <v3.DiariesData>[
+      v3.DiariesData(
+        id: 1,
+        content: 'Test diary',
+        date: date.millisecondsSinceEpoch ~/ 1000,
+        createdAt: date.millisecondsSinceEpoch ~/ 1000,
+        updatedAt: date.millisecondsSinceEpoch ~/ 1000,
+      ),
+    ];
+
+    const selectTableQuery =
+        'SELECT name FROM sqlite_master '
+        "WHERE type='table' "
+        "AND name='diary_images'";
+
+    const selectIndexQuery =
+        'SELECT name FROM sqlite_master '
+        "WHERE type='index' "
+        "AND name='idx_diary_images_diary_id'";
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 2,
+      newVersion: 3,
+      createOld: v2.DatabaseAtV2.new,
+      createNew: v3.DatabaseAtV3.new,
+      openTestedDatabase: DbClient.new,
+      createItems: (batch, oldDb) async {
+        batch.insertAll(oldDb.diaries, oldDiariesData);
+
+        // Verify that the diary_images table does not exist in the old database
+        final tables = await oldDb.customSelect(selectTableQuery).get();
+        expect(tables, isEmpty);
+      },
+      validateItems: (newDb) async {
+        expect(expectedNewDiariesData, await newDb.select(newDb.diaries).get());
+
+        // Verify that the diary_images table exists in the new database
+        final tables = await newDb.customSelect(selectTableQuery).get();
+        expect(tables.length, 1);
+        expect(tables.first.data['name'], 'diary_images');
+
+        // Verify that the diary_images index exists in the new database
+        final indexes = await newDb.customSelect(selectIndexQuery).get();
+        expect(indexes.length, 1);
+        expect(indexes.first.data['name'], 'idx_diary_images_diary_id');
+
+        // Verify that the diary_images table is empty
+        expect(await newDb.select(newDb.diaryImages).get(), isEmpty);
       },
     );
   });

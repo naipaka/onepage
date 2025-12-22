@@ -261,7 +261,7 @@ class PdfExporter extends Exporter {
   ) {
     final daysInMonth = DateTime(year, month + 1, 0).day;
     final dateFormat = DateFormat.yMMMEd();
-    
+
     final entryMap = <int, DiaryEntry>{};
     for (final entry in entries) {
       if (entry.date.year == year && entry.date.month == month) {
@@ -274,7 +274,7 @@ class PdfExporter extends Exporter {
       final day = index + 1;
       final date = DateTime(year, month, day);
       final entry = entryMap[day];
-      
+
       dayWidgets.add(
         pw.Container(
           margin: const pw.EdgeInsets.only(bottom: 16),
@@ -293,16 +293,14 @@ class PdfExporter extends Exporter {
               ),
               pw.SizedBox(height: 4),
               pw.Text(
-                entry?.content.isEmpty == false 
-                    ? entry!.content 
-                    : 'No entry',
+                entry?.content.isEmpty == false ? entry!.content : 'No entry',
                 style: _getTextStyle(
                   baseFont: baseFont,
                   jpFont: jpFont,
                   fontSize: 10,
                   lineSpacing: 1.5,
-                  color: entry?.content.isEmpty == false 
-                      ? PdfColors.black 
+                  color: entry?.content.isEmpty == false
+                      ? PdfColors.black
                       : PdfColors.grey400,
                 ),
               ),
@@ -316,7 +314,6 @@ class PdfExporter extends Exporter {
     return pw.Column(children: dayWidgets);
   }
 
-
   String _generateFileName(String title) {
     final appName = packageInfo.appName;
     final version = packageInfo.version;
@@ -329,18 +326,18 @@ class PdfExporter extends Exporter {
   }
 
   String _generateDateRangeTitle(DateTime startDate, DateTime endDate) {
-    if (startDate.year == endDate.year && 
+    if (startDate.year == endDate.year &&
         startDate.month == endDate.month &&
         startDate.day == endDate.day) {
       return DateFormat.yMMMEd().format(startDate);
     }
-    
+
     if (startDate.year == endDate.year && startDate.month == endDate.month) {
       return DateFormat.yMMMM().format(startDate);
     }
-    
+
     return '${DateFormat.yMMMd().format(startDate)} - '
-           '${DateFormat.yMMMd().format(endDate)}';
+        '${DateFormat.yMMMd().format(endDate)}';
   }
 
   Future<File> _saveToFile(pw.Document pdf, String fileName) async {
