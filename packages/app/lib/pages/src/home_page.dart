@@ -137,6 +137,8 @@ class HomePage extends HookConsumerWidget {
             // Undo/Redo buttons for text editing.
             TextHistoryActionButton.undo(scope: scope),
             TextHistoryActionButton.redo(scope: scope),
+            // Image selection button
+            const ImageSelectionActionButton(),
           ];
         },
         onDismiss: checkInAppReview,
