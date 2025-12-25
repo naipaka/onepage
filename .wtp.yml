@@ -1,0 +1,61 @@
+# Worktree Plus Configuration
+version: "1.0"
+
+# Default settings for worktrees
+defaults:
+  # Base directory for worktrees (relative to repository root)
+  base_dir: ../worktrees
+
+# Hooks that run after creating a worktree
+hooks:
+  post_create:
+    # Copy gitignored files from MAIN worktree to new worktree
+    # Note: 'from' is relative to main worktree, 'to' is relative to new worktree
+    - type: copy
+      from: packages/app/dart_defines/dev.env
+      to: packages/app/dart_defines/dev.env
+    - type: copy
+      from: packages/app/dart_defines/prod.env
+      to: packages/app/dart_defines/prod.env
+    - type: copy
+      from: packages/app/lib/environment/src/firebase_options_dev.dart
+      to: packages/app/lib/environment/src/firebase_options_dev.dart
+    - type: copy
+      from: packages/app/lib/environment/src/firebase_options_prod.dart
+      to: packages/app/lib/environment/src/firebase_options_prod.dart
+    - type: copy
+      from: packages/app/android/app/src/dev/google-services.json
+      to: packages/app/android/app/src/dev/google-services.json
+    - type: copy
+      from: packages/app/android/app/src/prod/google-services.json
+      to: packages/app/android/app/src/prod/google-services.json
+    - type: copy
+      from: packages/app/ios/dev/GoogleService-Info.plist
+      to: packages/app/ios/dev/GoogleService-Info.plist
+    - type: copy
+      from: packages/app/ios/prod/GoogleService-Info.plist
+      to: packages/app/ios/prod/GoogleService-Info.plist
+    - type: copy
+      from: packages/app/ios/dev/firebase_app_id_file.json
+      to: packages/app/ios/dev/firebase_app_id_file.json
+    - type: copy
+      from: packages/app/ios/prod/firebase_app_id_file.json
+      to: packages/app/ios/prod/firebase_app_id_file.json
+    - type: copy
+      from: packages/app/android/key.properties
+      to: packages/app/android/key.properties
+
+    # Example: Run a command to show all worktrees
+    - type: command
+      command: wtp list
+
+    # Copy AI context files:
+    - type: copy
+      from: .claude # Claude AI context
+      to: .claude
+
+    # Run setup commands:
+    - type: command
+      command: fvm install && fvm flutter pub get
+    - type: command
+      command: echo "Created new worktree!"

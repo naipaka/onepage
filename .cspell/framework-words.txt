@@ -108,6 +108,7 @@ uuid
 wholemodule
 wholename
 worktree
+worktrees
 xcassets
 xcconfig
 xcfilelist
