@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
+import 'package:photo_selector/photo_selector.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
@@ -138,7 +139,12 @@ class HomePage extends HookConsumerWidget {
             TextHistoryActionButton.undo(scope: scope),
             TextHistoryActionButton.redo(scope: scope),
             // Image selection button
-            const ImageSelectionActionButton(),
+            _ImageSelectionActionButton(
+              onSelected: (photoId) {
+                // Save the selected image ID to the diary entry.
+                debugPrint('Selected: $photoId');
+              },
+            ),
           ];
         },
         onDismiss: checkInAppReview,
@@ -828,6 +834,45 @@ class _HighlightedText extends StatelessWidget {
           color: colorScheme.onSurface,
         ),
       ),
+    );
+  }
+}
+
+/// A button widget that opens the photo selector to pick an image
+/// from the device's photo library.
+///
+/// When an image is selected, [onSelected] is called with the photo ID.
+class _ImageSelectionActionButton extends StatelessWidget {
+  const _ImageSelectionActionButton({
+    this.onSelected,
+  });
+
+  /// Called when an image is successfully selected.
+  /// Receives the photo ID (localIdentifier on iOS, MediaStore ID on Android).
+  final ValueChanged<String>? onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = context.t.home.photoSelector;
+
+    Future<void> selectImage() async {
+      final photoId = await showPhotoSelector(
+        context,
+        confirmLabel: t.confirm,
+        noPhotosLabel: t.noPhotos,
+        permissionDeniedTitle: t.permission.deniedTitle,
+        permissionDeniedMessage: t.permission.deniedMessage,
+        openSettingsLabel: t.permission.openSettings,
+      );
+      if (photoId == null) {
+        return;
+      }
+      onSelected?.call(photoId);
+    }
+
+    return IconButton(
+      onPressed: onSelected != null ? selectImage : null,
+      icon: const Icon(Icons.add_photo_alternate_outlined),
     );
   }
 }
