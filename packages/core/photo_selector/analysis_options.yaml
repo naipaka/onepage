@@ -1,0 +1,6 @@
+include: package:altive_lints/altive_lints.yaml
+analyzer:
+  plugins:
+    - custom_lint
+  exclude:
+    - "**/*.mocks.dart"

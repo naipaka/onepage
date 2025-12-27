@@ -37,6 +37,10 @@ This package supports the internationalization and localization of the applicati
 
 This package provides local notification functionality for diary reminders with timezone-aware scheduling.
 
+### [core/photo_selector](packages/core/photo_selector)
+
+This package provides photo selection functionality from device photo library with permission handling and album browsing.
+
 ### [core/prefs_client](packages/core/prefs_client)
 
 This package provides a type-safe wrapper around SharedPreferences for the application.

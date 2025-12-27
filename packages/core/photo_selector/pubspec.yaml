@@ -1,0 +1,21 @@
+name: photo_selector
+description: A package for selecting photos from device photo library with permission handling and album browsing.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.10.0
+
+resolution: workspace
+
+dependencies:
+  app_settings: ^6.1.1
+  flutter:
+    sdk: flutter
+  photo_manager: ^3.8.3
+  visibility_detector: ^0.4.0+2
+
+dev_dependencies:
+  altive_lints: ^1.25.0
+  flutter_test:
+    sdk: flutter

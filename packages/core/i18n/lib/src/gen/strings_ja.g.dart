@@ -76,6 +76,7 @@ class _TranslationsHomeJa implements TranslationsHomeEn {
 	@override String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 	@override String get datePickerCancel => 'キャンセル';
 	@override String get datePickerConfirm => '決定';
+	@override late final _TranslationsHomePhotoSelectorJa photoSelector = _TranslationsHomePhotoSelectorJa._(_root);
 }
 
 // Path: backup
@@ -173,6 +174,18 @@ class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestBut
 	@override String get updateNow => '更新する';
 }
 
+// Path: home.photoSelector
+class _TranslationsHomePhotoSelectorJa implements TranslationsHomePhotoSelectorEn {
+	_TranslationsHomePhotoSelectorJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get confirm => '決定';
+	@override String get noPhotos => '写真がありません';
+	@override late final _TranslationsHomePhotoSelectorPermissionJa permission = _TranslationsHomePhotoSelectorPermissionJa._(_root);
+}
+
 // Path: backup.actions
 class _TranslationsBackupActionsJa implements TranslationsBackupActionsEn {
 	_TranslationsBackupActionsJa._(this._root);
@@ -208,6 +221,18 @@ class _TranslationsExportActionsJa implements TranslationsExportActionsEn {
 	@override String get export => 'エクスポート';
 }
 
+// Path: home.photoSelector.permission
+class _TranslationsHomePhotoSelectorPermissionJa implements TranslationsHomePhotoSelectorPermissionEn {
+	_TranslationsHomePhotoSelectorPermissionJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get deniedTitle => '写真ライブラリへのアクセス権限が必要です';
+	@override String get deniedMessage => '設定からアプリに写真ライブラリへのアクセスを許可してください';
+	@override String get openSettings => '設定を開く';
+}
+
 /// The flat map containing all translations for locale <ja>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -230,6 +255,11 @@ extension on TranslationsJa {
 			'home.errorSavingDiarySolution' => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください',
 			'home.datePickerCancel' => 'キャンセル',
 			'home.datePickerConfirm' => '決定',
+			'home.photoSelector.confirm' => '決定',
+			'home.photoSelector.noPhotos' => '写真がありません',
+			'home.photoSelector.permission.deniedTitle' => '写真ライブラリへのアクセス権限が必要です',
+			'home.photoSelector.permission.deniedMessage' => '設定からアプリに写真ライブラリへのアクセスを許可してください',
+			'home.photoSelector.permission.openSettings' => '設定を開く',
 			'backup.title' => 'Backup',
 			'backup.description' => '機種変更でも安心バックアップ',
 			'backup.explanation' => 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）',

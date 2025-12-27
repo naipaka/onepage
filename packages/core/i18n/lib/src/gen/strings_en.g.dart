@@ -107,6 +107,8 @@ class TranslationsHomeEn {
 
 	/// en: 'OK'
 	String get datePickerConfirm => 'OK';
+
+	late final TranslationsHomePhotoSelectorEn photoSelector = TranslationsHomePhotoSelectorEn._(_root);
 }
 
 // Path: backup
@@ -283,6 +285,23 @@ class TranslationsUpdateRequestButtonEn {
 	String get updateNow => 'Update Now';
 }
 
+// Path: home.photoSelector
+class TranslationsHomePhotoSelectorEn {
+	TranslationsHomePhotoSelectorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'OK'
+	String get confirm => 'OK';
+
+	/// en: 'No photos available'
+	String get noPhotos => 'No photos available';
+
+	late final TranslationsHomePhotoSelectorPermissionEn permission = TranslationsHomePhotoSelectorPermissionEn._(_root);
+}
+
 // Path: backup.actions
 class TranslationsBackupActionsEn {
 	TranslationsBackupActionsEn._(this._root);
@@ -334,6 +353,24 @@ class TranslationsExportActionsEn {
 	String get export => 'Export';
 }
 
+// Path: home.photoSelector.permission
+class TranslationsHomePhotoSelectorPermissionEn {
+	TranslationsHomePhotoSelectorPermissionEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Photo library access required'
+	String get deniedTitle => 'Photo library access required';
+
+	/// en: 'Please allow access to your photo library in settings'
+	String get deniedMessage => 'Please allow access to your photo library in settings';
+
+	/// en: 'Open Settings'
+	String get openSettings => 'Open Settings';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -356,6 +393,11 @@ extension on Translations {
 			'home.errorSavingDiarySolution' => 'We apologize, but please copy your text and restart the app',
 			'home.datePickerCancel' => 'Cancel',
 			'home.datePickerConfirm' => 'OK',
+			'home.photoSelector.confirm' => 'OK',
+			'home.photoSelector.noPhotos' => 'No photos available',
+			'home.photoSelector.permission.deniedTitle' => 'Photo library access required',
+			'home.photoSelector.permission.deniedMessage' => 'Please allow access to your photo library in settings',
+			'home.photoSelector.permission.openSettings' => 'Open Settings',
 			'backup.title' => 'Backup',
 			'backup.description' => 'Backup for a Smooth Device Switch',
 			'backup.explanation' => 'Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.).',
