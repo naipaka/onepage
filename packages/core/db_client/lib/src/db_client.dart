@@ -146,4 +146,42 @@ class DbClient extends _$DbClient {
     final result = await query.getSingle();
     return result.read(countExpr) ?? 0;
   }
+
+  /// Adds a diary image entry to the database.
+  ///
+  /// This method takes [diaryId] and [photoId] as parameters and inserts
+  /// a new diary image entry into the 'diary_images' table.
+  /// It returns the inserted diary image entry.
+  Future<DiaryImage> insertDiaryImage({
+    required int diaryId,
+    required String photoId,
+  }) {
+    final diaryImage = DiaryImagesCompanion(
+      diaryId: Value(diaryId),
+      photoId: Value(photoId),
+    );
+    return into(diaryImages).insertReturning(diaryImage);
+  }
+
+  /// Retrieves diary images from the database by diary ID.
+  ///
+  /// This method takes an integer [diaryId] as a parameter and returns
+  /// a list of [DiaryImage] objects associated with the specified diary ID.
+  Future<List<DiaryImage>> getDiaryImagesByDiaryId({
+    required int diaryId,
+  }) {
+    final query = select(diaryImages)
+      ..where((tbl) => tbl.diaryId.equals(diaryId));
+    return query.get();
+  }
+
+  /// Deletes a diary image entry from the database.
+  ///
+  /// This method takes an integer [id] as a parameter and deletes
+  /// the diary image with the specified ID.
+  /// It returns the number of rows affected.
+  Future<int> deleteDiaryImage({required int id}) {
+    final query = delete(diaryImages)..where((tbl) => tbl.id.equals(id));
+    return query.go();
+  }
 }
