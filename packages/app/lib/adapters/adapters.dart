@@ -1,6 +1,7 @@
 export 'src/backup_provider.dart';
 export 'src/configurator_provider.dart';
 export 'src/db_client_provider.dart';
+export 'src/diary_image_provider.dart';
 export 'src/diary_provider.dart';
 export 'src/exporter_provider.dart';
 export 'src/haptics_provider.dart';

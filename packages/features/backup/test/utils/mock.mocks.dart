@@ -104,72 +104,77 @@ class _FakeDiary_12 extends _i1.SmartFake implements _i3.Diary {
     : super(parent, parentInvocation);
 }
 
-class _FakeMigrator_13 extends _i1.SmartFake implements _i2.Migrator {
-  _FakeMigrator_13(Object parent, Invocation parentInvocation)
+class _FakeDiaryImage_13 extends _i1.SmartFake implements _i3.DiaryImage {
+  _FakeDiaryImage_13(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFuture_14<T> extends _i1.SmartFake implements _i5.Future<T> {
-  _FakeFuture_14(Object parent, Invocation parentInvocation)
+class _FakeMigrator_14 extends _i1.SmartFake implements _i2.Migrator {
+  _FakeMigrator_14(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeInsertStatement_15<T1 extends _i2.Table, D1> extends _i1.SmartFake
+class _FakeFuture_15<T> extends _i1.SmartFake implements _i5.Future<T> {
+  _FakeFuture_15(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeInsertStatement_16<T1 extends _i2.Table, D1> extends _i1.SmartFake
     implements _i2.InsertStatement<T1, D1> {
-  _FakeInsertStatement_15(Object parent, Invocation parentInvocation)
+  _FakeInsertStatement_16(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeUpdateStatement_16<T extends _i2.Table, D> extends _i1.SmartFake
+class _FakeUpdateStatement_17<T extends _i2.Table, D> extends _i1.SmartFake
     implements _i2.UpdateStatement<T, D> {
-  _FakeUpdateStatement_16(Object parent, Invocation parentInvocation)
+  _FakeUpdateStatement_17(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSimpleSelectStatement_17<T1 extends _i2.HasResultSet, D>
+class _FakeSimpleSelectStatement_18<T1 extends _i2.HasResultSet, D>
     extends _i1.SmartFake
     implements _i2.SimpleSelectStatement<T1, D> {
-  _FakeSimpleSelectStatement_17(Object parent, Invocation parentInvocation)
+  _FakeSimpleSelectStatement_18(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeJoinedSelectStatement_18<FirstT extends _i2.HasResultSet, FirstD>
+class _FakeJoinedSelectStatement_19<FirstT extends _i2.HasResultSet, FirstD>
     extends _i1.SmartFake
     implements _i2.JoinedSelectStatement<FirstT, FirstD> {
-  _FakeJoinedSelectStatement_18(Object parent, Invocation parentInvocation)
+  _FakeJoinedSelectStatement_19(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeBaseSelectStatement_19<Row> extends _i1.SmartFake
+class _FakeBaseSelectStatement_20<Row> extends _i1.SmartFake
     implements _i2.BaseSelectStatement<Row> {
-  _FakeBaseSelectStatement_19(Object parent, Invocation parentInvocation)
+  _FakeBaseSelectStatement_20(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDeleteStatement_20<T1 extends _i2.Table, D1> extends _i1.SmartFake
+class _FakeDeleteStatement_21<T1 extends _i2.Table, D1> extends _i1.SmartFake
     implements _i2.DeleteStatement<T1, D1> {
-  _FakeDeleteStatement_20(Object parent, Invocation parentInvocation)
+  _FakeDeleteStatement_21(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSelectable_21<T> extends _i1.SmartFake implements _i2.Selectable<T> {
-  _FakeSelectable_21(Object parent, Invocation parentInvocation)
+class _FakeSelectable_22<T> extends _i1.SmartFake implements _i2.Selectable<T> {
+  _FakeSelectable_22(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeGenerationContext_22 extends _i1.SmartFake
+class _FakeGenerationContext_23 extends _i1.SmartFake
     implements _i2.GenerationContext {
-  _FakeGenerationContext_22(Object parent, Invocation parentInvocation)
+  _FakeGenerationContext_23(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSqlite3_23 extends _i1.SmartFake implements _i6.Sqlite3 {
-  _FakeSqlite3_23(Object parent, Invocation parentInvocation)
+class _FakeSqlite3_24 extends _i1.SmartFake implements _i6.Sqlite3 {
+  _FakeSqlite3_24(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFile_24 extends _i1.SmartFake implements _i7.File {
-  _FakeFile_24(Object parent, Invocation parentInvocation)
+class _FakeFile_25 extends _i1.SmartFake implements _i7.File {
+  _FakeFile_25(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -509,14 +514,71 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<int>);
 
   @override
+  _i5.Future<_i3.DiaryImage> insertDiaryImage({
+    required int? diaryId,
+    required String? photoId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#insertDiaryImage, [], {
+              #diaryId: diaryId,
+              #photoId: photoId,
+            }),
+            returnValue: _i5.Future<_i3.DiaryImage>.value(
+              _FakeDiaryImage_13(
+                this,
+                Invocation.method(#insertDiaryImage, [], {
+                  #diaryId: diaryId,
+                  #photoId: photoId,
+                }),
+              ),
+            ),
+            returnValueForMissingStub: _i5.Future<_i3.DiaryImage>.value(
+              _FakeDiaryImage_13(
+                this,
+                Invocation.method(#insertDiaryImage, [], {
+                  #diaryId: diaryId,
+                  #photoId: photoId,
+                }),
+              ),
+            ),
+          )
+          as _i5.Future<_i3.DiaryImage>);
+
+  @override
+  _i5.Future<List<_i3.DiaryImage>> getDiaryImagesByDiaryId({
+    required int? diaryId,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#getDiaryImagesByDiaryId, [], {
+              #diaryId: diaryId,
+            }),
+            returnValue: _i5.Future<List<_i3.DiaryImage>>.value(
+              <_i3.DiaryImage>[],
+            ),
+            returnValueForMissingStub: _i5.Future<List<_i3.DiaryImage>>.value(
+              <_i3.DiaryImage>[],
+            ),
+          )
+          as _i5.Future<List<_i3.DiaryImage>>);
+
+  @override
+  _i5.Future<int> deleteDiaryImage({required int? id}) =>
+      (super.noSuchMethod(
+            Invocation.method(#deleteDiaryImage, [], {#id: id}),
+            returnValue: _i5.Future<int>.value(0),
+            returnValueForMissingStub: _i5.Future<int>.value(0),
+          )
+          as _i5.Future<int>);
+
+  @override
   _i2.Migrator createMigrator() =>
       (super.noSuchMethod(
             Invocation.method(#createMigrator, []),
-            returnValue: _FakeMigrator_13(
+            returnValue: _FakeMigrator_14(
               this,
               Invocation.method(#createMigrator, []),
             ),
-            returnValueForMissingStub: _FakeMigrator_13(
+            returnValueForMissingStub: _FakeMigrator_14(
               this,
               Invocation.method(#createMigrator, []),
             ),
@@ -565,7 +627,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (Ret v) => _i5.Future<Ret>.value(v),
                 ) ??
-                _FakeFuture_14<Ret>(
+                _FakeFuture_15<Ret>(
                   this,
                   Invocation.method(#computeWithDatabase, [], {
                     #computation: computation,
@@ -583,7 +645,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (Ret v) => _i5.Future<Ret>.value(v),
                 ) ??
-                _FakeFuture_14<Ret>(
+                _FakeFuture_15<Ret>(
                   this,
                   Invocation.method(#computeWithDatabase, [], {
                     #computation: computation,
@@ -657,7 +719,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(this, Invocation.method(#doWhenOpened, [fn])),
+                _FakeFuture_15<T>(this, Invocation.method(#doWhenOpened, [fn])),
             returnValueForMissingStub:
                 _i8.ifNotNull(
                   _i8.dummyValueOrNull<T>(
@@ -666,7 +728,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(this, Invocation.method(#doWhenOpened, [fn])),
+                _FakeFuture_15<T>(this, Invocation.method(#doWhenOpened, [fn])),
           )
           as _i5.Future<T>);
 
@@ -676,11 +738,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) =>
       (super.noSuchMethod(
             Invocation.method(#into, [table]),
-            returnValue: _FakeInsertStatement_15<T, D>(
+            returnValue: _FakeInsertStatement_16<T, D>(
               this,
               Invocation.method(#into, [table]),
             ),
-            returnValueForMissingStub: _FakeInsertStatement_15<T, D>(
+            returnValueForMissingStub: _FakeInsertStatement_16<T, D>(
               this,
               Invocation.method(#into, [table]),
             ),
@@ -693,11 +755,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) =>
       (super.noSuchMethod(
             Invocation.method(#update, [table]),
-            returnValue: _FakeUpdateStatement_16<Tbl, R>(
+            returnValue: _FakeUpdateStatement_17<Tbl, R>(
               this,
               Invocation.method(#update, [table]),
             ),
-            returnValueForMissingStub: _FakeUpdateStatement_16<Tbl, R>(
+            returnValueForMissingStub: _FakeUpdateStatement_17<Tbl, R>(
               this,
               Invocation.method(#update, [table]),
             ),
@@ -711,11 +773,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   }) =>
       (super.noSuchMethod(
             Invocation.method(#select, [table], {#distinct: distinct}),
-            returnValue: _FakeSimpleSelectStatement_17<T, R>(
+            returnValue: _FakeSimpleSelectStatement_18<T, R>(
               this,
               Invocation.method(#select, [table], {#distinct: distinct}),
             ),
-            returnValueForMissingStub: _FakeSimpleSelectStatement_17<T, R>(
+            returnValueForMissingStub: _FakeSimpleSelectStatement_18<T, R>(
               this,
               Invocation.method(#select, [table], {#distinct: distinct}),
             ),
@@ -729,11 +791,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   }) =>
       (super.noSuchMethod(
             Invocation.method(#selectOnly, [table], {#distinct: distinct}),
-            returnValue: _FakeJoinedSelectStatement_18<T, R>(
+            returnValue: _FakeJoinedSelectStatement_19<T, R>(
               this,
               Invocation.method(#selectOnly, [table], {#distinct: distinct}),
             ),
-            returnValueForMissingStub: _FakeJoinedSelectStatement_18<T, R>(
+            returnValueForMissingStub: _FakeJoinedSelectStatement_19<T, R>(
               this,
               Invocation.method(#selectOnly, [table], {#distinct: distinct}),
             ),
@@ -746,12 +808,12 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) =>
       (super.noSuchMethod(
             Invocation.method(#selectExpressions, [columns]),
-            returnValue: _FakeBaseSelectStatement_19<_i2.TypedResult>(
+            returnValue: _FakeBaseSelectStatement_20<_i2.TypedResult>(
               this,
               Invocation.method(#selectExpressions, [columns]),
             ),
             returnValueForMissingStub:
-                _FakeBaseSelectStatement_19<_i2.TypedResult>(
+                _FakeBaseSelectStatement_20<_i2.TypedResult>(
                   this,
                   Invocation.method(#selectExpressions, [columns]),
                 ),
@@ -764,11 +826,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) =>
       (super.noSuchMethod(
             Invocation.method(#delete, [table]),
-            returnValue: _FakeDeleteStatement_20<T, D>(
+            returnValue: _FakeDeleteStatement_21<T, D>(
               this,
               Invocation.method(#delete, [table]),
             ),
-            returnValueForMissingStub: _FakeDeleteStatement_20<T, D>(
+            returnValueForMissingStub: _FakeDeleteStatement_21<T, D>(
               this,
               Invocation.method(#delete, [table]),
             ),
@@ -850,7 +912,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               [query],
               {#variables: variables, #readsFrom: readsFrom},
             ),
-            returnValue: _FakeSelectable_21<_i2.QueryRow>(
+            returnValue: _FakeSelectable_22<_i2.QueryRow>(
               this,
               Invocation.method(
                 #customSelect,
@@ -858,7 +920,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                 {#variables: variables, #readsFrom: readsFrom},
               ),
             ),
-            returnValueForMissingStub: _FakeSelectable_21<_i2.QueryRow>(
+            returnValueForMissingStub: _FakeSelectable_22<_i2.QueryRow>(
               this,
               Invocation.method(
                 #customSelect,
@@ -881,7 +943,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               [query],
               {#variables: variables, #readsFrom: readsFrom},
             ),
-            returnValue: _FakeSelectable_21<_i2.QueryRow>(
+            returnValue: _FakeSelectable_22<_i2.QueryRow>(
               this,
               Invocation.method(
                 #customSelectQuery,
@@ -889,7 +951,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                 {#variables: variables, #readsFrom: readsFrom},
               ),
             ),
-            returnValueForMissingStub: _FakeSelectable_21<_i2.QueryRow>(
+            returnValueForMissingStub: _FakeSelectable_22<_i2.QueryRow>(
               this,
               Invocation.method(
                 #customSelectQuery,
@@ -932,7 +994,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(
+                _FakeFuture_15<T>(
                   this,
                   Invocation.method(
                     #transaction,
@@ -952,7 +1014,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(
+                _FakeFuture_15<T>(
                   this,
                   Invocation.method(
                     #transaction,
@@ -975,7 +1037,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(
+                _FakeFuture_15<T>(
                   this,
                   Invocation.method(#exclusively, [action]),
                 ),
@@ -987,7 +1049,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(
+                _FakeFuture_15<T>(
                   this,
                   Invocation.method(#exclusively, [action]),
                 ),
@@ -1026,7 +1088,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(
+                _FakeFuture_15<T>(
                   this,
                   Invocation.method(
                     #runWithInterceptor,
@@ -1046,7 +1108,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                   ),
                   (T v) => _i5.Future<T>.value(v),
                 ) ??
-                _FakeFuture_14<T>(
+                _FakeFuture_15<T>(
                   this,
                   Invocation.method(
                     #runWithInterceptor,
@@ -1069,7 +1131,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               [component],
               {#hasMultipleTables: hasMultipleTables, #startIndex: startIndex},
             ),
-            returnValue: _FakeGenerationContext_22(
+            returnValue: _FakeGenerationContext_23(
               this,
               Invocation.method(
                 #$write,
@@ -1080,7 +1142,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                 },
               ),
             ),
-            returnValueForMissingStub: _FakeGenerationContext_22(
+            returnValueForMissingStub: _FakeGenerationContext_23(
               this,
               Invocation.method(
                 #$write,
@@ -1106,7 +1168,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               [table, insertable],
               {#startIndex: startIndex},
             ),
-            returnValue: _FakeGenerationContext_22(
+            returnValue: _FakeGenerationContext_23(
               this,
               Invocation.method(
                 #$writeInsertable,
@@ -1114,7 +1176,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                 {#startIndex: startIndex},
               ),
             ),
-            returnValueForMissingStub: _FakeGenerationContext_22(
+            returnValueForMissingStub: _FakeGenerationContext_23(
               this,
               Invocation.method(
                 #$writeInsertable,
@@ -1149,11 +1211,11 @@ class MockDbConnection extends _i1.Mock implements _i9.DbConnection {
   _i6.Sqlite3 get sqlite3Instance =>
       (super.noSuchMethod(
             Invocation.getter(#sqlite3Instance),
-            returnValue: _FakeSqlite3_23(
+            returnValue: _FakeSqlite3_24(
               this,
               Invocation.getter(#sqlite3Instance),
             ),
-            returnValueForMissingStub: _FakeSqlite3_23(
+            returnValueForMissingStub: _FakeSqlite3_24(
               this,
               Invocation.getter(#sqlite3Instance),
             ),
@@ -1180,10 +1242,10 @@ class MockDbConnection extends _i1.Mock implements _i9.DbConnection {
       (super.noSuchMethod(
             Invocation.method(#getDatabaseFile, []),
             returnValue: _i5.Future<_i7.File>.value(
-              _FakeFile_24(this, Invocation.method(#getDatabaseFile, [])),
+              _FakeFile_25(this, Invocation.method(#getDatabaseFile, [])),
             ),
             returnValueForMissingStub: _i5.Future<_i7.File>.value(
-              _FakeFile_24(this, Invocation.method(#getDatabaseFile, [])),
+              _FakeFile_25(this, Invocation.method(#getDatabaseFile, [])),
             ),
           )
           as _i5.Future<_i7.File>);
@@ -1197,7 +1259,7 @@ class MockDbConnection extends _i1.Mock implements _i9.DbConnection {
               #backupFilePath: backupFilePath,
             }),
             returnValue: _i5.Future<_i7.File>.value(
-              _FakeFile_24(
+              _FakeFile_25(
                 this,
                 Invocation.method(#createValidBackupFile, [], {
                   #backupFilePath: backupFilePath,
@@ -1205,7 +1267,7 @@ class MockDbConnection extends _i1.Mock implements _i9.DbConnection {
               ),
             ),
             returnValueForMissingStub: _i5.Future<_i7.File>.value(
-              _FakeFile_24(
+              _FakeFile_25(
                 this,
                 Invocation.method(#createValidBackupFile, [], {
                   #backupFilePath: backupFilePath,

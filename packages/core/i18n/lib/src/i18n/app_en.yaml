@@ -16,6 +16,13 @@ home:
   errorSavingDiarySolution: "We apologize, but please copy your text and restart the app"
   datePickerCancel: "Cancel"
   datePickerConfirm: "OK"
+  photoSelector:
+    confirm: "OK"
+    noPhotos: "No photos available"
+    permission:
+      deniedTitle: "Photo library access required"
+      deniedMessage: "Please allow access to your photo library in settings"
+      openSettings: "Open Settings"
 backup:
   title: "Backup"
   description: "Backup for a Smooth Device Switch"

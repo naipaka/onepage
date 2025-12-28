@@ -16,6 +16,13 @@ home:
   errorSavingDiarySolution: "申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください"
   datePickerCancel: "キャンセル"
   datePickerConfirm: "決定"
+  photoSelector:
+    confirm: "決定"
+    noPhotos: "写真がありません"
+    permission:
+      deniedTitle: "写真ライブラリへのアクセス権限が必要です"
+      deniedMessage: "設定からアプリに写真ライブラリへのアクセスを許可してください"
+      openSettings: "設定を開く"
 backup:
   title: "Backup"
   description: "機種変更でも安心バックアップ"
