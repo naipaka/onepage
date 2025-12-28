@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  app_settings: ^6.1.1
+  app_settings: ^7.0.0
   backup:
     path: ../features/backup/
   clock: ^1.1.2

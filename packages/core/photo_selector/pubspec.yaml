@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  app_settings: ^6.1.1
+  app_settings: ^7.0.0
   flutter:
     sdk: flutter
   photo_manager: ^3.8.3
