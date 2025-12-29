@@ -72,11 +72,11 @@ jobs:
       - name: Install Dependencies
         run: dart pub get --enforce-lockfile
 
+      - name: Repair pub cache
+        run: dart pub cache repair
+
       - name: Analyze packages
-        # TEMPORARY: Added --no-pub to prevent flutter analyze from resolving dependencies
-        # and attempting to use riverpod_lint 3.1.0 while pubspec.lock specifies 3.0.3.
-        # This can be removed once riverpod_lint is upgraded to 3.1.0 or later.
-        run: flutter analyze --no-pub
+        run: flutter analyze
 
       - name: Run custom lint
         run: melos run custom_lint
