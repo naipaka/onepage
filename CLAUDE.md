@@ -606,10 +606,31 @@ This ensures consistent code quality and helps maintain institutional knowledge 
 - Do NOT use `MediaQuery.of`
 - ALWAYS use `MediaQuery.xxxOf` instead
 
-### NO Comments Policy
-- **IMPORTANT**: DO NOT ADD ***ANY*** COMMENTS unless asked
-- Code should be self-documenting through clear naming and structure
-- Only add comments when explicitly requested by the user
+### Comment Guidelines
+- **Write comments to explain "WHY", not "WHAT"**
+  - ✅ Good: Explain workarounds, technical constraints, non-obvious reasons
+  - ❌ Bad: Describe what the code does (the code itself should be clear)
+  - ❌ Bad: Explain obvious reasoning
+- **Code should be self-documenting** through clear naming and structure
+- **Examples**:
+  ```dart
+  // ❌ BAD - Explains what the code does
+  // Scroll to selected date
+  await scrollCalendarController.scrollToDate(date);
+
+  // ❌ BAD - Obvious why
+  // Check if user is null
+  if (user == null) return;
+
+  // ✅ GOOD - Explains why (workaround for specific issue)
+  // Wrapped with TextFieldTapRegion to prevent keyboard hiding
+  // when tapping text fields during scroll.
+  return TextFieldTapRegion(child: TextField());
+
+  // ✅ GOOD - Explains non-obvious technical reason
+  // Use compute() to avoid blocking UI thread with large JSON parsing
+  final data = await compute(parseJson, rawData);
+  ```
 
 ### Custom Lint Rules
 - **avoid_hardcoded_japanese**: All user-facing text must be internationalized

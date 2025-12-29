@@ -80,12 +80,10 @@ class HomePage extends HookConsumerWidget {
         // Feedback for successful date selection.
         haptic.successFeedback();
 
-        // Highlight the selected date with animation.
         await scrollCalendarController.highlightDate(date);
       });
     }
 
-    // Function to check for in-app review eligibility
     Future<void> checkInAppReview() async {
       await switch (inAppReview) {
         AsyncData(:final value) => value.checkAndShowReviewIfEligible(),
@@ -140,10 +138,7 @@ class HomePage extends HookConsumerWidget {
             TextHistoryActionButton.redo(scope: scope),
             // Image selection button
             _ImageSelectionActionButton(
-              onSelected: (photoId) {
-                // Save the selected image ID to the diary entry.
-                debugPrint('Selected: $photoId');
-              },
+              scope: scope,
             ),
           ];
         },
@@ -198,49 +193,53 @@ class HomePage extends HookConsumerWidget {
                           (e) => DateUtils.isSameDay(e.date, date),
                         );
 
-                        return DiaryListTile(
-                          content: diary?.content,
-                          onChanged: (_) {
-                            haptic.textInputFeedback();
-                          },
-                          onFocusChanged: (hasFocus) async {
-                            if (hasFocus) {
-                              await scrollCalendarController.scrollToDate(
-                                date,
-                              );
-                            }
-                          },
-                          save: (content) async {
-                            try {
-                              if (diary == null) {
-                                await notifier.addDiary(
-                                  date: date,
-                                  content: content,
-                                );
-                              } else {
-                                await notifier.updateDiary(
-                                  id: diary.id,
-                                  content: content,
+                        return _DiaryContext(
+                          date: date,
+                          diary: diary,
+                          child: DiaryListTile(
+                            content: diary?.content,
+                            onChanged: (_) {
+                              haptic.textInputFeedback();
+                            },
+                            onFocusChanged: (hasFocus) async {
+                              if (hasFocus) {
+                                await scrollCalendarController.scrollToDate(
+                                  date,
                                 );
                               }
-                            } on Object catch (e) {
-                              unawaited(
-                                tracker.recordError(
-                                  e,
-                                  StackTrace.current,
-                                  fatal: true,
-                                ),
-                              );
-                              if (!context.mounted) {
-                                return;
+                            },
+                            save: (content) async {
+                              try {
+                                if (diary == null) {
+                                  await notifier.addDiary(
+                                    date: date,
+                                    content: content,
+                                  );
+                                } else {
+                                  await notifier.updateDiary(
+                                    id: diary.id,
+                                    content: content,
+                                  );
+                                }
+                              } on Object catch (e) {
+                                unawaited(
+                                  tracker.recordError(
+                                    e,
+                                    StackTrace.current,
+                                    fatal: true,
+                                  ),
+                                );
+                                if (!context.mounted) {
+                                  return;
+                                }
+                                showErrorToast(
+                                  context,
+                                  title: t.home.errorSavingDiary,
+                                  description: t.home.errorSavingDiarySolution,
+                                );
                               }
-                              showErrorToast(
-                                context,
-                                title: t.home.errorSavingDiary,
-                                description: t.home.errorSavingDiarySolution,
-                              );
-                            }
-                          },
+                            },
+                          ),
                         );
                       },
                     ),
@@ -838,41 +837,153 @@ class _HighlightedText extends StatelessWidget {
   }
 }
 
+/// Provides diary context (date and diary data) to descendant widgets.
+///
+/// This is used to access the current diary entry information from widgets
+/// that need it, such as [_ImageSelectionActionButton].
+class _DiaryContext extends InheritedWidget {
+  const _DiaryContext({
+    required this.date,
+    required this.diary,
+    required super.child,
+  });
+
+  /// The date of this diary entry.
+  final DateTime date;
+
+  /// The diary data (null if no diary exists for this date yet).
+  final Diary? diary;
+
+  /// Retrieves the nearest [_DiaryContext] from the widget tree.
+  ///
+  /// Returns null if no [_DiaryContext] is found.
+  static _DiaryContext? of(BuildContext context) {
+    return context.getInheritedWidgetOfExactType<_DiaryContext>();
+  }
+
+  @override
+  bool updateShouldNotify(_DiaryContext oldWidget) {
+    return date != oldWidget.date || diary != oldWidget.diary;
+  }
+}
+
 /// A button widget that opens the photo selector to pick an image
 /// from the device's photo library.
 ///
-/// When an image is selected, [onSelected] is called with the photo ID.
-class _ImageSelectionActionButton extends StatelessWidget {
+/// When an image is selected, it saves the photo ID to the currently focused
+/// diary entry.
+class _ImageSelectionActionButton extends ConsumerWidget {
   const _ImageSelectionActionButton({
-    this.onSelected,
+    required this.scope,
   });
 
-  /// Called when an image is successfully selected.
-  /// Receives the photo ID (localIdentifier on iOS, MediaStore ID on Android).
-  final ValueChanged<String>? onSelected;
+  /// The focus scope node to monitor for the currently focused diary entry.
+  final FocusScopeNode scope;
+
+  /// Gets the currently focused diary context.
+  _DiaryContext? get _currentDiaryContext {
+    if (!scope.hasFocus) {
+      return null;
+    }
+    final focusedContext = scope.focusedChild?.context;
+    if (focusedContext == null) {
+      return null;
+    }
+    return _DiaryContext.of(focusedContext);
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t.home.photoSelector;
 
-    Future<void> selectImage() async {
-      final photoId = await showPhotoSelector(
-        context,
-        confirmLabel: t.confirm,
-        noPhotosLabel: t.noPhotos,
-        permissionDeniedTitle: t.permission.deniedTitle,
-        permissionDeniedMessage: t.permission.deniedMessage,
-        openSettingsLabel: t.permission.openSettings,
-      );
-      if (photoId == null) {
-        return;
-      }
-      onSelected?.call(photoId);
-    }
+    return ListenableBuilder(
+      listenable: FocusManager.instance,
+      builder: (context, child) {
+        final diaryContext = _currentDiaryContext;
+        if (diaryContext == null) {
+          return const IconButton(
+            onPressed: null,
+            icon: Icon(Icons.add_photo_alternate_outlined),
+          );
+        }
 
-    return IconButton(
-      onPressed: onSelected != null ? selectImage : null,
-      icon: const Icon(Icons.add_photo_alternate_outlined),
+        final diary = diaryContext.diary;
+        if (diary == null) {
+          return const IconButton(
+            onPressed: null,
+            icon: Icon(Icons.add_photo_alternate_outlined),
+          );
+        }
+
+        final diaryImagesAsync = ref.watch(
+          diaryImagesProvider(diaryId: diary.id),
+        );
+
+        return diaryImagesAsync.when(
+          loading: () => const IconButton(
+            onPressed: null,
+            icon: Icon(Icons.add_photo_alternate_outlined),
+          ),
+          error: (error, stackTrace) => const IconButton(
+            onPressed: null,
+            icon: Icon(Icons.add_photo_alternate_outlined),
+          ),
+          data: (images) {
+            final hasImage = images.isNotEmpty;
+            if (hasImage) {
+              return const IconButton(
+                onPressed: null,
+                icon: Icon(Icons.add_photo_alternate_outlined),
+              );
+            }
+
+            Future<void> selectImage() async {
+              final photoId = await showPhotoSelector(
+                context,
+                confirmLabel: t.confirm,
+                noPhotosLabel: t.noPhotos,
+                permissionDeniedTitle: t.permission.deniedTitle,
+                permissionDeniedMessage: t.permission.deniedMessage,
+                openSettingsLabel: t.permission.openSettings,
+              );
+              if (photoId == null || !context.mounted) {
+                return;
+              }
+
+              try {
+                final diaryImageCommand = ref.read(diaryImageCommandProvider);
+                await diaryImageCommand.addDiaryImage(
+                  diaryId: diary.id,
+                  photoId: photoId,
+                );
+                ref.invalidate(diaryImagesProvider(diaryId: diary.id));
+              } on Object catch (e) {
+                final tracker = ref.read(trackerProvider);
+                unawaited(
+                  tracker.recordError(
+                    e,
+                    StackTrace.current,
+                    fatal: true,
+                  ),
+                );
+                if (!context.mounted) {
+                  return;
+                }
+                showErrorToast(
+                  context,
+                  title: t.error.title,
+                  description: t.error.description,
+                );
+              }
+            }
+
+            return IconButton(
+              onPressed: selectImage,
+              icon: const Icon(Icons.add_photo_alternate_outlined),
+            );
+          },
+        );
+      },
     );
   }
 }

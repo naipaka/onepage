@@ -23,6 +23,9 @@ home:
       deniedTitle: "Photo library access required"
       deniedMessage: "Please allow access to your photo library in settings"
       openSettings: "Open Settings"
+    error:
+      title: "An error occurred while saving the image"
+      description: "Please try again"
 backup:
   title: "Backup"
   description: "Backup for a Smooth Device Switch"

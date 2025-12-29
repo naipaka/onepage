@@ -120,3 +120,87 @@ final class DiaryImageQueryProvider
 }
 
 String _$diaryImageQueryHash() => r'3ed9a31438e5545bc4c57a9eb804b5a3cccb7134';
+
+/// Provides a list of diary images for a specific diary entry.
+
+@ProviderFor(diaryImages)
+const diaryImagesProvider = DiaryImagesFamily._();
+
+/// Provides a list of diary images for a specific diary entry.
+
+final class DiaryImagesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<DiaryImage>>,
+          List<DiaryImage>,
+          FutureOr<List<DiaryImage>>
+        >
+    with $FutureModifier<List<DiaryImage>>, $FutureProvider<List<DiaryImage>> {
+  /// Provides a list of diary images for a specific diary entry.
+  const DiaryImagesProvider._({
+    required DiaryImagesFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'diaryImagesProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$diaryImagesHash();
+
+  @override
+  String toString() {
+    return r'diaryImagesProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<DiaryImage>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<DiaryImage>> create(Ref ref) {
+    final argument = this.argument as int;
+    return diaryImages(ref, diaryId: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is DiaryImagesProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$diaryImagesHash() => r'48d5dcff3451247ea5b895f94284fa7e4c5190d1';
+
+/// Provides a list of diary images for a specific diary entry.
+
+final class DiaryImagesFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<DiaryImage>>, int> {
+  const DiaryImagesFamily._()
+    : super(
+        retry: null,
+        name: r'diaryImagesProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provides a list of diary images for a specific diary entry.
+
+  DiaryImagesProvider call({required int diaryId}) =>
+      DiaryImagesProvider._(argument: diaryId, from: this);
+
+  @override
+  String toString() => r'diaryImagesProvider';
+}
