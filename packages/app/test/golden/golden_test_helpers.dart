@@ -110,31 +110,26 @@ abstract final class GoldenTestHelpers {
     PrefsClient? prefsClient,
     bool mockInitialization = false,
   }) {
-    return withClock(
-      Clock.fixed(DateTime(2025, 1, 15, 12)),
-      () {
-        LocaleSettings.setLocaleRawSync(
-          AppLocale.values
-              .firstWhere((l) => l.languageCode == locale.languageCode)
-              .languageTag,
-        );
+    LocaleSettings.setLocaleRawSync(
+      AppLocale.values
+          .firstWhere((l) => l.languageCode == locale.languageCode)
+          .languageTag,
+    );
 
-        return wrapWithProviders(
-          prefsClient: prefsClient,
-          mockInitialization: mockInitialization,
-          child: TranslationProvider(
-            child: MaterialApp(
-              theme: appLightThemeData,
-              darkTheme: appDarkThemeData,
-              themeMode: themeMode,
-              localizationsDelegates: localizationsDelegates,
-              supportedLocales: AppLocaleUtils.supportedLocales,
-              locale: locale,
-              home: widget,
-            ),
-          ),
-        );
-      },
+    return wrapWithProviders(
+      prefsClient: prefsClient,
+      mockInitialization: mockInitialization,
+      child: TranslationProvider(
+        child: MaterialApp(
+          theme: appLightThemeData,
+          darkTheme: appDarkThemeData,
+          themeMode: themeMode,
+          localizationsDelegates: localizationsDelegates,
+          supportedLocales: AppLocaleUtils.supportedLocales,
+          locale: locale,
+          home: widget,
+        ),
+      ),
     );
   }
 
@@ -155,38 +150,40 @@ abstract final class GoldenTestHelpers {
     // Set platform to iOS for consistent golden tests
     debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-    // First pump the widget
-    await tester.pumpWidget(
-      buildTestableWidget(
-        widget: widget,
-        themeMode: themeMode,
-        locale: locale,
-        prefsClient: prefsClient,
-        mockInitialization: mockInitialization,
-      ),
-    );
+    await withClock(Clock.fixed(DateTime(2025, 1, 15, 12)), () async {
+      // First pump the widget
+      await tester.pumpWidget(
+        buildTestableWidget(
+          widget: widget,
+          themeMode: themeMode,
+          locale: locale,
+          prefsClient: prefsClient,
+          mockInitialization: mockInitialization,
+        ),
+      );
 
-    // Use runAsync to properly handle image loading
-    await tester.runAsync(() async {
-      // Find all Image widgets and precache them
-      final imageFinder = find.byType(Image);
-      final imageElements = imageFinder.evaluate();
+      // Use runAsync to properly handle image loading
+      await tester.runAsync(() async {
+        // Find all Image widgets and precache them
+        final imageFinder = find.byType(Image);
+        final imageElements = imageFinder.evaluate();
 
-      for (final element in imageElements) {
-        final imageWidget = element.widget as Image;
-        if (imageWidget.image is AssetImage) {
-          await precacheImage(imageWidget.image, element);
+        for (final element in imageElements) {
+          final imageWidget = element.widget as Image;
+          if (imageWidget.image is AssetImage) {
+            await precacheImage(imageWidget.image, element);
+          }
         }
-      }
+      });
+
+      // Ensure everything is rendered
+      await tester.pumpAndSettle();
+
+      await expectLater(
+        find.byType(MaterialApp),
+        matchesGoldenFile(goldenFile),
+      );
     });
-
-    // Ensure everything is rendered
-    await tester.pumpAndSettle();
-
-    await expectLater(
-      find.byType(MaterialApp),
-      matchesGoldenFile(goldenFile),
-    );
 
     // Reset platform override
     debugDefaultTargetPlatformOverride = null;
