@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  app_settings: ^6.1.1
+  app_settings: ^7.0.0
   backup:
     path: ../features/backup/
   clock: ^1.1.2
@@ -76,7 +76,7 @@ dev_dependencies:
   mockito: ^5.6.1
   package_info_plus: ^9.0.0
   riverpod_generator: ^3.0.3
-  riverpod_lint: ^3.0.3
+  riverpod_lint: 3.0.3
 
 flutter:
   uses-material-design: true
