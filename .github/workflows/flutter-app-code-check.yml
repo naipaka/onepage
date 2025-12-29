@@ -72,8 +72,11 @@ jobs:
       - name: Install Dependencies
         run: dart pub get --enforce-lockfile
 
-      - name: Repair pub cache
-        run: dart pub cache repair
+      # TEMPORARY: Remove riverpod_lint 3.1.0 from cache to force using 3.0.3 from pubspec.lock.
+      # The analyzer tries to load the latest version (3.1.0) instead of the locked version (3.0.3).
+      # This can be removed once riverpod_lint is upgraded to 3.1.0 or later.
+      - name: Remove newer riverpod_lint from cache
+        run: rm -rf ~/.pub-cache/hosted/pub.dev/riverpod_lint-3.1.0
 
       - name: Analyze packages
         run: flutter analyze
