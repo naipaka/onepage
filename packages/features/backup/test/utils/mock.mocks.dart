@@ -6,13 +6,14 @@
 import 'dart:async' as _i5;
 import 'dart:io' as _i7;
 
-import 'package:db_client/src/connection/native.dart' as _i9;
+import 'package:db_client/src/connection/native.dart' as _i10;
 import 'package:db_client/src/db_client.dart' as _i3;
+import 'package:db_client/src/models/diary.dart' as _i9;
 import 'package:drift/drift.dart' as _i2;
 import 'package:drift/src/runtime/executor/stream_queries.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i8;
-import 'package:package_info_plus/package_info_plus.dart' as _i10;
+import 'package:package_info_plus/package_info_plus.dart' as _i11;
 import 'package:sqlite3/sqlite3.dart' as _i6;
 
 // ignore_for_file: type=lint
@@ -99,8 +100,8 @@ class _FakeDatabaseConnectionUser_11 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeDiary_12 extends _i1.SmartFake implements _i3.Diary {
-  _FakeDiary_12(Object parent, Invocation parentInvocation)
+class _FakeDiaryEntry_12 extends _i1.SmartFake implements _i3.DiaryEntry {
+  _FakeDiaryEntry_12(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -426,7 +427,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<void>);
 
   @override
-  _i5.Future<_i3.Diary> insertDiary({
+  _i5.Future<_i3.DiaryEntry> insertDiary({
     required String? content,
     required DateTime? date,
   }) =>
@@ -435,8 +436,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               #content: content,
               #date: date,
             }),
-            returnValue: _i5.Future<_i3.Diary>.value(
-              _FakeDiary_12(
+            returnValue: _i5.Future<_i3.DiaryEntry>.value(
+              _FakeDiaryEntry_12(
                 this,
                 Invocation.method(#insertDiary, [], {
                   #content: content,
@@ -444,8 +445,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
                 }),
               ),
             ),
-            returnValueForMissingStub: _i5.Future<_i3.Diary>.value(
-              _FakeDiary_12(
+            returnValueForMissingStub: _i5.Future<_i3.DiaryEntry>.value(
+              _FakeDiaryEntry_12(
                 this,
                 Invocation.method(#insertDiary, [], {
                   #content: content,
@@ -454,21 +455,21 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               ),
             ),
           )
-          as _i5.Future<_i3.Diary>);
+          as _i5.Future<_i3.DiaryEntry>);
 
   @override
-  _i5.Future<List<_i3.Diary>> getDiaries({
+  _i5.Future<List<_i9.Diary>> getDiaries({
     required DateTime? from,
     required DateTime? to,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getDiaries, [], {#from: from, #to: to}),
-            returnValue: _i5.Future<List<_i3.Diary>>.value(<_i3.Diary>[]),
-            returnValueForMissingStub: _i5.Future<List<_i3.Diary>>.value(
-              <_i3.Diary>[],
+            returnValue: _i5.Future<List<_i9.Diary>>.value(<_i9.Diary>[]),
+            returnValueForMissingStub: _i5.Future<List<_i9.Diary>>.value(
+              <_i9.Diary>[],
             ),
           )
-          as _i5.Future<List<_i3.Diary>>);
+          as _i5.Future<List<_i9.Diary>>);
 
   @override
   _i5.Future<int> updateDiary({required int? id, required String? content}) =>
@@ -480,7 +481,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<int>);
 
   @override
-  _i5.Future<List<_i3.Diary>> searchDiaries({
+  _i5.Future<List<_i3.DiaryEntry>> searchDiaries({
     required String? searchTerm,
     int? limit,
     int? offset,
@@ -491,12 +492,14 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               #limit: limit,
               #offset: offset,
             }),
-            returnValue: _i5.Future<List<_i3.Diary>>.value(<_i3.Diary>[]),
-            returnValueForMissingStub: _i5.Future<List<_i3.Diary>>.value(
-              <_i3.Diary>[],
+            returnValue: _i5.Future<List<_i3.DiaryEntry>>.value(
+              <_i3.DiaryEntry>[],
+            ),
+            returnValueForMissingStub: _i5.Future<List<_i3.DiaryEntry>>.value(
+              <_i3.DiaryEntry>[],
             ),
           )
-          as _i5.Future<List<_i3.Diary>>);
+          as _i5.Future<List<_i3.DiaryEntry>>);
 
   @override
   _i5.Future<int> countUniqueDaysWithContentInRange({
@@ -543,23 +546,6 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
             ),
           )
           as _i5.Future<_i3.DiaryImage>);
-
-  @override
-  _i5.Future<List<_i3.DiaryImage>> getDiaryImagesByDiaryId({
-    required int? diaryId,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#getDiaryImagesByDiaryId, [], {
-              #diaryId: diaryId,
-            }),
-            returnValue: _i5.Future<List<_i3.DiaryImage>>.value(
-              <_i3.DiaryImage>[],
-            ),
-            returnValueForMissingStub: _i5.Future<List<_i3.DiaryImage>>.value(
-              <_i3.DiaryImage>[],
-            ),
-          )
-          as _i5.Future<List<_i3.DiaryImage>>);
 
   @override
   _i5.Future<int> deleteDiaryImage({required int? id}) =>
@@ -1206,7 +1192,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
 /// A class which mocks [DbConnection].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDbConnection extends _i1.Mock implements _i9.DbConnection {
+class MockDbConnection extends _i1.Mock implements _i10.DbConnection {
   @override
   _i6.Sqlite3 get sqlite3Instance =>
       (super.noSuchMethod(
@@ -1292,7 +1278,7 @@ class MockDbConnection extends _i1.Mock implements _i9.DbConnection {
 /// A class which mocks [PackageInfo].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPackageInfo extends _i1.Mock implements _i10.PackageInfo {
+class MockPackageInfo extends _i1.Mock implements _i11.PackageInfo {
   @override
   String get appName =>
       (super.noSuchMethod(

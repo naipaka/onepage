@@ -26,6 +26,9 @@ home:
     error:
       title: "An error occurred while saving the image"
       description: "Please try again"
+  deleteImage:
+    title: "Delete Image"
+    message: "Are you sure you want to delete this image?"
 backup:
   title: "Backup"
   description: "Backup for a Smooth Device Switch"

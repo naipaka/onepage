@@ -7,26 +7,27 @@ import 'dart:async' as _i5;
 import 'dart:io' as _i7;
 import 'dart:isolate' as _i8;
 
-import 'package:backup/src/backup_controller.dart' as _i12;
+import 'package:backup/src/backup_controller.dart' as _i13;
 import 'package:db_client/db_client.dart' as _i3;
+import 'package:db_client/src/models/diary.dart' as _i12;
 import 'package:drift/drift.dart' as _i2;
 import 'package:drift/src/runtime/executor/stream_queries.dart' as _i4;
-import 'package:exporter/src/csv_exporter.dart' as _i15;
-import 'package:exporter/src/markdown_exporter.dart' as _i16;
-import 'package:exporter/src/models/models.dart' as _i14;
-import 'package:exporter/src/pdf_exporter.dart' as _i13;
-import 'package:firebase_analytics/firebase_analytics.dart' as _i21;
-import 'package:flutter/foundation.dart' as _i20;
+import 'package:exporter/src/csv_exporter.dart' as _i16;
+import 'package:exporter/src/markdown_exporter.dart' as _i17;
+import 'package:exporter/src/models/models.dart' as _i15;
+import 'package:exporter/src/pdf_exporter.dart' as _i14;
+import 'package:firebase_analytics/firebase_analytics.dart' as _i22;
+import 'package:flutter/foundation.dart' as _i21;
 import 'package:flutter/material.dart' as _i9;
-import 'package:haptics/src/haptics.dart' as _i17;
-import 'package:in_app_reviewer/src/in_app_reviewer.dart' as _i18;
+import 'package:haptics/src/haptics.dart' as _i18;
+import 'package:in_app_reviewer/src/in_app_reviewer.dart' as _i19;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i11;
-import 'package:notification_client/src/models/models.dart' as _i23;
-import 'package:notification_client/src/notification_client.dart' as _i22;
+import 'package:notification_client/src/models/models.dart' as _i24;
+import 'package:notification_client/src/notification_client.dart' as _i23;
 import 'package:package_info_plus/package_info_plus.dart' as _i6;
 import 'package:prefs_client/prefs_client.dart' as _i10;
-import 'package:tracker/src/tracker.dart' as _i19;
+import 'package:tracker/src/tracker.dart' as _i20;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -112,8 +113,8 @@ class _FakeDatabaseConnectionUser_11 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeDiary_12 extends _i1.SmartFake implements _i3.Diary {
-  _FakeDiary_12(Object parent, Invocation parentInvocation)
+class _FakeDiaryEntry_12 extends _i1.SmartFake implements _i3.DiaryEntry {
+  _FakeDiaryEntry_12(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -489,7 +490,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<void>);
 
   @override
-  _i5.Future<_i3.Diary> insertDiary({
+  _i5.Future<_i3.DiaryEntry> insertDiary({
     required String? content,
     required DateTime? date,
   }) =>
@@ -498,8 +499,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               #content: content,
               #date: date,
             }),
-            returnValue: _i5.Future<_i3.Diary>.value(
-              _FakeDiary_12(
+            returnValue: _i5.Future<_i3.DiaryEntry>.value(
+              _FakeDiaryEntry_12(
                 this,
                 Invocation.method(#insertDiary, [], {
                   #content: content,
@@ -508,18 +509,18 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               ),
             ),
           )
-          as _i5.Future<_i3.Diary>);
+          as _i5.Future<_i3.DiaryEntry>);
 
   @override
-  _i5.Future<List<_i3.Diary>> getDiaries({
+  _i5.Future<List<_i12.Diary>> getDiaries({
     required DateTime? from,
     required DateTime? to,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#getDiaries, [], {#from: from, #to: to}),
-            returnValue: _i5.Future<List<_i3.Diary>>.value(<_i3.Diary>[]),
+            returnValue: _i5.Future<List<_i12.Diary>>.value(<_i12.Diary>[]),
           )
-          as _i5.Future<List<_i3.Diary>>);
+          as _i5.Future<List<_i12.Diary>>);
 
   @override
   _i5.Future<int> updateDiary({required int? id, required String? content}) =>
@@ -530,7 +531,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<int>);
 
   @override
-  _i5.Future<List<_i3.Diary>> searchDiaries({
+  _i5.Future<List<_i3.DiaryEntry>> searchDiaries({
     required String? searchTerm,
     int? limit,
     int? offset,
@@ -541,9 +542,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
               #limit: limit,
               #offset: offset,
             }),
-            returnValue: _i5.Future<List<_i3.Diary>>.value(<_i3.Diary>[]),
+            returnValue: _i5.Future<List<_i3.DiaryEntry>>.value(
+              <_i3.DiaryEntry>[],
+            ),
           )
-          as _i5.Future<List<_i3.Diary>>);
+          as _i5.Future<List<_i3.DiaryEntry>>);
 
   @override
   _i5.Future<int> countUniqueDaysWithContentInRange({
@@ -580,20 +583,6 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
             ),
           )
           as _i5.Future<_i3.DiaryImage>);
-
-  @override
-  _i5.Future<List<_i3.DiaryImage>> getDiaryImagesByDiaryId({
-    required int? diaryId,
-  }) =>
-      (super.noSuchMethod(
-            Invocation.method(#getDiaryImagesByDiaryId, [], {
-              #diaryId: diaryId,
-            }),
-            returnValue: _i5.Future<List<_i3.DiaryImage>>.value(
-              <_i3.DiaryImage>[],
-            ),
-          )
-          as _i5.Future<List<_i3.DiaryImage>>);
 
   @override
   _i5.Future<int> deleteDiaryImage({required int? id}) =>
@@ -1081,7 +1070,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
 /// A class which mocks [BackupController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockBackupController extends _i1.Mock implements _i12.BackupController {
+class MockBackupController extends _i1.Mock implements _i13.BackupController {
   MockBackupController() {
     _i1.throwOnMissingStub(this);
   }
@@ -1159,7 +1148,7 @@ class MockBackupController extends _i1.Mock implements _i12.BackupController {
 /// A class which mocks [PdfExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPdfExporter extends _i1.Mock implements _i13.PdfExporter {
+class MockPdfExporter extends _i1.Mock implements _i14.PdfExporter {
   MockPdfExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1176,7 +1165,7 @@ class MockPdfExporter extends _i1.Mock implements _i13.PdfExporter {
           as _i6.PackageInfo);
 
   @override
-  _i5.Future<_i7.File> export({required List<_i14.DiaryEntry>? entries}) =>
+  _i5.Future<_i7.File> export({required List<_i15.ExportDiary>? entries}) =>
       (super.noSuchMethod(
             Invocation.method(#export, [], {#entries: entries}),
             returnValue: _i5.Future<_i7.File>.value(
@@ -1190,7 +1179,7 @@ class MockPdfExporter extends _i1.Mock implements _i13.PdfExporter {
 
   @override
   _i5.Future<_i7.File> exportMonth({
-    required List<_i14.DiaryEntry>? entries,
+    required List<_i15.ExportDiary>? entries,
     required int? year,
     required int? month,
   }) =>
@@ -1215,7 +1204,7 @@ class MockPdfExporter extends _i1.Mock implements _i13.PdfExporter {
 
   @override
   _i5.Future<_i7.File> exportDateRange({
-    required List<_i14.DiaryEntry>? entries,
+    required List<_i15.ExportDiary>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) =>
@@ -1242,7 +1231,7 @@ class MockPdfExporter extends _i1.Mock implements _i13.PdfExporter {
 /// A class which mocks [CsvExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCsvExporter extends _i1.Mock implements _i15.CsvExporter {
+class MockCsvExporter extends _i1.Mock implements _i16.CsvExporter {
   MockCsvExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1259,7 +1248,7 @@ class MockCsvExporter extends _i1.Mock implements _i15.CsvExporter {
           as _i6.PackageInfo);
 
   @override
-  _i5.Future<_i7.File> export({required List<_i14.DiaryEntry>? entries}) =>
+  _i5.Future<_i7.File> export({required List<_i15.ExportDiary>? entries}) =>
       (super.noSuchMethod(
             Invocation.method(#export, [], {#entries: entries}),
             returnValue: _i5.Future<_i7.File>.value(
@@ -1273,7 +1262,7 @@ class MockCsvExporter extends _i1.Mock implements _i15.CsvExporter {
 
   @override
   _i5.Future<_i7.File> exportMonth({
-    required List<_i14.DiaryEntry>? entries,
+    required List<_i15.ExportDiary>? entries,
     required int? year,
     required int? month,
   }) =>
@@ -1298,7 +1287,7 @@ class MockCsvExporter extends _i1.Mock implements _i15.CsvExporter {
 
   @override
   _i5.Future<_i7.File> exportDateRange({
-    required List<_i14.DiaryEntry>? entries,
+    required List<_i15.ExportDiary>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) =>
@@ -1325,7 +1314,7 @@ class MockCsvExporter extends _i1.Mock implements _i15.CsvExporter {
 /// A class which mocks [MarkdownExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMarkdownExporter extends _i1.Mock implements _i16.MarkdownExporter {
+class MockMarkdownExporter extends _i1.Mock implements _i17.MarkdownExporter {
   MockMarkdownExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1342,7 +1331,7 @@ class MockMarkdownExporter extends _i1.Mock implements _i16.MarkdownExporter {
           as _i6.PackageInfo);
 
   @override
-  _i5.Future<_i7.File> export({required List<_i14.DiaryEntry>? entries}) =>
+  _i5.Future<_i7.File> export({required List<_i15.ExportDiary>? entries}) =>
       (super.noSuchMethod(
             Invocation.method(#export, [], {#entries: entries}),
             returnValue: _i5.Future<_i7.File>.value(
@@ -1356,7 +1345,7 @@ class MockMarkdownExporter extends _i1.Mock implements _i16.MarkdownExporter {
 
   @override
   _i5.Future<_i7.File> exportMonth({
-    required List<_i14.DiaryEntry>? entries,
+    required List<_i15.ExportDiary>? entries,
     required int? year,
     required int? month,
   }) =>
@@ -1381,7 +1370,7 @@ class MockMarkdownExporter extends _i1.Mock implements _i16.MarkdownExporter {
 
   @override
   _i5.Future<_i7.File> exportDateRange({
-    required List<_i14.DiaryEntry>? entries,
+    required List<_i15.ExportDiary>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) =>
@@ -1408,7 +1397,7 @@ class MockMarkdownExporter extends _i1.Mock implements _i16.MarkdownExporter {
 /// A class which mocks [Haptics].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockHaptics extends _i1.Mock implements _i17.Haptics {
+class MockHaptics extends _i1.Mock implements _i18.Haptics {
   MockHaptics() {
     _i1.throwOnMissingStub(this);
   }
@@ -1447,7 +1436,7 @@ class MockHaptics extends _i1.Mock implements _i17.Haptics {
 /// A class which mocks [InAppReviewer].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockInAppReviewer extends _i1.Mock implements _i18.InAppReviewer {
+class MockInAppReviewer extends _i1.Mock implements _i19.InAppReviewer {
   MockInAppReviewer() {
     _i1.throwOnMissingStub(this);
   }
@@ -1509,14 +1498,14 @@ class MockInAppReviewer extends _i1.Mock implements _i18.InAppReviewer {
 /// A class which mocks [Tracker].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTracker extends _i1.Mock implements _i19.Tracker {
+class MockTracker extends _i1.Mock implements _i20.Tracker {
   MockTracker() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
   _i5.Future<void> onFlutterError(
-    _i20.FlutterErrorDetails? flutterErrorDetails, {
+    _i21.FlutterErrorDetails? flutterErrorDetails, {
     bool? fatal = false,
   }) =>
       (super.noSuchMethod(
@@ -1596,8 +1585,8 @@ class MockTracker extends _i1.Mock implements _i19.Tracker {
   @override
   _i9.NavigatorObserver navigatorObserver({
     String? Function(_i9.RouteSettings)? nameExtractor =
-        _i21.defaultNameExtractor,
-    bool Function(_i9.Route<dynamic>?)? routeFilter = _i21.defaultRouteFilter,
+        _i22.defaultNameExtractor,
+    bool Function(_i9.Route<dynamic>?)? routeFilter = _i22.defaultRouteFilter,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#navigatorObserver, [], {
@@ -1617,8 +1606,8 @@ class MockTracker extends _i1.Mock implements _i19.Tracker {
   @override
   List<_i9.NavigatorObserver> navigatorObservers({
     String? Function(_i9.RouteSettings)? nameExtractor =
-        _i21.defaultNameExtractor,
-    bool Function(_i9.Route<dynamic>?)? routeFilter = _i21.defaultRouteFilter,
+        _i22.defaultNameExtractor,
+    bool Function(_i9.Route<dynamic>?)? routeFilter = _i22.defaultRouteFilter,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#navigatorObservers, [], {
@@ -1659,7 +1648,7 @@ class MockTracker extends _i1.Mock implements _i19.Tracker {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationClient extends _i1.Mock
-    implements _i22.NotificationClient {
+    implements _i23.NotificationClient {
   MockNotificationClient() {
     _i1.throwOnMissingStub(this);
   }
@@ -1683,7 +1672,7 @@ class MockNotificationClient extends _i1.Mock
 
   @override
   _i5.Future<void> scheduleNotifications(
-    List<_i23.NotificationSetting>? settings, {
+    List<_i24.NotificationSetting>? settings, {
     required String? title,
     required String? message,
   }) =>

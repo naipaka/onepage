@@ -235,7 +235,7 @@ final class CachedDiariesProvider
   CachedDiaries create() => CachedDiaries();
 }
 
-String _$cachedDiariesHash() => r'574d8d16dbca2b8af1dd5f485ff555e288c35f09';
+String _$cachedDiariesHash() => r'e244730f0e27c4380275af897e5cd5837ec28ac6';
 
 /// Provides a list of diaries with dates within the specified date range.
 
@@ -295,7 +295,7 @@ final class DiarySearchProvider
   }
 }
 
-String _$diarySearchHash() => r'60025f13d0c957d9f057debd9346700d0bcde2d2';
+String _$diarySearchHash() => r'9655f6dd5d9515995bec8c6b4312b59f16dcd9fb';
 
 /// Provides search functionality for diary entries.
 

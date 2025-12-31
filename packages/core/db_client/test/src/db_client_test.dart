@@ -89,7 +89,7 @@ void main() {
 
         expect(retrievedDiaries.length, 2);
         expect(
-          retrievedDiaries.map((d) => d.content),
+          retrievedDiaries.map((d) => d.entry.content),
           containsAll(['Diary 2', 'Diary 3']),
         );
       });
@@ -121,13 +121,15 @@ void main() {
 
         expect(retrievedDiaries.length, 3);
         final updatedEntry = retrievedDiaries.firstWhere(
-          (d) => d.id == updated.id,
+          (d) => d.entry.id == updated.id,
         );
-        expect(updatedEntry.content, 'Updated content 2');
+        expect(updatedEntry.entry.content, 'Updated content 2');
 
-        final otherEntries = retrievedDiaries.where((d) => d.id != updated.id);
+        final otherEntries = retrievedDiaries.where(
+          (d) => d.entry.id != updated.id,
+        );
         expect(
-          otherEntries.map((d) => d.content),
+          otherEntries.map((d) => d.entry.content),
           containsAll(['Initial content 1', 'Initial content 3']),
         );
       });

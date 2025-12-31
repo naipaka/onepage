@@ -1,4 +1,3 @@
-import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,23 +12,4 @@ part 'diary_image_provider.g.dart';
 DiaryImageCommand diaryImageCommand(Ref ref) {
   final dbClient = ref.watch(dbClientProvider);
   return DiaryImageCommand(dbClient: dbClient);
-}
-
-/// A provider that creates a [DiaryImageQuery] instance.
-///
-/// {@macro diary.DiaryImageQuery}
-@Riverpod(keepAlive: true)
-DiaryImageQuery diaryImageQuery(Ref ref) {
-  final dbClient = ref.watch(dbClientProvider);
-  return DiaryImageQuery(dbClient: dbClient);
-}
-
-/// Provides a list of diary images for a specific diary entry.
-@riverpod
-Future<List<DiaryImage>> diaryImages(
-  Ref ref, {
-  required int diaryId,
-}) async {
-  final query = ref.watch(diaryImageQueryProvider);
-  return query.getDiaryImagesByDiaryId(diaryId: diaryId);
 }

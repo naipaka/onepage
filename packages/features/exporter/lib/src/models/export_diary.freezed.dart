@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'diary_entry.dart';
+part of 'export_diary.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -13,30 +13,30 @@ part of 'diary_entry.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$DiaryEntry implements DiagnosticableTreeMixin {
+mixin _$ExportDiary implements DiagnosticableTreeMixin {
 
 /// The date of the diary entry.
  DateTime get date;/// The content of the diary entry.
  String get content;
-/// Create a copy of DiaryEntry
+/// Create a copy of ExportDiary
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$DiaryEntryCopyWith<DiaryEntry> get copyWith => _$DiaryEntryCopyWithImpl<DiaryEntry>(this as DiaryEntry, _$identity);
+$ExportDiaryCopyWith<ExportDiary> get copyWith => _$ExportDiaryCopyWithImpl<ExportDiary>(this as ExportDiary, _$identity);
 
-  /// Serializes this DiaryEntry to a JSON map.
+  /// Serializes this ExportDiary to a JSON map.
   Map<String, dynamic> toJson();
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
-    ..add(DiagnosticsProperty('type', 'DiaryEntry'))
+    ..add(DiagnosticsProperty('type', 'ExportDiary'))
     ..add(DiagnosticsProperty('date', date))..add(DiagnosticsProperty('content', content));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiaryEntry&&(identical(other.date, date) || other.date == date)&&(identical(other.content, content) || other.content == content));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExportDiary&&(identical(other.date, date) || other.date == date)&&(identical(other.content, content) || other.content == content));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,15 +45,15 @@ int get hashCode => Object.hash(runtimeType,date,content);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'DiaryEntry(date: $date, content: $content)';
+  return 'ExportDiary(date: $date, content: $content)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $DiaryEntryCopyWith<$Res>  {
-  factory $DiaryEntryCopyWith(DiaryEntry value, $Res Function(DiaryEntry) _then) = _$DiaryEntryCopyWithImpl;
+abstract mixin class $ExportDiaryCopyWith<$Res>  {
+  factory $ExportDiaryCopyWith(ExportDiary value, $Res Function(ExportDiary) _then) = _$ExportDiaryCopyWithImpl;
 @useResult
 $Res call({
  DateTime date, String content
@@ -64,14 +64,14 @@ $Res call({
 
 }
 /// @nodoc
-class _$DiaryEntryCopyWithImpl<$Res>
-    implements $DiaryEntryCopyWith<$Res> {
-  _$DiaryEntryCopyWithImpl(this._self, this._then);
+class _$ExportDiaryCopyWithImpl<$Res>
+    implements $ExportDiaryCopyWith<$Res> {
+  _$ExportDiaryCopyWithImpl(this._self, this._then);
 
-  final DiaryEntry _self;
-  final $Res Function(DiaryEntry) _then;
+  final ExportDiary _self;
+  final $Res Function(ExportDiary) _then;
 
-/// Create a copy of DiaryEntry
+/// Create a copy of ExportDiary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? date = null,Object? content = null,}) {
   return _then(_self.copyWith(
@@ -84,8 +84,8 @@ as String,
 }
 
 
-/// Adds pattern-matching-related methods to [DiaryEntry].
-extension DiaryEntryPatterns on DiaryEntry {
+/// Adds pattern-matching-related methods to [ExportDiary].
+extension ExportDiaryPatterns on ExportDiary {
 /// A variant of `map` that fallback to returning `orElse`.
 ///
 /// It is equivalent to doing:
@@ -98,10 +98,10 @@ extension DiaryEntryPatterns on DiaryEntry {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _DiaryEntry value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ExportDiary value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _DiaryEntry() when $default != null:
+case _ExportDiary() when $default != null:
 return $default(_that);case _:
   return orElse();
 
@@ -120,10 +120,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _DiaryEntry value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ExportDiary value)  $default,){
 final _that = this;
 switch (_that) {
-case _DiaryEntry():
+case _ExportDiary():
 return $default(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -141,10 +141,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _DiaryEntry value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ExportDiary value)?  $default,){
 final _that = this;
 switch (_that) {
-case _DiaryEntry() when $default != null:
+case _ExportDiary() when $default != null:
 return $default(_that);case _:
   return null;
 
@@ -164,7 +164,7 @@ return $default(_that);case _:
 
 @optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( DateTime date,  String content)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _DiaryEntry() when $default != null:
+case _ExportDiary() when $default != null:
 return $default(_that.date,_that.content);case _:
   return orElse();
 
@@ -185,7 +185,7 @@ return $default(_that.date,_that.content);case _:
 
 @optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( DateTime date,  String content)  $default,) {final _that = this;
 switch (_that) {
-case _DiaryEntry():
+case _ExportDiary():
 return $default(_that.date,_that.content);case _:
   throw StateError('Unexpected subclass');
 
@@ -205,7 +205,7 @@ return $default(_that.date,_that.content);case _:
 
 @optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( DateTime date,  String content)?  $default,) {final _that = this;
 switch (_that) {
-case _DiaryEntry() when $default != null:
+case _ExportDiary() when $default != null:
 return $default(_that.date,_that.content);case _:
   return null;
 
@@ -217,35 +217,35 @@ return $default(_that.date,_that.content);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _DiaryEntry with DiagnosticableTreeMixin implements DiaryEntry {
-  const _DiaryEntry({required this.date, required this.content});
-  factory _DiaryEntry.fromJson(Map<String, dynamic> json) => _$DiaryEntryFromJson(json);
+class _ExportDiary with DiagnosticableTreeMixin implements ExportDiary {
+  const _ExportDiary({required this.date, required this.content});
+  factory _ExportDiary.fromJson(Map<String, dynamic> json) => _$ExportDiaryFromJson(json);
 
 /// The date of the diary entry.
 @override final  DateTime date;
 /// The content of the diary entry.
 @override final  String content;
 
-/// Create a copy of DiaryEntry
+/// Create a copy of ExportDiary
 /// with the given fields replaced by the non-null parameter values.
 @override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$DiaryEntryCopyWith<_DiaryEntry> get copyWith => __$DiaryEntryCopyWithImpl<_DiaryEntry>(this, _$identity);
+_$ExportDiaryCopyWith<_ExportDiary> get copyWith => __$ExportDiaryCopyWithImpl<_ExportDiary>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$DiaryEntryToJson(this, );
+  return _$ExportDiaryToJson(this, );
 }
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
-    ..add(DiagnosticsProperty('type', 'DiaryEntry'))
+    ..add(DiagnosticsProperty('type', 'ExportDiary'))
     ..add(DiagnosticsProperty('date', date))..add(DiagnosticsProperty('content', content));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiaryEntry&&(identical(other.date, date) || other.date == date)&&(identical(other.content, content) || other.content == content));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ExportDiary&&(identical(other.date, date) || other.date == date)&&(identical(other.content, content) || other.content == content));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -254,15 +254,15 @@ int get hashCode => Object.hash(runtimeType,date,content);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'DiaryEntry(date: $date, content: $content)';
+  return 'ExportDiary(date: $date, content: $content)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$DiaryEntryCopyWith<$Res> implements $DiaryEntryCopyWith<$Res> {
-  factory _$DiaryEntryCopyWith(_DiaryEntry value, $Res Function(_DiaryEntry) _then) = __$DiaryEntryCopyWithImpl;
+abstract mixin class _$ExportDiaryCopyWith<$Res> implements $ExportDiaryCopyWith<$Res> {
+  factory _$ExportDiaryCopyWith(_ExportDiary value, $Res Function(_ExportDiary) _then) = __$ExportDiaryCopyWithImpl;
 @override @useResult
 $Res call({
  DateTime date, String content
@@ -273,17 +273,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$DiaryEntryCopyWithImpl<$Res>
-    implements _$DiaryEntryCopyWith<$Res> {
-  __$DiaryEntryCopyWithImpl(this._self, this._then);
+class __$ExportDiaryCopyWithImpl<$Res>
+    implements _$ExportDiaryCopyWith<$Res> {
+  __$ExportDiaryCopyWithImpl(this._self, this._then);
 
-  final _DiaryEntry _self;
-  final $Res Function(_DiaryEntry) _then;
+  final _ExportDiary _self;
+  final $Res Function(_ExportDiary) _then;
 
-/// Create a copy of DiaryEntry
+/// Create a copy of ExportDiary
 /// with the given fields replaced by the non-null parameter values.
 @override @pragma('vm:prefer-inline') $Res call({Object? date = null,Object? content = null,}) {
-  return _then(_DiaryEntry(
+  return _then(_ExportDiary(
 date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,

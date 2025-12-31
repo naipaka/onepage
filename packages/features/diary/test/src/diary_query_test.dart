@@ -16,18 +16,22 @@ void main() {
 
       final expectedDiaries = [
         Diary(
-          id: 1,
-          content: 'Diary 1',
-          date: DateTime(2024, 1, 10),
-          createdAt: DateTime(2024, 1, 10),
-          updatedAt: DateTime(2024, 1, 10),
+          entry: DiaryEntry(
+            id: 1,
+            content: 'Diary 1',
+            date: DateTime(2024, 1, 10),
+            createdAt: DateTime(2024, 1, 10),
+            updatedAt: DateTime(2024, 1, 10),
+          ),
         ),
         Diary(
-          id: 2,
-          content: 'Diary 2',
-          date: DateTime(2024, 1, 20),
-          createdAt: DateTime(2024, 1, 20),
-          updatedAt: DateTime(2024, 1, 20),
+          entry: DiaryEntry(
+            id: 2,
+            content: 'Diary 2',
+            date: DateTime(2024, 1, 20),
+            createdAt: DateTime(2024, 1, 20),
+            updatedAt: DateTime(2024, 1, 20),
+          ),
         ),
       ];
 
@@ -69,14 +73,14 @@ void main() {
         const offset = 0;
 
         final expectedDiaries = [
-          Diary(
+          DiaryEntry(
             id: 1,
             content: 'I went to Tokyo',
             date: DateTime(2024, 1, 10),
             createdAt: DateTime(2024, 1, 10),
             updatedAt: DateTime(2024, 1, 10),
           ),
-          Diary(
+          DiaryEntry(
             id: 2,
             content: 'Tokyo is beautiful',
             date: DateTime(2024, 1, 20),
@@ -132,7 +136,7 @@ void main() {
 
       const searchTerm = 'test';
       final expectedDiaries = [
-        Diary(
+        DiaryEntry(
           id: 1,
           content: 'Test diary',
           date: DateTime(2024, 1, 10),

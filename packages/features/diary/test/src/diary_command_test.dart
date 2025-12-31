@@ -15,7 +15,7 @@ void main() {
       const content = 'New Diary Entry';
       final date = DateTime(2024, 1, 10);
 
-      final diary = Diary(
+      final diaryEntry = DiaryEntry(
         id: 1,
         content: content,
         date: date,
@@ -25,7 +25,7 @@ void main() {
 
       when(
         mockDbClient.insertDiary(content: content, date: date),
-      ).thenAnswer((_) async => diary);
+      ).thenAnswer((_) async => diaryEntry);
 
       await diaryCommand.addDiary(content: content, date: date);
 

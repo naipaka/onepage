@@ -19,7 +19,7 @@ class DiaryCommand {
   ///
   /// - [content] - The content of the diary entry.
   /// - [date] - The date of the diary entry.
-  Future<Diary> addDiary({
+  Future<DiaryEntry> addDiary({
     required String content,
     required DateTime date,
   }) async {

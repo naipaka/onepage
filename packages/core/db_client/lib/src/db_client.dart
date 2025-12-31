@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'db_client.steps.dart';
+import 'models/diary.dart';
 import 'tables/tables.dart';
 
 part 'db_client.g.dart';
@@ -72,7 +73,10 @@ class DbClient extends _$DbClient {
   /// This method takes [content] and [date] as parameters and inserts
   /// a new diary entry into the 'diaries' table.
   /// It returns the inserted diary entry.
-  Future<Diary> insertDiary({required String content, required DateTime date}) {
+  Future<DiaryEntry> insertDiary({
+    required String content,
+    required DateTime date,
+  }) {
     final diary = DiariesCompanion(content: Value(content), date: Value(date));
     return into(diaries).insertReturning(diary);
   }
@@ -85,10 +89,37 @@ class DbClient extends _$DbClient {
   Future<List<Diary>> getDiaries({
     required DateTime from,
     required DateTime to,
-  }) {
-    final query = select(diaries)
-      ..where((tbl) => tbl.date.isBetweenValues(from, to));
-    return query.get();
+  }) async {
+    final query = select(diaries).join([
+      leftOuterJoin(diaryImages, diaryImages.diaryId.equalsExp(diaries.id)),
+    ])..where(diaries.date.isBetweenValues(from, to));
+
+    final results = await query.get();
+
+    // Group images by diary entry
+    final groupedMap = <int, ({DiaryEntry entry, List<DiaryImage> images})>{};
+
+    for (final row in results) {
+      final entry = row.readTable(diaries);
+      final image = row.readTableOrNull(diaryImages);
+
+      if (groupedMap.containsKey(entry.id)) {
+        // Add image to existing entry's images list
+        if (image != null) {
+          groupedMap[entry.id]!.images.add(image);
+        }
+      } else {
+        // Create new grouped entry with images list
+        groupedMap[entry.id] = (
+          entry: entry,
+          images: image != null ? [image] : <DiaryImage>[],
+        );
+      }
+    }
+
+    return groupedMap.values
+        .map((record) => Diary(entry: record.entry, images: record.images))
+        .toList();
   }
 
   /// Updates a diary entry in the database.
@@ -106,9 +137,9 @@ class DbClient extends _$DbClient {
   ///
   /// This method takes a [searchTerm] parameter and searches for diary entries
   /// that contain the search term in their content. The search is
-  /// case-insensitive. Returns a list of [Diary] objects ordered by date in
-  /// descending order.
-  Future<List<Diary>> searchDiaries({
+  /// case-insensitive. Returns a list of [DiaryEntry] objects ordered by date
+  /// in descending order.
+  Future<List<DiaryEntry>> searchDiaries({
     required String searchTerm,
     int? limit,
     int? offset,
@@ -161,18 +192,6 @@ class DbClient extends _$DbClient {
       photoId: Value(photoId),
     );
     return into(diaryImages).insertReturning(diaryImage);
-  }
-
-  /// Retrieves diary images from the database by diary ID.
-  ///
-  /// This method takes an integer [diaryId] as a parameter and returns
-  /// a list of [DiaryImage] objects associated with the specified diary ID.
-  Future<List<DiaryImage>> getDiaryImagesByDiaryId({
-    required int diaryId,
-  }) {
-    final query = select(diaryImages)
-      ..where((tbl) => tbl.diaryId.equals(diaryId));
-    return query.get();
   }
 
   /// Deletes a diary image entry from the database.

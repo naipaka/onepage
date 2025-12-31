@@ -167,6 +167,62 @@ When in doubt, ask: **"Can this widget/code be used as-is in a completely differ
 - **Code organization**: No global private functions - use class methods or inline code
 - **NO Widget Variables**: NEVER use `final child = Widget()` - return widgets directly
 
+### Method Organization in Widgets
+- **Build Method Nested Functions**: Write helper functions inside build method, NOT as separate class methods
+  - Write functions as nested methods inside build (often as local functions)
+  - This allows access to build method variables (BuildContext, WidgetRef, flutter_hooks variables, etc.)
+  - DO NOT create separate methods that require passing context and other variables as arguments
+  - Passing variables as arguments is not rational when they're already available in build scope
+
+  ```dart
+  // ❌ BAD - Separate method requiring argument passing
+  class MyWidget extends ConsumerWidget {
+    @override
+    Widget build(BuildContext context, WidgetRef ref) {
+      final value = ref.watch(someProvider);
+
+      return ElevatedButton(
+        onPressed: () => _showDialog(context, ref, value),
+        child: Text('Show'),
+      );
+    }
+
+    // Requires passing context, ref, and value as arguments
+    void _showDialog(BuildContext context, WidgetRef ref, String value) {
+      showDialog(...);
+    }
+  }
+
+  // ✅ GOOD - Nested function with access to build scope
+  class MyWidget extends ConsumerWidget {
+    @override
+    Widget build(BuildContext context, WidgetRef ref) {
+      final value = ref.watch(someProvider);
+
+      // Nested function can access context, ref, value directly
+      void showMyDialog() {
+        showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+            content: Text(value),
+          ),
+        );
+      }
+
+      return ElevatedButton(
+        onPressed: showMyDialog,
+        child: Text('Show'),
+      );
+    }
+  }
+  ```
+
+- **Build Method Size**: Build method expansion is acceptable
+  - It's fine if build method grows moderately
+  - Conceptually separate the logic before `return` from the widget tree after `return`
+  - If build becomes too large, that's a signal to refactor into separate Widget classes
+  - DO NOT prematurely extract methods to keep build "clean"
+
 ### Widget Component Design Rules
 - **Component Padding**: NEVER add padding/margin inside reusable components
   - Components should NOT contain internal padding or margins
@@ -257,6 +313,85 @@ Run `melos run gen` after changes to:
   - **Check ALL dependent packages**: When modifying a package, verify that ALL packages that depend on it still compile
     - Example: After changing `haptics` package API, must check `app` package compilation
     - **USE PUB WORKSPACES**: Run `dart analyze` from root directory to check ALL packages at once - do NOT cd into subdirectories
+
+#### Documentation Comment Pattern (REQUIRED)
+All public classes, widgets, and functions MUST use the `{@template}` and `{@macro}` pattern for documentation:
+
+**Pattern Structure:**
+1. Define template at class/widget level with `{@template package.ClassName}`
+2. Provide detailed description of purpose and functionality
+3. Close template with `{@endtemplate}`
+4. Reference template at constructors/factories with `{@macro package.ClassName}`
+5. Add constructor-specific details after `{@macro}` if needed
+6. Document all fields/parameters inline
+
+**For Regular Classes:**
+```dart
+/// {@template package.ClassName}
+/// A detailed description of what this class does.
+///
+/// Additional context about usage, behavior, or important details.
+/// {@endtemplate}
+class ClassName {
+  /// {@macro package.ClassName}
+  ClassName({required this.field});
+
+  /// {@macro package.ClassName}
+  ///
+  /// Additional details specific to this constructor.
+  ClassName.named({required this.field});
+
+  /// Description of this field.
+  final String field;
+}
+```
+
+**For Freezed Classes:**
+```dart
+/// {@template package.ModelName}
+/// A detailed description of what this model represents.
+///
+/// Additional context about the model's purpose.
+/// {@endtemplate}
+@freezed
+abstract class ModelName with _$ModelName {
+  /// {@macro package.ModelName}
+  const factory ModelName({
+    /// Description of this field.
+    required String field,
+  }) = _ModelName;
+
+  /// {@macro package.ModelName}
+  ///
+  /// Creates a [ModelName] instance from a JSON object.
+  factory ModelName.fromJson(Map<String, Object?> json) =>
+      _$ModelNameFromJson(json);
+}
+```
+
+**For Widgets:**
+```dart
+/// {@template package.WidgetName}
+/// A detailed description of what this widget displays.
+///
+/// Additional context about behavior and usage.
+/// {@endtemplate}
+class WidgetName extends StatelessWidget {
+  /// {@macro package.WidgetName}
+  const WidgetName({super.key, required this.data});
+
+  /// The data to display.
+  final String data;
+}
+```
+
+**Examples from codebase:**
+- `packages/features/haptics/lib/src/haptics.dart`
+- `packages/core/prefs_client/lib/src/prefs_client.dart`
+- `packages/features/exporter/lib/src/models/export_diary.dart`
+- `packages/features/update_requester/lib/src/models/src/update_request.dart`
+
+**IMPORTANT:** NEVER write class documentation without this pattern. The `{@macro}` reference allows documentation to be reused and ensures consistency across constructors.
 
 ### Environment Configuration
 - Environment variables in `packages/app/dart_defines/`
@@ -473,6 +608,32 @@ class MyPage extends HookWidget {
   # ✅ CORRECT - Use Edit tool to add proper content
   ```
 - Use Edit tool for all file modifications to maintain proper file formatting
+
+## Research and Knowledge Management
+
+### WebSearch for Unfamiliar Warnings and Code Patterns
+**MANDATORY**: When encountering unfamiliar warnings, lint rules, or code patterns:
+
+1. **Always use WebSearch BEFORE making fixes**
+   - Especially for warnings/lints you don't recognize
+   - Especially for code patterns that might be newer than knowledge cutoff (January 2025)
+   - Research the actual meaning and recommended fix
+
+2. **Never guess or assume based on incomplete knowledge**
+   - Read the complete lint message carefully
+   - Search for official documentation
+   - Verify the recommended approach before implementing
+
+3. **Examples of when to search**:
+   - Unknown lint warnings (e.g., `unnecessary_underscores`)
+   - New language features (e.g., Dart wildcard variables in 3.7)
+   - Flutter/Dart API changes
+   - Best practices that may have evolved
+
+4. **Knowledge cutoff**: January 2025
+   - Flutter 3.27 (December 2024, Dart 3.6) is the last known stable version
+   - Flutter 3.29+ (February 2025+, Dart 3.7+) requires research
+   - Always verify current best practices with WebSearch
 
 ## Quality Assurance Workflow
 
