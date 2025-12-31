@@ -23,7 +23,7 @@ class MarkdownExporter extends Exporter {
 
   @override
   Future<File> export({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
   }) async {
     final title = _generateTitle(entries);
     final fileName = _generateFileName(title);
@@ -34,7 +34,7 @@ class MarkdownExporter extends Exporter {
 
   @override
   Future<File> exportMonth({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required int year,
     required int month,
   }) async {
@@ -56,7 +56,7 @@ class MarkdownExporter extends Exporter {
 
   @override
   Future<File> exportDateRange({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required DateTime startDate,
     required DateTime endDate,
   }) async {
@@ -73,7 +73,7 @@ class MarkdownExporter extends Exporter {
     return _saveToFile(content, fileName);
   }
 
-  String _generateMarkdownContent(List<DiaryEntry> entries, String title) {
+  String _generateMarkdownContent(List<ExportDiary> entries, String title) {
     final buffer = StringBuffer()
       ..writeln('# $title')
       ..writeln()
@@ -100,7 +100,7 @@ class MarkdownExporter extends Exporter {
   }
 
   String _generateMarkdownContentForMonth(
-    List<DiaryEntry> entries,
+    List<ExportDiary> entries,
     String title,
     int year,
     int month,
@@ -117,7 +117,7 @@ class MarkdownExporter extends Exporter {
       ..writeln();
 
     final daysInMonth = DateTime(year, month + 1, 0).day;
-    final entryMap = <int, DiaryEntry>{};
+    final entryMap = <int, ExportDiary>{};
 
     for (final entry in entries) {
       if (entry.date.year == year && entry.date.month == month) {
@@ -144,7 +144,7 @@ class MarkdownExporter extends Exporter {
     return buffer.toString();
   }
 
-  String _generateTitle(List<DiaryEntry> entries) {
+  String _generateTitle(List<ExportDiary> entries) {
     if (entries.isEmpty) {
       return DateFormat.yMMMM().format(clock.now());
     }

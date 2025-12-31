@@ -17,12 +17,12 @@ class StubDbClient extends DbClient {
   final String locale;
 
   @override
-  Future<Diary> insertDiary({
+  Future<DiaryEntry> insertDiary({
     required String content,
     required DateTime date,
   }) async {
     final now = clock.now();
-    return Diary(
+    return DiaryEntry(
       id: 1,
       content: content,
       date: date,
@@ -38,9 +38,9 @@ class StubDbClient extends DbClient {
   }) async {
     final now = clock.now();
     if (locale == 'ja') {
-      return List.generate(
+      final entries = List.generate(
         4,
-        (index) => Diary(
+        (index) => DiaryEntry(
           id: index + 1,
           content: _stubJapaneseContents[index],
           date: now.subtract(Duration(days: index)),
@@ -48,18 +48,20 @@ class StubDbClient extends DbClient {
           updatedAt: now,
         ),
       );
-    } else {
-      return List.generate(
-        4,
-        (index) => Diary(
-          id: index + 1,
-          content: _stubEnglishContents[index],
-          date: now.subtract(Duration(days: index)),
-          createdAt: now,
-          updatedAt: now,
-        ),
-      );
+      return entries.map((entry) => Diary(entry: entry)).toList();
     }
+
+    final entries = List.generate(
+      4,
+      (index) => DiaryEntry(
+        id: index + 1,
+        content: _stubEnglishContents[index],
+        date: now.subtract(Duration(days: index)),
+        createdAt: now,
+        updatedAt: now,
+      ),
+    );
+    return entries.map((entry) => Diary(entry: entry)).toList();
   }
 
   @override

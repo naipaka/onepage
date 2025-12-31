@@ -109,6 +109,7 @@ class TranslationsHomeEn {
 	String get datePickerConfirm => 'OK';
 
 	late final TranslationsHomePhotoSelectorEn photoSelector = TranslationsHomePhotoSelectorEn._(_root);
+	late final TranslationsHomeDeleteImageEn deleteImage = TranslationsHomeDeleteImageEn._(_root);
 }
 
 // Path: backup
@@ -300,6 +301,22 @@ class TranslationsHomePhotoSelectorEn {
 	String get noPhotos => 'No photos available';
 
 	late final TranslationsHomePhotoSelectorPermissionEn permission = TranslationsHomePhotoSelectorPermissionEn._(_root);
+	late final TranslationsHomePhotoSelectorErrorEn error = TranslationsHomePhotoSelectorErrorEn._(_root);
+}
+
+// Path: home.deleteImage
+class TranslationsHomeDeleteImageEn {
+	TranslationsHomeDeleteImageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Delete Image'
+	String get title => 'Delete Image';
+
+	/// en: 'Are you sure you want to delete this image?'
+	String get message => 'Are you sure you want to delete this image?';
 }
 
 // Path: backup.actions
@@ -371,6 +388,21 @@ class TranslationsHomePhotoSelectorPermissionEn {
 	String get openSettings => 'Open Settings';
 }
 
+// Path: home.photoSelector.error
+class TranslationsHomePhotoSelectorErrorEn {
+	TranslationsHomePhotoSelectorErrorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'An error occurred while saving the image'
+	String get title => 'An error occurred while saving the image';
+
+	/// en: 'Please try again'
+	String get description => 'Please try again';
+}
+
 /// The flat map containing all translations for locale <en>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -398,6 +430,10 @@ extension on Translations {
 			'home.photoSelector.permission.deniedTitle' => 'Photo library access required',
 			'home.photoSelector.permission.deniedMessage' => 'Please allow access to your photo library in settings',
 			'home.photoSelector.permission.openSettings' => 'Open Settings',
+			'home.photoSelector.error.title' => 'An error occurred while saving the image',
+			'home.photoSelector.error.description' => 'Please try again',
+			'home.deleteImage.title' => 'Delete Image',
+			'home.deleteImage.message' => 'Are you sure you want to delete this image?',
 			'backup.title' => 'Backup',
 			'backup.description' => 'Backup for a Smooth Device Switch',
 			'backup.explanation' => 'Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.).',

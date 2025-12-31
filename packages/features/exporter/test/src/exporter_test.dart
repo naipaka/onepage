@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 class TestExporter extends Exporter {
   @override
-  Future<File> export({required List<DiaryEntry> entries}) async {
+  Future<File> export({required List<ExportDiary> entries}) async {
     // Mock implementation for testing
     final tempFile = File('/tmp/test_export.txt');
     await tempFile.writeAsString('Test export: ${entries.length} entries');
@@ -14,7 +14,7 @@ class TestExporter extends Exporter {
 
   @override
   Future<File> exportMonth({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required int year,
     required int month,
   }) async {
@@ -27,7 +27,7 @@ class TestExporter extends Exporter {
 
   @override
   Future<File> exportDateRange({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required DateTime startDate,
     required DateTime endDate,
   }) async {
@@ -50,7 +50,7 @@ void main() {
     test('export method can be overridden', () async {
       final exporter = TestExporter();
       final entries = [
-        DiaryEntry(
+        ExportDiary(
           date: DateTime(2023, 12),
           content: 'Test content',
         ),
@@ -73,7 +73,7 @@ void main() {
     test('exportMonth method can be overridden', () async {
       final exporter = TestExporter();
       final entries = [
-        DiaryEntry(
+        ExportDiary(
           date: DateTime(2023, 12),
           content: 'Test content',
         ),
@@ -95,7 +95,7 @@ void main() {
     test('exportDateRange method can be overridden', () async {
       final exporter = TestExporter();
       final entries = [
-        DiaryEntry(
+        ExportDiary(
           date: DateTime(2023, 12),
           content: 'Test content',
         ),

@@ -13,12 +13,3 @@ DiaryImageCommand diaryImageCommand(Ref ref) {
   final dbClient = ref.watch(dbClientProvider);
   return DiaryImageCommand(dbClient: dbClient);
 }
-
-/// A provider that creates a [DiaryImageQuery] instance.
-///
-/// {@macro diary.DiaryImageQuery}
-@Riverpod(keepAlive: true)
-DiaryImageQuery diaryImageQuery(Ref ref) {
-  final dbClient = ref.watch(dbClientProvider);
-  return DiaryImageQuery(dbClient: dbClient);
-}

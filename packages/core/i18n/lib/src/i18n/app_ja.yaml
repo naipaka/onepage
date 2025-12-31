@@ -23,6 +23,12 @@ home:
       deniedTitle: "写真ライブラリへのアクセス権限が必要です"
       deniedMessage: "設定からアプリに写真ライブラリへのアクセスを許可してください"
       openSettings: "設定を開く"
+    error:
+      title: "画像の保存中にエラーが発生しました"
+      description: "もう一度お試しください"
+  deleteImage:
+    title: "画像を削除"
+    message: "この画像を削除しますか？"
 backup:
   title: "Backup"
   description: "機種変更でも安心バックアップ"

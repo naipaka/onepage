@@ -243,10 +243,10 @@ class ExportPage extends HookConsumerWidget {
         to: endDate,
       );
 
-      final entries = diaries.map((Diary diary) {
-        return DiaryEntry(
-          date: diary.date,
-          content: diary.content,
+      final entries = diaries.map((diary) {
+        return ExportDiary(
+          date: diary.entry.date,
+          content: diary.entry.content,
         );
       }).toList();
 

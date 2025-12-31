@@ -77,6 +77,7 @@ class _TranslationsHomeJa implements TranslationsHomeEn {
 	@override String get datePickerCancel => 'キャンセル';
 	@override String get datePickerConfirm => '決定';
 	@override late final _TranslationsHomePhotoSelectorJa photoSelector = _TranslationsHomePhotoSelectorJa._(_root);
+	@override late final _TranslationsHomeDeleteImageJa deleteImage = _TranslationsHomeDeleteImageJa._(_root);
 }
 
 // Path: backup
@@ -184,6 +185,18 @@ class _TranslationsHomePhotoSelectorJa implements TranslationsHomePhotoSelectorE
 	@override String get confirm => '決定';
 	@override String get noPhotos => '写真がありません';
 	@override late final _TranslationsHomePhotoSelectorPermissionJa permission = _TranslationsHomePhotoSelectorPermissionJa._(_root);
+	@override late final _TranslationsHomePhotoSelectorErrorJa error = _TranslationsHomePhotoSelectorErrorJa._(_root);
+}
+
+// Path: home.deleteImage
+class _TranslationsHomeDeleteImageJa implements TranslationsHomeDeleteImageEn {
+	_TranslationsHomeDeleteImageJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '画像を削除';
+	@override String get message => 'この画像を削除しますか？';
 }
 
 // Path: backup.actions
@@ -233,6 +246,17 @@ class _TranslationsHomePhotoSelectorPermissionJa implements TranslationsHomePhot
 	@override String get openSettings => '設定を開く';
 }
 
+// Path: home.photoSelector.error
+class _TranslationsHomePhotoSelectorErrorJa implements TranslationsHomePhotoSelectorErrorEn {
+	_TranslationsHomePhotoSelectorErrorJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '画像の保存中にエラーが発生しました';
+	@override String get description => 'もう一度お試しください';
+}
+
 /// The flat map containing all translations for locale <ja>.
 /// Only for edge cases! For simple maps, use the map function of this library.
 ///
@@ -260,6 +284,10 @@ extension on TranslationsJa {
 			'home.photoSelector.permission.deniedTitle' => '写真ライブラリへのアクセス権限が必要です',
 			'home.photoSelector.permission.deniedMessage' => '設定からアプリに写真ライブラリへのアクセスを許可してください',
 			'home.photoSelector.permission.openSettings' => '設定を開く',
+			'home.photoSelector.error.title' => '画像の保存中にエラーが発生しました',
+			'home.photoSelector.error.description' => 'もう一度お試しください',
+			'home.deleteImage.title' => '画像を削除',
+			'home.deleteImage.message' => 'この画像を削除しますか？',
 			'backup.title' => 'Backup',
 			'backup.description' => '機種変更でも安心バックアップ',
 			'backup.explanation' => 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）',

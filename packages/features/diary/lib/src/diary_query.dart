@@ -38,7 +38,7 @@ class DiaryQuery {
   /// - [searchTerm] - The search term to look for in diary content.
   /// - [limit] - The maximum number of results to return.
   /// - [offset] - The number of results to skip.
-  Future<List<Diary>> searchDiaries({
+  Future<List<DiaryEntry>> searchDiaries({
     required String searchTerm,
     int? limit,
     int? offset,
