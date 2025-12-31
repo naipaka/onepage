@@ -57,6 +57,9 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
   /// Whether an error occurred while loading the asset.
   bool _hasError = false;
 
+  /// Unique tag for Hero animation.
+  final _heroTag = UniqueKey();
+
   @override
   void initState() {
     super.initState();
@@ -133,7 +136,7 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
         PageRouteBuilder(
           pageBuilder: (_, _, _) {
             return _PhotoViewer(
-              photoId: widget.photoId,
+              heroTag: _heroTag,
               asset: asset,
               onDelete: widget.onDelete,
             );
@@ -148,7 +151,7 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
     return GestureDetector(
       onTap: showPhotoViewer,
       child: Hero(
-        tag: widget.photoId,
+        tag: _heroTag,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: AssetEntityImage(
@@ -175,13 +178,13 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
 class _PhotoViewer extends StatefulWidget {
   /// {@macro photo_selector._PhotoViewer}
   const _PhotoViewer({
-    required this.photoId,
+    required this.heroTag,
     required this.asset,
     this.onDelete,
   });
 
-  /// The photo ID to display.
-  final String photoId;
+  /// Unique tag for Hero animation.
+  final Object heroTag;
 
   /// The asset entity to display.
   final AssetEntity asset;
@@ -276,7 +279,7 @@ class _PhotoViewerState extends State<_PhotoViewer> {
             offset: _isScaling ? Offset.zero : _offset,
             child: SizedBox.expand(
               child: Hero(
-                tag: widget.photoId,
+                tag: widget.heroTag,
                 child: InteractiveViewer(
                   transformationController: _controller,
                   onInteractionEnd: _onInteractionEnd,
