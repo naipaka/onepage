@@ -41,8 +41,8 @@ dependencies:
   intl: ^0.20.2
   notification_client:
     path: ../core/notification_client/
-  photo_selector:
-    path: ../core/photo_selector/
+  photo_client:
+    path: ../core/photo_client/
   prefs_client:
     path: ../core/prefs_client/
   provider_utils:

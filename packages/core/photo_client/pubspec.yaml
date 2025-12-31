@@ -1,5 +1,5 @@
-name: photo_selector
-description: A package for selecting photos from device photo library with permission handling and album browsing.
+name: photo_client
+description: A package for photo management including selection and viewing from device photo library with permission handling and album browsing.
 version: 1.0.0
 publish_to: "none"
 
