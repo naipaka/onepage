@@ -254,6 +254,14 @@ class MockPrefsClient extends _i1.Mock implements _i10.PrefsClient {
           as bool);
 
   @override
+  bool get hasShownDiaryImageNotice =>
+      (super.noSuchMethod(
+            Invocation.getter(#hasShownDiaryImageNotice),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
   _i5.Future<bool> setTextInputHapticEnabled({required bool? enabled}) =>
       (super.noSuchMethod(
             Invocation.method(#setTextInputHapticEnabled, [], {
@@ -294,6 +302,16 @@ class MockPrefsClient extends _i1.Mock implements _i10.PrefsClient {
       (super.noSuchMethod(
             Invocation.method(#setLastInAppReviewShownAt, [], {
               #timestamp: timestamp,
+            }),
+            returnValue: _i5.Future<bool>.value(false),
+          )
+          as _i5.Future<bool>);
+
+  @override
+  _i5.Future<bool> setHasShownDiaryImageNotice({required bool? shown}) =>
+      (super.noSuchMethod(
+            Invocation.method(#setHasShownDiaryImageNotice, [], {
+              #shown: shown,
             }),
             returnValue: _i5.Future<bool>.value(false),
           )

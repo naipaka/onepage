@@ -301,6 +301,7 @@ class TranslationsHomePhotoSelectorEn {
 	String get noPhotos => 'No photos available';
 
 	late final TranslationsHomePhotoSelectorPermissionEn permission = TranslationsHomePhotoSelectorPermissionEn._(_root);
+	late final TranslationsHomePhotoSelectorNoticeEn notice = TranslationsHomePhotoSelectorNoticeEn._(_root);
 	late final TranslationsHomePhotoSelectorErrorEn error = TranslationsHomePhotoSelectorErrorEn._(_root);
 }
 
@@ -388,6 +389,24 @@ class TranslationsHomePhotoSelectorPermissionEn {
 	String get openSettings => 'Open Settings';
 }
 
+// Path: home.photoSelector.notice
+class TranslationsHomePhotoSelectorNoticeEn {
+	TranslationsHomePhotoSelectorNoticeEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Important Notes about Photos'
+	String get title => 'Important Notes about Photos';
+
+	/// en: '• One photo per date • Deleted from device won't show • May not transfer when switching devices • Cloud backup coming soon'
+	String get message => '• One photo per date\n• Deleted from device won\'t show\n• May not transfer when switching devices\n• Cloud backup coming soon';
+
+	/// en: 'OK'
+	String get confirm => 'OK';
+}
+
 // Path: home.photoSelector.error
 class TranslationsHomePhotoSelectorErrorEn {
 	TranslationsHomePhotoSelectorErrorEn._(this._root);
@@ -430,6 +449,9 @@ extension on Translations {
 			'home.photoSelector.permission.deniedTitle' => 'Photo library access required',
 			'home.photoSelector.permission.deniedMessage' => 'Please allow access to your photo library in settings',
 			'home.photoSelector.permission.openSettings' => 'Open Settings',
+			'home.photoSelector.notice.title' => 'Important Notes about Photos',
+			'home.photoSelector.notice.message' => '• One photo per date\n• Deleted from device won\'t show\n• May not transfer when switching devices\n• Cloud backup coming soon',
+			'home.photoSelector.notice.confirm' => 'OK',
 			'home.photoSelector.error.title' => 'An error occurred while saving the image',
 			'home.photoSelector.error.description' => 'Please try again',
 			'home.deleteImage.title' => 'Delete Image',

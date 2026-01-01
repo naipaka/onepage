@@ -185,6 +185,7 @@ class _TranslationsHomePhotoSelectorJa implements TranslationsHomePhotoSelectorE
 	@override String get confirm => '決定';
 	@override String get noPhotos => '写真がありません';
 	@override late final _TranslationsHomePhotoSelectorPermissionJa permission = _TranslationsHomePhotoSelectorPermissionJa._(_root);
+	@override late final _TranslationsHomePhotoSelectorNoticeJa notice = _TranslationsHomePhotoSelectorNoticeJa._(_root);
 	@override late final _TranslationsHomePhotoSelectorErrorJa error = _TranslationsHomePhotoSelectorErrorJa._(_root);
 }
 
@@ -246,6 +247,18 @@ class _TranslationsHomePhotoSelectorPermissionJa implements TranslationsHomePhot
 	@override String get openSettings => '設定を開く';
 }
 
+// Path: home.photoSelector.notice
+class _TranslationsHomePhotoSelectorNoticeJa implements TranslationsHomePhotoSelectorNoticeEn {
+	_TranslationsHomePhotoSelectorNoticeJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '写真の注意点';
+	@override String get message => '• 日付ごとに1枚まで添付できます\n• 端末から削除すると表示されません\n• 機種変更で失われる可能性があります\n• クラウド保存は対応予定です';
+	@override String get confirm => 'OK';
+}
+
 // Path: home.photoSelector.error
 class _TranslationsHomePhotoSelectorErrorJa implements TranslationsHomePhotoSelectorErrorEn {
 	_TranslationsHomePhotoSelectorErrorJa._(this._root);
@@ -284,6 +297,9 @@ extension on TranslationsJa {
 			'home.photoSelector.permission.deniedTitle' => '写真ライブラリへのアクセス権限が必要です',
 			'home.photoSelector.permission.deniedMessage' => '設定からアプリに写真ライブラリへのアクセスを許可してください',
 			'home.photoSelector.permission.openSettings' => '設定を開く',
+			'home.photoSelector.notice.title' => '写真の注意点',
+			'home.photoSelector.notice.message' => '• 日付ごとに1枚まで添付できます\n• 端末から削除すると表示されません\n• 機種変更で失われる可能性があります\n• クラウド保存は対応予定です',
+			'home.photoSelector.notice.confirm' => 'OK',
 			'home.photoSelector.error.title' => '画像の保存中にエラーが発生しました',
 			'home.photoSelector.error.description' => 'もう一度お試しください',
 			'home.deleteImage.title' => '画像を削除',
