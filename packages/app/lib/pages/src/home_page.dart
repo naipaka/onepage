@@ -12,7 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
-import 'package:photo_selector/photo_selector.dart';
+import 'package:photo_client/photo_client.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
@@ -293,7 +293,7 @@ class _DiaryItem extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: DiaryListTile(
+            child: DiaryTextField(
               content: entry?.content,
               onChanged: (_) {
                 haptic.textInputFeedback();

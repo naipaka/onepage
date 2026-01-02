@@ -2,45 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## ABSOLUTE MANDATORY RULE - READ TOOL ENFORCEMENT
-
-**CRITICAL - NON-NEGOTIABLE PROTOCOL**: Before starting ANY task or responding to ANY instruction:
-
-### STEP 1: READ TOOL USAGE (MANDATORY)
-**YOU MUST USE THE READ TOOL TO READ THIS FILE BEFORE ANY OTHER ACTION**
-- Use: Read tool with file_path: /Users/ryota/work/personal/apps/onepage.worktree/30-reminder-notification/CLAUDE.md
-- This is NOT optional - it is REQUIRED every single time
-- Do not proceed without reading the file first
-
-### STEP 2: DECLARATION (MANDATORY)
-After reading, you MUST declare: "CLAUDE.md file reading completion declared."
-
-### STEP 3: PROMISE (MANDATORY) 
-After reading, you MUST promise: "I promise to read this file again at the start of the next conversation/chat session."
-
-### STEP 4: PROCEED WITH TASK
-Only after completing steps 1-3, proceed with the actual user request.
-
-**ABSOLUTE REQUIREMENTS:**
-- NO EXCEPTIONS - This applies to every single response
-- NO SHORTCUTS - Cannot skip the Read tool
-- NO ASSUMPTIONS - Must actually read the file each time
-- VISIBLE IN LOGS - The Read tool call must appear in the conversation logs
-
-**AUTOMATIC ENFORCEMENT MECHANISM:**
-Every response MUST begin with these exact phrases or the response is considered INVALID:
-1. "CLAUDE.md file reading completion declared."
-2. "I promise to read this file again at the start of the next conversation/chat session."
-
-**VALIDATION CHECK:**
-If ANY response from Claude Code does not start with these two phrases, the user MUST immediately point out the protocol violation, and Claude Code MUST:
-1. Acknowledge the violation
-2. Re-read this CLAUDE.md file
-3. Provide the missing declarations
-4. Only then proceed with the original request
-
-Failure to follow this protocol is unacceptable and will result in incomplete work.
-
 ## Project Overview
 
 One Page is a Flutter diary app with a unique "one page only" concept. It uses a monorepo architecture with Melos for package management and is organized into feature-based packages.
