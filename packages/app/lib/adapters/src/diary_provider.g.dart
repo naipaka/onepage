@@ -114,6 +114,50 @@ final class DiaryQueryProvider
 
 String _$diaryQueryHash() => r'c2aaf09175f18fb5ff5d9eefca6e772125fae621';
 
+/// Provides a stream of the total diary image count.
+///
+/// Emits the current count whenever images are added or removed.
+
+@ProviderFor(diaryImageCount)
+const diaryImageCountProvider = DiaryImageCountProvider._();
+
+/// Provides a stream of the total diary image count.
+///
+/// Emits the current count whenever images are added or removed.
+
+final class DiaryImageCountProvider
+    extends $FunctionalProvider<AsyncValue<int>, int, Stream<int>>
+    with $FutureModifier<int>, $StreamProvider<int> {
+  /// Provides a stream of the total diary image count.
+  ///
+  /// Emits the current count whenever images are added or removed.
+  const DiaryImageCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'diaryImageCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$diaryImageCountHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<int> create(Ref ref) {
+    return diaryImageCount(ref);
+  }
+}
+
+String _$diaryImageCountHash() => r'8c192998efc25cc71524afa6d5b7e815afccf01a';
+
 /// Provides a list of diaries within the specified date range.
 
 @ProviderFor(diaries)

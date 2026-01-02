@@ -611,6 +611,14 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           as _i5.Future<int>);
 
   @override
+  _i5.Stream<int> watchDiaryImageCount() =>
+      (super.noSuchMethod(
+            Invocation.method(#watchDiaryImageCount, []),
+            returnValue: _i5.Stream<int>.empty(),
+          )
+          as _i5.Stream<int>);
+
+  @override
   _i2.Migrator createMigrator() =>
       (super.noSuchMethod(
             Invocation.method(#createMigrator, []),

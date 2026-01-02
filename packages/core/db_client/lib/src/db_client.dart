@@ -203,4 +203,20 @@ class DbClient extends _$DbClient {
     final query = delete(diaryImages)..where((tbl) => tbl.id.equals(id));
     return query.go();
   }
+
+  /// Watches the total count of diary images in the database.
+  ///
+  /// Returns a stream that emits the current count whenever
+  /// diary images are inserted or deleted.
+  Stream<int> watchDiaryImageCount() {
+    final countExpr = countAll();
+    final query = selectOnly(diaryImages)..addColumns([countExpr]);
+
+    return query.watch().map((rows) {
+      if (rows.isEmpty) {
+        return 0;
+      }
+      return rows.first.read(countExpr) ?? 0;
+    });
+  }
 }
