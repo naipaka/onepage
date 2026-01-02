@@ -64,4 +64,11 @@ class DiaryQuery {
       to: to,
     );
   }
+
+  /// Returns a stream of the total count of diary images.
+  ///
+  /// The stream emits the current count whenever images are added or removed.
+  Stream<int> diaryImageCount() {
+    return dbClient.watchDiaryImageCount();
+  }
 }

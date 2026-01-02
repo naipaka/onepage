@@ -98,4 +98,14 @@ class PrefsClient {
   /// Sets the timestamp of the last time in-app review was shown.
   Future<bool> setLastInAppReviewShownAt({required int timestamp}) =>
       _prefs.setInt(PrefsKey.lastInAppReviewShownAt.name, timestamp);
+
+  /// Gets whether the diary image notice dialog has been shown.
+  ///
+  /// Returns `false` by default if no value has been set.
+  bool get hasShownDiaryImageNotice =>
+      _prefs.getBool(PrefsKey.diaryImageNoticeShown.name) ?? false;
+
+  /// Sets whether the diary image notice dialog has been shown.
+  Future<bool> setHasShownDiaryImageNotice({required bool shown}) =>
+      _prefs.setBool(PrefsKey.diaryImageNoticeShown.name, shown);
 }

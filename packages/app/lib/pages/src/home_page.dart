@@ -23,6 +23,7 @@ import 'package:widgets/widgets.dart';
 import '../../adapters/adapters.dart';
 import '../../gen/assets.gen.dart';
 import '../../router/src/app_routes.dart';
+import '../../router/src/router_provider.dart';
 import '../../widgets/widgets.dart';
 
 /// {@template onepage.HomePage}
@@ -344,7 +345,15 @@ class _DiaryItem extends ConsumerWidget {
               photoId: images.first.photoId,
               width: 64,
               height: 64,
-              onDelete: deleteImage,
+              onDeleted: deleteImage,
+              onInfoShown: () async {
+                await showOkAlertDialog(
+                  context: context,
+                  title: t.home.photoSelector.notice.title,
+                  message: t.home.photoSelector.notice.message,
+                  okLabel: t.home.photoSelector.notice.confirm,
+                );
+              },
             ),
           ],
         ],
@@ -971,6 +980,9 @@ class _ImageSelectionActionButton extends ConsumerWidget {
     final asyncDiaries = ref.watch(cachedDiariesProvider);
     final cachedDiaries = ref.watch(cachedDiariesProvider.notifier);
     final tracker = ref.watch(trackerProvider);
+    final prefsClient = ref.watch(prefsClientProvider);
+    final imageCount = ref.watch(diaryImageCountProvider);
+    final colorScheme = context.colorScheme;
 
     return ListenableBuilder(
       listenable: FocusManager.instance,
@@ -1030,12 +1042,40 @@ class _ImageSelectionActionButton extends ConsumerWidget {
               title: t.error.title,
               description: t.error.description,
             );
+            return;
           }
+
+          if (prefsClient.hasShownDiaryImageNotice) {
+            return;
+          }
+
+          // Use root navigator context instead of local context because
+          // the local context becomes unmounted when showPhotoSelector
+          // displays. When the photo selector shows, the keyboard closes,
+          // causing the toolbar to hide and this widget to be disposed.
+          final rootContext = rootNavigatorKey.currentContext;
+          if (rootContext == null || !rootContext.mounted) {
+            return;
+          }
+
+          await showOkAlertDialog(
+            context: rootContext,
+            title: t.notice.title,
+            message: t.notice.message,
+            okLabel: t.notice.confirm,
+          );
+
+          await prefsClient.setHasShownDiaryImageNotice(shown: true);
         }
 
         return IconButton(
           onPressed: selectImage,
-          icon: const Icon(Icons.add_photo_alternate_outlined),
+          icon: Icon(
+            Icons.add_photo_alternate_outlined,
+            color: imageCount.whenOrNull(
+              data: (count) => count < 1 ? colorScheme.primary : null,
+            ),
+          ),
         );
       },
     );

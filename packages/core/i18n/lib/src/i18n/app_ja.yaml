@@ -23,6 +23,10 @@ home:
       deniedTitle: "写真ライブラリへのアクセス権限が必要です"
       deniedMessage: "設定からアプリに写真ライブラリへのアクセスを許可してください"
       openSettings: "設定を開く"
+    notice:
+      title: "写真の注意点"
+      message: "• 日付ごとに1枚まで添付できます\n• 端末から削除すると表示されません\n• 機種変更で失われる可能性があります\n• クラウド保存は対応予定です"
+      confirm: "OK"
     error:
       title: "画像の保存中にエラーが発生しました"
       description: "もう一度お試しください"

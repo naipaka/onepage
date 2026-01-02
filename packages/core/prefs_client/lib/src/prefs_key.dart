@@ -23,4 +23,7 @@ enum PrefsKey {
 
   /// Whether the user has already been asked for review and declined.
   hasDeclinedInAppReview,
+
+  /// Whether the diary image notice dialog has been shown.
+  diaryImageNoticeShown,
 }

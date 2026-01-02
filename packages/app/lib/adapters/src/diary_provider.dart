@@ -29,6 +29,15 @@ DiaryQuery diaryQuery(Ref ref) {
   return DiaryQuery(dbClient: dbClient);
 }
 
+/// Provides a stream of the total diary image count.
+///
+/// Emits the current count whenever images are added or removed.
+@riverpod
+Stream<int> diaryImageCount(Ref ref) {
+  final query = ref.watch(diaryQueryProvider);
+  return query.diaryImageCount();
+}
+
 /// Provides a list of diaries within the specified date range.
 @riverpod
 Future<List<Diary>> diaries(

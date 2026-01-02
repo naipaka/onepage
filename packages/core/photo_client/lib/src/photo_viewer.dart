@@ -19,7 +19,7 @@ import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 ///   Android).
 /// - [width] : The width of the thumbnail in logical pixels.
 /// - [height] : The height of the thumbnail in logical pixels.
-/// - [onDelete] : Callback when the delete button is pressed in the viewer.
+/// - [onDeleted] : Callback when the delete button is pressed in the viewer.
 ///
 /// Unlike [Image], width and height are required to optimize memory usage by
 /// loading appropriately sized thumbnails based on device pixel ratio.
@@ -30,7 +30,8 @@ class PhotoThumbnail extends StatefulWidget {
     required this.photoId,
     required this.width,
     required this.height,
-    this.onDelete,
+    this.onDeleted,
+    this.onInfoShown,
     super.key,
   });
 
@@ -44,7 +45,10 @@ class PhotoThumbnail extends StatefulWidget {
   final double height;
 
   /// Callback when the delete button is pressed in the viewer.
-  final VoidCallback? onDelete;
+  final VoidCallback? onDeleted;
+
+  /// Callback when the info button is pressed in the viewer.
+  final VoidCallback? onInfoShown;
 
   @override
   State<PhotoThumbnail> createState() => _PhotoThumbnailState();
@@ -138,7 +142,8 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
             return _PhotoViewer(
               heroTag: _heroTag,
               asset: asset,
-              onDelete: widget.onDelete,
+              onDeleted: widget.onDeleted,
+              onInfoShown: widget.onInfoShown,
             );
           },
           transitionsBuilder: (_, animation, _, child) {
@@ -180,7 +185,8 @@ class _PhotoViewer extends StatefulWidget {
   const _PhotoViewer({
     required this.heroTag,
     required this.asset,
-    this.onDelete,
+    this.onDeleted,
+    this.onInfoShown,
   });
 
   /// Unique tag for Hero animation.
@@ -190,7 +196,10 @@ class _PhotoViewer extends StatefulWidget {
   final AssetEntity asset;
 
   /// Callback when the delete button is pressed.
-  final VoidCallback? onDelete;
+  final VoidCallback? onDeleted;
+
+  /// Callback when the info button is pressed.
+  final VoidCallback? onInfoShown;
 
   @override
   State<_PhotoViewer> createState() => _PhotoViewerState();
@@ -262,10 +271,15 @@ class _PhotoViewerState extends State<_PhotoViewer> {
           },
         ),
         actions: [
-          if (widget.onDelete != null)
+          if (widget.onInfoShown != null)
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              onPressed: widget.onInfoShown,
+            ),
+          if (widget.onDeleted != null)
             IconButton(
               icon: const Icon(Icons.delete),
-              onPressed: widget.onDelete,
+              onPressed: widget.onDeleted,
             ),
         ],
       ),
