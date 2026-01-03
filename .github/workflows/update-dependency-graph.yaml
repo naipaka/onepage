@@ -188,4 +188,3 @@ jobs:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
           git push origin --delete ${{ env.BRANCH_NAME }}
-          git push origin --delete ${{ env.BRANCH_NAME }}
