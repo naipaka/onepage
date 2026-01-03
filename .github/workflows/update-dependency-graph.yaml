@@ -45,7 +45,6 @@ jobs:
           fi
 
       - name: Generate Dependency Graph
-        # To resolve dependencies, output to standard output before writing to the file.
         run: |
           melos list
           melos list --gviz > "dependency_graph.dot"
@@ -72,6 +71,7 @@ jobs:
     if: needs.generate-and-compare.outputs.has_diff == 'true'
     outputs:
       branch_exists: ${{ steps.check-branch.outputs.branch_exists }}
+      branch_created: ${{ steps.create-new-branch.outputs.branch_created }}
     steps:
       - uses: actions/checkout@v6
 
@@ -86,10 +86,12 @@ jobs:
           fi
 
       - name: Create and Push New Branch
+        id: create-new-branch
         if: steps.check-branch.outputs.branch_exists != 'true'
         run: |
           git switch -c ${{ env.BRANCH_NAME }}
           git push origin ${{ env.BRANCH_NAME }}
+          echo "branch_created=true" >> "$GITHUB_OUTPUT"
 
   commit-changes:
     name: Commit Changes
@@ -162,3 +164,28 @@ jobs:
           title: "doc: Update Dependency Graph"
           body: "This PR updates the dependency graph and SVG image."
         run: gh pr create -B "$GITHUB_REF" -H "${{ env.BRANCH_NAME }}" -t "${{ env.title }}" -b "${{ env.body }}" -a "$GITHUB_ACTOR"
+
+  cleanup-on-failure:
+    name: Cleanup Branch on Failure
+    runs-on: ubuntu-latest
+    needs: [create-branch, commit-changes]
+    if: |
+      always() &&
+      needs.create-branch.outputs.branch_created == 'true' &&
+      needs.commit-changes.result == 'failure'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Generate GitHub App token
+        id: generate_token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.PR_WRITER_APP_ID }}
+          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
+
+      - name: Delete created branch
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+        run: |
+          git push origin --delete ${{ env.BRANCH_NAME }}
+          git push origin --delete ${{ env.BRANCH_NAME }}
