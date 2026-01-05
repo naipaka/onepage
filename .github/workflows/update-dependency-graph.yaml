@@ -45,9 +45,11 @@ jobs:
           fi
 
       - name: Generate Dependency Graph
-        run: |
-          melos list
-          melos list --gviz > "dependency_graph.dot"
+        # Workaround: For some reason, dependency resolution messages are output when running melos commands,
+        # even after pub get has already been executed.
+        # As a workaround, extract only the graph content starting from "digraph packages {".
+        # See: https://github.com/invertase/melos/issues/662
+        run: melos list --gviz 2>&1 | sed -n '/^digraph packages {/,$p' > "dependency_graph.dot"
 
       - name: Upload Dependency Graph as Artifact
         uses: actions/upload-artifact@v6
