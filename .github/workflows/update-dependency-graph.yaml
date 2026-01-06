@@ -45,8 +45,19 @@ jobs:
           fi
 
       - name: Generate Dependency Graph
+        # Workaround: Update `pubspec.lock` timestamp to prevent "Resolving dependencies..."
+        # from being output on every melos command execution.
+        #
+        # When git clones/checkouts, `pubspec.yaml` and `pubspec.lock` get the same timestamp,
+        # causing dart pub to always run dependency resolution since it compares file timestamps.
+        #
+        # See:
+        # - https://github.com/dart-lang/pub/issues/3558
+        # - https://github.com/dart-lang/pub/issues/4672
+        # - https://github.com/dart-lang/pub/issues/4699
+        # - https://github.com/Dart-Code/Dart-Code/pull/5760
         run: |
-          melos list
+          touch pubspec.lock
           melos list --gviz > "dependency_graph.dot"
 
       - name: Upload Dependency Graph as Artifact
