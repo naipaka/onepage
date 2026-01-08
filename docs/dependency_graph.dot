@@ -10,6 +10,7 @@ digraph packages {
   in_app_reviewer [shape="box"; color="#1253da"];
   notification_client [shape="box"; color="#4d6b02"];
   onepage [shape="box"; color="#08802d"];
+  photo_client [shape="box"; color="#e227a9"];
   prefs_client [shape="box"; color="#080f51"];
   provider_utils [shape="box"; color="#f445c4"];
   scroll_calendar [shape="box"; color="#713e2e"];
@@ -34,6 +35,7 @@ digraph packages {
   onepage -> i18n [style="filled"; color="#d7afc5"];
   onepage -> in_app_reviewer [style="filled"; color="#1253da"];
   onepage -> notification_client [style="filled"; color="#4d6b02"];
+  onepage -> photo_client [style="filled"; color="#e227a9"];
   onepage -> prefs_client [style="filled"; color="#080f51"];
   onepage -> provider_utils [style="filled"; color="#f445c4"];
   onepage -> scroll_calendar [style="filled"; color="#713e2e"];
@@ -63,6 +65,7 @@ digraph packages {
     db_client;
     i18n;
     notification_client;
+    photo_client;
     prefs_client;
     provider_utils;
     theme;
