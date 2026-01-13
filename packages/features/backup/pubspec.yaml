@@ -12,7 +12,7 @@ dependencies:
   clock: ^1.1.2
   db_client:
     path: ../../core/db_client/
-  file_picker: ^10.3.7
+  file_picker: ^10.3.8
   flutter:
     sdk: flutter
   gap: ^3.0.1
@@ -30,4 +30,4 @@ dev_dependencies:
   custom_lint: ^0.8.1
   flutter_test:
     sdk: flutter
-  mockito: ^5.6.1
+  mockito: ^5.6.3
