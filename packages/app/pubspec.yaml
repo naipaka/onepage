@@ -1,7 +1,7 @@
 name: onepage
 description: About One-page-only diary app
 publish_to: none
-version: 1.9.0+17
+version: 1.10.0+18
 
 environment:
   sdk: ^3.10.0
@@ -9,6 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
+  adaptive_dialog: ^2.6.0
   app_settings: ^7.0.0
   backup:
     path: ../features/backup/
@@ -40,8 +41,8 @@ dependencies:
   intl: ^0.20.2
   notification_client:
     path: ../core/notification_client/
-  photo_selector:
-    path: ../core/photo_selector/
+  photo_client:
+    path: ../core/photo_client/
   prefs_client:
     path: ../core/prefs_client/
   provider_utils:

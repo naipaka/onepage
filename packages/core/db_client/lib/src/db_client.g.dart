@@ -3,7 +3,7 @@
 part of 'db_client.dart';
 
 // ignore_for_file: type=lint
-class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
+class $DiariesTable extends Diaries with TableInfo<$DiariesTable, DiaryEntry> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -80,7 +80,7 @@ class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
   static const String $name = 'diaries';
   @override
   VerificationContext validateIntegrity(
-    Insertable<Diary> instance, {
+    Insertable<DiaryEntry> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -122,9 +122,9 @@ class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Diary map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DiaryEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Diary(
+    return DiaryEntry(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}id'],
@@ -154,7 +154,7 @@ class $DiariesTable extends Diaries with TableInfo<$DiariesTable, Diary> {
   }
 }
 
-class Diary extends DataClass implements Insertable<Diary> {
+class DiaryEntry extends DataClass implements Insertable<DiaryEntry> {
   /// The auto-incrementing primary key.
   ///
   /// This column represents the unique identifier for each diary entry.
@@ -181,7 +181,7 @@ class Diary extends DataClass implements Insertable<Diary> {
   /// This column stores the timestamp when the diary entry was last updated. It
   /// defaults to the current date and time.
   final DateTime updatedAt;
-  const Diary({
+  const DiaryEntry({
     required this.id,
     required this.content,
     required this.date,
@@ -209,12 +209,12 @@ class Diary extends DataClass implements Insertable<Diary> {
     );
   }
 
-  factory Diary.fromJson(
+  factory DiaryEntry.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Diary(
+    return DiaryEntry(
       id: serializer.fromJson<int>(json['id']),
       content: serializer.fromJson<String>(json['content']),
       date: serializer.fromJson<DateTime>(json['date']),
@@ -234,21 +234,21 @@ class Diary extends DataClass implements Insertable<Diary> {
     };
   }
 
-  Diary copyWith({
+  DiaryEntry copyWith({
     int? id,
     String? content,
     DateTime? date,
     DateTime? createdAt,
     DateTime? updatedAt,
-  }) => Diary(
+  }) => DiaryEntry(
     id: id ?? this.id,
     content: content ?? this.content,
     date: date ?? this.date,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
-  Diary copyWithCompanion(DiariesCompanion data) {
-    return Diary(
+  DiaryEntry copyWithCompanion(DiariesCompanion data) {
+    return DiaryEntry(
       id: data.id.present ? data.id.value : this.id,
       content: data.content.present ? data.content.value : this.content,
       date: data.date.present ? data.date.value : this.date,
@@ -259,7 +259,7 @@ class Diary extends DataClass implements Insertable<Diary> {
 
   @override
   String toString() {
-    return (StringBuffer('Diary(')
+    return (StringBuffer('DiaryEntry(')
           ..write('id: $id, ')
           ..write('content: $content, ')
           ..write('date: $date, ')
@@ -274,7 +274,7 @@ class Diary extends DataClass implements Insertable<Diary> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Diary &&
+      (other is DiaryEntry &&
           other.id == this.id &&
           other.content == this.content &&
           other.date == this.date &&
@@ -282,7 +282,7 @@ class Diary extends DataClass implements Insertable<Diary> {
           other.updatedAt == this.updatedAt);
 }
 
-class DiariesCompanion extends UpdateCompanion<Diary> {
+class DiariesCompanion extends UpdateCompanion<DiaryEntry> {
   final Value<int> id;
   final Value<String> content;
   final Value<DateTime> date;
@@ -303,7 +303,7 @@ class DiariesCompanion extends UpdateCompanion<Diary> {
     this.updatedAt = const Value.absent(),
   }) : content = Value(content),
        date = Value(date);
-  static Insertable<Diary> custom({
+  static Insertable<DiaryEntry> custom({
     Expression<int>? id,
     Expression<String>? content,
     Expression<DateTime>? date,
@@ -798,7 +798,7 @@ typedef $$DiariesTableUpdateCompanionBuilder =
     });
 
 final class $$DiariesTableReferences
-    extends BaseReferences<_$DbClient, $DiariesTable, Diary> {
+    extends BaseReferences<_$DbClient, $DiariesTable, DiaryEntry> {
   $$DiariesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static MultiTypedResultKey<$DiaryImagesTable, List<DiaryImage>>
@@ -969,14 +969,14 @@ class $$DiariesTableTableManager
         RootTableManager<
           _$DbClient,
           $DiariesTable,
-          Diary,
+          DiaryEntry,
           $$DiariesTableFilterComposer,
           $$DiariesTableOrderingComposer,
           $$DiariesTableAnnotationComposer,
           $$DiariesTableCreateCompanionBuilder,
           $$DiariesTableUpdateCompanionBuilder,
-          (Diary, $$DiariesTableReferences),
-          Diary,
+          (DiaryEntry, $$DiariesTableReferences),
+          DiaryEntry,
           PrefetchHooks Function({bool diaryImagesRefs})
         > {
   $$DiariesTableTableManager(_$DbClient db, $DiariesTable table)
@@ -1034,7 +1034,11 @@ class $$DiariesTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (diaryImagesRefs)
-                    await $_getPrefetchedData<Diary, $DiariesTable, DiaryImage>(
+                    await $_getPrefetchedData<
+                      DiaryEntry,
+                      $DiariesTable,
+                      DiaryImage
+                    >(
                       currentTable: table,
                       referencedTable: $$DiariesTableReferences
                           ._diaryImagesRefsTable(db),
@@ -1059,14 +1063,14 @@ typedef $$DiariesTableProcessedTableManager =
     ProcessedTableManager<
       _$DbClient,
       $DiariesTable,
-      Diary,
+      DiaryEntry,
       $$DiariesTableFilterComposer,
       $$DiariesTableOrderingComposer,
       $$DiariesTableAnnotationComposer,
       $$DiariesTableCreateCompanionBuilder,
       $$DiariesTableUpdateCompanionBuilder,
-      (Diary, $$DiariesTableReferences),
-      Diary,
+      (DiaryEntry, $$DiariesTableReferences),
+      DiaryEntry,
       PrefetchHooks Function({bool diaryImagesRefs})
     >;
 typedef $$DiaryImagesTableCreateCompanionBuilder =

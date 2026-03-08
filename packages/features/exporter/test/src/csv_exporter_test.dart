@@ -71,7 +71,7 @@ void main() {
 
       test('exports single entry', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Test entry',
           ),
@@ -86,15 +86,15 @@ void main() {
 
       test('exports multiple entries sorted by date', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 20),
             content: 'Second entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 10),
             content: 'First entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 30),
             content: 'Third entry',
           ),
@@ -112,7 +112,7 @@ void main() {
 
       test('escapes CSV fields with commas', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Entry with, comma',
           ),
@@ -126,7 +126,7 @@ void main() {
 
       test('escapes CSV fields with quotes', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Entry with "quotes"',
           ),
@@ -140,7 +140,7 @@ void main() {
 
       test('escapes CSV fields with newlines', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Entry with\nnewline',
           ),
@@ -154,7 +154,7 @@ void main() {
 
       test('escapes CSV fields with carriage returns', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Entry with\rcarriage return',
           ),
@@ -168,11 +168,11 @@ void main() {
 
       test('generates correct filename for single month', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Test',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 20),
             content: 'Test 2',
           ),
@@ -193,11 +193,11 @@ void main() {
 
       test('generates correct filename for date range', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Test',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 3, 20),
             content: 'Test 2',
           ),
@@ -220,15 +220,15 @@ void main() {
     group('exportMonth method', () {
       test('exports entries for specific month with all days', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 10),
             content: 'January entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 20),
             content: 'Another January entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 2, 15),
             content: 'February entry',
           ),
@@ -296,15 +296,15 @@ void main() {
 
       test('filters entries by month', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'January entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 2, 15),
             content: 'February entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2023, 1, 15),
             content: 'Previous year January',
           ),
@@ -326,23 +326,23 @@ void main() {
     group('exportDateRange method', () {
       test('exports entries within date range', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 10),
             content: 'Before range',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Start of range',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 20),
             content: 'Middle of range',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 25),
             content: 'End of range',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 30),
             content: 'After range',
           ),
@@ -406,11 +406,11 @@ void main() {
 
       test('handles edge case with time boundaries', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Midnight start',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15, 23, 59, 59),
             content: 'Almost midnight',
           ),
@@ -437,7 +437,7 @@ void main() {
 
       test('creates valid file paths', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Test',
           ),
@@ -473,7 +473,7 @@ void main() {
     group('CSV format', () {
       test('uses proper line endings', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Test',
           ),
@@ -489,7 +489,7 @@ void main() {
 
       test('handles empty content', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: '',
           ),
@@ -503,7 +503,7 @@ void main() {
 
       test('handles special characters in content', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Test with 日本語 and émojis 🎉',
           ),

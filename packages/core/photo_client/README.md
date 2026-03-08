@@ -1,6 +1,6 @@
-# Photo Selector
+# Photo Client
 
-This package provides photo selection functionality from device photo library with permission handling and album browsing.
+This package provides photo management functionality including selection and viewing from device photo library with permission handling and album browsing.
 
 ## Features
 
@@ -14,12 +14,12 @@ This package provides photo selection functionality from device photo library wi
 
 ## Getting started
 
-To use this package, add `photo_selector` as a dependency in your `pubspec.yaml` file.
+To use this package, add `photo_client` as a dependency in your `pubspec.yaml` file.
 
 ```yaml
 dependencies:
-  photo_selector:
-    path: ../photo_selector/
+  photo_client:
+    path: ../photo_client/
 ```
 
 ## Usage
@@ -27,7 +27,7 @@ dependencies:
 Here is an example of how to use this package.
 
 ```dart
-import 'package:photo_selector/photo_selector.dart';
+import 'package:photo_client/photo_client.dart';
 
 // Show photo selector dialog
 final photoId = await showPhotoSelector(

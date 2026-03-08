@@ -9,7 +9,7 @@ workspace:
   - packages/core/db_client
   - packages/core/i18n
   - packages/core/notification_client
-  - packages/core/photo_selector
+  - packages/core/photo_client
   - packages/core/prefs_client
   - packages/core/provider_utils
   - packages/core/theme

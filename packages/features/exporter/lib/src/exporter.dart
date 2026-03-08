@@ -11,19 +11,19 @@ abstract class Exporter {
 
   /// Exports diary entries to a file.
   Future<File> export({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
   });
 
   /// Exports diary entries for a specific month.
   Future<File> exportMonth({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required int year,
     required int month,
   });
 
   /// Exports diary entries for a specific date range.
   Future<File> exportDateRange({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required DateTime startDate,
     required DateTime endDate,
   });

@@ -74,7 +74,7 @@ void main() {
 
       test('exports single entry', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Test entry',
           ),
@@ -90,15 +90,15 @@ void main() {
 
       test('exports multiple entries sorted by date', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 20),
             content: 'Second entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 10),
             content: 'First entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 30),
             content: 'Third entry',
           ),
@@ -120,11 +120,11 @@ void main() {
 
       test('exports entries from different months', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'January entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 2, 10),
             content: 'February entry',
           ),
@@ -142,7 +142,7 @@ void main() {
 
       test('handles multiline content', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Line 1\nLine 2\nLine 3',
           ),
@@ -158,7 +158,7 @@ void main() {
         final now = DateTime(2024, 3, 15, 14, 45, 30);
         await withClock(Clock.fixed(now), () async {
           final entries = [
-            DiaryEntry(
+            ExportDiary(
               date: DateTime(2024, 1, 15),
               content: 'Test',
             ),
@@ -212,11 +212,11 @@ void main() {
 
       test('exports month with entries', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'Mid-month entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024),
             content: 'New Year entry',
           ),
@@ -238,7 +238,7 @@ void main() {
 
       test('includes all days of the month', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 2, 15),
             content: 'February entry',
           ),
@@ -263,11 +263,11 @@ void main() {
 
       test('filters entries from other months', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: 'January entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 2, 10),
             content: 'February entry',
           ),
@@ -287,7 +287,7 @@ void main() {
 
       test('handles empty content entries', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 15),
             content: '',
           ),
@@ -339,19 +339,19 @@ void main() {
 
       test('exports entries within date range', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 10),
             content: 'Within range',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 5),
             content: 'Also within',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2023, 12, 31),
             content: 'Before range',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 2),
             content: 'After range',
           ),
@@ -373,11 +373,11 @@ void main() {
 
       test('includes entries on boundary dates', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024),
             content: 'Start date entry',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 31),
             content: 'End date entry',
           ),
@@ -437,11 +437,11 @@ void main() {
 
       test('sorts entries by date in range export', () async {
         final entries = [
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 20),
             content: 'Second',
           ),
-          DiaryEntry(
+          ExportDiary(
             date: DateTime(2024, 1, 10),
             content: 'First',
           ),

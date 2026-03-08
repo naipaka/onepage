@@ -45,7 +45,7 @@ class PdfExporter extends Exporter {
   /// Exports diary entries as a PDF file.
   @override
   Future<File> export({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
   }) async {
     final pdf = pw.Document();
 
@@ -61,7 +61,7 @@ class PdfExporter extends Exporter {
   /// Exports diary entries for a specific month as a PDF file.
   @override
   Future<File> exportMonth({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required int year,
     required int month,
   }) async {
@@ -82,7 +82,7 @@ class PdfExporter extends Exporter {
   /// Exports diary entries for a specific date range as a PDF file.
   @override
   Future<File> exportDateRange({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required DateTime startDate,
     required DateTime endDate,
   }) async {
@@ -104,7 +104,7 @@ class PdfExporter extends Exporter {
 
   Future<void> _addDiariesPage(
     pw.Document pdf,
-    List<DiaryEntry> entries,
+    List<ExportDiary> entries,
     String title,
   ) async {
     final baseFont = await PdfGoogleFonts.notoSansRegular();
@@ -118,7 +118,7 @@ class PdfExporter extends Exporter {
           _buildHeader(title, baseBoldFont, jpBoldFont),
           pw.SizedBox(height: 20),
           ...entries.map(
-            (entry) => _buildDiaryEntry(
+            (entry) => _buildExportDiary(
               entry,
               baseFont,
               jpFont,
@@ -133,7 +133,7 @@ class PdfExporter extends Exporter {
 
   Future<void> _addDiariesPageForMonth(
     pw.Document pdf,
-    List<DiaryEntry> entries,
+    List<ExportDiary> entries,
     String title,
     int year,
     int month,
@@ -193,7 +193,7 @@ class PdfExporter extends Exporter {
     );
   }
 
-  String _generateTitle(List<DiaryEntry> entries) {
+  String _generateTitle(List<ExportDiary> entries) {
     if (entries.isEmpty) {
       return DateFormat.yMMMM().format(clock.now());
     }
@@ -210,8 +210,8 @@ class PdfExporter extends Exporter {
     }
   }
 
-  pw.Widget _buildDiaryEntry(
-    DiaryEntry entry,
+  pw.Widget _buildExportDiary(
+    ExportDiary entry,
     pw.Font baseFont,
     pw.Font jpFont,
     pw.Font baseBoldFont,
@@ -251,7 +251,7 @@ class PdfExporter extends Exporter {
   }
 
   pw.Widget _buildCompleteMonthContent(
-    List<DiaryEntry> entries,
+    List<ExportDiary> entries,
     int year,
     int month,
     pw.Font baseFont,
@@ -262,7 +262,7 @@ class PdfExporter extends Exporter {
     final daysInMonth = DateTime(year, month + 1, 0).day;
     final dateFormat = DateFormat.yMMMEd();
 
-    final entryMap = <int, DiaryEntry>{};
+    final entryMap = <int, ExportDiary>{};
     for (final entry in entries) {
       if (entry.date.year == year && entry.date.month == month) {
         entryMap[entry.date.day] = entry;

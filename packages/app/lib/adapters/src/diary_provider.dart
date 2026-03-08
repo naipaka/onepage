@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
@@ -5,6 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 
 import 'db_client_provider.dart';
+import 'diary_image_provider.dart';
 
 part 'diary_provider.g.dart';
 
@@ -24,6 +27,15 @@ DiaryCommand diaryCommand(Ref ref) {
 DiaryQuery diaryQuery(Ref ref) {
   final dbClient = ref.watch(dbClientProvider);
   return DiaryQuery(dbClient: dbClient);
+}
+
+/// Provides a stream of the total diary image count.
+///
+/// Emits the current count whenever images are added or removed.
+@riverpod
+Stream<int> diaryImageCount(Ref ref) {
+  final query = ref.watch(diaryQueryProvider);
+  return query.diaryImageCount();
 }
 
 /// Provides a list of diaries within the specified date range.
@@ -47,6 +59,8 @@ class CachedDiaries extends _$CachedDiaries {
   final DateTime _now = clock.now();
 
   DiaryCommand get _diaryCommand => ref.read(diaryCommandProvider);
+
+  DiaryImageCommand get _imageCommand => ref.read(diaryImageCommandProvider);
 
   @override
   Future<DiariesWithDates> build() async {
@@ -83,7 +97,10 @@ class CachedDiaries extends _$CachedDiaries {
     required DateTime date,
     required String content,
   }) async {
-    final diary = await _diaryCommand.addDiary(date: date, content: content);
+    // Cannot use unawaited for optimistic update
+    // because Diary ID is needed for state update.
+    final entry = await _diaryCommand.addDiary(date: date, content: content);
+    final diary = Diary(entry: entry);
     final current = state.requireValue;
     state = AsyncValue.data((
       diaries: [...current.diaries, diary],
@@ -93,20 +110,89 @@ class CachedDiaries extends _$CachedDiaries {
 
   /// Update an existing diary entry.
   Future<void> updateDiary({required int id, required String content}) async {
-    await _diaryCommand.updateDiary(id: id, content: content);
+    unawaited(_diaryCommand.updateDiary(id: id, content: content));
     final current = state.requireValue;
     final updatedDiaries = current.diaries.map((diary) {
-      if (diary.id == id) {
-        return diary.copyWith(content: content);
+      final entry = diary.entry;
+      if (entry.id == id) {
+        return diary.copyWith(
+          entry: entry.copyWith(content: content),
+        );
       }
       return diary;
+    }).toList();
+    state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
+  }
+
+  /// Add an image to a diary entry.
+  ///
+  /// If a diary doesn't exist for the specified date,
+  /// creates an empty diary first.
+  Future<void> addImage({
+    required DateTime date,
+    required String photoId,
+  }) async {
+    final current = state.requireValue;
+    final existingDiary = current.diaries.where((d) {
+      return d.entry.date == date;
+    }).firstOrNull;
+
+    if (existingDiary == null) {
+      // Cannot use unawaited for optimistic update
+      // because Diary ID is needed for state update.
+      final entry = await _diaryCommand.addDiary(date: date, content: '');
+      final newImage = await _imageCommand.addDiaryImage(
+        diaryId: entry.id,
+        photoId: photoId,
+      );
+
+      state = AsyncValue.data((
+        diaries: [
+          ...current.diaries,
+          Diary(entry: entry, images: [newImage]),
+        ],
+        dates: current.dates,
+      ));
+      return;
+    }
+
+    final entry = existingDiary.entry;
+    // Cannot use unawaited for optimistic update
+    // because DiaryImage is needed for state update.
+    final newImage = await _imageCommand.addDiaryImage(
+      diaryId: entry.id,
+      photoId: photoId,
+    );
+
+    final updatedDiaries = current.diaries.map((d) {
+      if (d.entry.id == entry.id) {
+        return d.copyWith(images: [...d.images, newImage]);
+      }
+      return d;
+    }).toList();
+
+    state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
+  }
+
+  /// Delete an image from a diary entry.
+  Future<void> deleteImage({required int imageId}) async {
+    unawaited(_imageCommand.deleteDiaryImage(id: imageId));
+    final current = state.requireValue;
+    final updatedDiaries = current.diaries.map((diary) {
+      return diary.copyWith(
+        images: diary.images.where((img) => img.id != imageId).toList(),
+      );
     }).toList();
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 }
 
 /// Type definition for search result with pagination information.
-typedef SearchResult = ({List<Diary> diaries, bool hasMore, String searchTerm});
+typedef SearchResult = ({
+  List<DiaryEntry> diaries,
+  bool hasMore,
+  String searchTerm,
+});
 
 /// Provides search functionality for diary entries.
 @Riverpod(keepAlive: true)
@@ -115,7 +201,7 @@ class DiarySearch extends _$DiarySearch {
 
   @override
   SearchResult build() {
-    return (diaries: <Diary>[], hasMore: false, searchTerm: '');
+    return (diaries: [], hasMore: false, searchTerm: '');
   }
 
   /// Searches diary entries with the given search term.
@@ -124,7 +210,7 @@ class DiarySearch extends _$DiarySearch {
   /// Otherwise, it replaces the current results.
   Future<void> search(String searchTerm, {bool isLoadMore = false}) async {
     if (searchTerm.trim().isEmpty) {
-      state = (diaries: <Diary>[], hasMore: false, searchTerm: '');
+      state = (diaries: [], hasMore: false, searchTerm: '');
       return;
     }
 
@@ -160,6 +246,6 @@ class DiarySearch extends _$DiarySearch {
 
   /// Clears the search results.
   void clear() {
-    state = (diaries: <Diary>[], hasMore: false, searchTerm: '');
+    state = (diaries: [], hasMore: false, searchTerm: '');
   }
 }

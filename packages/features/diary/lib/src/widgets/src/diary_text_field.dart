@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:utils/utils.dart';
 
-/// {@template diary.DiaryListTile}
-/// Diary list tile.
+/// {@template diary.DiaryTextField}
+/// Diary text field.
 ///
-/// The diary content can be edited by tapping on the tile.
+/// The diary content can be edited by tapping on the text field.
 /// {@endtemplate}
-class DiaryListTile extends StatefulWidget {
-  /// {@macro diary.DiaryListTile}
-  const DiaryListTile({
+class DiaryTextField extends StatefulWidget {
+  /// {@macro diary.DiaryTextField}
+  const DiaryTextField({
     super.key,
     required this.content,
     this.onChanged,
@@ -29,10 +29,10 @@ class DiaryListTile extends StatefulWidget {
   final ValueChanged<String>? save;
 
   @override
-  State<DiaryListTile> createState() => _DiaryListTileState();
+  State<DiaryTextField> createState() => _DiaryTextFieldState();
 }
 
-class _DiaryListTileState extends State<DiaryListTile>
+class _DiaryTextFieldState extends State<DiaryTextField>
     with WidgetsBindingObserver {
   /// Diary content text controller.
   late final textController = TextEditingController(text: widget.content);

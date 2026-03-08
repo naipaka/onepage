@@ -23,7 +23,7 @@ class CsvExporter extends Exporter {
 
   @override
   Future<File> export({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
   }) async {
     final title = _generateTitle(entries);
     final fileName = _generateFileName(title);
@@ -34,7 +34,7 @@ class CsvExporter extends Exporter {
 
   @override
   Future<File> exportMonth({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required int year,
     required int month,
   }) async {
@@ -51,7 +51,7 @@ class CsvExporter extends Exporter {
 
   @override
   Future<File> exportDateRange({
-    required List<DiaryEntry> entries,
+    required List<ExportDiary> entries,
     required DateTime startDate,
     required DateTime endDate,
   }) async {
@@ -68,7 +68,7 @@ class CsvExporter extends Exporter {
     return _saveToFile(content, fileName);
   }
 
-  String _generateCsvContent(List<DiaryEntry> entries) {
+  String _generateCsvContent(List<ExportDiary> entries) {
     final buffer = StringBuffer()..writeln('Date,Content');
 
     final sortedEntries = entries.toList()
@@ -84,14 +84,14 @@ class CsvExporter extends Exporter {
   }
 
   String _generateCsvContentForMonth(
-    List<DiaryEntry> entries,
+    List<ExportDiary> entries,
     int year,
     int month,
   ) {
     final buffer = StringBuffer()..writeln('Date,Content');
 
     final daysInMonth = DateTime(year, month + 1, 0).day;
-    final entryMap = <int, DiaryEntry>{};
+    final entryMap = <int, ExportDiary>{};
 
     for (final entry in entries) {
       if (entry.date.year == year && entry.date.month == month) {
@@ -121,7 +121,7 @@ class CsvExporter extends Exporter {
     return field;
   }
 
-  String _generateTitle(List<DiaryEntry> entries) {
+  String _generateTitle(List<ExportDiary> entries) {
     if (entries.isEmpty) {
       return DateFormat.yMMMM().format(clock.now());
     }
