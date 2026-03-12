@@ -1090,6 +1090,35 @@ class MockFirebaseAnalytics extends _i1.Mock implements _i6.FirebaseAnalytics {
           as _i4.Future<void>);
 
   @override
+  _i4.Future<void> logInAppPurchase({
+    String? currency,
+    bool? freeTrial,
+    double? price,
+    bool? priceIsDiscounted,
+    String? productID,
+    String? productName,
+    int? quantity,
+    bool? subscription,
+    num? value,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#logInAppPurchase, [], {
+              #currency: currency,
+              #freeTrial: freeTrial,
+              #price: price,
+              #priceIsDiscounted: priceIsDiscounted,
+              #productID: productID,
+              #productName: productName,
+              #quantity: quantity,
+              #subscription: subscription,
+              #value: value,
+            }),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
   _i4.Future<void> setSessionTimeoutDuration(Duration? timeout) =>
       (super.noSuchMethod(
             Invocation.method(#setSessionTimeoutDuration, [timeout]),
