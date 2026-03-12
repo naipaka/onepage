@@ -115,7 +115,7 @@ jobs:
           ref: ${{ env.BRANCH_NAME }}
 
       - name: Download Dependency Graph Artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: dependency_graph
 
