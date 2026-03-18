@@ -18,7 +18,7 @@ dev_dependencies:
   custom_lint: ^0.8.1
   firebase_core: ^4.2.1
   firebase_core_platform_interface: ^6.0.2
-  firebase_remote_config_platform_interface: ^2.0.5
+  firebase_remote_config_platform_interface: ^2.1.0
   flutter_test:
     sdk: flutter
   mockito: ^5.6.3
