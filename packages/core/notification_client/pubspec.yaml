@@ -13,7 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_local_notifications: ^19.5.0
-  flutter_timezone: ^5.0.1
+  flutter_timezone: ^5.0.2
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   prefs_client:
@@ -28,4 +28,4 @@ dev_dependencies:
     sdk: flutter
   freezed: ^3.2.3
   json_serializable: ^6.11.2
-  mockito: ^5.6.3
+  mockito: ^5.6.4
