@@ -15,7 +15,7 @@ PODS:
     - firebase_core
     - FirebaseAnalytics (= 12.9.0)
     - Flutter
-  - firebase_core (4.5.0):
+  - firebase_core (4.6.0):
     - Firebase/CoreOnly (= 12.9.0)
     - Flutter
   - firebase_crashlytics (5.0.8):
@@ -293,7 +293,7 @@ SPEC CHECKSUMS:
   file_picker: fb04e739ae6239a76ce1f571863a196a922c87d4
   Firebase: 065f2bb395062046623036d8e6dc857bc2521d56
   firebase_analytics: 6903a46192a92993abde88152a14ce1df1c0de2f
-  firebase_core: afac1aac13c931e0401c7e74ed1276112030efab
+  firebase_core: 8e6f58412ca227827c366b92e7cee047a2148c60
   firebase_crashlytics: a316d8dddba772359d93dc38d303ed964579b7a6
   firebase_remote_config: 720198be7e34b1fa845275fb8c89ab6a87aa2c98
   FirebaseABTesting: a399ffe546392a39b19a5c2fb28bd8ea178a6f47
