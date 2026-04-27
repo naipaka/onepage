@@ -24,4 +24,4 @@ dev_dependencies:
   mockito: ^5.6.4
   # Because flutter_test depends on test_api 0.7.7, test 1.26.x.
   # https://github.com/flutter/flutter/blob/stable/packages/flutter_test/pubspec.yaml#L15-L18
-  test: ^1.26.3
+  test: ^1.30.0
