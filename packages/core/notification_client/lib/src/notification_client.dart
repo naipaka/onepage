@@ -69,7 +69,7 @@ class NotificationClient {
       iOS: initializationSettingsIOS,
     );
 
-    await _notifications.initialize(initializationSettings);
+    await _notifications.initialize(settings: initializationSettings);
   }
 
   /// Request notification permissions from the user.
@@ -141,7 +141,7 @@ class NotificationClient {
 
   /// Cancel a specific notification by ID.
   Future<void> cancelNotification(int id) async {
-    await _notifications.cancel(id);
+    await _notifications.cancel(id: id);
   }
 
   Future<void> _scheduleRepeatingNotification({
@@ -181,11 +181,11 @@ class NotificationClient {
     );
 
     await _notifications.zonedSchedule(
-      id,
-      title,
-      body,
-      scheduledDate,
-      notificationDetails,
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: scheduledDate,
+      notificationDetails: notificationDetails,
       androidScheduleMode: AndroidScheduleMode.inexact,
       matchDateTimeComponents: DateTimeComponents.time,
     );
