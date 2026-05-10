@@ -37,7 +37,9 @@ void main() {
     });
 
     test('initialize calls initialize method', () async {
-      when(mockPlugin.initialize(any)).thenAnswer((_) async => true);
+      when(
+        mockPlugin.initialize(settings: anyNamed('settings')),
+      ).thenAnswer((_) async => true);
 
       final client = NotificationClient.forTesting(
         notificationsPlugin: mockPlugin,
@@ -46,7 +48,7 @@ void main() {
       );
       await client.initialize();
 
-      verify(mockPlugin.initialize(any)).called(1);
+      verify(mockPlugin.initialize(settings: anyNamed('settings'))).called(1);
     });
 
     test('cancelAllNotifications calls cancelAll', () async {
@@ -63,7 +65,7 @@ void main() {
     });
 
     test('cancelNotification calls cancel with id', () async {
-      when(mockPlugin.cancel(any)).thenAnswer((_) async {});
+      when(mockPlugin.cancel(id: anyNamed('id'))).thenAnswer((_) async {});
 
       final client = NotificationClient.forTesting(
         notificationsPlugin: mockPlugin,
@@ -72,7 +74,7 @@ void main() {
       );
       await client.cancelNotification(123);
 
-      verify(mockPlugin.cancel(123)).called(1);
+      verify(mockPlugin.cancel(id: 123)).called(1);
     });
 
     test('requestPermissions returns false when no platform', () async {
@@ -136,11 +138,11 @@ void main() {
       verify(mockPlugin.cancelAll()).called(1);
       verifyNever(
         mockPlugin.zonedSchedule(
-          any,
-          any,
-          any,
-          any,
-          any,
+          id: anyNamed('id'),
+          title: anyNamed('title'),
+          body: anyNamed('body'),
+          scheduledDate: anyNamed('scheduledDate'),
+          notificationDetails: anyNamed('notificationDetails'),
           androidScheduleMode: anyNamed('androidScheduleMode'),
           matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
         ),
@@ -151,11 +153,11 @@ void main() {
       when(mockPlugin.cancelAll()).thenAnswer((_) async {});
       when(
         mockPlugin.zonedSchedule(
-          any,
-          any,
-          any,
-          any,
-          any,
+          id: anyNamed('id'),
+          title: anyNamed('title'),
+          body: anyNamed('body'),
+          scheduledDate: anyNamed('scheduledDate'),
+          notificationDetails: anyNamed('notificationDetails'),
           androidScheduleMode: anyNamed('androidScheduleMode'),
           matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
         ),
@@ -178,11 +180,11 @@ void main() {
       verify(mockPlugin.cancelAll()).called(1);
       verify(
         mockPlugin.zonedSchedule(
-          any,
-          any,
-          any,
-          any,
-          any,
+          id: anyNamed('id'),
+          title: anyNamed('title'),
+          body: anyNamed('body'),
+          scheduledDate: anyNamed('scheduledDate'),
+          notificationDetails: anyNamed('notificationDetails'),
           androidScheduleMode: anyNamed('androidScheduleMode'),
           matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
         ),
@@ -193,11 +195,11 @@ void main() {
       when(mockPlugin.cancelAll()).thenAnswer((_) async {});
       when(
         mockPlugin.zonedSchedule(
-          any,
-          any,
-          any,
-          any,
-          any,
+          id: anyNamed('id'),
+          title: anyNamed('title'),
+          body: anyNamed('body'),
+          scheduledDate: anyNamed('scheduledDate'),
+          notificationDetails: anyNamed('notificationDetails'),
           androidScheduleMode: anyNamed('androidScheduleMode'),
           matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
         ),
@@ -222,11 +224,11 @@ void main() {
       verify(mockPlugin.cancelAll()).called(1);
       verify(
         mockPlugin.zonedSchedule(
-          any,
-          any,
-          any,
-          any,
-          any,
+          id: anyNamed('id'),
+          title: anyNamed('title'),
+          body: anyNamed('body'),
+          scheduledDate: anyNamed('scheduledDate'),
+          notificationDetails: anyNamed('notificationDetails'),
           androidScheduleMode: anyNamed('androidScheduleMode'),
           matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
         ),
@@ -238,11 +240,11 @@ void main() {
         when(mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -262,11 +264,11 @@ void main() {
         verify(mockPlugin.cancelAll()).called(1);
         verify(
           mockPlugin.zonedSchedule(
-            42,
-            'Single Reminder',
-            'Daily reminder message',
-            any,
-            any,
+            id: 42,
+            title: 'Single Reminder',
+            body: 'Daily reminder message',
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -298,11 +300,11 @@ void main() {
           verify(mockPlugin.cancelAll()).called(1);
           verify(
             mockPlugin.zonedSchedule(
-              any,
-              any,
-              any,
-              any,
-              any,
+              id: anyNamed('id'),
+              title: anyNamed('title'),
+              body: anyNamed('body'),
+              scheduledDate: anyNamed('scheduledDate'),
+              notificationDetails: anyNamed('notificationDetails'),
               androidScheduleMode: anyNamed('androidScheduleMode'),
               matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
             ),
@@ -395,11 +397,11 @@ void main() {
         when(mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -424,11 +426,11 @@ void main() {
         verify(mockPlugin.cancelAll()).called(1);
         verify(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -439,11 +441,11 @@ void main() {
         when(mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -464,11 +466,11 @@ void main() {
         verify(mockPlugin.cancelAll()).called(1);
         verify(
           mockPlugin.zonedSchedule(
-            999,
-            'Midnight Test',
-            'Test for past time handling',
-            any,
-            any,
+            id: 999,
+            title: 'Midnight Test',
+            body: 'Test for past time handling',
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -479,11 +481,11 @@ void main() {
         when(mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -508,11 +510,11 @@ void main() {
         verify(mockPlugin.cancelAll()).called(1);
         verify(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -525,11 +527,11 @@ void main() {
         when(mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -550,11 +552,11 @@ void main() {
         verify(mockPlugin.cancelAll()).called(1);
         verify(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -565,11 +567,11 @@ void main() {
         when(mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
@@ -590,11 +592,11 @@ void main() {
         verify(mockPlugin.cancelAll()).called(1);
         verify(
           mockPlugin.zonedSchedule(
-            any,
-            any,
-            any,
-            any,
-            any,
+            id: anyNamed('id'),
+            title: anyNamed('title'),
+            body: anyNamed('body'),
+            scheduledDate: anyNamed('scheduledDate'),
+            notificationDetails: anyNamed('notificationDetails'),
             androidScheduleMode: anyNamed('androidScheduleMode'),
             matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
           ),
