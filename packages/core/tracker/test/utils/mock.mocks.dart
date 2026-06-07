@@ -268,12 +268,14 @@ class MockFirebaseAnalytics extends _i1.Mock implements _i6.FirebaseAnalytics {
   _i4.Future<void> logEvent({
     required String? name,
     Map<String, Object>? parameters,
+    List<_i7.AnalyticsEventItem>? items,
     _i7.AnalyticsCallOptions? callOptions,
   }) =>
       (super.noSuchMethod(
             Invocation.method(#logEvent, [], {
               #name: name,
               #parameters: parameters,
+              #items: items,
               #callOptions: callOptions,
             }),
             returnValue: _i4.Future<void>.value(),
@@ -1113,6 +1115,15 @@ class MockFirebaseAnalytics extends _i1.Mock implements _i6.FirebaseAnalytics {
               #subscription: subscription,
               #value: value,
             }),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  _i4.Future<void> logTransaction(String? transactionId) =>
+      (super.noSuchMethod(
+            Invocation.method(#logTransaction, [transactionId]),
             returnValue: _i4.Future<void>.value(),
             returnValueForMissingStub: _i4.Future<void>.value(),
           )
