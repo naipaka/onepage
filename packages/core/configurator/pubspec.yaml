@@ -4,7 +4,7 @@ version: 0.0.1
 resolution: workspace
 
 environment:
-  sdk: ^3.11.5
+  sdk: ^3.12.2
 
 dependencies:
   firebase_remote_config: ^6.1.2
@@ -13,9 +13,10 @@ dependencies:
   meta: ^1.17.0
 
 dev_dependencies:
-  altive_lints: ^1.25.0
+  # Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
+  # Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
+  # altive_lints: ^2.3.0
   build_runner: ^2.14.1
-  custom_lint: ^0.8.1
   firebase_core: ^4.2.1
   firebase_core_platform_interface: ^6.0.2
   firebase_remote_config_platform_interface: ^2.1.2

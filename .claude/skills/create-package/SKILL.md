@@ -49,7 +49,7 @@ ln -s ../../../LICENSE packages/features/<package_name>/LICENSE
 
 Overwrite the flutter-create template README with actual content following this structure:
 
-```markdown
+````markdown
 # <package_name>
 
 A concise description of what this package does.
@@ -69,13 +69,15 @@ dependencies:
   <package_name>:
     path: ../../../packages/<directory>/<package_name>
 ```
+````
 
 ## Usage
 
 ```dart
 // Practical example showing the primary use case
 ```
-```
+
+````
 
 Do NOT leave any flutter-create template text (e.g., "A starting point for a Dart package.") in the README.
 
@@ -95,7 +97,7 @@ Add a new entry for the package in the root `/README.md`. Follow the existing fo
 workspace:
   - packages/core/<package_name>   # core packages
   - packages/features/<package_name>  # features packages
-```
+````
 
 **Package `pubspec.yaml`** (`packages/<directory>/<package_name>/pubspec.yaml`) — add the workspace resolution field:
 
@@ -111,9 +113,8 @@ In `packages/<directory>/<package_name>/pubspec.yaml`, replace the generated `de
 
 ```yaml
 dev_dependencies:
-  altive_lints: ^1.25.0
+  altive_lints: ^2.3.0
   build_runner: ^2.14.1
-  custom_lint: ^0.8.1
   flutter_test:
     sdk: flutter
   mockito: ^5.6.4

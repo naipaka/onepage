@@ -21,18 +21,17 @@ Use FVM for Flutter version management:
 
 ## Core Commands
 
-| Command | Description |
-| --- | --- |
-| `fvm dart run melos run test` | Run all tests |
-| `fvm dart run melos run test:cov` | Run tests with coverage |
-| `fvm dart run melos run gen` | Generate code (build_runner) |
-| `fvm dart run melos run gen:watch` | Watch mode for code generation |
-| `fvm dart run melos run slang` | Generate i18n translations |
-| `fvm dart run melos run custom_lint` | Run custom lints |
-| `fvm dart run melos run fix` | Apply dart fixes and custom lint fixes |
-| `fvm dart run melos run build:android:prod` | Build Android production |
-| `fvm dart run melos run upload:ios:prod` | Build iOS production |
-| `fvm dart run melos run drift:migrations` | Generate drift migrations |
+| Command                                     | Description                            |
+| ------------------------------------------- | -------------------------------------- |
+| `fvm dart run melos run test`               | Run all tests                          |
+| `fvm dart run melos run test:cov`           | Run tests with coverage                |
+| `fvm dart run melos run gen`                | Generate code (build_runner)           |
+| `fvm dart run melos run gen:watch`          | Watch mode for code generation         |
+| `fvm dart run melos run slang`              | Generate i18n translations             |
+| `fvm dart run melos run fix`                | Apply dart fixes and custom lint fixes |
+| `fvm dart run melos run build:android:prod` | Build Android production               |
+| `fvm dart run melos run upload:ios:prod`    | Build iOS production                   |
+| `fvm dart run melos run drift:migrations`   | Generate drift migrations              |
 
 ## Architecture
 
@@ -86,7 +85,6 @@ Run `fvm dart run melos run gen` after changes to:
 ## Quality Assurance Workflow
 Before completing any task, verify both commands report "No issues found!":
 - `fvm dart analyze` — run from the **root directory** so Pub Workspaces checks all packages at once (do NOT cd into subdirectories).
-- `fvm dart run melos run custom_lint`
 
 For the full QA checklist, use the `/qa` skill.
 

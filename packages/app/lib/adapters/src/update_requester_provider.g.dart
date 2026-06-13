@@ -13,7 +13,7 @@ part of 'update_requester_provider.dart';
 /// Provider that supplies a class responsible for requesting updates.
 
 @ProviderFor(updateRequester)
-const updateRequesterProvider = UpdateRequesterProvider._();
+final updateRequesterProvider = UpdateRequesterProvider._();
 
 /// Provider that supplies a class responsible for requesting updates.
 
@@ -22,7 +22,7 @@ final class UpdateRequesterProvider
         $FunctionalProvider<UpdateRequester, UpdateRequester, UpdateRequester>
     with $Provider<UpdateRequester> {
   /// Provider that supplies a class responsible for requesting updates.
-  const UpdateRequesterProvider._()
+  UpdateRequesterProvider._()
     : super(
         from: null,
         argument: null,
@@ -62,7 +62,7 @@ String _$updateRequesterHash() => r'8e297f3db152629cae40d3cf50de5d8161d02937';
 /// {@macro update_requester.UpdateRequest}
 
 @ProviderFor(UpdateRequestState)
-const updateRequestStateProvider = UpdateRequestStateProvider._();
+final updateRequestStateProvider = UpdateRequestStateProvider._();
 
 /// Provides the current [UpdateRequest] state.
 ///
@@ -72,7 +72,7 @@ final class UpdateRequestStateProvider
   /// Provides the current [UpdateRequest] state.
   ///
   /// {@macro update_requester.UpdateRequest}
-  const UpdateRequestStateProvider._()
+  UpdateRequestStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -110,8 +110,7 @@ abstract class _$UpdateRequestState extends $Notifier<UpdateRequest> {
   UpdateRequest build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<UpdateRequest, UpdateRequest>;
     final element =
         ref.element
@@ -121,7 +120,7 @@ abstract class _$UpdateRequestState extends $Notifier<UpdateRequest> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
@@ -132,7 +131,7 @@ abstract class _$UpdateRequestState extends $Notifier<UpdateRequest> {
 /// If no update is needed, it returns null.
 
 @ProviderFor(updateRequestMessage)
-const updateRequestMessageProvider = UpdateRequestMessageProvider._();
+final updateRequestMessageProvider = UpdateRequestMessageProvider._();
 
 /// Compares the required Version setting with the actual app version to
 /// determine if an update is necessary.
@@ -148,7 +147,7 @@ final class UpdateRequestMessageProvider
   ///
   /// If an update is required, it provides an update prompt message.
   /// If no update is needed, it returns null.
-  const UpdateRequestMessageProvider._()
+  UpdateRequestMessageProvider._()
     : super(
         from: null,
         argument: null,

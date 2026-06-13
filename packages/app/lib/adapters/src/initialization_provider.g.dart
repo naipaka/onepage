@@ -13,7 +13,7 @@ part of 'initialization_provider.dart';
 /// Providers that need to initialize asynchronously only once at startup.
 
 @ProviderFor(initialization)
-const initializationProvider = InitializationProvider._();
+final initializationProvider = InitializationProvider._();
 
 /// Providers that need to initialize asynchronously only once at startup.
 
@@ -21,7 +21,7 @@ final class InitializationProvider
     extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
     with $FutureModifier<void>, $FutureProvider<void> {
   /// Providers that need to initialize asynchronously only once at startup.
-  const InitializationProvider._()
+  InitializationProvider._()
     : super(
         from: null,
         argument: null,

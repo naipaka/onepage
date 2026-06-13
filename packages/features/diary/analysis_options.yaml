@@ -1,6 +1,6 @@
-include: package:altive_lints/altive_lints.yaml
-analyzer:
-  plugins:
-    - custom_lint
-  exclude:
-    - "**/*.mocks.dart"
+# Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
+# Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
+# include: package:altive_lints/altive_lints.yaml
+# linter:
+#   exclude:
+#     - "**/*.mocks.dart"

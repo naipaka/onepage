@@ -32,14 +32,11 @@ Pre-PR baseline. Run all three steps in sequence; stop and fix before continuing
 # Step 1 — static analysis across all packages
 fvm dart analyze
 
-# Step 2 — custom lint rules
-fvm dart run melos run custom_lint
-
-# Step 3 — format check (read-only, does NOT modify files)
+# Step 2 — format check (read-only, does NOT modify files)
 fvm dart run melos run format:ci --no-select
 ```
 
-Expected output for each: `No issues found!` (analyze / custom_lint) or a clean exit (format:ci).
+Expected output for each: `No issues found!` (analyze) or a clean exit (format:ci).
 
 If `format:ci` reports a diff, fix formatting with:
 
@@ -93,6 +90,5 @@ fvm dart run melos run slang
 Do NOT declare the task complete until **all** of the following are true for the chosen tier:
 
 - `fvm dart analyze` → `No issues found!`
-- `fvm dart run melos run custom_lint` → `No issues found!` (standard / full)
 - `fvm dart run melos run format:ci --no-select` → clean (standard / full)
 - `fvm dart run melos run test:ci --no-select` → all tests pass (full only)

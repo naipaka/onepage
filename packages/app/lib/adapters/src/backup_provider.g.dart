@@ -13,7 +13,7 @@ part of 'backup_provider.dart';
 /// {@macro backup.BackupController}
 
 @ProviderFor(backupController)
-const backupControllerProvider = BackupControllerProvider._();
+final backupControllerProvider = BackupControllerProvider._();
 
 /// {@macro backup.BackupController}
 
@@ -26,7 +26,7 @@ final class BackupControllerProvider
         >
     with $Provider<BackupController> {
   /// {@macro backup.BackupController}
-  const BackupControllerProvider._()
+  BackupControllerProvider._()
     : super(
         from: null,
         argument: null,

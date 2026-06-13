@@ -13,7 +13,7 @@ part of 'tracker_provider.dart';
 /// [Tracker] provider.
 
 @ProviderFor(tracker)
-const trackerProvider = TrackerProvider._();
+final trackerProvider = TrackerProvider._();
 
 /// [Tracker] provider.
 
@@ -21,7 +21,7 @@ final class TrackerProvider
     extends $FunctionalProvider<Tracker, Tracker, Tracker>
     with $Provider<Tracker> {
   /// [Tracker] provider.
-  const TrackerProvider._()
+  TrackerProvider._()
     : super(
         from: null,
         argument: null,

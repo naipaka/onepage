@@ -11,7 +11,7 @@ part of 'package_info_provider.dart';
 /// Providers that need to initialize asynchronously only once at startup.
 
 @ProviderFor(packageInfoInitializing)
-const packageInfoInitializingProvider = PackageInfoInitializingProvider._();
+final packageInfoInitializingProvider = PackageInfoInitializingProvider._();
 
 /// Providers that need to initialize asynchronously only once at startup.
 
@@ -24,7 +24,7 @@ final class PackageInfoInitializingProvider
         >
     with $FutureModifier<PackageInfo>, $FutureProvider<PackageInfo> {
   /// Providers that need to initialize asynchronously only once at startup.
-  const PackageInfoInitializingProvider._()
+  PackageInfoInitializingProvider._()
     : super(
         from: null,
         argument: null,
@@ -58,7 +58,7 @@ String _$packageInfoInitializingHash() =>
 /// After initialization, use this, which can be obtained synchronously.
 
 @ProviderFor(packageInfo)
-const packageInfoProvider = PackageInfoProvider._();
+final packageInfoProvider = PackageInfoProvider._();
 
 /// Provide metadata for the application.
 ///
@@ -70,7 +70,7 @@ final class PackageInfoProvider
   /// Provide metadata for the application.
   ///
   /// After initialization, use this, which can be obtained synchronously.
-  const PackageInfoProvider._()
+  PackageInfoProvider._()
     : super(
         from: null,
         argument: null,

@@ -16,7 +16,7 @@ part of 'prefs_client_provider.dart';
 /// By default, it throws UnimplementedError to ensure proper initialization.
 
 @ProviderFor(prefsClient)
-const prefsClientProvider = PrefsClientProvider._();
+final prefsClientProvider = PrefsClientProvider._();
 
 /// Provider for the shared preferences client.
 ///
@@ -30,7 +30,7 @@ final class PrefsClientProvider
   ///
   /// This provider must be overridden in main.dart with an initialized instance.
   /// By default, it throws UnimplementedError to ensure proper initialization.
-  const PrefsClientProvider._()
+  PrefsClientProvider._()
     : super(
         from: null,
         argument: null,
@@ -71,7 +71,7 @@ String _$prefsClientHash() => r'5f518da0dbf69a64961b70ca08b759d59d98cf09';
 /// providing reactive updates when the preference changes.
 
 @ProviderFor(TextInputHapticEnabled)
-const textInputHapticEnabledProvider = TextInputHapticEnabledProvider._();
+final textInputHapticEnabledProvider = TextInputHapticEnabledProvider._();
 
 /// Provider for text input haptic feedback enabled state.
 ///
@@ -83,7 +83,7 @@ final class TextInputHapticEnabledProvider
   ///
   /// This provider manages the text input haptic feedback setting,
   /// providing reactive updates when the preference changes.
-  const TextInputHapticEnabledProvider._()
+  TextInputHapticEnabledProvider._()
     : super(
         from: null,
         argument: null,
@@ -122,8 +122,7 @@ abstract class _$TextInputHapticEnabled extends $Notifier<bool> {
   bool build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -133,7 +132,7 @@ abstract class _$TextInputHapticEnabled extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
@@ -144,7 +143,7 @@ abstract class _$TextInputHapticEnabled extends $Notifier<bool> {
 /// changes.
 
 @ProviderFor(OtherHapticEnabled)
-const otherHapticEnabledProvider = OtherHapticEnabledProvider._();
+final otherHapticEnabledProvider = OtherHapticEnabledProvider._();
 
 /// Provider for other haptic feedback enabled state.
 ///
@@ -158,7 +157,7 @@ final class OtherHapticEnabledProvider
   /// This provider manages the other haptic feedback setting (button taps,
   /// toggles, navigation), providing reactive updates when the preference
   /// changes.
-  const OtherHapticEnabledProvider._()
+  OtherHapticEnabledProvider._()
     : super(
         from: null,
         argument: null,
@@ -198,8 +197,7 @@ abstract class _$OtherHapticEnabled extends $Notifier<bool> {
   bool build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -209,7 +207,7 @@ abstract class _$OtherHapticEnabled extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
@@ -218,7 +216,7 @@ abstract class _$OtherHapticEnabled extends $Notifier<bool> {
 /// {@endtemplate}
 
 @ProviderFor(NotificationSettings)
-const notificationSettingsProvider = NotificationSettingsProvider._();
+final notificationSettingsProvider = NotificationSettingsProvider._();
 
 /// {@template onepage.NotificationSettingsNotifier}
 /// Notifier for managing notification settings.
@@ -228,7 +226,7 @@ final class NotificationSettingsProvider
   /// {@template onepage.NotificationSettingsNotifier}
   /// Notifier for managing notification settings.
   /// {@endtemplate}
-  const NotificationSettingsProvider._()
+  NotificationSettingsProvider._()
     : super(
         from: null,
         argument: null,
@@ -267,8 +265,7 @@ abstract class _$NotificationSettings
   List<NotificationSetting> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref =
         this.ref as $Ref<List<NotificationSetting>, List<NotificationSetting>>;
     final element =
@@ -279,6 +276,6 @@ abstract class _$NotificationSettings
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

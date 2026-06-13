@@ -11,12 +11,12 @@ part of 'is_loading_provider.dart';
 /// A provider that manages the loading indicator.
 
 @ProviderFor(IsLoading)
-const isLoadingProvider = IsLoadingProvider._();
+final isLoadingProvider = IsLoadingProvider._();
 
 /// A provider that manages the loading indicator.
 final class IsLoadingProvider extends $NotifierProvider<IsLoading, bool> {
   /// A provider that manages the loading indicator.
-  const IsLoadingProvider._()
+  IsLoadingProvider._()
     : super(
         from: null,
         argument: null,
@@ -51,8 +51,7 @@ abstract class _$IsLoading extends $Notifier<bool> {
   bool build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
@@ -62,6 +61,6 @@ abstract class _$IsLoading extends $Notifier<bool> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

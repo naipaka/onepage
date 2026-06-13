@@ -804,7 +804,7 @@ final class $$DiariesTableReferences
   static MultiTypedResultKey<$DiaryImagesTable, List<DiaryImage>>
   _diaryImagesRefsTable(_$DbClient db) => MultiTypedResultKey.fromTable(
     db.diaryImages,
-    aliasName: $_aliasNameGenerator(db.diaries.id, db.diaryImages.diaryId),
+    aliasName: 'diaries__id__diary_images__diary_id',
   );
 
   $$DiaryImagesTableProcessedTableManager get diaryImagesRefs {
@@ -1094,9 +1094,8 @@ final class $$DiaryImagesTableReferences
     extends BaseReferences<_$DbClient, $DiaryImagesTable, DiaryImage> {
   $$DiaryImagesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $DiariesTable _diaryIdTable(_$DbClient db) => db.diaries.createAlias(
-    $_aliasNameGenerator(db.diaryImages.diaryId, db.diaries.id),
-  );
+  static $DiariesTable _diaryIdTable(_$DbClient db) =>
+      db.diaries.createAlias('diary_images__diary_id__diaries__id');
 
   $$DiariesTableProcessedTableManager get diaryId {
     final $_column = $_itemColumn<int>('diary_id')!;

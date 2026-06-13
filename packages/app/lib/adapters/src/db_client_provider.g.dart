@@ -15,7 +15,7 @@ part of 'db_client_provider.dart';
 /// {@macro db_client.DbClient}
 
 @ProviderFor(dbClient)
-const dbClientProvider = DbClientProvider._();
+final dbClientProvider = DbClientProvider._();
 
 /// Provide a [DbClient] instance.
 ///
@@ -27,7 +27,7 @@ final class DbClientProvider
   /// Provide a [DbClient] instance.
   ///
   /// {@macro db_client.DbClient}
-  const DbClientProvider._()
+  DbClientProvider._()
     : super(
         from: null,
         argument: null,
@@ -67,7 +67,7 @@ String _$dbClientHash() => r'0d3ae5cb08dc890911ec54058d256c216459e3a9';
 /// {@macro db_client.Connection}
 
 @ProviderFor(dbConnection)
-const dbConnectionProvider = DbConnectionProvider._();
+final dbConnectionProvider = DbConnectionProvider._();
 
 /// Provide a [DbConnection] instance.
 ///
@@ -79,7 +79,7 @@ final class DbConnectionProvider
   /// Provide a [DbConnection] instance.
   ///
   /// {@macro db_client.Connection}
-  const DbConnectionProvider._()
+  DbConnectionProvider._()
     : super(
         from: null,
         argument: null,
