@@ -94,15 +94,11 @@ void main() {
         // Valid backup file path
         final validBackupFilePath = p.join(tempDir.path, 'import.sqlite');
 
-        when(
-          mockSqlite3.open(backupFilePath),
-        ).thenReturn(mockDatabase);
+        when(mockSqlite3.open(backupFilePath)).thenReturn(mockDatabase);
         when(
           mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]),
         ).thenAnswer((_) {});
-        when(
-          mockDatabase.dispose(),
-        ).thenAnswer((_) {});
+        when(mockDatabase.close()).thenAnswer((_) {});
 
         // Execute
         final result = await connection.createValidBackupFile(
@@ -117,7 +113,7 @@ void main() {
         verify(
           mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]),
         ).called(1);
-        verify(mockDatabase.dispose()).called(1);
+        verify(mockDatabase.close()).called(1);
       });
 
       test('Throws an exception when the backup file is invalid', () async {
