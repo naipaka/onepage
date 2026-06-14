@@ -23,7 +23,7 @@ dependencies:
     path: ../features/diary/
   exporter:
     path: ../features/exporter/
-  firebase_core: ^4.2.1
+  firebase_core: ^4.10.0
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.3+1

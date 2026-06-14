@@ -20,7 +20,11 @@ Future<void> main() async {
 
   final flavor = Flavor.values.byName(const String.fromEnvironment('flavor'));
 
-  await Firebase.initializeApp(options: firebaseOptionsWithFlavor(flavor));
+  // The default app is auto-initialized natively from the bundled
+  // GoogleService-Info.plist (iOS) / google-services.json (Android), which are
+  // selected per flavor at build time. Initialize without explicit options to
+  // avoid a duplicate [DEFAULT] app.
+  await Firebase.initializeApp();
 
   final tracker = Tracker();
   // Logs errors caught by the Flutter framework.
@@ -51,9 +55,7 @@ Future<void> main() async {
         prefsClientProvider.overrideWithValue(prefsClient),
       ],
       observers: [providerLogger],
-      child: TranslationProvider(
-        child: const App(),
-      ),
+      child: TranslationProvider(child: const App()),
     ),
   );
 }
