@@ -16,7 +16,7 @@ part of 'haptics_provider.dart';
 /// injected for preference-based haptic feedback control.
 
 @ProviderFor(haptics)
-const hapticsProvider = HapticsProvider._();
+final hapticsProvider = HapticsProvider._();
 
 /// Provider for the haptics service.
 ///
@@ -30,7 +30,7 @@ final class HapticsProvider
   ///
   /// This provider creates a Haptics instance with the PrefsClient dependency
   /// injected for preference-based haptic feedback control.
-  const HapticsProvider._()
+  HapticsProvider._()
     : super(
         from: null,
         argument: null,

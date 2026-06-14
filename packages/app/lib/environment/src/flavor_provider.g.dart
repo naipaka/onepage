@@ -15,7 +15,7 @@ part of 'flavor_provider.dart';
 /// Need override in top-level ProviderScope.
 
 @ProviderFor(flavor)
-const flavorProvider = FlavorProvider._();
+final flavorProvider = FlavorProvider._();
 
 /// Provide current Flavor.
 ///
@@ -26,7 +26,7 @@ final class FlavorProvider extends $FunctionalProvider<Flavor, Flavor, Flavor>
   /// Provide current Flavor.
   ///
   /// Need override in top-level ProviderScope.
-  const FlavorProvider._()
+  FlavorProvider._()
     : super(
         from: null,
         argument: null,

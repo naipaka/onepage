@@ -46,6 +46,15 @@ class _FakePreparedStatement_1 extends _i1.SmartFake
 /// See the documentation for Mockito's code generation for more information.
 class MockSqlite3 extends _i1.Mock implements _i2.Sqlite3 {
   @override
+  Iterable<String> get compileOptions =>
+      (super.noSuchMethod(
+            Invocation.getter(#compileOptions),
+            returnValue: <String>[],
+            returnValueForMissingStub: <String>[],
+          )
+          as Iterable<String>);
+
+  @override
   _i3.Version get version =>
       (super.noSuchMethod(
             Invocation.getter(#version),
@@ -100,16 +109,27 @@ class MockSqlite3 extends _i1.Mock implements _i2.Sqlite3 {
           as _i2.Database);
 
   @override
-  _i2.Database fromPointer(_i5.Pointer<void>? database) =>
+  _i2.Database fromPointer(
+    _i5.Pointer<void>? database, {
+    bool? borrowed = false,
+  }) =>
       (super.noSuchMethod(
-            Invocation.method(#fromPointer, [database]),
+            Invocation.method(#fromPointer, [database], {#borrowed: borrowed}),
             returnValue: _FakeDatabase_0(
               this,
-              Invocation.method(#fromPointer, [database]),
+              Invocation.method(
+                #fromPointer,
+                [database],
+                {#borrowed: borrowed},
+              ),
             ),
             returnValueForMissingStub: _FakeDatabase_0(
               this,
-              Invocation.method(#fromPointer, [database]),
+              Invocation.method(
+                #fromPointer,
+                [database],
+                {#borrowed: borrowed},
+              ),
             ),
           )
           as _i2.Database);
@@ -150,6 +170,15 @@ class MockSqlite3 extends _i1.Mock implements _i2.Sqlite3 {
         Invocation.method(#ensureExtensionLoaded, [extension]),
         returnValueForMissingStub: null,
       );
+
+  @override
+  bool usedCompileOption(String? name) =>
+      (super.noSuchMethod(
+            Invocation.method(#usedCompileOption, [name]),
+            returnValue: false,
+            returnValueForMissingStub: false,
+          )
+          as bool);
 
   @override
   void registerVirtualFileSystem(
@@ -291,6 +320,27 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
   );
 
   @override
+  set busyHandler(bool Function(int)? handler) => super.noSuchMethod(
+    Invocation.setter(#busyHandler, handler),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i5.Pointer<void> leak() =>
+      (super.noSuchMethod(
+            Invocation.method(#leak, []),
+            returnValue: _i4.dummyValue<_i5.Pointer<void>>(
+              this,
+              Invocation.method(#leak, []),
+            ),
+            returnValueForMissingStub: _i4.dummyValue<_i5.Pointer<void>>(
+              this,
+              Invocation.method(#leak, []),
+            ),
+          )
+          as _i5.Pointer<void>);
+
+  @override
   _i2.PreparedStatement prepare(
     String? sql, {
     bool? persistent = false,
@@ -346,6 +396,37 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
             returnValueForMissingStub: <_i2.PreparedStatement>[],
           )
           as List<_i2.PreparedStatement>);
+
+  @override
+  _i2.PreparedStatement statementFromPointer({
+    required _i5.Pointer<void>? statement,
+    required String? sql,
+    bool? borrowed = false,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#statementFromPointer, [], {
+              #statement: statement,
+              #sql: sql,
+              #borrowed: borrowed,
+            }),
+            returnValue: _FakePreparedStatement_1(
+              this,
+              Invocation.method(#statementFromPointer, [], {
+                #statement: statement,
+                #sql: sql,
+                #borrowed: borrowed,
+              }),
+            ),
+            returnValueForMissingStub: _FakePreparedStatement_1(
+              this,
+              Invocation.method(#statementFromPointer, [], {
+                #statement: statement,
+                #sql: sql,
+                #borrowed: borrowed,
+              }),
+            ),
+          )
+          as _i2.PreparedStatement);
 
   @override
   _i8.Stream<double> backup(_i2.Database? toDatabase, {int? nPage = 5}) =>
@@ -441,6 +522,12 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
   @override
   void dispose() => super.noSuchMethod(
     Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void close() => super.noSuchMethod(
+    Invocation.method(#close, []),
     returnValueForMissingStub: null,
   );
 }

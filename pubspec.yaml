@@ -1,7 +1,7 @@
 name: onepage_workspace
 
 environment:
-  sdk: ^3.11.5
+  sdk: ^3.12.2
 
 workspace:
   - packages/app
@@ -48,13 +48,6 @@ melos:
       releaseUrl: true
 
   scripts:
-    custom_lint:
-      exec: dart run custom_lint
-      description: Run custom_lint.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "custom_lint"
-
     # Issue on file exclusion feature: https://github.com/dart-lang/dart_style/issues/864
     # NOTE: Using the `exec:` format causes processing to stop
     format:ci:
@@ -69,7 +62,6 @@ melos:
     fix:
       exec: |
         dart fix --apply lib
-        dart run custom_lint --fix
       description: Run dart fix.
       packageFilters:
         dirExists: lib

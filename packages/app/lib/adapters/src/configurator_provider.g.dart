@@ -13,7 +13,7 @@ part of 'configurator_provider.dart';
 /// Initialize the [Configurator] and set the default values.
 
 @ProviderFor(configuratorInitializing)
-const configuratorInitializingProvider = ConfiguratorInitializingProvider._();
+final configuratorInitializingProvider = ConfiguratorInitializingProvider._();
 
 /// Initialize the [Configurator] and set the default values.
 
@@ -26,7 +26,7 @@ final class ConfiguratorInitializingProvider
         >
     with $FutureModifier<Configurator>, $FutureProvider<Configurator> {
   /// Initialize the [Configurator] and set the default values.
-  const ConfiguratorInitializingProvider._()
+  ConfiguratorInitializingProvider._()
     : super(
         from: null,
         argument: null,
@@ -58,7 +58,7 @@ String _$configuratorInitializingHash() =>
 /// A provider that manages the [Configurator].
 
 @ProviderFor(configurator)
-const configuratorProvider = ConfiguratorProvider._();
+final configuratorProvider = ConfiguratorProvider._();
 
 /// A provider that manages the [Configurator].
 
@@ -66,7 +66,7 @@ final class ConfiguratorProvider
     extends $FunctionalProvider<Configurator, Configurator, Configurator>
     with $Provider<Configurator> {
   /// A provider that manages the [Configurator].
-  const ConfiguratorProvider._()
+  ConfiguratorProvider._()
     : super(
         from: null,
         argument: null,

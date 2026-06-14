@@ -154,6 +154,7 @@ coverage/
 **/fastlane/report.xml
 
 # Firebase with Build Phases
+**/firebase.json
 **/firebase_app_id_file.json
 **/GoogleService-Info.plist
 **/google-services.json
@@ -161,3 +162,6 @@ coverage/
 
 # FVM Version Cache
 .fvm/
+
+# Golden test failure artifacts
+test/golden/**/failures/

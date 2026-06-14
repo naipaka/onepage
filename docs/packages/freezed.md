@@ -68,7 +68,6 @@ to focus on the definition of your model.
   - [IDE Extensions](#ide-extensions)
     - [Freezed extension for VSCode](#freezed-extension-for-vscode)
     - [Freezed extension for IntelliJ/Android Studio](#freezed-extension-for-intellijandroid-studio)
-  - [Linting](#linting)
   - [Third-party tools](#third-party-tools)
     - [DartJ](#dartj)
   - [Sponsors](#sponsors)
@@ -1277,25 +1276,6 @@ Example:
   ```dart
   factory Demo.fromJson(Map<String, dynamic> json) => _$DemoFromJson(json);
   ```
-
-## Linting
-
-You can add `freezed` specific linting rules that provide helpful utilities and catch common mistakes when creating `freezed` classes.
-
-Add [`custom_lint`](https://pub.dev/packages/custom_lint) and `freezed_lint` to your `pubspec.yaml`:
-
-```console
-dart pub add dev:custom_lint
-dart pub add dev:freezed_lint
-```
-
-Also add `custom_lint` to your `analysis_options.yaml`:
-
-```yaml
-analyzer:
-  plugins:
-    - custom_lint
-```
 
 ## Third-party tools
 

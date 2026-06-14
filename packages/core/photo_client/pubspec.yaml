@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.11.5
+  sdk: ^3.12.2
 
 resolution: workspace
 
@@ -17,6 +17,8 @@ dependencies:
   visibility_detector: ^0.4.0+2
 
 dev_dependencies:
-  altive_lints: ^1.25.0
+  # Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
+  # Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
+  # altive_lints: ^2.3.0
   flutter_test:
     sdk: flutter

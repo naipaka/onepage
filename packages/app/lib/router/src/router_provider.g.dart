@@ -13,7 +13,7 @@ part of 'router_provider.dart';
 /// The router provider.
 
 @ProviderFor(router)
-const routerProvider = RouterProvider._();
+final routerProvider = RouterProvider._();
 
 /// The router provider.
 
@@ -21,7 +21,7 @@ final class RouterProvider
     extends $FunctionalProvider<Raw<GoRouter>, Raw<GoRouter>, Raw<GoRouter>>
     with $Provider<Raw<GoRouter>> {
   /// The router provider.
-  const RouterProvider._()
+  RouterProvider._()
     : super(
         from: null,
         argument: null,

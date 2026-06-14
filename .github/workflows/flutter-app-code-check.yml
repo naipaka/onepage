@@ -52,11 +52,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Decode Firebase options
-        run: |
-          echo ${{ secrets.FIREBASE_OPTIONS_DEV_BASE64 }} | base64 -d > packages/app/lib/environment/src/firebase_options_dev.dart
-          echo ${{ secrets.FIREBASE_OPTIONS_PROD_BASE64 }} | base64 -d > packages/app/lib/environment/src/firebase_options_prod.dart
-
       - name: Setup Flutter with FVM
         id: setup-flutter
         uses: kuhnroyal/flutter-fvm-config-action/setup@v3
@@ -74,9 +69,6 @@ jobs:
 
       - name: Analyze packages
         run: flutter analyze
-
-      - name: Run custom lint
-        run: melos run custom_lint
 
       - name: Check for the existence of unformatted files
         # Cannot use `melos format` as it requires excluding files generated from the target file

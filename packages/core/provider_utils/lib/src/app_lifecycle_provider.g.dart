@@ -13,7 +13,7 @@ part of 'app_lifecycle_provider.dart';
 /// {@endtemplate}
 
 @ProviderFor(AppLifecycle)
-const appLifecycleProvider = AppLifecycleProvider._();
+final appLifecycleProvider = AppLifecycleProvider._();
 
 /// {@template appLifecycleProvider}
 /// Provider for app lifecycle state.
@@ -23,7 +23,7 @@ final class AppLifecycleProvider
   /// {@template appLifecycleProvider}
   /// Provider for app lifecycle state.
   /// {@endtemplate}
-  const AppLifecycleProvider._()
+  AppLifecycleProvider._()
     : super(
         from: null,
         argument: null,
@@ -60,8 +60,7 @@ abstract class _$AppLifecycle extends $Notifier<AppLifecycleState> {
   AppLifecycleState build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<AppLifecycleState, AppLifecycleState>;
     final element =
         ref.element
@@ -71,6 +70,6 @@ abstract class _$AppLifecycle extends $Notifier<AppLifecycleState> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

@@ -13,13 +13,13 @@ part of 'stub_diaries_state_provider.dart';
 /// For mocking diaries state.
 
 @ProviderFor(StubDiariesState)
-const stubDiariesStateProvider = StubDiariesStateProvider._();
+final stubDiariesStateProvider = StubDiariesStateProvider._();
 
 /// For mocking diaries state.
 final class StubDiariesStateProvider
     extends $AsyncNotifierProvider<StubDiariesState, List<_Diary>> {
   /// For mocking diaries state.
-  const StubDiariesStateProvider._()
+  StubDiariesStateProvider._()
     : super(
         from: null,
         argument: null,
@@ -46,8 +46,7 @@ abstract class _$StubDiariesState extends $AsyncNotifier<List<_Diary>> {
   FutureOr<List<_Diary>> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<AsyncValue<List<_Diary>>, List<_Diary>>;
     final element =
         ref.element
@@ -57,6 +56,6 @@ abstract class _$StubDiariesState extends $AsyncNotifier<List<_Diary>> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

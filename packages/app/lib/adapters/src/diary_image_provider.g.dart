@@ -15,7 +15,7 @@ part of 'diary_image_provider.dart';
 /// {@macro diary.DiaryImageCommand}
 
 @ProviderFor(diaryImageCommand)
-const diaryImageCommandProvider = DiaryImageCommandProvider._();
+final diaryImageCommandProvider = DiaryImageCommandProvider._();
 
 /// A provider that creates a [DiaryImageCommand] instance.
 ///
@@ -32,7 +32,7 @@ final class DiaryImageCommandProvider
   /// A provider that creates a [DiaryImageCommand] instance.
   ///
   /// {@macro diary.DiaryImageCommand}
-  const DiaryImageCommandProvider._()
+  DiaryImageCommandProvider._()
     : super(
         from: null,
         argument: null,
