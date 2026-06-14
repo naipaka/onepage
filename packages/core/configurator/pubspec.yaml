@@ -16,7 +16,7 @@ dev_dependencies:
   # Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
   # Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
   # altive_lints: ^2.3.0
-  build_runner: ^2.14.1
+  build_runner: ^2.15.0
   firebase_core: ^4.10.0
   firebase_core_platform_interface: ^7.0.1
   firebase_remote_config_platform_interface: ^3.0.2
