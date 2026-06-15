@@ -15,7 +15,7 @@ dependencies:
   flutter:
     sdk: flutter
   path: ^1.9.1
-  path_provider: ^2.1.5
+  path_provider: ^2.1.6
   sqlite3: ^3.3.3
 
 dev_dependencies:
