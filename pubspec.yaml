@@ -24,6 +24,14 @@ workspace:
   - packages/features/scroll_calendar
   - packages/features/update_requester
 
+dependency_overrides:
+  # Pending flutter_gen_core release with xml 7 support (PR #764 merged 2026-06-09)
+  flutter_gen_core:
+    git:
+      url: https://github.com/FlutterGen/flutter_gen.git
+      path: packages/core
+      ref: 3d5da4c853bae03c5559ca24039c9cdccfd44014
+
 dev_dependencies:
   melos: ^7.4.1
 
