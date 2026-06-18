@@ -114,7 +114,7 @@ In `packages/<directory>/<package_name>/pubspec.yaml`, replace the generated `de
 ```yaml
 dev_dependencies:
   altive_lints: ^2.3.0
-  build_runner: ^2.14.1
+  build_runner: ^2.15.0
   flutter_test:
     sdk: flutter
   mockito: ^5.6.4
