@@ -13,7 +13,7 @@ part of 'exporter_provider.dart';
 /// {@macro exporter.PdfExporter}
 
 @ProviderFor(pdfExporter)
-const pdfExporterProvider = PdfExporterProvider._();
+final pdfExporterProvider = PdfExporterProvider._();
 
 /// {@macro exporter.PdfExporter}
 
@@ -21,7 +21,7 @@ final class PdfExporterProvider
     extends $FunctionalProvider<PdfExporter, PdfExporter, PdfExporter>
     with $Provider<PdfExporter> {
   /// {@macro exporter.PdfExporter}
-  const PdfExporterProvider._()
+  PdfExporterProvider._()
     : super(
         from: null,
         argument: null,
@@ -59,7 +59,7 @@ String _$pdfExporterHash() => r'6891db85a858a2322381174bb84e62746ec92a1b';
 /// {@macro exporter.CsvExporter}
 
 @ProviderFor(csvExporter)
-const csvExporterProvider = CsvExporterProvider._();
+final csvExporterProvider = CsvExporterProvider._();
 
 /// {@macro exporter.CsvExporter}
 
@@ -67,7 +67,7 @@ final class CsvExporterProvider
     extends $FunctionalProvider<CsvExporter, CsvExporter, CsvExporter>
     with $Provider<CsvExporter> {
   /// {@macro exporter.CsvExporter}
-  const CsvExporterProvider._()
+  CsvExporterProvider._()
     : super(
         from: null,
         argument: null,
@@ -105,7 +105,7 @@ String _$csvExporterHash() => r'560bb7bc3ecc41ec46299412ac4e726f5908f3f4';
 /// {@macro exporter.MarkdownExporter}
 
 @ProviderFor(markdownExporter)
-const markdownExporterProvider = MarkdownExporterProvider._();
+final markdownExporterProvider = MarkdownExporterProvider._();
 
 /// {@macro exporter.MarkdownExporter}
 
@@ -118,7 +118,7 @@ final class MarkdownExporterProvider
         >
     with $Provider<MarkdownExporter> {
   /// {@macro exporter.MarkdownExporter}
-  const MarkdownExporterProvider._()
+  MarkdownExporterProvider._()
     : super(
         from: null,
         argument: null,

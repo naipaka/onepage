@@ -5,7 +5,9 @@ This document outlines the current project structure and architectural patterns.
 This project is a simple diary app with a unique "one page only" concept, built with modern Flutter development practices.
 
 ## Language Preference - STRICT REQUIREMENTS
+
 IMPORTANT: These language rules MUST be followed without exception:
+
 - This is a strict requirement: NEVER respond in English when addressed in Japanese
 - This is a strict requirement: NEVER respond in Japanese when addressed in English
 - You MUST match the language of your response to the language used in the question/instruction
@@ -76,7 +78,6 @@ packages/
 ### Development Dependencies
 
 - altive_lints
-- custom_lint
 - build_runner
 - riverpod_generator
 - riverpod_lint
@@ -113,10 +114,13 @@ packages/
 ## Code Generation
 
 1. Run build_runner for code generation:
+
    ```bash
    melos run build
    ```
+
    or in watch mode:
+
    ```bash
    melos run build:watch
    ```
@@ -188,15 +192,17 @@ packages/
    - Use dartdoc Macros for reusability
    - Use dartdoc Macros especially for class documentation to maintain consistency
    - Examples of dartdoc Macros usage:
+
      ```dart
      // Template macro
      /// {@template foo}
      /// This is a reusable documentation comment.
      /// {@endtemplate}
-     
+
      // Reference the template
      /// {@macro foo}
      ```
+
    - Keep documentation up to date with code changes
    - Include examples and use cases where applicable
 

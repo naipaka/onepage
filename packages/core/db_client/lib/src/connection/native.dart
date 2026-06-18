@@ -64,7 +64,7 @@ class DbConnection {
     final newDbFilePath = p.join(newDbFileDir.path, 'import.sqlite');
     sqlite3Instance.open(backupFilePath)
       ..execute('VACUUM INTO ?', [newDbFilePath])
-      ..dispose();
+      ..close();
     return File(newDbFilePath);
   }
 

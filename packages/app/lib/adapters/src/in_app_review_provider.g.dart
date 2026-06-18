@@ -17,7 +17,7 @@ part of 'in_app_review_provider.dart';
 /// 3 different days in the past 6 months.
 
 @ProviderFor(isEligibleForInAppReview)
-const isEligibleForInAppReviewProvider = IsEligibleForInAppReviewProvider._();
+final isEligibleForInAppReviewProvider = IsEligibleForInAppReviewProvider._();
 
 /// Provider for in-app review eligibility.
 ///
@@ -33,7 +33,7 @@ final class IsEligibleForInAppReviewProvider
   /// This provider checks if the user is eligible for review prompts based on
   /// diary activity. Returns true if the user has written content on at least
   /// 3 different days in the past 6 months.
-  const IsEligibleForInAppReviewProvider._()
+  IsEligibleForInAppReviewProvider._()
     : super(
         from: null,
         argument: null,
@@ -67,7 +67,7 @@ String _$isEligibleForInAppReviewHash() =>
 /// dependencies (eligibility status and PrefsClient) injected.
 
 @ProviderFor(inAppReviewer)
-const inAppReviewerProvider = InAppReviewerProvider._();
+final inAppReviewerProvider = InAppReviewerProvider._();
 
 /// Provider for the in-app review prompt functionality.
 ///
@@ -86,7 +86,7 @@ final class InAppReviewerProvider
   ///
   /// This provider creates an InAppReviewer instance with the required
   /// dependencies (eligibility status and PrefsClient) injected.
-  const InAppReviewerProvider._()
+  InAppReviewerProvider._()
     : super(
         from: null,
         argument: null,

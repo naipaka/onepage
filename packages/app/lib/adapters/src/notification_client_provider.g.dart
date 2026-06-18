@@ -13,7 +13,7 @@ part of 'notification_client_provider.dart';
 /// Initialize the [NotificationClient] and set up notification system.
 
 @ProviderFor(notificationClientInitializing)
-const notificationClientInitializingProvider =
+final notificationClientInitializingProvider =
     NotificationClientInitializingProvider._();
 
 /// Initialize the [NotificationClient] and set up notification system.
@@ -29,7 +29,7 @@ final class NotificationClientInitializingProvider
         $FutureModifier<NotificationClient>,
         $FutureProvider<NotificationClient> {
   /// Initialize the [NotificationClient] and set up notification system.
-  const NotificationClientInitializingProvider._()
+  NotificationClientInitializingProvider._()
     : super(
         from: null,
         argument: null,
@@ -63,7 +63,7 @@ String _$notificationClientInitializingHash() =>
 /// {@endtemplate}
 
 @ProviderFor(notificationClient)
-const notificationClientProvider = NotificationClientProvider._();
+final notificationClientProvider = NotificationClientProvider._();
 
 /// {@template onepage.notificationClientProvider}
 /// Provider for NotificationClient instance.
@@ -80,7 +80,7 @@ final class NotificationClientProvider
   /// {@template onepage.notificationClientProvider}
   /// Provider for NotificationClient instance.
   /// {@endtemplate}
-  const NotificationClientProvider._()
+  NotificationClientProvider._()
     : super(
         from: null,
         argument: null,
@@ -122,7 +122,7 @@ String _$notificationClientHash() =>
 /// {@endtemplate}
 
 @ProviderFor(notificationPermissionGranted)
-const notificationPermissionGrantedProvider =
+final notificationPermissionGrantedProvider =
     NotificationPermissionGrantedProvider._();
 
 /// {@template notificationPermissionGrantedProvider}
@@ -135,7 +135,7 @@ final class NotificationPermissionGrantedProvider
   /// {@template notificationPermissionGrantedProvider}
   /// Provider for notification permission granted status.
   /// {@endtemplate}
-  const NotificationPermissionGrantedProvider._()
+  NotificationPermissionGrantedProvider._()
     : super(
         from: null,
         argument: null,
@@ -170,7 +170,7 @@ String _$notificationPermissionGrantedHash() =>
 /// {@endtemplate}
 
 @ProviderFor(NotificationScheduler)
-const notificationSchedulerProvider = NotificationSchedulerProvider._();
+final notificationSchedulerProvider = NotificationSchedulerProvider._();
 
 /// {@template onepage.NotificationScheduler}
 /// Notifier that manages notification scheduling based on settings changes.
@@ -184,7 +184,7 @@ final class NotificationSchedulerProvider
   /// This notifier automatically schedules/reschedules notifications when
   /// settings, diary entries, or skip preferences change.
   /// {@endtemplate}
-  const NotificationSchedulerProvider._()
+  NotificationSchedulerProvider._()
     : super(
         from: null,
         argument: null,
@@ -224,8 +224,7 @@ abstract class _$NotificationScheduler extends $Notifier<void> {
   void build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<void, void>;
     final element =
         ref.element
@@ -235,6 +234,6 @@ abstract class _$NotificationScheduler extends $Notifier<void> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, null);
+    return element.handleCreate(ref, build);
   }
 }

@@ -15,7 +15,7 @@ part of 'diary_provider.dart';
 /// {@macro diary.DiaryCommand}
 
 @ProviderFor(diaryCommand)
-const diaryCommandProvider = DiaryCommandProvider._();
+final diaryCommandProvider = DiaryCommandProvider._();
 
 /// A provider that creates a [DiaryCommand] instance.
 ///
@@ -27,7 +27,7 @@ final class DiaryCommandProvider
   /// A provider that creates a [DiaryCommand] instance.
   ///
   /// {@macro diary.DiaryCommand}
-  const DiaryCommandProvider._()
+  DiaryCommandProvider._()
     : super(
         from: null,
         argument: null,
@@ -67,7 +67,7 @@ String _$diaryCommandHash() => r'ffb780d76c5eff004a8f280f5a8290afb6d36d89';
 /// {@macro diary.DiaryQuery}
 
 @ProviderFor(diaryQuery)
-const diaryQueryProvider = DiaryQueryProvider._();
+final diaryQueryProvider = DiaryQueryProvider._();
 
 /// A provider that creates a [DiaryQuery] instance.
 ///
@@ -79,7 +79,7 @@ final class DiaryQueryProvider
   /// A provider that creates a [DiaryQuery] instance.
   ///
   /// {@macro diary.DiaryQuery}
-  const DiaryQueryProvider._()
+  DiaryQueryProvider._()
     : super(
         from: null,
         argument: null,
@@ -119,7 +119,7 @@ String _$diaryQueryHash() => r'c2aaf09175f18fb5ff5d9eefca6e772125fae621';
 /// Emits the current count whenever images are added or removed.
 
 @ProviderFor(diaryImageCount)
-const diaryImageCountProvider = DiaryImageCountProvider._();
+final diaryImageCountProvider = DiaryImageCountProvider._();
 
 /// Provides a stream of the total diary image count.
 ///
@@ -131,7 +131,7 @@ final class DiaryImageCountProvider
   /// Provides a stream of the total diary image count.
   ///
   /// Emits the current count whenever images are added or removed.
-  const DiaryImageCountProvider._()
+  DiaryImageCountProvider._()
     : super(
         from: null,
         argument: null,
@@ -161,7 +161,7 @@ String _$diaryImageCountHash() => r'8c192998efc25cc71524afa6d5b7e815afccf01a';
 /// Provides a list of diaries within the specified date range.
 
 @ProviderFor(diaries)
-const diariesProvider = DiariesFamily._();
+final diariesProvider = DiariesFamily._();
 
 /// Provides a list of diaries within the specified date range.
 
@@ -174,7 +174,7 @@ final class DiariesProvider
         >
     with $FutureModifier<List<Diary>>, $FutureProvider<List<Diary>> {
   /// Provides a list of diaries within the specified date range.
-  const DiariesProvider._({
+  DiariesProvider._({
     required DiariesFamily super.from,
     required ({DateTime fromDate, DateTime toDate}) super.argument,
   }) : super(
@@ -228,7 +228,7 @@ final class DiariesFamily extends $Family
           FutureOr<List<Diary>>,
           ({DateTime fromDate, DateTime toDate})
         > {
-  const DiariesFamily._()
+  DiariesFamily._()
     : super(
         retry: null,
         name: r'diariesProvider',
@@ -254,13 +254,13 @@ final class DiariesFamily extends $Family
 /// Provides a list of diaries with dates within the specified date range.
 
 @ProviderFor(CachedDiaries)
-const cachedDiariesProvider = CachedDiariesProvider._();
+final cachedDiariesProvider = CachedDiariesProvider._();
 
 /// Provides a list of diaries with dates within the specified date range.
 final class CachedDiariesProvider
     extends $AsyncNotifierProvider<CachedDiaries, DiariesWithDates> {
   /// Provides a list of diaries with dates within the specified date range.
-  const CachedDiariesProvider._()
+  CachedDiariesProvider._()
     : super(
         from: null,
         argument: null,
@@ -287,8 +287,7 @@ abstract class _$CachedDiaries extends $AsyncNotifier<DiariesWithDates> {
   FutureOr<DiariesWithDates> build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref =
         this.ref as $Ref<AsyncValue<DiariesWithDates>, DiariesWithDates>;
     final element =
@@ -299,20 +298,20 @@ abstract class _$CachedDiaries extends $AsyncNotifier<DiariesWithDates> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }
 
 /// Provides search functionality for diary entries.
 
 @ProviderFor(DiarySearch)
-const diarySearchProvider = DiarySearchProvider._();
+final diarySearchProvider = DiarySearchProvider._();
 
 /// Provides search functionality for diary entries.
 final class DiarySearchProvider
     extends $NotifierProvider<DiarySearch, SearchResult> {
   /// Provides search functionality for diary entries.
-  const DiarySearchProvider._()
+  DiarySearchProvider._()
     : super(
         from: null,
         argument: null,
@@ -347,8 +346,7 @@ abstract class _$DiarySearch extends $Notifier<SearchResult> {
   SearchResult build();
   @$mustCallSuper
   @override
-  void runBuild() {
-    final created = build();
+  WhenComplete runBuild() {
     final ref = this.ref as $Ref<SearchResult, SearchResult>;
     final element =
         ref.element
@@ -358,6 +356,6 @@ abstract class _$DiarySearch extends $Notifier<SearchResult> {
               Object?,
               Object?
             >;
-    element.handleValue(ref, created);
+    return element.handleCreate(ref, build);
   }
 }

@@ -54,7 +54,7 @@
     }
   },
   "dart.flutterGenerateLocalizationsOnSave": "all",
-  "dart.flutterSdkPath": ".fvm/versions/3.41.9",
+  "dart.flutterSdkPath": ".fvm/versions/3.44.2",
   "dart.debugExternalPackageLibraries": false,
   "dart.debugSdkLibraries": false,
   "dart.experimentalRefactors": true,

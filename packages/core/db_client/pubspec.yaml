@@ -4,27 +4,26 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.11.5
+  sdk: ^3.12.2
 
 resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  drift: ^2.29.0
-  drift_flutter: ^0.2.8
+  drift: ^2.34.0
+  drift_flutter: ^0.3.0
   flutter:
     sdk: flutter
   path: ^1.9.1
   path_provider: ^2.1.5
-  # Because drift_flutter depends on sqlite3 2.x.x
-  # https://github.com/simolus3/drift/issues/3710
-  sqlite3: ^2.9.4
+  sqlite3: ^3.3.3
 
 dev_dependencies:
-  altive_lints: ^1.25.0
+  # Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
+  # Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
+  # altive_lints: ^2.3.0
   build_runner: ^2.15.0
-  custom_lint: ^0.8.1
-  drift_dev: ^2.29.0
+  drift_dev: ^2.34.0
   flutter_test:
     sdk: flutter
   mockito: ^5.6.4
