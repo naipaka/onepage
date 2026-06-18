@@ -8,8 +8,8 @@ environment:
   flutter: ">=3.32.6"
 
 dependencies:
-  firebase_analytics: ^12.4.2
-  firebase_crashlytics: ^5.2.3
+  firebase_analytics: ^12.4.3
+  firebase_crashlytics: ^5.2.4
   flutter:
     sdk: flutter
   meta: ^1.17.0
