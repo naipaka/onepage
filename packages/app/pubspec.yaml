@@ -90,8 +90,7 @@ flutter:
 
 patrol:
   app_name: One Page Dev
-  flavor: dev
   android:
-    package_name: com.naipaka.onepage
+    package_name: com.naipaka.onepage.dev
   ios:
-    bundle_id: com.naipaka.onepage
+    bundle_id: com.naipaka.onepage.dev
