@@ -77,6 +77,7 @@ dev_dependencies:
   go_router_builder: ^4.3.0
   mockito: ^5.6.4
   package_info_plus: ^9.0.1
+  patrol: ^4.6.1
   riverpod_generator: ^4.0.4
   riverpod_lint: 3.1.4
 
@@ -86,3 +87,10 @@ flutter:
   assets:
     - assets/
     - assets/images/
+
+patrol:
+  app_name: One Page Dev
+  android:
+    package_name: com.naipaka.onepage.dev
+  ios:
+    bundle_id: com.naipaka.onepage.dev
