@@ -41,6 +41,10 @@ target 'Runner' do
   target 'RunnerTests' do
     inherit! :search_paths
   end
+  # For Patrol: UI testing target for E2E tests.
+  target 'RunnerUITests' do
+    inherit! :complete
+  end
 end
 
 post_install do |installer|
