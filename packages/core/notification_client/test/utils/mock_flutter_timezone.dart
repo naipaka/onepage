@@ -11,7 +11,7 @@ void setupMockFlutterTimezone() {
         methodCallLog.add(methodCall);
         switch (methodCall.method) {
           case 'getLocalTimezone':
-            return 'UTC';
+            return 'Etc/UTC';
           default:
             return null;
         }

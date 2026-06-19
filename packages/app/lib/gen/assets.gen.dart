@@ -25,9 +25,7 @@ class $AssetsImagesGen {
   List<AssetGenImage> get values => [backup, restoredBackup];
 }
 
-class Assets {
-  const Assets._();
-
+abstract final class Assets {
   static const AssetGenImage adaptiveIcon = AssetGenImage(
     'assets/adaptive-icon.png',
   );

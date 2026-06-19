@@ -1,21 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - printing (1.0.0):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - printing (from `.symlinks/plugins/printing/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  printing:
-    :path: ".symlinks/plugins/printing/ios"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  printing: 54ff03f28fe9ba3aa93358afb80a8595a071dd07
 
 PODFILE CHECKSUM: f3a4224ef82635613da5f978ef476c8205bfb5c2
 
