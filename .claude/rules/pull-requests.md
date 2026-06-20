@@ -2,7 +2,9 @@
 
 ## Before Writing a PR
 
-- **Check at least 5 non-dependabot PRs** to match format, language, section structure, and conventions
+- **Read the full body of at least 5 non-dependabot PRs** to match format, language, section structure, and conventions
+  - Use `gh pr view <number> --json body --jq '.body'` for each PR individually — never batch with `head` or truncate output
+  - List PRs first, identify non-dependabot ones, then read each body one by one
 - **Language**: Always English (code, PR body, commit messages)
 - **Never link to external GitHub repositories** in PR bodies, comments, or commit messages
   - GitHub creates permanent "mentioned this pull request" cross-references that cannot be deleted

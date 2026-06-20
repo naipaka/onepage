@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
+import 'package:onepage/keys.dart';
 import 'package:photo_client/photo_client.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
@@ -62,9 +63,7 @@ class HomePage extends HookConsumerWidget {
 
       // Load data until the selected date is available.
       await Future.doWhile(() async {
-        final cachedDiaries = await ref.read(
-          cachedDiariesProvider.future,
-        );
+        final cachedDiaries = await ref.read(cachedDiariesProvider.future);
         final availableDates = cachedDiaries.dates;
         if (availableDates.any((d) => DateUtils.isSameDay(d, date))) {
           return false;
@@ -98,6 +97,7 @@ class HomePage extends HookConsumerWidget {
     }
 
     return Scaffold(
+      key: K.homePage,
       appBar: AppBar(
         title: ValueListenableBuilder(
           valueListenable: visibleDateState,
@@ -168,6 +168,7 @@ class HomePage extends HookConsumerWidget {
                   // the TextField's onTapOutside event will not fire.
                   return TextFieldTapRegion(
                     child: VerticalScrollCalendar(
+                      key: K.diaryCalendar,
                       controller: scrollCalendarController,
                       dates: dates,
                       loadMoreOlder: notifier.loadMoreOlder,
@@ -216,10 +217,7 @@ class HomePage extends HookConsumerWidget {
 /// This is used to identify the current diary entry from widgets
 /// that need it, such as [_ImageSelectionActionButton].
 class _DiaryContext extends InheritedWidget {
-  const _DiaryContext({
-    required this.date,
-    required super.child,
-  });
+  const _DiaryContext({required this.date, required super.child});
 
   /// The date of this diary entry.
   final DateTime date;
@@ -278,13 +276,7 @@ class _DiaryItem extends ConsumerWidget {
         Navigator.pop(context);
         await notifier.deleteImage(imageId: image.id);
       } on Object catch (e) {
-        unawaited(
-          tracker.recordError(
-            e,
-            StackTrace.current,
-            fatal: true,
-          ),
-        );
+        unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
       }
     }
 
@@ -301,31 +293,19 @@ class _DiaryItem extends ConsumerWidget {
               },
               onFocusChanged: (hasFocus) async {
                 if (hasFocus) {
-                  await scrollCalendarController.scrollToDate(
-                    date,
-                  );
+                  await scrollCalendarController.scrollToDate(date);
                 }
               },
               save: (content) async {
                 try {
                   if (entry == null) {
-                    await notifier.addDiary(
-                      date: date,
-                      content: content,
-                    );
+                    await notifier.addDiary(date: date, content: content);
                   } else {
-                    await notifier.updateDiary(
-                      id: entry.id,
-                      content: content,
-                    );
+                    await notifier.updateDiary(id: entry.id, content: content);
                   }
                 } on Object catch (e) {
                   unawaited(
-                    tracker.recordError(
-                      e,
-                      StackTrace.current,
-                      fatal: true,
-                    ),
+                    tracker.recordError(e, StackTrace.current, fatal: true),
                   );
                   if (!context.mounted) {
                     return;
@@ -446,9 +426,7 @@ class _Drawer extends StatelessWidget {
 }
 
 class _DiaryEntryDatePickerDialog extends ConsumerWidget {
-  const _DiaryEntryDatePickerDialog({
-    required this.initialDate,
-  });
+  const _DiaryEntryDatePickerDialog({required this.initialDate});
 
   final DateTime initialDate;
 
@@ -460,9 +438,7 @@ class _DiaryEntryDatePickerDialog extends ConsumerWidget {
     return showDialog<DateTime>(
       context: context,
       builder: (context) {
-        return _DiaryEntryDatePickerDialog(
-          initialDate: initialDate,
-        );
+        return _DiaryEntryDatePickerDialog(initialDate: initialDate);
       },
     );
   }
@@ -564,10 +540,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
 
     return Dialog(
       child: Container(
-        constraints: const BoxConstraints(
-          maxWidth: 600,
-          maxHeight: 700,
-        ),
+        constraints: const BoxConstraints(maxWidth: 600, maxHeight: 700),
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -583,11 +556,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
               isSearching: isSearching.value,
             ),
             const Gap(16),
-            Flexible(
-              child: _SearchResults(
-                searchState: searchState,
-              ),
-            ),
+            Flexible(child: _SearchResults(searchState: searchState)),
           ],
         ),
       ),
@@ -678,11 +647,7 @@ class _SearchBar extends HookWidget {
                   color: colorScheme.onSurface.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  Icons.clear,
-                  color: colorScheme.surface,
-                  size: 14,
-                ),
+                child: Icon(Icons.clear, color: colorScheme.surface, size: 14),
               ),
             ),
             const SizedBox(width: 8),
@@ -695,9 +660,7 @@ class _SearchBar extends HookWidget {
 }
 
 class _SearchResults extends ConsumerWidget {
-  const _SearchResults({
-    required this.searchState,
-  });
+  const _SearchResults({required this.searchState});
 
   final SearchResult searchState;
 
@@ -711,16 +674,12 @@ class _SearchResults extends ConsumerWidget {
           Icon(
             Icons.search,
             size: 64,
-            color: context.colorScheme.onSurfaceVariant.withValues(
-              alpha: 0.5,
-            ),
+            color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 16),
           BodyLargeText(
             context.t.search.placeholder,
-            color: context.colorScheme.onSurfaceVariant.withValues(
-              alpha: 0.7,
-            ),
+            color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
           ),
         ],
       );
@@ -822,10 +781,7 @@ class _SearchResultTile extends StatelessWidget {
                 color: colorScheme.onSurfaceVariant,
               ),
               const SizedBox(height: 12),
-              _HighlightedText(
-                text: diary.content,
-                searchTerm: searchTerm,
-              ),
+              _HighlightedText(text: diary.content, searchTerm: searchTerm),
             ],
           ),
         ),
@@ -835,10 +791,7 @@ class _SearchResultTile extends StatelessWidget {
 }
 
 class _HighlightedText extends StatelessWidget {
-  const _HighlightedText({
-    required this.text,
-    required this.searchTerm,
-  });
+  const _HighlightedText({required this.text, required this.searchTerm});
 
   final String text;
   final String searchTerm;
@@ -899,9 +852,7 @@ class _HighlightedText extends StatelessWidget {
       // Text before match.
       if (matchIndex > currentIndex) {
         spans.add(
-          TextSpan(
-            text: displayText.substring(currentIndex, matchIndex),
-          ),
+          TextSpan(text: displayText.substring(currentIndex, matchIndex)),
         );
       }
 
@@ -922,10 +873,7 @@ class _HighlightedText extends StatelessWidget {
       );
 
       currentIndex = matchIndex + lowerSearchTerm.length;
-      matchIndex = lowerDisplayText.indexOf(
-        lowerSearchTerm,
-        currentIndex,
-      );
+      matchIndex = lowerDisplayText.indexOf(lowerSearchTerm, currentIndex);
     }
 
     // Remaining text.
@@ -955,9 +903,7 @@ class _HighlightedText extends StatelessWidget {
 /// When an image is selected, it saves the photo ID to the currently focused
 /// diary entry.
 class _ImageSelectionActionButton extends ConsumerWidget {
-  const _ImageSelectionActionButton({
-    required this.scope,
-  });
+  const _ImageSelectionActionButton({required this.scope});
 
   /// The focus scope node to monitor for the currently focused diary entry.
   final FocusScopeNode scope;
@@ -1027,13 +973,7 @@ class _ImageSelectionActionButton extends ConsumerWidget {
               photoId: photoId,
             );
           } on Object catch (e) {
-            unawaited(
-              tracker.recordError(
-                e,
-                StackTrace.current,
-                fatal: true,
-              ),
-            );
+            unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
             if (!context.mounted) {
               return;
             }

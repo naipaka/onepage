@@ -10,13 +10,6 @@ part 'initialization_provider.g.dart';
 /// Providers that need to initialize asynchronously only once at startup.
 @Riverpod(keepAlive: true)
 Future<void> initialization(Ref ref) async {
-  ref.onDispose(() {
-    // Clean up
-    ref
-      ..invalidate(packageInfoInitializingProvider)
-      ..invalidate(configuratorInitializingProvider)
-      ..invalidate(notificationClientInitializingProvider);
-  });
   // Concurrent initialization
   await Future.wait([
     ref.watch(dbConnectionProvider).ensureDatabaseFileMigration(),

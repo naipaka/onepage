@@ -93,6 +93,10 @@ android {
         versionName = flutter.versionName
         multiDexEnabled = true // For Firebase.
         resValue("string", "app_name", dartDefines["appName"] ?: "")
+        // For Patrol: custom test runner that discovers and runs Dart tests via JUnit.
+        testInstrumentationRunner = "pl.leancode.patrol.PatrolJUnitRunner"
+        // For Patrol: clear app data between tests to ensure test isolation.
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
         // For sqlite3.
         // https://github.com/simolus3/sqlite3.dart/tree/main/sqlite3_flutter_libs#included-platforms
         ndk {
@@ -115,6 +119,11 @@ android {
         }
     }
 
+    // For Patrol: run each test in its own process for better isolation.
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+    }
+
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
@@ -129,6 +138,9 @@ flutter {
 dependencies {
     // For Flutter Local Notifications.
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
+
+    // For Patrol: provides the Android Test Orchestrator.
+    androidTestUtil("androidx.test:orchestrator:1.5.1")
     
     // Import the Firebase BoM.
     // When using BoM, it is not necessary to specify the version in each Firebase library dependency.
