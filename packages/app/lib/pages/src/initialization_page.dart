@@ -38,7 +38,13 @@ class InitializationPage extends ConsumerWidget {
       ),
       AsyncError(:final error) => _ErrorPage(
         error,
-        onRetry: () => ref.invalidate(initializationProvider),
+        onRetry: () {
+          ref
+            ..invalidate(packageInfoInitializingProvider)
+            ..invalidate(configuratorInitializingProvider)
+            ..invalidate(notificationClientInitializingProvider)
+            ..invalidate(initializationProvider);
+        },
       ),
       _ => const _LoadingPage(),
     };

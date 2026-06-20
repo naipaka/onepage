@@ -165,3 +165,6 @@ coverage/
 
 # Golden test failure artifacts
 test/golden/**/failures/
+
+# Patrol generated
+patrol_test/test_bundle.dart
