@@ -46,4 +46,4 @@ final class InitializationProvider
   }
 }
 
-String _$initializationHash() => r'd1c9475238fb5c85714023db6ac60c5ccdc71c15';
+String _$initializationHash() => r'37ee951defbfaf8fad96ba929915aa287196598f';
