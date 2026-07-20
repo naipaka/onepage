@@ -47,18 +47,18 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'NPK Studio'
 	String get organization => 'NPK Studio';
 
-	late final TranslationsUpdateRequestEn updateRequest = TranslationsUpdateRequestEn._(_root);
-	late final TranslationsHomeEn home = TranslationsHomeEn._(_root);
-	late final TranslationsBackupEn backup = TranslationsBackupEn._(_root);
-	late final TranslationsSettingsEn settings = TranslationsSettingsEn._(_root);
-	late final TranslationsSearchEn search = TranslationsSearchEn._(_root);
-	late final TranslationsNotificationEn notification = TranslationsNotificationEn._(_root);
-	late final TranslationsExportEn export = TranslationsExportEn._(_root);
+	late final Translations$updateRequest$en updateRequest = Translations$updateRequest$en._(_root);
+	late final Translations$home$en home = Translations$home$en._(_root);
+	late final Translations$backup$en backup = Translations$backup$en._(_root);
+	late final Translations$settings$en settings = Translations$settings$en._(_root);
+	late final Translations$search$en search = Translations$search$en._(_root);
+	late final Translations$notification$en notification = Translations$notification$en._(_root);
+	late final Translations$export$en export = Translations$export$en._(_root);
 }
 
 // Path: updateRequest
-class TranslationsUpdateRequestEn {
-	TranslationsUpdateRequestEn._(this._root);
+class Translations$updateRequest$en {
+	Translations$updateRequest$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -67,12 +67,12 @@ class TranslationsUpdateRequestEn {
 	/// en: 'Update Request'
 	String get title => 'Update Request';
 
-	late final TranslationsUpdateRequestButtonEn button = TranslationsUpdateRequestButtonEn._(_root);
+	late final Translations$updateRequest$button$en button = Translations$updateRequest$button$en._(_root);
 }
 
 // Path: home
-class TranslationsHomeEn {
-	TranslationsHomeEn._(this._root);
+class Translations$home$en {
+	Translations$home$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -108,13 +108,13 @@ class TranslationsHomeEn {
 	/// en: 'OK'
 	String get datePickerConfirm => 'OK';
 
-	late final TranslationsHomePhotoSelectorEn photoSelector = TranslationsHomePhotoSelectorEn._(_root);
-	late final TranslationsHomeDeleteImageEn deleteImage = TranslationsHomeDeleteImageEn._(_root);
+	late final Translations$home$photoSelector$en photoSelector = Translations$home$photoSelector$en._(_root);
+	late final Translations$home$deleteImage$en deleteImage = Translations$home$deleteImage$en._(_root);
 }
 
 // Path: backup
-class TranslationsBackupEn {
-	TranslationsBackupEn._(this._root);
+class Translations$backup$en {
+	Translations$backup$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -144,12 +144,12 @@ class TranslationsBackupEn {
 	/// en: 'Restoring your backup was successful'
 	String get restoreSuccess => 'Restoring your backup was successful';
 
-	late final TranslationsBackupActionsEn actions = TranslationsBackupActionsEn._(_root);
+	late final Translations$backup$actions$en actions = Translations$backup$actions$en._(_root);
 }
 
 // Path: settings
-class TranslationsSettingsEn {
-	TranslationsSettingsEn._(this._root);
+class Translations$settings$en {
+	Translations$settings$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -181,8 +181,8 @@ class TranslationsSettingsEn {
 }
 
 // Path: search
-class TranslationsSearchEn {
-	TranslationsSearchEn._(this._root);
+class Translations$search$en {
+	Translations$search$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -199,8 +199,8 @@ class TranslationsSearchEn {
 }
 
 // Path: notification
-class TranslationsNotificationEn {
-	TranslationsNotificationEn._(this._root);
+class Translations$notification$en {
+	Translations$notification$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -221,7 +221,7 @@ class TranslationsNotificationEn {
 	/// en: 'Daily reminders to write in your diary'
 	String get channelDescription => 'Daily reminders to write in your diary';
 
-	late final TranslationsNotificationPermissionEn permission = TranslationsNotificationPermissionEn._(_root);
+	late final Translations$notification$permission$en permission = Translations$notification$permission$en._(_root);
 
 	/// en: 'Have you written your diary today?'
 	String get notificationTitle => 'Have you written your diary today?';
@@ -231,8 +231,8 @@ class TranslationsNotificationEn {
 }
 
 // Path: export
-class TranslationsExportEn {
-	TranslationsExportEn._(this._root);
+class Translations$export$en {
+	Translations$export$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -271,12 +271,12 @@ class TranslationsExportEn {
 	/// en: 'Coming in future updates'
 	String get comingSoon => 'Coming in future updates';
 
-	late final TranslationsExportActionsEn actions = TranslationsExportActionsEn._(_root);
+	late final Translations$export$actions$en actions = Translations$export$actions$en._(_root);
 }
 
 // Path: updateRequest.button
-class TranslationsUpdateRequestButtonEn {
-	TranslationsUpdateRequestButtonEn._(this._root);
+class Translations$updateRequest$button$en {
+	Translations$updateRequest$button$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -287,8 +287,8 @@ class TranslationsUpdateRequestButtonEn {
 }
 
 // Path: home.photoSelector
-class TranslationsHomePhotoSelectorEn {
-	TranslationsHomePhotoSelectorEn._(this._root);
+class Translations$home$photoSelector$en {
+	Translations$home$photoSelector$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -300,14 +300,14 @@ class TranslationsHomePhotoSelectorEn {
 	/// en: 'No photos available'
 	String get noPhotos => 'No photos available';
 
-	late final TranslationsHomePhotoSelectorPermissionEn permission = TranslationsHomePhotoSelectorPermissionEn._(_root);
-	late final TranslationsHomePhotoSelectorNoticeEn notice = TranslationsHomePhotoSelectorNoticeEn._(_root);
-	late final TranslationsHomePhotoSelectorErrorEn error = TranslationsHomePhotoSelectorErrorEn._(_root);
+	late final Translations$home$photoSelector$permission$en permission = Translations$home$photoSelector$permission$en._(_root);
+	late final Translations$home$photoSelector$notice$en notice = Translations$home$photoSelector$notice$en._(_root);
+	late final Translations$home$photoSelector$error$en error = Translations$home$photoSelector$error$en._(_root);
 }
 
 // Path: home.deleteImage
-class TranslationsHomeDeleteImageEn {
-	TranslationsHomeDeleteImageEn._(this._root);
+class Translations$home$deleteImage$en {
+	Translations$home$deleteImage$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -321,8 +321,8 @@ class TranslationsHomeDeleteImageEn {
 }
 
 // Path: backup.actions
-class TranslationsBackupActionsEn {
-	TranslationsBackupActionsEn._(this._root);
+class Translations$backup$actions$en {
+	Translations$backup$actions$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -339,8 +339,8 @@ class TranslationsBackupActionsEn {
 }
 
 // Path: notification.permission
-class TranslationsNotificationPermissionEn {
-	TranslationsNotificationPermissionEn._(this._root);
+class Translations$notification$permission$en {
+	Translations$notification$permission$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -357,8 +357,8 @@ class TranslationsNotificationPermissionEn {
 }
 
 // Path: export.actions
-class TranslationsExportActionsEn {
-	TranslationsExportActionsEn._(this._root);
+class Translations$export$actions$en {
+	Translations$export$actions$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -372,8 +372,8 @@ class TranslationsExportActionsEn {
 }
 
 // Path: home.photoSelector.permission
-class TranslationsHomePhotoSelectorPermissionEn {
-	TranslationsHomePhotoSelectorPermissionEn._(this._root);
+class Translations$home$photoSelector$permission$en {
+	Translations$home$photoSelector$permission$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -390,8 +390,8 @@ class TranslationsHomePhotoSelectorPermissionEn {
 }
 
 // Path: home.photoSelector.notice
-class TranslationsHomePhotoSelectorNoticeEn {
-	TranslationsHomePhotoSelectorNoticeEn._(this._root);
+class Translations$home$photoSelector$notice$en {
+	Translations$home$photoSelector$notice$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 
@@ -408,8 +408,8 @@ class TranslationsHomePhotoSelectorNoticeEn {
 }
 
 // Path: home.photoSelector.error
-class TranslationsHomePhotoSelectorErrorEn {
-	TranslationsHomePhotoSelectorErrorEn._(this._root);
+class Translations$home$photoSelector$error$en {
+	Translations$home$photoSelector$error$en._(this._root);
 
 	final Translations _root; // ignore: unused_field
 

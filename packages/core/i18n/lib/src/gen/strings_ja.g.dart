@@ -39,29 +39,29 @@ class TranslationsJa with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override String get title => 'One Page';
 	@override String get organization => 'NPK Studio';
-	@override late final _TranslationsUpdateRequestJa updateRequest = _TranslationsUpdateRequestJa._(_root);
-	@override late final _TranslationsHomeJa home = _TranslationsHomeJa._(_root);
-	@override late final _TranslationsBackupJa backup = _TranslationsBackupJa._(_root);
-	@override late final _TranslationsSettingsJa settings = _TranslationsSettingsJa._(_root);
-	@override late final _TranslationsSearchJa search = _TranslationsSearchJa._(_root);
-	@override late final _TranslationsNotificationJa notification = _TranslationsNotificationJa._(_root);
-	@override late final _TranslationsExportJa export = _TranslationsExportJa._(_root);
+	@override late final _Translations$updateRequest$ja updateRequest = _Translations$updateRequest$ja._(_root);
+	@override late final _Translations$home$ja home = _Translations$home$ja._(_root);
+	@override late final _Translations$backup$ja backup = _Translations$backup$ja._(_root);
+	@override late final _Translations$settings$ja settings = _Translations$settings$ja._(_root);
+	@override late final _Translations$search$ja search = _Translations$search$ja._(_root);
+	@override late final _Translations$notification$ja notification = _Translations$notification$ja._(_root);
+	@override late final _Translations$export$ja export = _Translations$export$ja._(_root);
 }
 
 // Path: updateRequest
-class _TranslationsUpdateRequestJa implements TranslationsUpdateRequestEn {
-	_TranslationsUpdateRequestJa._(this._root);
+class _Translations$updateRequest$ja implements Translations$updateRequest$en {
+	_Translations$updateRequest$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
 	@override String get title => 'アップデートのお願い';
-	@override late final _TranslationsUpdateRequestButtonJa button = _TranslationsUpdateRequestButtonJa._(_root);
+	@override late final _Translations$updateRequest$button$ja button = _Translations$updateRequest$button$ja._(_root);
 }
 
 // Path: home
-class _TranslationsHomeJa implements TranslationsHomeEn {
-	_TranslationsHomeJa._(this._root);
+class _Translations$home$ja implements Translations$home$en {
+	_Translations$home$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -76,13 +76,13 @@ class _TranslationsHomeJa implements TranslationsHomeEn {
 	@override String get errorSavingDiarySolution => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください';
 	@override String get datePickerCancel => 'キャンセル';
 	@override String get datePickerConfirm => '決定';
-	@override late final _TranslationsHomePhotoSelectorJa photoSelector = _TranslationsHomePhotoSelectorJa._(_root);
-	@override late final _TranslationsHomeDeleteImageJa deleteImage = _TranslationsHomeDeleteImageJa._(_root);
+	@override late final _Translations$home$photoSelector$ja photoSelector = _Translations$home$photoSelector$ja._(_root);
+	@override late final _Translations$home$deleteImage$ja deleteImage = _Translations$home$deleteImage$ja._(_root);
 }
 
 // Path: backup
-class _TranslationsBackupJa implements TranslationsBackupEn {
-	_TranslationsBackupJa._(this._root);
+class _Translations$backup$ja implements Translations$backup$en {
+	_Translations$backup$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -95,12 +95,12 @@ class _TranslationsBackupJa implements TranslationsBackupEn {
 	@override String get failedMessage => 'バックアップの作成に失敗しました';
 	@override String get restoreFailedMessage => 'バックアップの復元に失敗しました';
 	@override String get restoreSuccess => '復元が完了しました';
-	@override late final _TranslationsBackupActionsJa actions = _TranslationsBackupActionsJa._(_root);
+	@override late final _Translations$backup$actions$ja actions = _Translations$backup$actions$ja._(_root);
 }
 
 // Path: settings
-class _TranslationsSettingsJa implements TranslationsSettingsEn {
-	_TranslationsSettingsJa._(this._root);
+class _Translations$settings$ja implements Translations$settings$en {
+	_Translations$settings$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -116,8 +116,8 @@ class _TranslationsSettingsJa implements TranslationsSettingsEn {
 }
 
 // Path: search
-class _TranslationsSearchJa implements TranslationsSearchEn {
-	_TranslationsSearchJa._(this._root);
+class _Translations$search$ja implements Translations$search$en {
+	_Translations$search$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -128,8 +128,8 @@ class _TranslationsSearchJa implements TranslationsSearchEn {
 }
 
 // Path: notification
-class _TranslationsNotificationJa implements TranslationsNotificationEn {
-	_TranslationsNotificationJa._(this._root);
+class _Translations$notification$ja implements Translations$notification$en {
+	_Translations$notification$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -139,14 +139,14 @@ class _TranslationsNotificationJa implements TranslationsNotificationEn {
 	@override String get maxTimesReached => '通知時間は最大3つまでです';
 	@override String get channelName => '日記リマインダー';
 	@override String get channelDescription => '日記を書くための日々のリマインダー';
-	@override late final _TranslationsNotificationPermissionJa permission = _TranslationsNotificationPermissionJa._(_root);
+	@override late final _Translations$notification$permission$ja permission = _Translations$notification$permission$ja._(_root);
 	@override String get notificationTitle => '今日の日記は書きましたか？';
 	@override String get notificationBody => '1日の出来事や気持ちを書き留めておきましょう';
 }
 
 // Path: export
-class _TranslationsExportJa implements TranslationsExportEn {
-	_TranslationsExportJa._(this._root);
+class _Translations$export$ja implements Translations$export$en {
+	_Translations$export$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -162,12 +162,12 @@ class _TranslationsExportJa implements TranslationsExportEn {
 	@override String get year => '年';
 	@override String get month => '月';
 	@override String get comingSoon => '今後追加予定です';
-	@override late final _TranslationsExportActionsJa actions = _TranslationsExportActionsJa._(_root);
+	@override late final _Translations$export$actions$ja actions = _Translations$export$actions$ja._(_root);
 }
 
 // Path: updateRequest.button
-class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestButtonEn {
-	_TranslationsUpdateRequestButtonJa._(this._root);
+class _Translations$updateRequest$button$ja implements Translations$updateRequest$button$en {
+	_Translations$updateRequest$button$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -176,22 +176,22 @@ class _TranslationsUpdateRequestButtonJa implements TranslationsUpdateRequestBut
 }
 
 // Path: home.photoSelector
-class _TranslationsHomePhotoSelectorJa implements TranslationsHomePhotoSelectorEn {
-	_TranslationsHomePhotoSelectorJa._(this._root);
+class _Translations$home$photoSelector$ja implements Translations$home$photoSelector$en {
+	_Translations$home$photoSelector$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
 	@override String get confirm => '決定';
 	@override String get noPhotos => '写真がありません';
-	@override late final _TranslationsHomePhotoSelectorPermissionJa permission = _TranslationsHomePhotoSelectorPermissionJa._(_root);
-	@override late final _TranslationsHomePhotoSelectorNoticeJa notice = _TranslationsHomePhotoSelectorNoticeJa._(_root);
-	@override late final _TranslationsHomePhotoSelectorErrorJa error = _TranslationsHomePhotoSelectorErrorJa._(_root);
+	@override late final _Translations$home$photoSelector$permission$ja permission = _Translations$home$photoSelector$permission$ja._(_root);
+	@override late final _Translations$home$photoSelector$notice$ja notice = _Translations$home$photoSelector$notice$ja._(_root);
+	@override late final _Translations$home$photoSelector$error$ja error = _Translations$home$photoSelector$error$ja._(_root);
 }
 
 // Path: home.deleteImage
-class _TranslationsHomeDeleteImageJa implements TranslationsHomeDeleteImageEn {
-	_TranslationsHomeDeleteImageJa._(this._root);
+class _Translations$home$deleteImage$ja implements Translations$home$deleteImage$en {
+	_Translations$home$deleteImage$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -201,8 +201,8 @@ class _TranslationsHomeDeleteImageJa implements TranslationsHomeDeleteImageEn {
 }
 
 // Path: backup.actions
-class _TranslationsBackupActionsJa implements TranslationsBackupActionsEn {
-	_TranslationsBackupActionsJa._(this._root);
+class _Translations$backup$actions$ja implements Translations$backup$actions$en {
+	_Translations$backup$actions$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -213,8 +213,8 @@ class _TranslationsBackupActionsJa implements TranslationsBackupActionsEn {
 }
 
 // Path: notification.permission
-class _TranslationsNotificationPermissionJa implements TranslationsNotificationPermissionEn {
-	_TranslationsNotificationPermissionJa._(this._root);
+class _Translations$notification$permission$ja implements Translations$notification$permission$en {
+	_Translations$notification$permission$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -225,8 +225,8 @@ class _TranslationsNotificationPermissionJa implements TranslationsNotificationP
 }
 
 // Path: export.actions
-class _TranslationsExportActionsJa implements TranslationsExportActionsEn {
-	_TranslationsExportActionsJa._(this._root);
+class _Translations$export$actions$ja implements Translations$export$actions$en {
+	_Translations$export$actions$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -236,8 +236,8 @@ class _TranslationsExportActionsJa implements TranslationsExportActionsEn {
 }
 
 // Path: home.photoSelector.permission
-class _TranslationsHomePhotoSelectorPermissionJa implements TranslationsHomePhotoSelectorPermissionEn {
-	_TranslationsHomePhotoSelectorPermissionJa._(this._root);
+class _Translations$home$photoSelector$permission$ja implements Translations$home$photoSelector$permission$en {
+	_Translations$home$photoSelector$permission$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -248,8 +248,8 @@ class _TranslationsHomePhotoSelectorPermissionJa implements TranslationsHomePhot
 }
 
 // Path: home.photoSelector.notice
-class _TranslationsHomePhotoSelectorNoticeJa implements TranslationsHomePhotoSelectorNoticeEn {
-	_TranslationsHomePhotoSelectorNoticeJa._(this._root);
+class _Translations$home$photoSelector$notice$ja implements Translations$home$photoSelector$notice$en {
+	_Translations$home$photoSelector$notice$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
@@ -260,8 +260,8 @@ class _TranslationsHomePhotoSelectorNoticeJa implements TranslationsHomePhotoSel
 }
 
 // Path: home.photoSelector.error
-class _TranslationsHomePhotoSelectorErrorJa implements TranslationsHomePhotoSelectorErrorEn {
-	_TranslationsHomePhotoSelectorErrorJa._(this._root);
+class _Translations$home$photoSelector$error$ja implements Translations$home$photoSelector$error$en {
+	_Translations$home$photoSelector$error$ja._(this._root);
 
 	final TranslationsJa _root; // ignore: unused_field
 
