@@ -28,7 +28,7 @@ dependencies:
     sdk: flutter
   flutter_hooks: ^0.21.3+1
   gap: ^3.0.1
-  go_router: ^17.2.3
+  go_router: ^17.3.0
   haptics:
     path: ../features/haptics/
   hooks_riverpod: ^3.0.3
@@ -74,7 +74,7 @@ dev_dependencies:
   flutter_native_splash: ^2.4.7
   flutter_test:
     sdk: flutter
-  go_router_builder: ^4.3.0
+  go_router_builder: ^4.3.1
   mockito: ^5.6.4
   package_info_plus: ^9.0.1
   patrol: ^4.6.1
