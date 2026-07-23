@@ -12,7 +12,7 @@ dependencies:
   app_settings: ^7.0.0
   flutter:
     sdk: flutter
-  photo_manager: ^3.8.3
+  photo_manager: ^3.10.0
   photo_manager_image_provider: ^2.2.0
   visibility_detector: ^0.4.0+2
 
