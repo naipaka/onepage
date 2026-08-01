@@ -67,9 +67,9 @@
       "Read(**/*.keystore)",
       "Read(**/*service-account*.json)",
       "Read(~/.ssh/**)",
-      "Write(**/.env)",
-      "Write(**/.env.*)",
-      "Write(**/dart_defines/*.env)"
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(**/dart_defines/*.env)"
     ]
   },
   "hooks": {
