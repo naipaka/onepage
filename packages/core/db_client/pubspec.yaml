@@ -10,12 +10,19 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.2
-  drift: ^2.34.0
-  drift_flutter: ^0.3.0
+  # Held at 2.34.0: 2.34.1 reworked the drift3_preview `GeneratedDatabase` API
+  # (`allSchemaEntities` -> `schema`), which breaks the schema verifier in
+  # drift_dev 2.34.0. Any newer drift_dev needs analyzer 13, which this
+  # workspace cannot reach on Flutter 3.44.2: flutter_test from the SDK pins
+  # test_api 0.7.11, and every `test` release compatible with it caps analyzer
+  # below 13. Unpinning also requires freezed 4.x (currently prerelease only).
+  # Revisit after a Flutter SDK upgrade.
+  drift: 2.34.0
+  drift_flutter: ^0.3.1
   flutter:
     sdk: flutter
   path: ^1.9.1
-  path_provider: ^2.1.5
+  path_provider: ^2.1.6
   sqlite3: ^3.3.3
 
 dev_dependencies:
@@ -23,7 +30,9 @@ dev_dependencies:
   # Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
   # altive_lints: ^2.3.0
   build_runner: ^2.15.1
-  drift_dev: ^2.34.0
+  # Held at 2.34.0: later releases require analyzer 13, which the Flutter SDK
+  # blocks (see the drift note above).
+  drift_dev: 2.34.0
   flutter_test:
     sdk: flutter
   mockito: ^5.6.4
