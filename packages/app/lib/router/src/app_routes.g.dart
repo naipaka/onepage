@@ -12,25 +12,41 @@ List<RouteBase> get $appRoutes => [$homeRouteData];
 
 RouteBase get $homeRouteData => GoRouteData.$route(
   path: '/',
+  hasOverriddenOnExit: false,
   factory: $HomeRouteData._fromState,
   routes: [
     GoRouteData.$route(
       path: 'notifications',
+      hasOverriddenOnExit: false,
       factory: $NotificationsRouteData._fromState,
     ),
-    GoRouteData.$route(path: 'backup', factory: $BackupRouteData._fromState),
-    GoRouteData.$route(path: 'export', factory: $ExportRouteData._fromState),
+    GoRouteData.$route(
+      path: 'backup',
+      hasOverriddenOnExit: false,
+      factory: $BackupRouteData._fromState,
+    ),
+    GoRouteData.$route(
+      path: 'export',
+      hasOverriddenOnExit: false,
+      factory: $ExportRouteData._fromState,
+    ),
     GoRouteData.$route(
       path: 'settings',
+      hasOverriddenOnExit: false,
       factory: $SettingsRouteData._fromState,
       routes: [
         GoRouteData.$route(
           path: 'haptic-feedback',
+          hasOverriddenOnExit: false,
           factory: $HapticFeedbackRouteData._fromState,
         ),
       ],
     ),
-    GoRouteData.$route(path: 'license', factory: $LicenseRouteData._fromState),
+    GoRouteData.$route(
+      path: 'license',
+      hasOverriddenOnExit: false,
+      factory: $LicenseRouteData._fromState,
+    ),
   ],
 );
 
