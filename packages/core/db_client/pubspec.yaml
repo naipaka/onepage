@@ -32,7 +32,7 @@ dev_dependencies:
   build_runner: ^2.15.1
   # Held at 2.34.0: later releases require analyzer 13, which the Flutter SDK
   # blocks (see the drift note above).
-  drift_dev: 2.34.0
+  drift_dev: 2.34.5
   flutter_test:
     sdk: flutter
-  mockito: ^5.6.4
+  mockito: ^5.8.1

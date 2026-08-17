@@ -12,7 +12,7 @@ dependencies:
   firebase_crashlytics: ^5.2.6
   flutter:
     sdk: flutter
-  meta: ^1.17.0
+  meta: ^1.19.0
 
 dev_dependencies:
   # Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
@@ -24,4 +24,4 @@ dev_dependencies:
   firebase_core_platform_interface: ^8.0.0
   flutter_test:
     sdk: flutter
-  mockito: ^5.6.4
+  mockito: ^5.8.1
