@@ -41,14 +41,14 @@
     ],
     "ask": [
       "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
       "Bash(git stash:*)",
       "Bash(rm:*)"
     ],
     "deny": [
       "Bash(sudo:*)",
       "Bash(rm -rf:*)",
-      "Bash(git push:*)",
-      "Bash(git commit:*)",
       "Bash(git reset:*)",
       "Bash(git rebase:*)",
       "Bash(git clean:*)",
