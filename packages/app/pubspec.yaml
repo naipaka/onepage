@@ -69,7 +69,7 @@ dev_dependencies:
   # Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
   # altive_lints: ^2.3.0
   build_runner: ^2.15.1
-  flutter_gen_runner: ^5.12.0
+  flutter_gen_runner: ^5.15.0
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.7
   flutter_test:
