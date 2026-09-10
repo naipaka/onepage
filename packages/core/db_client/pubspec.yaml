@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: "none"
 
 environment:
-  sdk: ^3.12.2
+  sdk: ^3.13.2
 
 resolution: workspace
 
@@ -12,11 +12,12 @@ dependencies:
   clock: ^1.1.2
   # Held at 2.34.0: 2.34.1 reworked the drift3_preview `GeneratedDatabase` API
   # (`allSchemaEntities` -> `schema`), which breaks the schema verifier in
-  # drift_dev 2.34.0. Any newer drift_dev needs analyzer 13, which this
-  # workspace cannot reach on Flutter 3.44.2: flutter_test from the SDK pins
-  # test_api 0.7.11, and every `test` release compatible with it caps analyzer
-  # below 13. Unpinning also requires freezed 4.x (currently prerelease only).
-  # Revisit after a Flutter SDK upgrade.
+  # drift_dev 2.34.0, so drift and drift_dev have to move together.
+  #
+  # The analyzer 13 ceiling that also blocked this is gone as of Flutter 3.47.2
+  # (flutter_test now allows meta ^1.18.3 and test_api 0.7.12), so the only
+  # remaining work is migrating the schema verifier to the new API. Unpinning is
+  # left to the next dependabot run.
   drift: 2.34.0
   drift_flutter: ^0.3.1
   flutter:
