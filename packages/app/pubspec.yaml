@@ -13,7 +13,7 @@ dependencies:
   app_settings: ^7.0.0
   backup:
     path: ../features/backup/
-  clock: ^1.1.2
+  clock: ^1.1.3
   collection: ^1.19.1
   configurator:
     path: ../core/configurator/
