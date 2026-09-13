@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  clock: ^1.1.2
+  clock: ^1.1.3
   # Held at 2.34.0: 2.34.1 reworked the drift3_preview `GeneratedDatabase` API
   # (`allSchemaEntities` -> `schema`). drift_dev has since moved on to 2.34.5
   # and its schema verifier still passes against 2.34.0, so only drift itself

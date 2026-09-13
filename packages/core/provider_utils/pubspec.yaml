@@ -14,7 +14,7 @@ dependencies:
   flutter_riverpod: ^3.4.3
   package_info_plus: ^9.0.1
   riverpod_annotation: ^4.0.7
-  simple_logger: ^1.10.0
+  simple_logger: ^1.10.1
   utils:
     path: ../utils
 

@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  clock: ^1.1.2
+  clock: ^1.1.3
   db_client:
     path: ../../core/db_client/
   flutter:
