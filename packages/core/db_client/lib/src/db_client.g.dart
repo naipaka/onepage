@@ -780,22 +780,20 @@ abstract class _$DbClient extends GeneratedDatabase {
   ]);
 }
 
-typedef $$DiariesTableCreateCompanionBuilder =
-    DiariesCompanion Function({
-      Value<int> id,
-      required String content,
-      required DateTime date,
-      Value<DateTime> createdAt,
-      Value<DateTime> updatedAt,
-    });
-typedef $$DiariesTableUpdateCompanionBuilder =
-    DiariesCompanion Function({
-      Value<int> id,
-      Value<String> content,
-      Value<DateTime> date,
-      Value<DateTime> createdAt,
-      Value<DateTime> updatedAt,
-    });
+typedef $$DiariesTableCreateCompanionBuilder = DiariesCompanion Function({
+  Value<int> id,
+  required String content,
+  required DateTime date,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+});
+typedef $$DiariesTableUpdateCompanionBuilder = DiariesCompanion Function({
+  Value<int> id,
+  Value<String> content,
+  Value<DateTime> date,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+});
 
 final class $$DiariesTableReferences
     extends BaseReferences<_$DbClient, $DiariesTable, DiaryEntry> {
@@ -1346,17 +1344,15 @@ class $$DiaryImagesTableTableManager
                     >
                   >(state) {
                     if (diaryId) {
-                      state =
-                          state.withJoin(
-                                currentTable: table,
-                                currentColumn: table.diaryId,
-                                referencedTable: $$DiaryImagesTableReferences
-                                    ._diaryIdTable(db),
-                                referencedColumn: $$DiaryImagesTableReferences
-                                    ._diaryIdTable(db)
-                                    .id,
-                              )
-                              as T;
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.diaryId,
+                        referencedTable: $$DiaryImagesTableReferences
+                            ._diaryIdTable(db),
+                        referencedColumn: $$DiaryImagesTableReferences
+                            ._diaryIdTable(db)
+                            .id,
+                      ) as T;
                     }
 
                     return state;

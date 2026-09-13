@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'update_request.dart';
@@ -9,6 +9,7 @@ part of 'update_request.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -29,23 +30,29 @@ $UpdateRequestCopyWith<UpdateRequest> get copyWith => _$UpdateRequestCopyWithImp
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  final _this = this as UpdateRequest;
   properties
     ..add(DiagnosticsProperty('type', 'UpdateRequest'))
-    ..add(DiagnosticsProperty('version', version))..add(DiagnosticsProperty('message', message));
+    ..add(DiagnosticsProperty('version', _this.version))..add(DiagnosticsProperty('message', _this.message));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateRequest&&(identical(other.version, version) || other.version == version)&&(identical(other.message, message) || other.message == message));
+  final _this = this as UpdateRequest;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UpdateRequest&&(identical(other.version, _this.version) || other.version == _this.version)&&(identical(other.message, _this.message) || other.message == _this.message));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,version,message);
+int get hashCode {
+  final _this = this as UpdateRequest;
+  return Object.hash(runtimeType,_this.version,_this.message);
+}
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UpdateRequest(version: $version, message: $message)';
+  final _this = this as UpdateRequest;
+  return 'UpdateRequest(version: ${_this.version}, message: ${_this.message})';
 }
 
 
@@ -74,7 +81,7 @@ class _$UpdateRequestCopyWithImpl<$Res>
 /// Create a copy of UpdateRequest
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? version = null,Object? message = null,}) {
-  return _then(_self.copyWith(
+  return _then(UpdateRequest(
 version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
 as Version,message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
 as String,
@@ -238,23 +245,25 @@ Map<String, dynamic> toJson() {
 }
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
+    properties
     ..add(DiagnosticsProperty('type', 'UpdateRequest'))
     ..add(DiagnosticsProperty('version', version))..add(DiagnosticsProperty('message', message));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateRequest&&(identical(other.version, version) || other.version == version)&&(identical(other.message, message) || other.message == message));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateRequest&&(identical(other.version, version) || other.version == version)&&(identical(other.message, message) || other.message == message));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,version,message);
+int get hashCode {
+    return Object.hash(runtimeType,version,message);
+}
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'UpdateRequest(version: $version, message: $message)';
+    return 'UpdateRequest(version: $version, message: $message)';
 }
 
 
