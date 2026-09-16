@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  clock: ^1.1.2
+  clock: ^1.1.3
   flutter:
     sdk: flutter
   in_app_review: ^2.0.12

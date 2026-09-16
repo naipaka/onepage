@@ -9,11 +9,11 @@ environment:
 resolution: workspace
 
 dependencies:
-  adaptive_dialog: ^2.8.0
+  adaptive_dialog: ^2.8.1
   app_settings: ^7.0.0
   backup:
     path: ../features/backup/
-  clock: ^1.1.2
+  clock: ^1.1.3
   collection: ^1.19.1
   configurator:
     path: ../core/configurator/
@@ -23,7 +23,7 @@ dependencies:
     path: ../features/diary/
   exporter:
     path: ../features/exporter/
-  firebase_core: ^4.10.0
+  firebase_core: ^4.14.0
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.3+1
