@@ -175,7 +175,8 @@ class DbClient extends _$DbClient {
       );
 
     final result = await query.getSingle();
-    return result.read(countExpr) ?? 0;
+    final count = result.read(countExpr) ?? 0;
+    return count;
   }
 
   /// Adds a diary image entry to the database.

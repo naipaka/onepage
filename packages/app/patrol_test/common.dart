@@ -11,7 +11,8 @@ export 'package:patrol/patrol.dart';
 /// Starts the app with the same initialization path as production.
 ///
 /// Patrol tests must not call `runApp`. The root widget is created by
-/// [AppInitializer.createApp] and mounted with [PatrolIntegrationTester.pumpWidget].
+/// [AppInitializer.createApp] and mounted with
+/// [PatrolIntegrationTester.pumpWidget].
 ///
 /// [K.homePage] confirms that app initialization completed. [K.diaryCalendar]
 /// confirms that diary data was loaded and the main content was rendered.

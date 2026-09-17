@@ -24,7 +24,7 @@ class CsvExporter extends Exporter {
   @override
   Future<File> export({
     required List<ExportDiary> entries,
-  }) async {
+  }) {
     final title = _generateTitle(entries);
     final fileName = _generateFileName(title);
     final content = _generateCsvContent(entries);
@@ -37,7 +37,7 @@ class CsvExporter extends Exporter {
     required List<ExportDiary> entries,
     required int year,
     required int month,
-  }) async {
+  }) {
     final filteredEntries = entries.where((entry) {
       return entry.date.year == year && entry.date.month == month;
     }).toList();
@@ -54,7 +54,7 @@ class CsvExporter extends Exporter {
     required List<ExportDiary> entries,
     required DateTime startDate,
     required DateTime endDate,
-  }) async {
+  }) {
     final filteredEntries = entries.where((entry) {
       final entryDate = entry.date;
       return entryDate.isAfter(startDate.subtract(const Duration(days: 1))) &&

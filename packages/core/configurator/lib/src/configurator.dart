@@ -30,14 +30,14 @@ class Configurator {
   ///
   /// Returns true if the fetch was successful and new values were activated,
   /// false otherwise.
-  Future<bool> fetchAndActivate() async {
+  Future<bool> fetchAndActivate() {
     return _rc.fetchAndActivate();
   }
 
   /// Activates the most recently fetched configuration values.
   ///
   /// Returns true if values were activated, false otherwise.
-  Future<bool> activate() async {
+  Future<bool> activate() {
     return _rc.activate();
   }
 

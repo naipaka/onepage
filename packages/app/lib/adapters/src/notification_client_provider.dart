@@ -40,7 +40,7 @@ NotificationClient notificationClient(Ref ref) {
 /// Provider for notification permission granted status.
 /// {@endtemplate}
 @riverpod
-Future<bool> notificationPermissionGranted(Ref ref) async {
+Future<bool> notificationPermissionGranted(Ref ref) {
   final notificationClient = ref.watch(notificationClientProvider);
 
   // Listen to app lifecycle state changes

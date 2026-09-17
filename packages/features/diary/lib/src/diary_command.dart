@@ -22,7 +22,7 @@ class DiaryCommand {
   Future<DiaryEntry> addDiary({
     required String content,
     required DateTime date,
-  }) async {
+  }) {
     return dbClient.insertDiary(
       content: content,
       date: date,

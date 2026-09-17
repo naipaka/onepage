@@ -231,14 +231,14 @@ class _PhotoViewerState extends State<_PhotoViewer> {
   void _onVerticalDragUpdate(DragUpdateDetails details) {
     setState(() {
       _offset += details.delta;
-      final height = MediaQuery.sizeOf(context).height;
+      final height = MediaQuery.heightOf(context);
       _opacity = (1 - (_offset.distance / height)).clamp(0.0, 1.0);
     });
   }
 
   /// Handles vertical drag end for drag-to-dismiss gesture.
   void _onVerticalDragEnd(DragEndDetails details) {
-    final height = MediaQuery.sizeOf(context).height;
+    final height = MediaQuery.heightOf(context);
     if (_offset.distance > height * 0.2) {
       Navigator.pop(context);
     } else {
