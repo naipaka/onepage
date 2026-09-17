@@ -26,7 +26,7 @@ class DiaryQuery {
   Future<List<Diary>> getDiaries({
     required DateTime from,
     required DateTime to,
-  }) {
+  }) async {
     return dbClient.getDiaries(
       from: from,
       to: to,
@@ -42,7 +42,7 @@ class DiaryQuery {
     required String searchTerm,
     int? limit,
     int? offset,
-  }) {
+  }) async {
     return dbClient.searchDiaries(
       searchTerm: searchTerm,
       limit: limit,
@@ -58,7 +58,7 @@ class DiaryQuery {
   Future<int> countUniqueDaysWithContentInRange({
     required DateTime from,
     required DateTime to,
-  }) {
+  }) async {
     return dbClient.countUniqueDaysWithContentInRange(
       from: from,
       to: to,

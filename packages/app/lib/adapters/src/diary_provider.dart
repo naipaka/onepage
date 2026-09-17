@@ -45,7 +45,7 @@ Future<List<Diary>> diaries(
   Ref ref, {
   required DateTime fromDate,
   required DateTime toDate,
-}) {
+}) async {
   final query = ref.watch(diaryQueryProvider);
   return query.getDiaries(from: fromDate, to: toDate);
 }

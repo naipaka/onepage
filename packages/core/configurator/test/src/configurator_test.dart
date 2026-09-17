@@ -94,7 +94,8 @@ void main() {
       final target = Configurator.forTesting(mockRC);
 
       expect(
-        () => target.setDefaults({'key': const DataClass(value: 'value')}),
+        () async =>
+            target.setDefaults({'key': const DataClass(value: 'value')}),
         throwsAssertionError,
       );
     });
@@ -104,7 +105,7 @@ void main() {
       final target = Configurator.forTesting(mockRC);
 
       expect(
-        () => target.setDefaults({
+        () async => target.setDefaults({
           'key': ['ABC', 'DEF'],
         }),
         throwsAssertionError,
@@ -116,7 +117,7 @@ void main() {
       final target = Configurator.forTesting(mockRC);
 
       expect(
-        () => target.setDefaults({
+        () async => target.setDefaults({
           'key': {'key': 'value'},
         }),
         throwsAssertionError,

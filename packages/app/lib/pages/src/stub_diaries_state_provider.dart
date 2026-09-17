@@ -1,5 +1,5 @@
 // For mocking diaries state.
-// ignore_for_file: avoid_hardcoded_japanese
+// ignore_for_file: altive_lints_plugin/avoid_hardcoded_japanese
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';

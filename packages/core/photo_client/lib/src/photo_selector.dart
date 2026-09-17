@@ -31,7 +31,7 @@ Future<String?> showPhotoSelector(
   required String permissionDeniedTitle,
   required String permissionDeniedMessage,
   required String openSettingsLabel,
-}) {
+}) async {
   return Navigator.of(context).push<String>(
     MaterialPageRoute(
       settings: const RouteSettings(name: 'photo-selector'),

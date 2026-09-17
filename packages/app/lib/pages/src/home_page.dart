@@ -484,7 +484,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
   const new();
 
   /// Shows a search dialog for diary entries and returns the selected date.
-  static Future<DateTime?> show(BuildContext context) {
+  static Future<DateTime?> show(BuildContext context) async {
     return showDialog<DateTime?>(
       context: context,
       builder: (context) => const _SearchDiaryDialog(),

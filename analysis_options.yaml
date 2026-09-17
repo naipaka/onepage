@@ -1,3 +1,7 @@
+# Shared analysis options for the workspace. Every package includes this file
+# by relative path, so repo-wide overrides live here.
+include: package:altive_lints/altive_lints.yaml
+
 analyzer:
   exclude:
     - "build/**"
@@ -28,3 +32,12 @@ plugins:
       prefer_dedicated_media_query_methods: true
       prefer_space_between_elements: true
       prefer_to_include_sliver_in_name: true
+
+linter:
+  rules:
+    # Same conflict the preset already resolves for `unnecessary_async`: on
+    # `() async => someFuture()` this rule and `unnecessary_await_in_return`
+    # contradict each other, and the only shape both accept is dropping
+    # `async`, which then trips `discarded_futures` at call sites. Keep the
+    # `async` wrappers and turn this rule off instead.
+    async_return_with_no_await: false

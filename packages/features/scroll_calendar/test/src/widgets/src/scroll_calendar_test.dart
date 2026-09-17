@@ -80,7 +80,7 @@ void main() {
         ..detach();
 
       expect(
-        () => controller.scrollToDate(DateTime(2023, 10)),
+        () async => controller.scrollToDate(DateTime(2023, 10)),
         throwsA(isA<AssertionError>()),
       );
     });
@@ -121,7 +121,7 @@ void main() {
         ..detach();
 
       expect(
-        () => controller.highlightDate(DateTime(2023, 10)),
+        () async => controller.highlightDate(DateTime(2023, 10)),
         throwsA(isA<AssertionError>()),
       );
     });

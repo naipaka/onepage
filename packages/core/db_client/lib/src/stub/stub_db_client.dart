@@ -1,5 +1,5 @@
 // For testing purposes, we use a stub database client that returns dummy data.
-// ignore_for_file: avoid_hardcoded_japanese
+// ignore_for_file: altive_lints_plugin/avoid_hardcoded_japanese
 import 'dart:async';
 
 import 'package:clock/clock.dart';

@@ -23,7 +23,7 @@ class DiaryImageCommand {
   Future<DiaryImage> addDiaryImage({
     required int diaryId,
     required String photoId,
-  }) {
+  }) async {
     return dbClient.insertDiaryImage(
       diaryId: diaryId,
       photoId: photoId,

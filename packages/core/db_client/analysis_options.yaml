@@ -1,9 +1,5 @@
-include: package:altive_lints/altive_lints.yaml
+include: ../../../analysis_options.yaml
 analyzer:
   exclude:
-    # altive_lints_plugin 1.0.0 does not honour `ignore_for_file` for its own
-    # diagnostics, so the `avoid_hardcoded_japanese` ignore inside this stub
-    # has no effect. Excluded until the plugin respects ignore comments.
-    - "lib/src/stub/stub_db_client.dart"
     - "**/generated/**.dart"
     - build/**
