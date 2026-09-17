@@ -26,6 +26,5 @@ abstract class UpdateRequest with _$UpdateRequest {
   /// {@macro update_requester.UpdateRequest}
   ///
   /// Returns a new [UpdateRequest] from a JSON object.
-  factory fromJson(Map<String, Object?> json) =>
-      _$UpdateRequestFromJson(json);
+  factory fromJson(Map<String, Object?> json) => _$UpdateRequestFromJson(json);
 }

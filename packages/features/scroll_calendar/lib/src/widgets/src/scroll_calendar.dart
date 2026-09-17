@@ -10,30 +10,30 @@ import '../../extension/extension.dart';
 ///
 /// - [duration] : The duration of the scroll animation.
 /// - [curve] : The easing curve of the scroll animation.
-typedef ScrollToTodayCallback =
-    Future<void> Function({required Duration duration, required Curve curve});
+typedef ScrollToTodayCallback = Future<void> Function({
+  required Duration duration,
+  required Curve curve,
+});
 
 /// Type definition for a function that scrolls to a specified date.
 ///
 /// - [date] : The target date to scroll to.
 /// - [duration] : The duration of the scroll animation.
 /// - [curve] : The easing curve of the scroll animation.
-typedef ScrollToDateCallback =
-    Future<void> Function(
-      DateTime date, {
-      required Duration duration,
-      required Curve curve,
-    });
+typedef ScrollToDateCallback = Future<void> Function(
+  DateTime date, {
+  required Duration duration,
+  required Curve curve,
+});
 
 /// Type definition for a function that highlights a specified date.
 ///
 /// - [date] : The target date to highlight.
 /// - [duration] : The duration of the highlight animation.
-typedef HighlightDateCallback =
-    Future<void> Function(
-      DateTime date, {
-      required Duration duration,
-    });
+typedef HighlightDateCallback = Future<void> Function(
+  DateTime date, {
+  required Duration duration,
+});
 
 /// {@template scroll_calendar.ScrollCalendarController}
 /// Controller for a scrollable calendar.

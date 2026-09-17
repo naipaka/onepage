@@ -94,8 +94,7 @@ void main() {
       final target = Configurator.forTesting(mockRC);
 
       expect(
-        () =>
-            target.setDefaults({'key': const DataClass(value: 'value')}),
+        () => target.setDefaults({'key': const DataClass(value: 'value')}),
         throwsAssertionError,
       );
     });

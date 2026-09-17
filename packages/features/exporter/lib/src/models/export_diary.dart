@@ -22,6 +22,5 @@ abstract class ExportDiary with _$ExportDiary {
   }) = _ExportDiary;
 
   /// Creates an [ExportDiary] instance from a JSON object.
-  factory fromJson(Map<String, Object?> json) =>
-      _$ExportDiaryFromJson(json);
+  factory fromJson(Map<String, Object?> json) => _$ExportDiaryFromJson(json);
 }

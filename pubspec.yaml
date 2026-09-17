@@ -71,7 +71,7 @@ melos:
       # non-zero when that call does. Shell variables are avoided on purpose:
       # melos interpolates `$name` in scripts before the shell sees them.
       exec: |
-        find . -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -path "./.dart_tool/*" -o -path "./build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
+        find . -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "./.dart_tool/*" -o -path "./build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
       description: Check formatting without writing.
       packageFilters:
         flutter: true

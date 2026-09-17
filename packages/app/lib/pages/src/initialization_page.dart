@@ -91,10 +91,8 @@ class _InitializedPage extends ConsumerWidget {
                 haptics.buttonTapFeedback();
                 final platform = defaultTargetPlatform;
                 final urlString = switch (platform) {
-                  TargetPlatform.android =>
-                    'https://play.google.com/store/apps/details?id=com.naipaka.onepage',
-                  TargetPlatform.iOS =>
-                    'https://apps.apple.com/us/app/one-page-simple-diary/id6738889085',
+                  TargetPlatform.android => 'https://play.google.com/store/apps/details?id=com.naipaka.onepage',
+                  TargetPlatform.iOS => 'https://apps.apple.com/us/app/one-page-simple-diary/id6738889085',
                   _ => throw UnsupportedError(
                     'Unsupported platform: $platform',
                   ),

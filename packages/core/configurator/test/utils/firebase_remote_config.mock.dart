@@ -14,11 +14,10 @@ class MockFirebaseRemoteConfigPlatform extends Mock
   @override
   FirebaseRemoteConfigPlatform delegateFor({FirebaseApp? app}) {
     return super.noSuchMethod(
-          Invocation.method(#delegateFor, [], {#app: app}),
-          returnValue: TestFirebaseRemoteConfigPlatform(),
-          returnValueForMissingStub: TestFirebaseRemoteConfigPlatform(),
-        )
-        as FirebaseRemoteConfigPlatform;
+      Invocation.method(#delegateFor, [], {#app: app}),
+      returnValue: TestFirebaseRemoteConfigPlatform(),
+      returnValueForMissingStub: TestFirebaseRemoteConfigPlatform(),
+    ) as FirebaseRemoteConfigPlatform;
   }
 
   @override
@@ -26,45 +25,41 @@ class MockFirebaseRemoteConfigPlatform extends Mock
     Map<dynamic, dynamic>? remoteConfigValues,
   }) {
     return super.noSuchMethod(
-          Invocation.method(
-            #setInitialValues,
-            [],
-            {#remoteConfigValues: remoteConfigValues},
-          ),
-          returnValue: TestFirebaseRemoteConfigPlatform(),
-          returnValueForMissingStub: TestFirebaseRemoteConfigPlatform(),
-        )
-        as FirebaseRemoteConfigPlatform;
+      Invocation.method(
+        #setInitialValues,
+        [],
+        {#remoteConfigValues: remoteConfigValues},
+      ),
+      returnValue: TestFirebaseRemoteConfigPlatform(),
+      returnValueForMissingStub: TestFirebaseRemoteConfigPlatform(),
+    ) as FirebaseRemoteConfigPlatform;
   }
 
   @override
   Future<bool> fetchAndActivate() {
     return super.noSuchMethod(
-          Invocation.method(#fetchAndActivate, []),
-          returnValue: Future<bool>.value(true),
-          returnValueForMissingStub: Future<bool>.value(true),
-        )
-        as Future<bool>;
+      Invocation.method(#fetchAndActivate, []),
+      returnValue: Future<bool>.value(true),
+      returnValueForMissingStub: Future<bool>.value(true),
+    ) as Future<bool>;
   }
 
   @override
   Future<void> setConfigSettings(RemoteConfigSettings? remoteConfigSettings) {
     return super.noSuchMethod(
-          Invocation.method(#setConfigSettings, [remoteConfigSettings]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value(),
-        )
-        as Future<void>;
+      Invocation.method(#setConfigSettings, [remoteConfigSettings]),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value(),
+    ) as Future<void>;
   }
 
   @override
   Future<void> setDefaults(Map<String, dynamic>? defaultParameters) {
     return super.noSuchMethod(
-          Invocation.method(#setDefaults, [defaultParameters]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value(),
-        )
-        as Future<void>;
+      Invocation.method(#setDefaults, [defaultParameters]),
+      returnValue: Future<void>.value(),
+      returnValueForMissingStub: Future<void>.value(),
+    ) as Future<void>;
   }
 }
 

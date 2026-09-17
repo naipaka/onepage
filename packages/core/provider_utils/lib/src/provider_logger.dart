@@ -29,8 +29,7 @@ enum ProviderEvent {
   mutationError,
 
   /// Logs when a mutation is reset.
-  mutationReset
-  ;
+  mutationReset;
 
   /// Returns a list of [ProviderEvent] from a comma-separated string of
   /// event names.
