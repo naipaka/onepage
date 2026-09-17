@@ -20,7 +20,7 @@ import 'environment/environment.dart';
 /// {@endtemplate}
 class AppInitializer {
   /// {@macro onepage.AppInitializer}
-  const AppInitializer._();
+  const new _();
 
   /// Initializes async dependencies and returns the root widget.
   static Future<Widget> createApp({Tracker? tracker}) async {

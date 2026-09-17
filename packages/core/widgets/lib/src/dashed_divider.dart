@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// {@endtemplate}
 class DashedDivider extends StatelessWidget {
   /// {@macro widgets.DashedDivider}
-  const DashedDivider({
+  const new({
     super.key,
     this.dashedWidth = 5,
     this.dashedHeight = 1,
@@ -45,7 +45,7 @@ class DashedDivider extends StatelessWidget {
 }
 
 class _DashedLinePainter extends CustomPainter {
-  const _DashedLinePainter({
+  const new({
     required this.dashedWidth,
     required this.dashedHeight,
     required this.dashedSpace,

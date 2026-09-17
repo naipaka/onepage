@@ -12,7 +12,7 @@ import '../../gen/assets.gen.dart';
 /// {@endtemplate}
 class AppLicensePage extends ConsumerWidget {
   /// {@macro onepage.AppLicensePage}
-  const AppLicensePage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

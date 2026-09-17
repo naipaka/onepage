@@ -12,7 +12,7 @@ enum TextHistoryAction {
 /// A button widget that performs undo/redo actions on the currently focused text field.
 class TextHistoryActionButton extends StatelessWidget {
   /// Creates a text history action button.
-  const TextHistoryActionButton._({
+  const new _({
     super.key,
     required this.action,
     required this.icon,
@@ -20,7 +20,7 @@ class TextHistoryActionButton extends StatelessWidget {
   });
 
   /// Creates an undo button.
-  const TextHistoryActionButton.undo({Key? key, required FocusScopeNode scope})
+  const new undo({Key? key, required FocusScopeNode scope})
     : this._(
         key: key,
         action: TextHistoryAction.undo,
@@ -29,7 +29,7 @@ class TextHistoryActionButton extends StatelessWidget {
       );
 
   /// Creates a redo button.
-  const TextHistoryActionButton.redo({Key? key, required FocusScopeNode scope})
+  const new redo({Key? key, required FocusScopeNode scope})
     : this._(
         key: key,
         action: TextHistoryAction.redo,

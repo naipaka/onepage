@@ -9,7 +9,7 @@ const versionConverter = VersionConverter();
 /// {@endtemplate}
 class VersionConverter implements JsonConverter<Version, String> {
   /// {@macro update_requester.VersionConverter}
-  const VersionConverter();
+  const new();
 
   @override
   Version fromJson(String json) => Version.parse(json);

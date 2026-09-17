@@ -14,7 +14,7 @@ import 'models/models.dart';
 /// {@endtemplate}
 class MarkdownExporter extends Exporter {
   /// {@macro exporter.MarkdownExporter}
-  const MarkdownExporter({
+  const new({
     required this.packageInfo,
   });
 

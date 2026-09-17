@@ -11,7 +11,7 @@ import '../../widgets/widgets.dart';
 /// {@endtemplate}
 class SettingsPage extends StatelessWidget {
   /// {@macro onepage.SettingsPage}
-  const SettingsPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

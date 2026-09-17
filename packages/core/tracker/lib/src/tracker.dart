@@ -13,21 +13,18 @@ import 'trackable.dart';
 /// It exposes methods for sending analytic events and for configuration.
 class Tracker {
   /// Create a Tracker instance.
-  Tracker({
-    List<Trackable> trackers = const [],
+  new({
+    this._trackers = const [],
   }) : _crashlytics = FirebaseCrashlytics.instance,
-       _analytics = FirebaseAnalytics.instance,
-       _trackers = trackers;
+       _analytics = FirebaseAnalytics.instance;
 
   /// Create a Tracker instance for testing.
   @visibleForTesting
-  Tracker.forTesting({
-    required FirebaseCrashlytics crashlytics,
-    required FirebaseAnalytics analytics,
-    List<Trackable> trackers = const [],
-  }) : _crashlytics = crashlytics,
-       _analytics = analytics,
-       _trackers = trackers;
+  new forTesting({
+    required this._crashlytics,
+    required this._analytics,
+    this._trackers = const [],
+  });
 
   final FirebaseCrashlytics _crashlytics;
   final FirebaseAnalytics _analytics;

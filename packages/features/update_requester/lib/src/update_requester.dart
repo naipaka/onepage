@@ -28,11 +28,10 @@ class UpdateRequester {
   ///
   /// Takes a [Configurator] to fetch configuration data and a [PackageInfo] to
   /// get the current app version.
-  const UpdateRequester({
-    required Configurator configurator,
-    required PackageInfo packageInfo,
-  }) : _configurator = configurator,
-       _packageInfo = packageInfo;
+  const new({
+    required this._configurator,
+    required this._packageInfo,
+  });
 
   /// The [Configurator] used to fetch configuration data.
   final Configurator _configurator;

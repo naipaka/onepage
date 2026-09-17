@@ -12,16 +12,14 @@ import 'models/models.dart';
 /// {@endtemplate}
 class NotificationClient {
   /// {@macro notification_client}
-  NotificationClient._({
+  new _({
     required FlutterLocalNotificationsPlugin notificationsPlugin,
-    required String channelName,
-    required String channelDescription,
-  }) : _notifications = notificationsPlugin,
-       _channelName = channelName,
-       _channelDescription = channelDescription;
+    required this._channelName,
+    required this._channelDescription,
+  }) : _notifications = notificationsPlugin;
 
   /// Create a NotificationClient with default plugin
-  factory NotificationClient.create({
+  factory create({
     required String channelName,
     required String channelDescription,
   }) {
@@ -34,13 +32,11 @@ class NotificationClient {
 
   /// Create a NotificationClient for testing with custom plugin
   @visibleForTesting
-  NotificationClient.forTesting({
+  new forTesting({
     required FlutterLocalNotificationsPlugin notificationsPlugin,
-    required String channelName,
-    required String channelDescription,
-  }) : _notifications = notificationsPlugin,
-       _channelName = channelName,
-       _channelDescription = channelDescription;
+    required this._channelName,
+    required this._channelDescription,
+  }) : _notifications = notificationsPlugin;
 
   final FlutterLocalNotificationsPlugin _notifications;
   final String _channelName;

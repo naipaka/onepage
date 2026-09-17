@@ -19,14 +19,14 @@ class DbClient extends _$DbClient {
   ///
   /// This constructor initializes the database connection using the
   /// [_openConnection] method.
-  DbClient([QueryExecutor? e]) : super(e ?? _openConnection());
+  new([QueryExecutor? e]) : super(e ?? _openConnection());
 
   /// {@macro db_client.DbClient}
   ///
   /// This constructor allows for dependency injection, making it easier to
   /// test the database operations.
   @visibleForTesting
-  DbClient.forTesting(super.e);
+  new forTesting(super.e);
 
   @override
   int get schemaVersion => 3;

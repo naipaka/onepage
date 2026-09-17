@@ -73,6 +73,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^4.5.0
+  meta: ^1.19.0
   mockito: ^5.8.1
   package_info_plus: ^9.0.1
   patrol: ^4.6.1

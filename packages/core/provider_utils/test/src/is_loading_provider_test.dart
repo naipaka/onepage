@@ -72,7 +72,7 @@ void main() {
 }
 
 class TestWidget extends ConsumerWidget {
-  const TestWidget({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

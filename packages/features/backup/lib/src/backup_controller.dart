@@ -17,7 +17,7 @@ class BackupController {
   ///
   /// The [dbClient] parameter is required and should be an instance
   /// of [DbClient] that will be used to perform database operations.
-  const BackupController({
+  const new({
     required this.dbClient,
     required this.dbConnection,
     required this.packageInfo,

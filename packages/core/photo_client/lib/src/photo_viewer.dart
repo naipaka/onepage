@@ -26,7 +26,7 @@ import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 /// {@endtemplate}
 class PhotoThumbnail extends StatefulWidget {
   /// {@macro photo_selector.PhotoThumbnail}
-  const PhotoThumbnail({
+  const new({
     required this.photoId,
     required this.width,
     required this.height,
@@ -182,7 +182,7 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
 /// {@endtemplate}
 class _PhotoViewer extends StatefulWidget {
   /// {@macro photo_selector._PhotoViewer}
-  const _PhotoViewer({
+  const new({
     required this.heroTag,
     required this.asset,
     this.onDeleted,

@@ -35,7 +35,7 @@ part 'app_routes.g.dart';
 )
 class HomeRouteData extends GoRouteData with $HomeRouteData {
   /// {@macro onepage.HomeRouteData}
-  const HomeRouteData();
+  const new();
 
   /// The home route path.
   static const path = '/';
@@ -51,7 +51,7 @@ class HomeRouteData extends GoRouteData with $HomeRouteData {
 /// {@endtemplate}
 class NotificationsRouteData extends GoRouteData with $NotificationsRouteData {
   /// {@macro onepage.NotificationsRouteData}
-  const NotificationsRouteData();
+  const new();
 
   /// The notifications route path.
   static const path = 'notifications';
@@ -67,7 +67,7 @@ class NotificationsRouteData extends GoRouteData with $NotificationsRouteData {
 /// {@endtemplate}
 class BackupRouteData extends GoRouteData with $BackupRouteData {
   /// {@macro onepage.BackupRouteData}
-  const BackupRouteData();
+  const new();
 
   /// The backup route path.
   static const path = 'backup';
@@ -83,7 +83,7 @@ class BackupRouteData extends GoRouteData with $BackupRouteData {
 /// {@endtemplate}
 class ExportRouteData extends GoRouteData with $ExportRouteData {
   /// {@macro onepage.ExportRouteData}
-  const ExportRouteData();
+  const new();
 
   /// The export route path.
   static const path = 'export';
@@ -99,7 +99,7 @@ class ExportRouteData extends GoRouteData with $ExportRouteData {
 /// {@endtemplate}
 class SettingsRouteData extends GoRouteData with $SettingsRouteData {
   /// {@macro onepage.SettingsRouteData}
-  const SettingsRouteData();
+  const new();
 
   /// The settings route path.
   static const path = 'settings';
@@ -116,7 +116,7 @@ class SettingsRouteData extends GoRouteData with $SettingsRouteData {
 class HapticFeedbackRouteData extends GoRouteData
     with $HapticFeedbackRouteData {
   /// {@macro onepage.HapticFeedbackRouteData}
-  const HapticFeedbackRouteData();
+  const new();
 
   /// The haptic feedback route path.
   static const path = 'haptic-feedback';
@@ -132,7 +132,7 @@ class HapticFeedbackRouteData extends GoRouteData
 /// {@endtemplate}
 class LicenseRouteData extends GoRouteData with $LicenseRouteData {
   /// {@macro onepage.LicenseRouteData}
-  const LicenseRouteData();
+  const new();
 
   /// The license route path.
   static const path = 'license';

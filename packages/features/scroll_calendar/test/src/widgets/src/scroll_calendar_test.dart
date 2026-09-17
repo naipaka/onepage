@@ -326,7 +326,7 @@ void main() {
 }
 
 class _TestVerticalScrollCalendar extends StatelessWidget {
-  const _TestVerticalScrollCalendar({
+  const new({
     this.controller,
     required this.dates,
     this.loadMoreOlder,

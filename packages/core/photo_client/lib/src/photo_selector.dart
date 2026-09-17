@@ -57,7 +57,7 @@ Future<String?> showPhotoSelector(
 /// {@endtemplate}
 class _PhotoSelectorPage extends StatefulWidget {
   /// {@macro photo_selector._PhotoSelectorPage}
-  const _PhotoSelectorPage({
+  const new({
     required this.confirmLabel,
     required this.noPhotosLabel,
     required this.permissionDeniedTitle,
@@ -128,7 +128,7 @@ class _PhotoSelectorPageState extends State<_PhotoSelectorPage> {
 /// {@endtemplate}
 class _PermissionDeniedView extends StatelessWidget {
   /// {@macro photo_selector._PermissionDeniedView}
-  const _PermissionDeniedView({
+  const new({
     required this.permissionDeniedTitle,
     required this.permissionDeniedMessage,
     required this.openSettingsLabel,
@@ -196,7 +196,7 @@ class _PermissionDeniedView extends StatelessWidget {
 /// {@endtemplate}
 class _PhotoSelectorView extends StatefulWidget {
   /// {@macro photo_selector._PhotoSelectorContent}
-  const _PhotoSelectorView({
+  const new({
     required this.confirmLabel,
     required this.noPhotosLabel,
   });
@@ -340,7 +340,7 @@ class _PhotoSelectorViewState extends State<_PhotoSelectorView> {
 /// {@endtemplate}
 class _AlbumSelectorTitle extends StatelessWidget {
   /// {@macro photo_selector._AlbumSelectorTitle}
-  const _AlbumSelectorTitle({
+  const new({
     required this.selectedAlbum,
     required this.isExpanded,
     required this.onTap,
@@ -386,7 +386,7 @@ class _AlbumSelectorTitle extends StatelessWidget {
 /// {@endtemplate}
 class _PhotoSelectorBody extends StatelessWidget {
   /// {@macro photo_selector._PhotoSelectorBody}
-  const _PhotoSelectorBody({
+  const new({
     required this.isLoading,
     required this.selectedAlbum,
     required this.showingAlbumList,
@@ -455,7 +455,7 @@ class _PhotoSelectorBody extends StatelessWidget {
 /// {@endtemplate}
 class _AlbumListView extends StatelessWidget {
   /// {@macro photo_selector._AlbumListView}
-  const _AlbumListView({
+  const new({
     required this.albums,
     required this.onAlbumSelected,
   });
@@ -488,7 +488,7 @@ class _AlbumListView extends StatelessWidget {
 /// {@endtemplate}
 class _PhotoGridView extends StatefulWidget {
   /// {@macro photo_selector._PhotoGridView}
-  const _PhotoGridView({
+  const new({
     super.key,
     required this.album,
     required this.selectedAsset,
@@ -639,7 +639,7 @@ class _PhotoGridViewState extends State<_PhotoGridView> {
 /// {@endtemplate}
 class _LoadingIndicatorItem extends StatelessWidget {
   /// {@macro photo_selector._LoadingIndicatorItem}
-  const _LoadingIndicatorItem({
+  const new({
     required this.isLoadingMore,
     required this.onLoadMore,
   });
@@ -674,7 +674,7 @@ class _LoadingIndicatorItem extends StatelessWidget {
 /// {@endtemplate}
 class _AlbumListItem extends StatefulWidget {
   /// {@macro photo_selector._AlbumListItem}
-  const _AlbumListItem({
+  const new({
     required this.album,
     required this.onTap,
   });
@@ -741,7 +741,7 @@ class _AlbumListItemState extends State<_AlbumListItem> {
 /// {@endtemplate}
 class _AssetThumbnail extends StatefulWidget {
   /// {@macro photo_selector._AssetThumbnail}
-  const _AssetThumbnail({required this.asset});
+  const new({required this.asset});
 
   final AssetEntity asset;
 

@@ -8,7 +8,7 @@ import 'package:utils/utils.dart';
 /// {@endtemplate}
 class DiaryTextField extends StatefulWidget {
   /// {@macro diary.DiaryTextField}
-  const DiaryTextField({
+  const new({
     super.key,
     required this.content,
     this.onChanged,

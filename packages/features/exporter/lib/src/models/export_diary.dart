@@ -13,7 +13,7 @@ part 'export_diary.g.dart';
 @freezed
 abstract class ExportDiary with _$ExportDiary {
   /// {@macro exporter.ExportDiary}
-  const factory ExportDiary({
+  const factory({
     /// The date of the diary entry.
     required DateTime date,
 
@@ -22,6 +22,6 @@ abstract class ExportDiary with _$ExportDiary {
   }) = _ExportDiary;
 
   /// Creates an [ExportDiary] instance from a JSON object.
-  factory ExportDiary.fromJson(Map<String, Object?> json) =>
+  factory fromJson(Map<String, Object?> json) =>
       _$ExportDiaryFromJson(json);
 }

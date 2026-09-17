@@ -1,4 +1,5 @@
 analyzer:
   exclude:
+    - "**/*.mocks.dart"
     - build/**
 include: package:altive_lints/altive_lints.yaml

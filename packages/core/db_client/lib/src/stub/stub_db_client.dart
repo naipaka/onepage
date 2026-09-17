@@ -11,7 +11,7 @@ import '../../db_client.dart';
 /// {@endtemplate}
 class StubDbClient extends DbClient {
   /// {@macro db_client.StubDbClient}
-  StubDbClient({required this.locale}) : super();
+  new({required this.locale}) : super();
 
   /// The locale of the device.
   final String locale;

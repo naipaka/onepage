@@ -618,9 +618,9 @@ void main() {
 
 @immutable
 class DataClass {
-  const DataClass({required this.value});
+  const new({required this.value});
 
-  factory DataClass.fromJson(Map<String, dynamic> json) =>
+  factory fromJson(Map<String, dynamic> json) =>
       DataClass(value: json['value'] as String);
 
   final String value;

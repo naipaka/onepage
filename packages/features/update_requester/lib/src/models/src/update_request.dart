@@ -15,7 +15,7 @@ part 'update_request.g.dart';
 @freezed
 abstract class UpdateRequest with _$UpdateRequest {
   /// {@macro update_requester.UpdateRequest}
-  const factory UpdateRequest({
+  const factory({
     /// The version of the app being requested.
     @versionConverter required Version version,
 
@@ -26,6 +26,6 @@ abstract class UpdateRequest with _$UpdateRequest {
   /// {@macro update_requester.UpdateRequest}
   ///
   /// Returns a new [UpdateRequest] from a JSON object.
-  factory UpdateRequest.fromJson(Map<String, Object?> json) =>
+  factory fromJson(Map<String, Object?> json) =>
       _$UpdateRequestFromJson(json);
 }

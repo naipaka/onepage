@@ -4,7 +4,7 @@ typedef K = Keys;
 
 /// Keys used for Patrol integration tests.
 class Keys {
-  const Keys();
+  const new();
 
   static const homePage = Key('homePage');
   static const diaryCalendar = Key('diaryCalendar');

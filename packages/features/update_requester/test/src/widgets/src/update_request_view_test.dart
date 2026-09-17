@@ -81,7 +81,7 @@ void main() {
 }
 
 class _TestApp extends StatelessWidget {
-  const _TestApp({
+  const new({
     required this.title,
     required this.message,
     required this.buttonText,

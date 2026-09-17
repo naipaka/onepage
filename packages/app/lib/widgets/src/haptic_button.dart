@@ -12,7 +12,7 @@ import '../../adapters/adapters.dart';
 /// {@endtemplate}
 class HapticFilledButton extends ConsumerWidget {
   /// {@macro app.HapticFilledButton}
-  const HapticFilledButton({
+  const new({
     super.key,
     required this.onPressed,
     required this.child,
@@ -45,7 +45,7 @@ class HapticFilledButton extends ConsumerWidget {
 /// {@endtemplate}
 class HapticIconButton extends ConsumerWidget {
   /// {@macro app.HapticIconButton}
-  const HapticIconButton({
+  const new({
     super.key,
     required this.onPressed,
     required this.icon,
@@ -78,7 +78,7 @@ class HapticIconButton extends ConsumerWidget {
 /// {@endtemplate}
 class HapticNavigationListTile extends ConsumerWidget {
   /// {@macro app.HapticNavigationListTile}
-  const HapticNavigationListTile({
+  const new({
     super.key,
     required this.onTap,
     required this.title,

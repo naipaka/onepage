@@ -7,7 +7,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockFirebaseRemoteConfigPlatform extends Mock
     with MockPlatformInterfaceMixin
     implements TestFirebaseRemoteConfigPlatform {
-  MockFirebaseRemoteConfigPlatform() {
+  new() {
     TestFirebaseRemoteConfigPlatform();
   }
 
@@ -69,7 +69,7 @@ class MockFirebaseRemoteConfigPlatform extends Mock
 }
 
 class TestFirebaseRemoteConfigPlatform extends FirebaseRemoteConfigPlatform {
-  TestFirebaseRemoteConfigPlatform() : super();
+  new() : super();
 
   @override
   FirebaseRemoteConfigPlatform delegateFor({FirebaseApp? app}) {

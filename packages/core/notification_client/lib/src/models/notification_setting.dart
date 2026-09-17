@@ -10,7 +10,7 @@ part 'notification_setting.g.dart';
 @freezed
 abstract class NotificationSetting with _$NotificationSetting {
   /// {@macro notification_setting}
-  const factory NotificationSetting({
+  const factory({
     /// Unique identifier for this notification setting.
     required int id,
 
@@ -22,6 +22,6 @@ abstract class NotificationSetting with _$NotificationSetting {
   }) = _NotificationSetting;
 
   /// Create a NotificationSetting from JSON.
-  factory NotificationSetting.fromJson(Map<String, dynamic> json) =>
+  factory fromJson(Map<String, dynamic> json) =>
       _$NotificationSettingFromJson(json);
 }
