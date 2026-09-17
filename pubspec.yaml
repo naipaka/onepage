@@ -57,12 +57,22 @@ melos:
 
   scripts:
     # Issue on file exclusion feature: https://github.com/dart-lang/dart_style/issues/864
-    # NOTE: Using the `exec:` format causes processing to stop
     format:ci:
-      run: |
-        melos exec -- \
-          dart format --set-exit-if-changed $(find . -name "*.dart" -not \( -name "*.*freezed.dart" -o -name "*.*g.dart" -o -name "*.gen.dart" -o -wholename "./.dart_tool/*" \) )
-      description: Run format.
+      # `exec:` runs this inside each package, so `find .` lists that package's
+      # own files. (With `run: melos exec -- ... $(find .)` the substitution
+      # happened once at the workspace root, and every package then received
+      # root-relative paths that do not exist from its own directory; `dart
+      # format` exits 0 when all of its paths are missing, so the check never
+      # inspected a single file.)
+      #
+      # `-exec ... {} +` is what makes `exec:` safe here: it passes all matches
+      # to one `dart format` call, runs nothing when there are no matches (a
+      # bare `dart format` with no paths reads stdin and blocks), and returns
+      # non-zero when that call does. Shell variables are avoided on purpose:
+      # melos interpolates `$name` in scripts before the shell sees them.
+      exec: |
+        find . -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -path "./.dart_tool/*" -o -path "./build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
+      description: Check formatting without writing.
       packageFilters:
         flutter: true
         dirExists: [lib, test]
