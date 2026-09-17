@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// {@endtemplate}
 class UpdateRequestView extends StatelessWidget {
   /// {@macro update_requester.UpdateRequestView}
-  const UpdateRequestView({
+  const new({
     super.key,
     required this.title,
     required this.message,

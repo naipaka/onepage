@@ -14,13 +14,13 @@ import 'environment/environment.dart';
 /// {@template onepage.AppInitializer}
 /// Initializes dependencies and builds the app widget tree.
 ///
-/// Shared between [main] and patrol tests. Does not call
+/// Shared between `main` and patrol tests. Does not call
 /// [WidgetsFlutterBinding.ensureInitialized], [runApp], or set up
 /// error handlers — those are the caller's responsibility.
 /// {@endtemplate}
 class AppInitializer {
   /// {@macro onepage.AppInitializer}
-  const AppInitializer._();
+  const new _();
 
   /// Initializes async dependencies and returns the root widget.
   static Future<Widget> createApp({Tracker? tracker}) async {

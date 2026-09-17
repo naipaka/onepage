@@ -4,9 +4,7 @@ import 'dart:async';
 /// It also provides a Stream of updated parameter information.
 class Config<T> {
   /// Creates a new instance of [Config].
-  Config({required T value, required StreamSubscription<void>? subscription})
-    : _value = value,
-      _subscription = subscription;
+  new({required this._value, required this._subscription});
 
   /// The subscription to the stream of updated parameter information.
   final StreamSubscription<void>? _subscription;

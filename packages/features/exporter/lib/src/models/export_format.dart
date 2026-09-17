@@ -9,15 +9,15 @@ part 'export_format.freezed.dart';
 @freezed
 abstract class ExportFormat with _$ExportFormat {
   /// {@macro exporter.ExportFormat}
-  const factory ExportFormat.pdf() = _Pdf;
+  const factory pdf() = _Pdf;
 
   /// {@macro exporter.ExportFormat}
-  const factory ExportFormat.csv() = _Csv;
+  const factory csv() = _Csv;
 
   /// {@macro exporter.ExportFormat}
-  const factory ExportFormat.markdown() = _Markdown;
+  const factory markdown() = _Markdown;
 
-  const ExportFormat._();
+  const new _();
 
   /// Gets the display name for this export format.
   String get displayName => when(

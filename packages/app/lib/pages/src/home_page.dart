@@ -12,7 +12,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
-import 'package:onepage/keys.dart';
 import 'package:photo_client/photo_client.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
@@ -23,6 +22,7 @@ import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
 import '../../gen/assets.gen.dart';
+import '../../keys.dart';
 import '../../router/src/app_routes.dart';
 import '../../router/src/router_provider.dart';
 import '../../widgets/widgets.dart';
@@ -32,7 +32,7 @@ import '../../widgets/widgets.dart';
 /// {@endtemplate}
 class HomePage extends HookConsumerWidget {
   /// {@macro onepage.HomePage}
-  const HomePage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -217,7 +217,7 @@ class HomePage extends HookConsumerWidget {
 /// This is used to identify the current diary entry from widgets
 /// that need it, such as [_ImageSelectionActionButton].
 class _DiaryContext extends InheritedWidget {
-  const _DiaryContext({required this.date, required super.child});
+  const new({required this.date, required super.child});
 
   /// The date of this diary entry.
   final DateTime date;
@@ -236,7 +236,7 @@ class _DiaryContext extends InheritedWidget {
 }
 
 class _DiaryItem extends ConsumerWidget {
-  const _DiaryItem({
+  const new({
     required this.scrollCalendarController,
     required this.date,
     required this.diary,
@@ -343,7 +343,7 @@ class _DiaryItem extends ConsumerWidget {
 }
 
 class _Drawer extends StatelessWidget {
-  const _Drawer();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -426,7 +426,7 @@ class _Drawer extends StatelessWidget {
 }
 
 class _DiaryEntryDatePickerDialog extends ConsumerWidget {
-  const _DiaryEntryDatePickerDialog({required this.initialDate});
+  const new({required this.initialDate});
 
   final DateTime initialDate;
 
@@ -481,7 +481,7 @@ class _DiaryEntryDatePickerDialog extends ConsumerWidget {
 /// Search dialog for diary entries.
 class _SearchDiaryDialog extends HookConsumerWidget {
   /// Creates a search dialog.
-  const _SearchDiaryDialog();
+  const new();
 
   /// Shows a search dialog for diary entries and returns the selected date.
   static Future<DateTime?> show(BuildContext context) async {
@@ -565,7 +565,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
 }
 
 class _SearchBar extends HookWidget {
-  const _SearchBar({
+  const new({
     required this.controller,
     required this.focusNode,
     required this.onChanged,
@@ -660,7 +660,7 @@ class _SearchBar extends HookWidget {
 }
 
 class _SearchResults extends ConsumerWidget {
-  const _SearchResults({required this.searchState});
+  const new({required this.searchState});
 
   final SearchResult searchState;
 
@@ -722,7 +722,7 @@ class _SearchResults extends ConsumerWidget {
 }
 
 class _LoadMoreItem extends StatelessWidget {
-  const _LoadMoreItem({required this.onLoadMore});
+  const new({required this.onLoadMore});
 
   final void Function() onLoadMore;
 
@@ -746,7 +746,7 @@ class _LoadMoreItem extends StatelessWidget {
 }
 
 class _SearchResultTile extends StatelessWidget {
-  const _SearchResultTile({
+  const new({
     required this.diary,
     required this.searchTerm,
     required this.onTap,
@@ -791,7 +791,7 @@ class _SearchResultTile extends StatelessWidget {
 }
 
 class _HighlightedText extends StatelessWidget {
-  const _HighlightedText({required this.text, required this.searchTerm});
+  const new({required this.text, required this.searchTerm});
 
   final String text;
   final String searchTerm;
@@ -903,7 +903,7 @@ class _HighlightedText extends StatelessWidget {
 /// When an image is selected, it saves the photo ID to the currently focused
 /// diary entry.
 class _ImageSelectionActionButton extends ConsumerWidget {
-  const _ImageSelectionActionButton({required this.scope});
+  const new({required this.scope});
 
   /// The focus scope node to monitor for the currently focused diary entry.
   final FocusScopeNode scope;

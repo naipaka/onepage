@@ -11,7 +11,7 @@ import 'router/router.dart';
 /// {@endtemplate}
 class App extends ConsumerWidget {
   /// {@macro onepage.App}
-  const App({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

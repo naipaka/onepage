@@ -18,7 +18,7 @@ import '../../widgets/widgets.dart';
 /// {@endtemplate}
 class BackupPage extends ConsumerWidget {
   /// {@macro backup_page}
-  const BackupPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -153,7 +153,7 @@ class BackupPage extends ConsumerWidget {
 }
 
 class _Divider extends StatelessWidget {
-  const _Divider();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +169,7 @@ class _Divider extends StatelessWidget {
 }
 
 class _BackupRestoreDialog extends StatelessWidget {
-  const _BackupRestoreDialog();
+  const new();
 
   static Future<void> show(BuildContext context) async {
     await showDialog<void>(

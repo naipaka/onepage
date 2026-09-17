@@ -1,4 +1,43 @@
+# Shared analysis options for the workspace. Every package includes this file
+# by relative path, so repo-wide overrides live here.
+include: package:altive_lints/altive_lints.yaml
+
 analyzer:
   exclude:
     - "build/**"
     - "**/build/**"
+
+# Analyzer plugins can only be declared at the root of a pub workspace
+# (`plugins_in_inner_options`); the `plugins:` block inside
+# package:altive_lints/altive_lints.yaml is ignored when it is included from a
+# workspace member, so the same declaration lives here.
+#
+# riverpod_lint is intentionally not declared. On Dart 3.13.2 its rules only
+# run when the analysis server's plugin package resolves analysis_server_plugin
+# to exactly 0.3.18, and altive_lints_plugin 1.0.0 pins
+# analysis_server_plugin <0.3.16 / analyzer <13.1.0 / analyzer_plugin <0.14.10,
+# so the two cannot resolve together; forcing 0.3.18 makes altive_lints_plugin
+# fail at runtime and take the whole plugin isolate down with it. It needs an
+# altive_lints_plugin release built against 0.3.18 first.
+plugins:
+  altive_lints_plugin:
+    version: ^1.0.0
+    diagnostics:
+      avoid_consecutive_sliver_to_box_adapter: true
+      avoid_hardcoded_color: true
+      avoid_hardcoded_japanese: true
+      avoid_shrink_wrap_in_list_view: true
+      avoid_single_child: true
+      prefer_clock_now: true
+      prefer_dedicated_media_query_methods: true
+      prefer_space_between_elements: true
+      prefer_to_include_sliver_in_name: true
+
+linter:
+  rules:
+    # Same conflict the preset already resolves for `unnecessary_async`: on
+    # `() async => someFuture()` this rule and `unnecessary_await_in_return`
+    # contradict each other, and the only shape both accept is dropping
+    # `async`, which then trips `discarded_futures` at call sites. Keep the
+    # `async` wrappers and turn this rule off instead.
+    async_return_with_no_await: false

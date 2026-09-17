@@ -1,3 +1,5 @@
-# Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
-# Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
-# include: package:altive_lints/altive_lints.yaml
+analyzer:
+  exclude:
+    - "**/*.mocks.dart"
+    - build/**
+include: ../../../analysis_options.yaml

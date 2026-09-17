@@ -8,7 +8,7 @@ import 'dart:async';
 /// {@endtemplate}
 class Debounce {
   /// {@macro utils.Debounce}
-  Debounce({
+  new({
     required this.delay,
   });
 

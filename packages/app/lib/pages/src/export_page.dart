@@ -24,7 +24,7 @@ import '../../adapters/adapters.dart';
 /// {@endtemplate}
 class ExportPage extends HookConsumerWidget {
   /// {@macro onepage.ExportPage}
-  const ExportPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

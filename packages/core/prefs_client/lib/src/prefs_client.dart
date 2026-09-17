@@ -17,13 +17,13 @@ class PrefsClient {
   ///
   /// This constructor is private to prevent external instantiation.
   /// Use [PrefsClient.initialize] to create instances.
-  PrefsClient._(this._prefs);
+  new _(this._prefs);
 
   /// {@macro prefs_client.PrefsClient}
   ///
   /// This constructor allows for dependency injection in tests.
   @visibleForTesting
-  PrefsClient.forTesting(this._prefs);
+  new forTesting(this._prefs);
 
   final SharedPreferences _prefs;
 

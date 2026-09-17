@@ -17,7 +17,7 @@ import 'models/models.dart';
 /// {@endtemplate}
 class PdfExporter extends Exporter {
   /// {@macro exporter.PdfExporter}
-  const PdfExporter({
+  const new({
     required this.packageInfo,
   });
 

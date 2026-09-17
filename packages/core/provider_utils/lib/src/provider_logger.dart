@@ -29,8 +29,7 @@ enum ProviderEvent {
   mutationError,
 
   /// Logs when a mutation is reset.
-  mutationReset
-  ;
+  mutationReset;
 
   /// Returns a list of [ProviderEvent] from a comma-separated string of
   /// event names.
@@ -56,7 +55,7 @@ enum ProviderEvent {
 /// {@endtemplate}
 base class ProviderLogger extends ProviderObserver {
   /// {@macro provider_utils.ProviderLogger}
-  const ProviderLogger({required this.outputLogTypes, required this.logger});
+  const new({required this.outputLogTypes, required this.logger});
 
   /// The types of events to log.
   final List<ProviderEvent> outputLogTypes;

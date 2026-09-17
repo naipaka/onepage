@@ -11,7 +11,7 @@ import 'package:sqlite3/sqlite3.dart';
 /// {@endtemplate}
 class DbConnection {
   /// {@macro db_client.Connection}
-  DbConnection();
+  new();
 
   /// The SQLite3 instance used for database operations.
   ///

@@ -10,30 +10,30 @@ import '../../extension/extension.dart';
 ///
 /// - [duration] : The duration of the scroll animation.
 /// - [curve] : The easing curve of the scroll animation.
-typedef ScrollToTodayCallback =
-    Future<void> Function({required Duration duration, required Curve curve});
+typedef ScrollToTodayCallback = Future<void> Function({
+  required Duration duration,
+  required Curve curve,
+});
 
 /// Type definition for a function that scrolls to a specified date.
 ///
 /// - [date] : The target date to scroll to.
 /// - [duration] : The duration of the scroll animation.
 /// - [curve] : The easing curve of the scroll animation.
-typedef ScrollToDateCallback =
-    Future<void> Function(
-      DateTime date, {
-      required Duration duration,
-      required Curve curve,
-    });
+typedef ScrollToDateCallback = Future<void> Function(
+  DateTime date, {
+  required Duration duration,
+  required Curve curve,
+});
 
 /// Type definition for a function that highlights a specified date.
 ///
 /// - [date] : The target date to highlight.
 /// - [duration] : The duration of the highlight animation.
-typedef HighlightDateCallback =
-    Future<void> Function(
-      DateTime date, {
-      required Duration duration,
-    });
+typedef HighlightDateCallback = Future<void> Function(
+  DateTime date, {
+  required Duration duration,
+});
 
 /// {@template scroll_calendar.ScrollCalendarController}
 /// Controller for a scrollable calendar.
@@ -43,7 +43,7 @@ typedef HighlightDateCallback =
 /// {@endtemplate}
 class ScrollCalendarController {
   /// {@macro scroll_calendar.ScrollCalendarController}
-  ScrollCalendarController();
+  new();
 
   ScrollToTodayCallback? _scrollToToday;
   ScrollToDateCallback? _scrollToDate;
@@ -139,7 +139,7 @@ class ScrollCalendarController {
 /// {@endtemplate}
 class VerticalScrollCalendar extends StatefulWidget {
   /// {@macro scroll_calendar.VerticalScrollCalendar}
-  const VerticalScrollCalendar({
+  const new({
     super.key,
     this.controller,
     required this.dates,
@@ -430,7 +430,7 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar>
 /// {@endtemplate}
 class _DateItem extends StatelessWidget {
   /// {@macro scroll_calendar._DateItem}
-  const _DateItem({required this.date});
+  const new({required this.date});
 
   /// The date to be displayed.
   final DateTime date;
@@ -461,10 +461,10 @@ class _DateItem extends StatelessWidget {
 /// {@endtemplate}
 class _EndItem extends StatelessWidget {
   /// {@macro scroll_calendar._EndItem}
-  const _EndItem({
+  const new({
     required this.loadingIndicator,
-    required void Function() onScrollEnd,
-  }) : _onScrollEnd = onScrollEnd;
+    required this._onScrollEnd,
+  });
 
   /// The loading indicator to be displayed.
   final Widget loadingIndicator;

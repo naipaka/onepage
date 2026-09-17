@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 /// {@endtemplate}
 class CalendarDatePickerDialog extends StatefulWidget {
   /// {@macro calendar_date_picker_dialog}
-  const CalendarDatePickerDialog({
+  const new({
     super.key,
     required this.initialDate,
     this.firstDate,
@@ -210,7 +210,7 @@ class _CalendarDatePickerDialogState extends State<CalendarDatePickerDialog> {
 
 /// Calendar grid widget for displaying calendar dates
 class _CalendarGrid extends StatelessWidget {
-  const _CalendarGrid({
+  const new({
     required this.displayDate,
     required this.selectedDate,
     required this.firstDate,

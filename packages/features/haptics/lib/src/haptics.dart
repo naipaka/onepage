@@ -10,7 +10,7 @@ import 'package:prefs_client/prefs_client.dart';
 /// {@endtemplate}
 class Haptics {
   /// {@macro haptics.Haptics}
-  Haptics({required PrefsClient prefsClient}) : _prefsClient = prefsClient;
+  new({required this._prefsClient});
 
   final PrefsClient _prefsClient;
 

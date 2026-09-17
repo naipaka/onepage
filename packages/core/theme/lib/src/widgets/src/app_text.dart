@@ -31,7 +31,7 @@ mixin TextThemeText implements Widget {
 /// {@endtemplate}
 class DisplayLargeText extends StatelessWidget with TextThemeText {
   /// {@macro theme.DisplayLargeText}
-  const DisplayLargeText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -85,7 +85,7 @@ class DisplayLargeText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class DisplayMediumText extends StatelessWidget with TextThemeText {
   /// {@macro theme.DisplayMediumText}
-  const DisplayMediumText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -139,7 +139,7 @@ class DisplayMediumText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class DisplaySmallText extends StatelessWidget with TextThemeText {
   /// {@macro theme.DisplaySmallText}
-  const DisplaySmallText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -193,7 +193,7 @@ class DisplaySmallText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class HeadlineLargeText extends StatelessWidget with TextThemeText {
   /// {@macro theme.HeadlineLargeText}
-  const HeadlineLargeText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -247,7 +247,7 @@ class HeadlineLargeText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class HeadlineMediumText extends StatelessWidget with TextThemeText {
   /// {@macro theme.HeadlineMediumText}
-  const HeadlineMediumText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -301,7 +301,7 @@ class HeadlineMediumText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class HeadlineSmallText extends StatelessWidget with TextThemeText {
   /// {@macro theme.HeadlineSmallText}
-  const HeadlineSmallText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -355,7 +355,7 @@ class HeadlineSmallText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class TitleLargeText extends StatelessWidget with TextThemeText {
   /// {@macro theme.TitleLargeText}
-  const TitleLargeText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -409,7 +409,7 @@ class TitleLargeText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class TitleMediumText extends StatelessWidget with TextThemeText {
   /// {@macro theme.TitleMediumText}
-  const TitleMediumText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -463,7 +463,7 @@ class TitleMediumText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class TitleSmallText extends StatelessWidget with TextThemeText {
   /// {@macro theme.TitleSmallText}
-  const TitleSmallText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -517,7 +517,7 @@ class TitleSmallText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class BodyLargeText extends StatelessWidget with TextThemeText {
   /// {@macro theme.BodyLargeText}
-  const BodyLargeText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -571,7 +571,7 @@ class BodyLargeText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class BodyMediumText extends StatelessWidget with TextThemeText {
   /// {@macro theme.BodyMediumText}
-  const BodyMediumText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -625,7 +625,7 @@ class BodyMediumText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class BodySmallText extends StatelessWidget with TextThemeText {
   /// {@macro theme.BodySmallText}
-  const BodySmallText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -679,7 +679,7 @@ class BodySmallText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class LabelLargeText extends StatelessWidget with TextThemeText {
   /// {@macro theme.LabelLargeText}
-  const LabelLargeText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -733,7 +733,7 @@ class LabelLargeText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class LabelMediumText extends StatelessWidget with TextThemeText {
   /// {@macro theme.LabelMediumText}
-  const LabelMediumText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -787,7 +787,7 @@ class LabelMediumText extends StatelessWidget with TextThemeText {
 /// {@endtemplate}
 class LabelSmallText extends StatelessWidget with TextThemeText {
   /// {@macro theme.LabelSmallText}
-  const LabelSmallText(
+  const new(
     this.data, {
     super.key,
     this.color,
@@ -837,7 +837,7 @@ class LabelSmallText extends StatelessWidget with TextThemeText {
 }
 
 class _TextThemeText extends StatelessWidget {
-  const _TextThemeText(
+  const new(
     this.data, {
     required this.color,
     required this.indent,

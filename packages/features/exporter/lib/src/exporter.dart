@@ -7,7 +7,7 @@ import 'models/models.dart';
 /// {@endtemplate}
 abstract class Exporter {
   /// {@macro exporter.Exporter}
-  const Exporter();
+  const new();
 
   /// Exports diary entries to a file.
   Future<File> export({

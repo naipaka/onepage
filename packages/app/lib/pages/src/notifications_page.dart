@@ -14,7 +14,7 @@ import '../../adapters/adapters.dart';
 /// {@endtemplate}
 class NotificationsPage extends HookConsumerWidget {
   /// {@macro onepage.NotificationsPage}
-  const NotificationsPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,7 +40,7 @@ class NotificationsPage extends HookConsumerWidget {
 
 /// Widget to display notification permission status and request permission.
 class _NotificationPermissionStatus extends HookConsumerWidget {
-  const _NotificationPermissionStatus();
+  const new();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -102,7 +102,7 @@ class _NotificationPermissionStatus extends HookConsumerWidget {
 
 /// Widget to display list of notification settings.
 class _NotificationSettingsList extends HookConsumerWidget {
-  const _NotificationSettingsList();
+  const new();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -178,7 +178,7 @@ class _NotificationSettingsList extends HookConsumerWidget {
 
 /// Widget for individual notification setting.
 class _NotificationSettingTile extends StatelessWidget {
-  const _NotificationSettingTile({
+  const new({
     super.key,
     required this.setting,
     required this.onToggle,
@@ -245,7 +245,7 @@ class _NotificationSettingTile extends StatelessWidget {
 }
 
 class _TimePickerSheet extends StatefulWidget {
-  const _TimePickerSheet({required this.initialTime});
+  const new({required this.initialTime});
 
   final TimeOfDay initialTime;
 

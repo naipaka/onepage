@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 /// TextField within the child gains focus.
 class KeyboardToolbar extends StatefulWidget {
   /// Creates a keyboard toolbar widget.
-  const KeyboardToolbar({
+  const new({
     super.key,
     required this.child,
     required this.actions,
@@ -85,7 +85,7 @@ class _KeyboardToolbarState extends State<KeyboardToolbar> {
 
 /// The actual toolbar content widget.
 class _KeyboardToolbarContent extends StatelessWidget {
-  const _KeyboardToolbarContent({
+  const new({
     required this.scope,
     required this.actions,
     this.onDismiss,

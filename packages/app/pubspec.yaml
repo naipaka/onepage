@@ -65,9 +65,7 @@ dependencies:
     path: ../core/widgets/
 
 dev_dependencies:
-  # Temporarily disabled: analyzer constraint conflicts with the riverpod stack (analyzer 12).
-  # Replaced by an in-repo lint package. See https://github.com/naipaka/onepage/issues/249
-  # altive_lints: ^2.3.0
+  altive_lints: ^4.1.0
   build_runner: ^2.16.1
   flutter_gen_runner: ^5.15.0
   flutter_launcher_icons: ^0.14.4
@@ -75,6 +73,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^4.5.0
+  meta: ^1.19.0
   mockito: ^5.8.1
   package_info_plus: ^9.0.1
   patrol: ^4.6.1

@@ -12,20 +12,17 @@ import 'package:prefs_client/prefs_client.dart';
 class InAppReviewer {
   /// Creates an [InAppReviewer] with required dependencies.
   ///
-  /// The [isEligible] indicates whether the user is eligible for review
-  /// prompts. The [prefsClient] manages user preferences and review history.
+  /// The [_isEligible] indicates whether the user is eligible for review
+  /// prompts. The [_prefsClient] manages user preferences and review history.
   /// The [inAppReview] allows for dependency injection in tests.
-  /// The [reviewCooldownPeriod] defines how long to wait between review
+  /// The [_reviewCooldownPeriod] defines how long to wait between review
   /// prompts.
-  InAppReviewer({
-    required bool isEligible,
-    required PrefsClient prefsClient,
+  new({
+    required this._isEligible,
+    required this._prefsClient,
     InAppReview? inAppReview,
-    Duration reviewCooldownPeriod = const Duration(days: 180),
-  }) : _isEligible = isEligible,
-       _prefsClient = prefsClient,
-       _inAppReview = inAppReview ?? InAppReview.instance,
-       _reviewCooldownPeriod = reviewCooldownPeriod;
+    this._reviewCooldownPeriod = const Duration(days: 180),
+  }) : _inAppReview = inAppReview ?? InAppReview.instance;
 
   final bool _isEligible;
   final PrefsClient _prefsClient;

@@ -22,7 +22,7 @@ typedef NullableWidgetBuilder = Widget? Function(BuildContext context);
 /// {@endtemplate}
 class InitializationPage extends ConsumerWidget {
   /// {@macro onepage.InitializationPage}
-  const InitializationPage({
+  const new({
     super.key,
     required this.onInitialized,
   });
@@ -52,7 +52,7 @@ class InitializationPage extends ConsumerWidget {
 }
 
 class _InitializedPage extends ConsumerWidget {
-  const _InitializedPage({required this.onInitialized});
+  const new({required this.onInitialized});
 
   final NullableWidgetBuilder onInitialized;
 
@@ -91,10 +91,8 @@ class _InitializedPage extends ConsumerWidget {
                 haptics.buttonTapFeedback();
                 final platform = defaultTargetPlatform;
                 final urlString = switch (platform) {
-                  TargetPlatform.android =>
-                    'https://play.google.com/store/apps/details?id=com.naipaka.onepage',
-                  TargetPlatform.iOS =>
-                    'https://apps.apple.com/us/app/one-page-simple-diary/id6738889085',
+                  TargetPlatform.android => 'https://play.google.com/store/apps/details?id=com.naipaka.onepage',
+                  TargetPlatform.iOS => 'https://apps.apple.com/us/app/one-page-simple-diary/id6738889085',
                   _ => throw UnsupportedError(
                     'Unsupported platform: $platform',
                   ),
@@ -112,7 +110,7 @@ class _InitializedPage extends ConsumerWidget {
 }
 
 class _LoadingPage extends StatelessWidget {
-  const _LoadingPage();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +122,7 @@ class _LoadingPage extends StatelessWidget {
 }
 
 class _ErrorPage extends StatelessWidget {
-  const _ErrorPage(this.error, {required this.onRetry});
+  const new(this.error, {required this.onRetry});
 
   final Object error;
   final VoidCallback onRetry;

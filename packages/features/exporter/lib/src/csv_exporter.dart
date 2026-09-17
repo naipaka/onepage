@@ -14,7 +14,7 @@ import 'models/models.dart';
 /// {@endtemplate}
 class CsvExporter extends Exporter {
   /// {@macro exporter.CsvExporter}
-  const CsvExporter({
+  const new({
     required this.packageInfo,
   });
 

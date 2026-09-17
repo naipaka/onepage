@@ -12,7 +12,7 @@ import '../db_client.dart';
 @immutable
 class Diary {
   /// {@macro db_client.Diary}
-  const Diary({
+  const new({
     required this.entry,
     this.images = const [],
   });

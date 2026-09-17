@@ -18,11 +18,11 @@ typedef _ValueChanged<T> = void Function(T value);
 class Configurator {
   /// Creates a Configurator instance using the default Firebase Remote
   /// Config.
-  Configurator() : _rc = FirebaseRemoteConfig.instance;
+  new() : _rc = FirebaseRemoteConfig.instance;
 
   /// Creates a Configurator instance for testing with a custom RemoteConfig.
   @visibleForTesting
-  Configurator.forTesting(FirebaseRemoteConfig rc) : _rc = rc;
+  new forTesting(FirebaseRemoteConfig rc) : _rc = rc;
 
   final FirebaseRemoteConfig _rc;
 

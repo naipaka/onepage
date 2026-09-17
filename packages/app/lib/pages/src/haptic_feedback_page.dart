@@ -11,7 +11,7 @@ import '../../adapters/adapters.dart';
 /// {@endtemplate}
 class HapticFeedbackPage extends HookConsumerWidget {
   /// {@macro onepage.HapticFeedbackPage}
-  const HapticFeedbackPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,7 +57,7 @@ class HapticFeedbackPage extends HookConsumerWidget {
 }
 
 class _HapticSettingsItem extends ConsumerWidget {
-  const _HapticSettingsItem({
+  const new({
     required this.title,
     required this.subtitle,
     required this.value,

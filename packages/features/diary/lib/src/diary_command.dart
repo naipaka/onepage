@@ -8,7 +8,7 @@ class DiaryCommand {
   ///
   /// The [dbClient] parameter is required and should be an instance
   /// of [DbClient] that will be used to perform database operations.
-  const DiaryCommand({
+  const new({
     required this.dbClient,
   });
 
