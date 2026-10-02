@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: adaptive_dialog
-      sha256: "927abcec1ef7fb6386a9a87cf30675b987b5cd2d838b62dea38edc2e75ea233e"
+      sha256: b087695fc9e3b603f4481c4178448db54d5fb2497d3e929fbc2037556fb8cdbd
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.1"
+    version: "2.8.3"
   altive_lints:
     dependency: transitive
     description:
@@ -1130,10 +1130,10 @@ packages:
     dependency: transitive
     description:
       name: pdf
-      sha256: "517df47af468734a23c8b513c0c6a8a62357403ab1b8ab7fad1606576a9dbdd0"
+      sha256: "6e40827f370d196e97c6611724d923a3d86c431ce8e2ce1e59edd03a67a1a6e6"
       url: "https://pub.dev"
     source: hosted
-    version: "3.13.0"
+    version: "3.13.1"
   pdf_widget_wrapper:
     dependency: transitive
     description:
@@ -1202,10 +1202,10 @@ packages:
     dependency: transitive
     description:
       name: printing
-      sha256: f6cd14c768c1352dd37a958a3ee351aa9ce305b398218d3acd86389d5f7ecad1
+      sha256: "0f72f29f2e08b8453b7a45b6c7781eb792b1da3468bf0910be0eb3b1d6781f49"
       url: "https://pub.dev"
     source: hosted
-    version: "5.15.0"
+    version: "5.15.1"
   process:
     dependency: transitive
     description:
