@@ -9,7 +9,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  adaptive_dialog: ^2.8.1
+  adaptive_dialog: ^2.8.3
   app_settings: ^7.0.0
   backup:
     path: ../features/backup/
@@ -57,7 +57,7 @@ dependencies:
     path: ../core/tracker/
   update_requester:
     path: ../features/update_requester/
-  url_launcher: ^6.3.2
+  url_launcher: ^6.3.3
   utils:
     path: ../core/utils/
   visibility_detector: ^0.4.0+2
