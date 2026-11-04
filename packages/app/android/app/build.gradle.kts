@@ -73,10 +73,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
-    }
-
     sourceSets {
         named("main") {
             java.srcDirs("src/main/kotlin")
@@ -144,7 +140,7 @@ dependencies {
     
     // Import the Firebase BoM.
     // When using BoM, it is not necessary to specify the version in each Firebase library dependency.
-    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation(platform("com.google.firebase:firebase-bom:35.1.0"))
 
     // See https://firebase.google.com/docs/android/setup#available-libraries
     implementation("com.google.firebase:firebase-analytics")
