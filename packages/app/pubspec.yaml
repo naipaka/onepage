@@ -50,7 +50,7 @@ dependencies:
   riverpod_annotation: ^4.0.7
   scroll_calendar:
     path: ../features/scroll_calendar/
-  share_plus: ^12.0.1
+  share_plus: ^12.0.2
   theme:
     path: ../core/theme/
   tracker:
