@@ -62,8 +62,8 @@ class BackupController {
   /// Restores database from a backup file selected by user.
   Future<String?> restoreBackupFile() async {
     // Select backup file.
-    final result = await FilePicker.platform.pickFiles();
-    final backupFilePath = result?.files.single.path;
+    final file = await FilePicker.pickFile();
+    final backupFilePath = file?.path;
     if (backupFilePath == null) {
       return backupFilePath;
     }
