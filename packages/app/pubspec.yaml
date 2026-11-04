@@ -76,7 +76,7 @@ dev_dependencies:
   meta: ^1.19.0
   mockito: ^5.8.1
   package_info_plus: ^9.0.1
-  patrol: ^4.6.1
+  patrol: ^4.10.0
   riverpod_generator: ^4.0.9
   riverpod_lint: 3.1.9
 
