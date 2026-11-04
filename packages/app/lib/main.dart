@@ -9,6 +9,8 @@ import 'app_initializer.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await AppInitializer.initializeFirebase();
+
   final tracker = Tracker();
   // Logs errors caught by the Flutter framework.
   FlutterError.onError = tracker.onFlutterError;

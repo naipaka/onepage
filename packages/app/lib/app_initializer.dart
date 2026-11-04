@@ -13,28 +13,25 @@ import 'environment/environment.dart';
 
 /// {@template onepage.AppInitializer}
 /// Initializes dependencies and builds the app widget tree.
-///
-/// Shared between `main` and patrol tests. Does not call
-/// [WidgetsFlutterBinding.ensureInitialized], [runApp], or set up
-/// error handlers — those are the caller's responsibility.
 /// {@endtemplate}
 class AppInitializer {
   /// {@macro onepage.AppInitializer}
   const new _();
 
+  /// Initializes the default Firebase app.
+  static Future<void> initializeFirebase() async {
+    // Passing options would duplicate the [DEFAULT] app that is already
+    // configured natively from the per-flavor GoogleService-Info.plist /
+    // google-services.json.
+    await Firebase.initializeApp();
+  }
+
   /// Initializes async dependencies and returns the root widget.
   static Future<Widget> createApp({Tracker? tracker}) async {
     final flavor = Flavor.values.byName(const String.fromEnvironment('flavor'));
 
-    // The default app is auto-initialized natively from the bundled
-    // GoogleService-Info.plist (iOS) / google-services.json (Android), which are
-    // selected per flavor at build time. Initialize without explicit options to
-    // avoid a duplicate [DEFAULT] app.
-    await Firebase.initializeApp();
-
     final effectiveTracker = tracker ?? Tracker();
 
-    // Initialize locale and preferences concurrently
     final (_, prefsClient) = await (
       LocaleSettings.useDeviceLocale(),
       PrefsClient.initialize(),

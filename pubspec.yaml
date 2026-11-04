@@ -49,8 +49,6 @@ melos:
       hooks:
         post: |
           melos exec --flutter -- "flutter clean"
-          melos exec --flutter --file-exists="ios/Podfile.lock" -- "cd ios && rm Podfile.lock"
-          melos exec --flutter --file-exists="macos/Podfile.lock" -- "cd macos && rm Podfile.lock"
     version:
       branch: main
       releaseUrl: true
@@ -59,11 +57,7 @@ melos:
     # Issue on file exclusion feature: https://github.com/dart-lang/dart_style/issues/864
     format:ci:
       # `exec:` runs this inside each package, so `find .` lists that package's
-      # own files. (With `run: melos exec -- ... $(find .)` the substitution
-      # happened once at the workspace root, and every package then received
-      # root-relative paths that do not exist from its own directory; `dart
-      # format` exits 0 when all of its paths are missing, so the check never
-      # inspected a single file.)
+      # own files.
       #
       # `-exec ... {} +` is what makes `exec:` safe here: it passes all matches
       # to one `dart format` call, runs nothing when there are no matches (a
@@ -201,35 +195,6 @@ melos:
         flutter: true
         dirExists: lib
         dependsOn: "firebase_core"
-
-    pod:
-      exec: |
-        melos run pod:ios --no-select
-        melos run pod:macos --no-select
-      description: Clean install the Pods
-      packageFilters:
-        dirExists: [lib, ios]
-        fileExists: "ios/Podfile"
-
-    pod:ios:
-      exec: |
-        cd ios
-        rm -f Podfile.lock
-        pod install --repo-update
-      description: Run pod install on iOS.
-      packageFilters:
-        dirExists: [lib, ios]
-        fileExists: "ios/Podfile"
-
-    pod:macos:
-      exec: |
-        cd macos
-        rm -f Podfile.lock
-        pod install --repo-update
-      description: Run pod install on macOS.
-      packageFilters:
-        dirExists: [lib, macos]
-        fileExists: "macos/Podfile"
 
     build:android:prod:
       run: |

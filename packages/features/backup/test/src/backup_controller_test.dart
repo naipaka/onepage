@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:backup/src/backup_controller.dart';
 import 'package:clock/clock.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as p;
@@ -100,13 +99,7 @@ void main() {
           final validBackupFile = File('/tmp/import.sqlite');
 
           setMockFilePickerResult(
-            FilePickerResult([
-              PlatformFile(
-                path: backupFilePath,
-                name: 'backup.backup',
-                size: 100,
-              ),
-            ]),
+            FakePlatformFile(backupFilePath),
           );
 
           when(
@@ -136,13 +129,7 @@ void main() {
         const backupFilePath = '/path/to/backup.backup';
 
         setMockFilePickerResult(
-          FilePickerResult([
-            PlatformFile(
-              path: backupFilePath,
-              name: 'backup.backup',
-              size: 100,
-            ),
-          ]),
+          FakePlatformFile(backupFilePath),
         );
 
         when(

@@ -93,6 +93,10 @@ class WidgetName extends StatelessWidget {
   - ❌ Bad: Describe what the code does (the code itself should be clear)
   - ❌ Bad: Explain obvious reasoning
 - **Code should be self-documenting** through clear naming and structure
+- Write a comment only for what the code can't say: a reason a reader can't see (an external bug, a spec, a measured trade-off), a surprising behavior, or a public API contract.
+- Don't narrate the code, record history or what a change decided against (commits and PRs do that), or leave commented-out code. Every TODO links an issue.
+- Don't copy a workaround from elsewhere in the codebase. Fix the cause, or ask.
+- Enforce a rule that matters with a type, assertion or test, not a comment.
 - **Examples**:
   ```dart
   // ❌ BAD - Explains what the code does

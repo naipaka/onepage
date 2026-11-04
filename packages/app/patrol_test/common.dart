@@ -10,17 +10,14 @@ export 'package:patrol/patrol.dart';
 
 /// Starts the app with the same initialization path as production.
 ///
-/// Patrol tests must not call `runApp`. The root widget is created by
-/// [AppInitializer.createApp] and mounted with
-/// [PatrolIntegrationTester.pumpWidget].
-///
-/// [K.homePage] confirms that app initialization completed. [K.diaryCalendar]
-/// confirms that diary data was loaded and the main content was rendered.
+/// Patrol tests mount the root widget with [PatrolIntegrationTester.pumpWidget]
+/// instead of calling `runApp`, as Patrol's setup docs require.
 ///
 /// The ready waits use a longer timeout than Patrol's default because a cold
 /// simulator can spend more than 10 seconds before rendering the app shell or
 /// diary data.
 Future<void> createApp(PatrolIntegrationTester $) async {
+  await AppInitializer.initializeFirebase();
   final app = await AppInitializer.createApp();
   await $.pumpWidget(app);
   await $.waitUntilVisible($(K.homePage), timeout: const Duration(seconds: 30));
