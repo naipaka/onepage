@@ -14,13 +14,11 @@ export 'package:patrol/patrol.dart';
 /// [AppInitializer.createApp] and mounted with
 /// [PatrolIntegrationTester.pumpWidget].
 ///
-/// [K.homePage] confirms that app initialization completed. [K.diaryCalendar]
-/// confirms that diary data was loaded and the main content was rendered.
-///
 /// The ready waits use a longer timeout than Patrol's default because a cold
 /// simulator can spend more than 10 seconds before rendering the app shell or
 /// diary data.
 Future<void> createApp(PatrolIntegrationTester $) async {
+  await AppInitializer.initializeFirebase();
   final app = await AppInitializer.createApp();
   await $.pumpWidget(app);
   await $.waitUntilVisible($(K.homePage), timeout: const Duration(seconds: 30));
