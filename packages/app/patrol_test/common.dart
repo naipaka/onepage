@@ -10,9 +10,8 @@ export 'package:patrol/patrol.dart';
 
 /// Starts the app with the same initialization path as production.
 ///
-/// Patrol tests must not call `runApp`. The root widget is created by
-/// [AppInitializer.createApp] and mounted with
-/// [PatrolIntegrationTester.pumpWidget].
+/// Patrol tests mount the root widget with [PatrolIntegrationTester.pumpWidget]
+/// instead of calling `runApp`, as Patrol's setup docs require.
 ///
 /// The ready waits use a longer timeout than Patrol's default because a cold
 /// simulator can spend more than 10 seconds before rendering the app shell or
