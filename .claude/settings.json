@@ -7,7 +7,6 @@
       "Bash(melos list:*)",
       "Bash(melos bootstrap:*)",
       "Bash(melos clean:*)",
-      "Bash(melos pod:*)",
       "Bash(dart analyze:*)",
       "Bash(dart format:*)",
       "Bash(dart test:*)",

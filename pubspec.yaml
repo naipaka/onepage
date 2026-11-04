@@ -49,8 +49,6 @@ melos:
       hooks:
         post: |
           melos exec --flutter -- "flutter clean"
-          melos exec --flutter --file-exists="ios/Podfile.lock" -- "cd ios && rm Podfile.lock"
-          melos exec --flutter --file-exists="macos/Podfile.lock" -- "cd macos && rm Podfile.lock"
     version:
       branch: main
       releaseUrl: true
@@ -201,35 +199,6 @@ melos:
         flutter: true
         dirExists: lib
         dependsOn: "firebase_core"
-
-    pod:
-      exec: |
-        melos run pod:ios --no-select
-        melos run pod:macos --no-select
-      description: Clean install the Pods
-      packageFilters:
-        dirExists: [lib, ios]
-        fileExists: "ios/Podfile"
-
-    pod:ios:
-      exec: |
-        cd ios
-        rm -f Podfile.lock
-        pod install --repo-update
-      description: Run pod install on iOS.
-      packageFilters:
-        dirExists: [lib, ios]
-        fileExists: "ios/Podfile"
-
-    pod:macos:
-      exec: |
-        cd macos
-        rm -f Podfile.lock
-        pod install --repo-update
-      description: Run pod install on macOS.
-      packageFilters:
-        dirExists: [lib, macos]
-        fileExists: "macos/Podfile"
 
     build:android:prod:
       run: |
