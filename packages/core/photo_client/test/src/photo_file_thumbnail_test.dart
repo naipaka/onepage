@@ -44,6 +44,32 @@ void main() {
     expect(resized.policy, ResizeImagePolicy.fit);
   });
 
+  testWidgets('shows a placeholder in the viewer when the file is missing', (
+    tester,
+  ) async {
+    await tester.pumpWidget(build());
+
+    await tester.tap(find.byType(PhotoFileThumbnail));
+    await tester.pumpAndSettle();
+    final viewerImage = find.byWidgetPredicate(
+      (widget) => widget is Image && widget.image is FileImage,
+    );
+    final image = tester.widget<Image>(viewerImage);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        key: UniqueKey(),
+        home: Builder(
+          builder: (context) {
+            return image.errorBuilder!(context, Exception(), null);
+          },
+        ),
+      ),
+    );
+
+    expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
+  });
+
   testWidgets('opens the viewer with its actions', (tester) async {
     var deleted = false;
     var infoShown = false;

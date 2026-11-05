@@ -216,7 +216,6 @@ class PhotoFileThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final pixelRatio = MediaQuery.devicePixelRatioOf(context);
     final cacheSize = (max(width, height) * pixelRatio * 2).toInt();
     final heroTag = file.path;
@@ -227,7 +226,10 @@ class PhotoFileThumbnail extends StatelessWidget {
           pageBuilder: (_, _, _) {
             return _PhotoViewer(
               heroTag: heroTag,
-              image: Image.file(file),
+              image: Image.file(
+                file,
+                errorBuilder: (_, _, _) => const _BrokenPhoto(),
+              ),
               onDeleted: onDeleted,
               onInfoShown: onInfoShown,
             );
@@ -256,20 +258,41 @@ class PhotoFileThumbnail extends StatelessWidget {
             height: height,
             fit: BoxFit.cover,
             errorBuilder: (_, _, _) {
-              return ColoredBox(
-                color: colorScheme.surfaceContainerHighest,
-                child: SizedBox(
-                  width: width,
-                  height: height,
-                  child: Icon(
-                    Icons.broken_image_outlined,
-                    size: 48,
-                    color: colorScheme.onSurface.withValues(alpha: 0.6),
-                  ),
-                ),
-              );
+              return _BrokenPhoto(width: width, height: height);
             },
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// {@template photo_client._BrokenPhoto}
+/// A placeholder shown when a photo file cannot be read.
+/// {@endtemplate}
+class _BrokenPhoto extends StatelessWidget {
+  /// {@macro photo_client._BrokenPhoto}
+  const new({this.width, this.height});
+
+  /// The width of the placeholder in logical pixels.
+  final double? width;
+
+  /// The height of the placeholder in logical pixels.
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return ColoredBox(
+      color: colorScheme.surfaceContainerHighest,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Icon(
+          Icons.broken_image_outlined,
+          size: 48,
+          color: colorScheme.onSurface.withValues(alpha: 0.6),
         ),
       ),
     );
