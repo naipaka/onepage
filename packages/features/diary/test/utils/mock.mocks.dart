@@ -4,14 +4,17 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
+import 'dart:io' as _i7;
+import 'dart:typed_data' as _i11;
 
 import 'package:db_client/src/db_client.dart' as _i3;
-import 'package:db_client/src/models/diary.dart' as _i8;
+import 'package:db_client/src/models/diary.dart' as _i9;
 import 'package:drift/backends.dart' as _i4;
 import 'package:drift/drift.dart' as _i2;
 import 'package:drift/src/runtime/executor/stream_queries.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i7;
+import 'package:mockito/src/dummies.dart' as _i8;
+import 'package:photo_storage/src/photo_storage.dart' as _i10;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -167,6 +170,16 @@ class _FakeGenerationContext_23 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
+class _FakeDirectory_24 extends _i1.SmartFake implements _i7.Directory {
+  _FakeDirectory_24(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeFile_25 extends _i1.SmartFake implements _i7.File {
+  _FakeFile_25(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [DbClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
@@ -308,11 +321,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   _i2.SqlTypes get typeMapping => (super.noSuchMethod(
     Invocation.getter(#typeMapping),
-    returnValue: _i7.dummyValue<_i2.SqlTypes>(
+    returnValue: _i8.dummyValue<_i2.SqlTypes>(
       this,
       Invocation.getter(#typeMapping),
     ),
-    returnValueForMissingStub: _i7.dummyValue<_i2.SqlTypes>(
+    returnValueForMissingStub: _i8.dummyValue<_i2.SqlTypes>(
       this,
       Invocation.getter(#typeMapping),
     ),
@@ -383,14 +396,14 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) as _i6.Future<_i3.DiaryEntry>);
 
   @override
-  _i6.Future<List<_i8.Diary>> getDiaries({
+  _i6.Future<List<_i9.Diary>> getDiaries({
     required DateTime? from,
     required DateTime? to,
   }) => (super.noSuchMethod(
     Invocation.method(#getDiaries, [], {#from: from, #to: to}),
-    returnValue: _i6.Future<List<_i8.Diary>>.value(<_i8.Diary>[]),
-    returnValueForMissingStub: _i6.Future<List<_i8.Diary>>.value(<_i8.Diary>[]),
-  ) as _i6.Future<List<_i8.Diary>>);
+    returnValue: _i6.Future<List<_i9.Diary>>.value(<_i9.Diary>[]),
+    returnValueForMissingStub: _i6.Future<List<_i9.Diary>>.value(<_i9.Diary>[]),
+  ) as _i6.Future<List<_i9.Diary>>);
 
   @override
   _i6.Future<int> updateDiary({required int? id, required String? content}) =>
@@ -433,11 +446,13 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   _i6.Future<_i3.DiaryImage> insertDiaryImage({
     required int? diaryId,
-    required String? photoId,
+    String? photoId,
+    String? fileName,
   }) => (super.noSuchMethod(
     Invocation.method(#insertDiaryImage, [], {
       #diaryId: diaryId,
       #photoId: photoId,
+      #fileName: fileName,
     }),
     returnValue: _i6.Future<_i3.DiaryImage>.value(
       _FakeDiaryImage_13(
@@ -445,6 +460,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
         Invocation.method(#insertDiaryImage, [], {
           #diaryId: diaryId,
           #photoId: photoId,
+          #fileName: fileName,
         }),
       ),
     ),
@@ -454,17 +470,19 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
         Invocation.method(#insertDiaryImage, [], {
           #diaryId: diaryId,
           #photoId: photoId,
+          #fileName: fileName,
         }),
       ),
     ),
   ) as _i6.Future<_i3.DiaryImage>);
 
   @override
-  _i6.Future<int> deleteDiaryImage({required int? id}) => (super.noSuchMethod(
-    Invocation.method(#deleteDiaryImage, [], {#id: id}),
-    returnValue: _i6.Future<int>.value(0),
-    returnValueForMissingStub: _i6.Future<int>.value(0),
-  ) as _i6.Future<int>);
+  _i6.Future<String?> deleteDiaryImage({required int? id}) =>
+      (super.noSuchMethod(
+        Invocation.method(#deleteDiaryImage, [], {#id: id}),
+        returnValue: _i6.Future<String?>.value(),
+        returnValueForMissingStub: _i6.Future<String?>.value(),
+      ) as _i6.Future<String?>);
 
   @override
   _i6.Stream<int> watchDiaryImageCount() => (super.noSuchMethod(
@@ -510,8 +528,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       #connect: connect,
     }),
     returnValue:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<Ret>(
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<Ret>(
             this,
             Invocation.method(#computeWithDatabase, [], {
               #computation: computation,
@@ -528,8 +546,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           }),
         ),
     returnValueForMissingStub:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<Ret>(
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<Ret>(
             this,
             Invocation.method(#computeWithDatabase, [], {
               #computation: computation,
@@ -560,11 +578,11 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   T alias<T, D>(_i2.ResultSetImplementation<T, D>? table, String? alias) =>
       (super.noSuchMethod(
         Invocation.method(#alias, [table, alias]),
-        returnValue: _i7.dummyValue<T>(
+        returnValue: _i8.dummyValue<T>(
           this,
           Invocation.method(#alias, [table, alias]),
         ),
-        returnValueForMissingStub: _i7.dummyValue<T>(
+        returnValueForMissingStub: _i8.dummyValue<T>(
           this,
           Invocation.method(#alias, [table, alias]),
         ),
@@ -598,14 +616,14 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) => (super.noSuchMethod(
     Invocation.method(#doWhenOpened, [fn]),
     returnValue:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<T>(this, Invocation.method(#doWhenOpened, [fn])),
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<T>(this, Invocation.method(#doWhenOpened, [fn])),
           (T v) => _i6.Future<T>.value(v),
         ) ??
         _FakeFuture_15<T>(this, Invocation.method(#doWhenOpened, [fn])),
     returnValueForMissingStub:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<T>(this, Invocation.method(#doWhenOpened, [fn])),
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<T>(this, Invocation.method(#doWhenOpened, [fn])),
           (T v) => _i6.Future<T>.value(v),
         ) ??
         _FakeFuture_15<T>(this, Invocation.method(#doWhenOpened, [fn])),
@@ -825,8 +843,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   }) => (super.noSuchMethod(
     Invocation.method(#transaction, [action], {#requireNew: requireNew}),
     returnValue:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<T>(
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<T>(
             this,
             Invocation.method(
               #transaction,
@@ -841,8 +859,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           Invocation.method(#transaction, [action], {#requireNew: requireNew}),
         ),
     returnValueForMissingStub:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<T>(
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<T>(
             this,
             Invocation.method(
               #transaction,
@@ -863,8 +881,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       (super.noSuchMethod(
         Invocation.method(#exclusively, [action]),
         returnValue:
-            _i7.ifNotNull(
-              _i7.dummyValueOrNull<T>(
+            _i8.ifNotNull(
+              _i8.dummyValueOrNull<T>(
                 this,
                 Invocation.method(#exclusively, [action]),
               ),
@@ -872,8 +890,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
             ) ??
             _FakeFuture_15<T>(this, Invocation.method(#exclusively, [action])),
         returnValueForMissingStub:
-            _i7.ifNotNull(
-              _i7.dummyValueOrNull<T>(
+            _i8.ifNotNull(
+              _i8.dummyValueOrNull<T>(
                 this,
                 Invocation.method(#exclusively, [action]),
               ),
@@ -901,8 +919,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       {#interceptor: interceptor},
     ),
     returnValue:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<T>(
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<T>(
             this,
             Invocation.method(
               #runWithInterceptor,
@@ -921,8 +939,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
           ),
         ),
     returnValueForMissingStub:
-        _i7.ifNotNull(
-          _i7.dummyValueOrNull<T>(
+        _i8.ifNotNull(
+          _i8.dummyValueOrNull<T>(
             this,
             Invocation.method(
               #runWithInterceptor,
@@ -1003,13 +1021,56 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   String $expandVar(int? start, int? amount) => (super.noSuchMethod(
     Invocation.method(#$expandVar, [start, amount]),
-    returnValue: _i7.dummyValue<String>(
+    returnValue: _i8.dummyValue<String>(
       this,
       Invocation.method(#$expandVar, [start, amount]),
     ),
-    returnValueForMissingStub: _i7.dummyValue<String>(
+    returnValueForMissingStub: _i8.dummyValue<String>(
       this,
       Invocation.method(#$expandVar, [start, amount]),
     ),
   ) as String);
+}
+
+/// A class which mocks [PhotoStorage].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPhotoStorage extends _i1.Mock implements _i10.PhotoStorage {
+  @override
+  _i7.Directory get directory => (super.noSuchMethod(
+    Invocation.getter(#directory),
+    returnValue: _FakeDirectory_24(this, Invocation.getter(#directory)),
+    returnValueForMissingStub: _FakeDirectory_24(
+      this,
+      Invocation.getter(#directory),
+    ),
+  ) as _i7.Directory);
+
+  @override
+  _i7.File file(String? fileName) => (super.noSuchMethod(
+    Invocation.method(#file, [fileName]),
+    returnValue: _FakeFile_25(this, Invocation.method(#file, [fileName])),
+    returnValueForMissingStub: _FakeFile_25(
+      this,
+      Invocation.method(#file, [fileName]),
+    ),
+  ) as _i7.File);
+
+  @override
+  _i6.Future<String> save(_i11.Uint8List? bytes) => (super.noSuchMethod(
+    Invocation.method(#save, [bytes]),
+    returnValue: _i6.Future<String>.value(
+      _i8.dummyValue<String>(this, Invocation.method(#save, [bytes])),
+    ),
+    returnValueForMissingStub: _i6.Future<String>.value(
+      _i8.dummyValue<String>(this, Invocation.method(#save, [bytes])),
+    ),
+  ) as _i6.Future<String>);
+
+  @override
+  _i6.Future<void> delete(String? fileName) => (super.noSuchMethod(
+    Invocation.method(#delete, [fileName]),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
 }
