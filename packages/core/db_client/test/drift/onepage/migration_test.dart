@@ -7,6 +7,7 @@ import 'generated/schema.dart';
 import 'generated/schema_v1.dart' as v1;
 import 'generated/schema_v2.dart' as v2;
 import 'generated/schema_v3.dart' as v3;
+import 'generated/schema_v4.dart' as v4;
 
 void main() {
   driftRuntimeOptions.dontWarnAboutMultipleDatabases = true;
@@ -81,6 +82,60 @@ void main() {
         final indexes = await newDb.customSelect(selectIndexQuery).get();
         expect(indexes.length, 1);
         expect(indexes.first.data['name'], 'idx_diaries_date');
+      },
+    );
+  });
+
+  test('migration from v3 to v4 keeps diary images', () async {
+    final timestamp = DateTime(2024).millisecondsSinceEpoch ~/ 1000;
+
+    await verifier.testWithDataIntegrity(
+      oldVersion: 3,
+      newVersion: 4,
+      createOld: v3.DatabaseAtV3.new,
+      createNew: v4.DatabaseAtV4.new,
+      openTestedDatabase: DbClient.new,
+      createItems: (batch, oldDb) async {
+        batch
+          ..insert(
+            oldDb.diaries,
+            v3.DiariesData(
+              id: 1,
+              content: 'Test diary',
+              date: timestamp,
+              createdAt: timestamp,
+              updatedAt: timestamp,
+            ),
+          )
+          ..insert(
+            oldDb.diaryImages,
+            v3.DiaryImagesData(
+              id: 1,
+              diaryId: 1,
+              photoId: 'photo-id',
+              createdAt: timestamp,
+              updatedAt: timestamp,
+            ),
+          );
+      },
+      validateItems: (newDb) async {
+        expect(await newDb.select(newDb.diaryImages).get(), [
+          v4.DiaryImagesData(
+            id: 1,
+            diaryId: 1,
+            photoId: 'photo-id',
+            createdAt: timestamp,
+            updatedAt: timestamp,
+          ),
+        ]);
+
+        final indexes = await newDb
+            .customSelect(
+              'SELECT name FROM sqlite_master '
+              "WHERE type='index' AND name='idx_diary_images_diary_id'",
+            )
+            .get();
+        expect(indexes, hasLength(1));
       },
     );
   });

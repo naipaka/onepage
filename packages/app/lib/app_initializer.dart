@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:photo_storage/photo_storage.dart';
 import 'package:prefs_client/prefs_client.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:tracker/tracker.dart';
@@ -32,9 +33,10 @@ class AppInitializer {
 
     final effectiveTracker = tracker ?? Tracker();
 
-    final (_, prefsClient) = await (
+    final (_, prefsClient, photoStorage) = await (
       LocaleSettings.useDeviceLocale(),
       PrefsClient.initialize(),
+      PhotoStorage.create(),
     ).wait;
 
     const providerLogPrint = String.fromEnvironment('providerLogPrint');
@@ -49,6 +51,7 @@ class AppInitializer {
         flavorProvider.overrideWithValue(flavor),
         trackerProvider.overrideWithValue(effectiveTracker),
         prefsClientProvider.overrideWithValue(prefsClient),
+        photoStorageProvider.overrideWithValue(photoStorage),
       ],
       observers: [providerLogger],
       child: TranslationProvider(child: const App()),

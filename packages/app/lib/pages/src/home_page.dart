@@ -319,10 +319,10 @@ class _DiaryItem extends ConsumerWidget {
               },
             ),
           ),
-          if (images.isNotEmpty) ...[
+          if (images.firstOrNull?.photoId case final photoId?) ...[
             const Gap(8),
             PhotoThumbnail(
-              photoId: images.first.photoId,
+              photoId: photoId,
               width: 64,
               height: 64,
               onDeleted: deleteImage,

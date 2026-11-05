@@ -29,7 +29,7 @@ class DbClient extends _$DbClient {
   new forTesting(super.e);
 
   @override
-  int get schemaVersion => 3;
+  int get schemaVersion => 4;
 
   /// Opens a connection to the database.
   ///
@@ -55,6 +55,14 @@ class DbClient extends _$DbClient {
         from2To3: (m, schema) async {
           await m.createTable(schema.diaryImages);
           await m.createIndex(schema.idxDiaryImagesDiaryId);
+        },
+        from3To4: (m, schema) async {
+          await m.alterTable(
+            TableMigration(
+              schema.diaryImages,
+              newColumns: [schema.diaryImages.fileName],
+            ),
+          );
         },
       ),
     );
@@ -180,16 +188,19 @@ class DbClient extends _$DbClient {
 
   /// Adds a diary image entry to the database.
   ///
-  /// This method takes [diaryId] and [photoId] as parameters and inserts
-  /// a new diary image entry into the 'diary_images' table.
-  /// It returns the inserted diary image entry.
+  /// This method takes [diaryId] and either [photoId] or [fileName] as
+  /// parameters and inserts a new diary image entry into the 'diary_images'
+  /// table. It returns the inserted diary image entry.
   Future<DiaryImage> insertDiaryImage({
     required int diaryId,
-    required String photoId,
+    // NOTE: Remove this parameter once new photos are stored as files.
+    String? photoId,
+    String? fileName,
   }) {
     final diaryImage = DiaryImagesCompanion(
       diaryId: Value(diaryId),
       photoId: Value(photoId),
+      fileName: Value(fileName),
     );
     return into(diaryImages).insertReturning(diaryImage);
   }
@@ -198,10 +209,11 @@ class DbClient extends _$DbClient {
   ///
   /// This method takes an integer [id] as a parameter and deletes
   /// the diary image with the specified ID.
-  /// It returns the number of rows affected.
-  Future<int> deleteDiaryImage({required int id}) {
+  /// It returns the name of the deleted image's file, if it has one.
+  Future<String?> deleteDiaryImage({required int id}) async {
     final query = delete(diaryImages)..where((tbl) => tbl.id.equals(id));
-    return query.go();
+    final deleted = await query.goAndReturn();
+    return deleted.firstOrNull?.fileName;
   }
 
   /// Watches the total count of diary images in the database.

@@ -449,11 +449,13 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   _i6.Future<_i3.DiaryImage> insertDiaryImage({
     required int? diaryId,
-    required String? photoId,
+    String? photoId,
+    String? fileName,
   }) => (super.noSuchMethod(
     Invocation.method(#insertDiaryImage, [], {
       #diaryId: diaryId,
       #photoId: photoId,
+      #fileName: fileName,
     }),
     returnValue: _i6.Future<_i3.DiaryImage>.value(
       _FakeDiaryImage_13(
@@ -461,6 +463,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
         Invocation.method(#insertDiaryImage, [], {
           #diaryId: diaryId,
           #photoId: photoId,
+          #fileName: fileName,
         }),
       ),
     ),
@@ -470,17 +473,19 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
         Invocation.method(#insertDiaryImage, [], {
           #diaryId: diaryId,
           #photoId: photoId,
+          #fileName: fileName,
         }),
       ),
     ),
   ) as _i6.Future<_i3.DiaryImage>);
 
   @override
-  _i6.Future<int> deleteDiaryImage({required int? id}) => (super.noSuchMethod(
-    Invocation.method(#deleteDiaryImage, [], {#id: id}),
-    returnValue: _i6.Future<int>.value(0),
-    returnValueForMissingStub: _i6.Future<int>.value(0),
-  ) as _i6.Future<int>);
+  _i6.Future<String?> deleteDiaryImage({required int? id}) =>
+      (super.noSuchMethod(
+        Invocation.method(#deleteDiaryImage, [], {#id: id}),
+        returnValue: _i6.Future<String?>.value(),
+        returnValueForMissingStub: _i6.Future<String?>.value(),
+      ) as _i6.Future<String?>);
 
   @override
   _i6.Stream<int> watchDiaryImageCount() => (super.noSuchMethod(

@@ -43,6 +43,8 @@ dependencies:
     path: ../core/notification_client/
   photo_client:
     path: ../core/photo_client/
+  photo_storage:
+    path: ../core/photo_storage/
   prefs_client:
     path: ../core/prefs_client/
   provider_utils:

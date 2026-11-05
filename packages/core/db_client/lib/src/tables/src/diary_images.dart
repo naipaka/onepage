@@ -24,7 +24,14 @@ class DiaryImages extends Table {
   /// This column stores the platform-specific photo identifier:
   /// - iOS: PHAsset localIdentifier
   /// - Android: MediaStore ID
-  TextColumn get photoId => text()();
+  ///
+  /// It is null for photos that were added as app files.
+  TextColumn get photoId => text().nullable()();
+
+  /// The name of the photo file stored by the app.
+  ///
+  /// It is null for photos that exist only in the device's photo library.
+  TextColumn get fileName => text().nullable()();
 
   /// The creation timestamp of the diary image entry.
   ///
