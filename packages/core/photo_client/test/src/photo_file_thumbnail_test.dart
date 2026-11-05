@@ -31,6 +31,19 @@ void main() {
     expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
   });
 
+  testWidgets('decodes up to twice the display size on the long edge', (
+    tester,
+  ) async {
+    await tester.pumpWidget(build());
+
+    final image = tester.widget<Image>(find.byType(Image).first);
+    final resized = image.image as ResizeImage;
+
+    expect(resized.width, 384);
+    expect(resized.height, 384);
+    expect(resized.policy, ResizeImagePolicy.fit);
+  });
+
   testWidgets('opens the viewer with its actions', (tester) async {
     var deleted = false;
     var infoShown = false;

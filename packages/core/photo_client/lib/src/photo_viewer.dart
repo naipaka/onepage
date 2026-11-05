@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -217,6 +218,7 @@ class PhotoFileThumbnail extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final pixelRatio = MediaQuery.devicePixelRatioOf(context);
+    final cacheSize = (max(width, height) * pixelRatio * 2).toInt();
     final heroTag = file.path;
 
     Future<void> showPhotoViewer() async {
@@ -243,11 +245,15 @@ class PhotoFileThumbnail extends StatelessWidget {
         tag: heroTag,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: Image.file(
-            file,
+          child: Image(
+            image: ResizeImage(
+              FileImage(file),
+              width: cacheSize,
+              height: cacheSize,
+              policy: ResizeImagePolicy.fit,
+            ),
             width: width,
             height: height,
-            cacheWidth: (width * pixelRatio).toInt(),
             fit: BoxFit.cover,
             errorBuilder: (_, _, _) {
               return ColoredBox(

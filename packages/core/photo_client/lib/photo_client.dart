@@ -2,4 +2,5 @@
 library;
 
 export 'src/photo_picker.dart';
+export 'src/photo_selector.dart';
 export 'src/photo_viewer.dart';
