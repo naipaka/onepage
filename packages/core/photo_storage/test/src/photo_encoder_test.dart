@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/services.dart';
@@ -14,19 +15,24 @@ void main() {
   final encoded = Uint8List.fromList([0xFF, 0xD8]);
   late List<Object?> arguments;
 
-  Future<Uint8List> imageOf(int width, int height) async {
+  late Directory directory;
+
+  Future<String> imageOf(int width, int height) async {
     final recorder = ui.PictureRecorder();
     ui.Canvas(recorder);
     final image = await recorder.endRecording().toImage(width, height);
     final data = await image.toByteData(format: ui.ImageByteFormat.png);
     image.dispose();
-    return data!.buffer.asUint8List();
+    final file = File('${directory.path}/photo.png')
+      ..writeAsBytesSync(data!.buffer.asUint8List());
+    return file.path;
   }
 
   setUp(() {
+    directory = Directory.systemTemp.createTempSync('photo_encoder_test');
     FlutterImageCompressCommon.registerWith();
     messenger.setMockMethodCallHandler(channel, (call) async {
-      if (call.method == 'compressWithList') {
+      if (call.method == 'compressWithFile') {
         arguments = call.arguments as List<Object?>;
         return encoded;
       }
@@ -36,9 +42,17 @@ void main() {
 
   tearDown(() {
     messenger.setMockMethodCallHandler(channel, null);
+    directory.deleteSync(recursive: true);
   });
 
   group('encode', () {
+    test('fails when the photo cannot be compressed', () async {
+      messenger.setMockMethodCallHandler(channel, (call) async => null);
+      final path = await imageOf(100, 50);
+
+      await expectLater(const PhotoEncoder().encode(path), throwsA(anything));
+    });
+
     test('returns the compressed bytes at the configured quality', () async {
       final result = await const PhotoEncoder().encode(await imageOf(100, 50));
 
@@ -73,7 +87,7 @@ void main() {
     test('decodes large photos at a reduced size', () async {
       await const PhotoEncoder().encode(await imageOf(6400, 100));
 
-      expect(arguments.last, 4);
+      expect(arguments[8], 4);
     });
   });
 }

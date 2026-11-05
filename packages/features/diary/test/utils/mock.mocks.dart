@@ -1034,14 +1034,13 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
 /// See the documentation for Mockito's code generation for more information.
 class MockPhotoEncoder extends _i1.Mock implements _i10.PhotoEncoder {
   @override
-  _i6.Future<_i11.Uint8List> encode(_i11.Uint8List? bytes) =>
-      (super.noSuchMethod(
-        Invocation.method(#encode, [bytes]),
-        returnValue: _i6.Future<_i11.Uint8List>.value(_i11.Uint8List(0)),
-        returnValueForMissingStub: _i6.Future<_i11.Uint8List>.value(
-          _i11.Uint8List(0),
-        ),
-      ) as _i6.Future<_i11.Uint8List>);
+  _i6.Future<_i11.Uint8List> encode(String? path) => (super.noSuchMethod(
+    Invocation.method(#encode, [path]),
+    returnValue: _i6.Future<_i11.Uint8List>.value(_i11.Uint8List(0)),
+    returnValueForMissingStub: _i6.Future<_i11.Uint8List>.value(
+      _i11.Uint8List(0),
+    ),
+  ) as _i6.Future<_i11.Uint8List>);
 }
 
 /// A class which mocks [PhotoStorage].

@@ -941,6 +941,8 @@ class _ImageSelectionActionButton extends ConsumerWidget {
     final tracker = ref.watch(trackerProvider);
     final prefsClient = ref.watch(prefsClientProvider);
     final imageCount = ref.watch(diaryImageCountProvider);
+    final isSavingImage = ref.watch(diaryImageSavingProvider);
+    final imageSaving = ref.watch(diaryImageSavingProvider.notifier);
     final colorScheme = context.colorScheme;
 
     return ListenableBuilder(
@@ -959,6 +961,16 @@ class _ImageSelectionActionButton extends ConsumerWidget {
           return DateUtils.isSameDay(d.entry.date, diaryContext.date);
         });
         final images = diary?.images ?? [];
+        if (isSavingImage) {
+          return const IconButton(
+            onPressed: null,
+            icon: SizedBox.square(
+              dimension: 20,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
+          );
+        }
+
         final hasImage = images.isNotEmpty;
         if (hasImage) {
           return const IconButton(
@@ -969,15 +981,21 @@ class _ImageSelectionActionButton extends ConsumerWidget {
 
         Future<void> selectImage() async {
           try {
-            final bytes = await pickPhoto();
-            if (bytes == null) {
+            final photo = await pickPhoto();
+            if (photo == null) {
               return;
             }
 
-            await cachedDiaries.addImage(
-              date: diaryContext.date,
-              bytes: bytes,
-            );
+            imageSaving.start();
+            try {
+              await cachedDiaries.addImage(
+                date: diaryContext.date,
+                path: photo.path,
+              );
+            } finally {
+              imageSaving.finish();
+              await photo.delete();
+            }
           } on Object catch (e) {
             unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
             if (!pageContext.mounted) {

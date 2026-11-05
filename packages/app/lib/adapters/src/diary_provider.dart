@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
@@ -125,54 +124,61 @@ class CachedDiaries extends _$CachedDiaries {
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 
-  /// Add an image to a diary entry.
+  /// Add the photo at [path] to a diary entry.
   ///
   /// If a diary doesn't exist for the specified date,
   /// creates an empty diary first.
   Future<void> addImage({
     required DateTime date,
-    required Uint8List bytes,
+    required String path,
   }) async {
-    final current = state.requireValue;
-    final existingDiary = current.diaries.where((d) {
-      return d.entry.date == date;
-    }).firstOrNull;
+    final fileName = await _imageCommand.storePhoto(path);
+    try {
+      final existingDiary = state.requireValue.diaries.where((d) {
+        return d.entry.date == date;
+      }).firstOrNull;
 
-    if (existingDiary == null) {
+      if (existingDiary == null) {
+        // Cannot use unawaited for optimistic update
+        // because Diary ID is needed for state update.
+        final entry = await _diaryCommand.addDiary(date: date, content: '');
+        final newImage = await _imageCommand.addDiaryImage(
+          diaryId: entry.id,
+          fileName: fileName,
+        );
+
+        final current = state.requireValue;
+        state = AsyncValue.data((
+          diaries: [
+            ...current.diaries,
+            Diary(entry: entry, images: [newImage]),
+          ],
+          dates: current.dates,
+        ));
+        return;
+      }
+
+      final entry = existingDiary.entry;
       // Cannot use unawaited for optimistic update
-      // because Diary ID is needed for state update.
-      final entry = await _diaryCommand.addDiary(date: date, content: '');
+      // because DiaryImage is needed for state update.
       final newImage = await _imageCommand.addDiaryImage(
         diaryId: entry.id,
-        bytes: bytes,
+        fileName: fileName,
       );
 
-      state = AsyncValue.data((
-        diaries: [
-          ...current.diaries,
-          Diary(entry: entry, images: [newImage]),
-        ],
-        dates: current.dates,
-      ));
-      return;
+      final current = state.requireValue;
+      final updatedDiaries = current.diaries.map((d) {
+        if (d.entry.id == entry.id) {
+          return d.copyWith(images: [...d.images, newImage]);
+        }
+        return d;
+      }).toList();
+
+      state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
+    } on Object {
+      await _imageCommand.deletePhoto(fileName);
+      rethrow;
     }
-
-    final entry = existingDiary.entry;
-    // Cannot use unawaited for optimistic update
-    // because DiaryImage is needed for state update.
-    final newImage = await _imageCommand.addDiaryImage(
-      diaryId: entry.id,
-      bytes: bytes,
-    );
-
-    final updatedDiaries = current.diaries.map((d) {
-      if (d.entry.id == entry.id) {
-        return d.copyWith(images: [...d.images, newImage]);
-      }
-      return d;
-    }).toList();
-
-    state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 
   /// Delete an image from a diary entry.

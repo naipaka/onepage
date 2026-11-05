@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:db_client/db_client.dart';
 import 'package:photo_storage/photo_storage.dart';
 
@@ -29,16 +27,25 @@ class DiaryImageCommand {
   /// Storage for photo files.
   final PhotoStorage photoStorage;
 
-  /// Compresses and stores a photo, then adds its diary image entry.
+  /// Compresses the photo at [path] and returns its stored file name.
+  Future<String> storePhoto(String path) async {
+    final encoded = await photoEncoder.encode(path);
+    return photoStorage.save(encoded);
+  }
+
+  /// Deletes the stored photo named [fileName].
+  Future<void> deletePhoto(String fileName) async {
+    await photoStorage.delete(fileName);
+  }
+
+  /// Adds a new diary image entry to the database.
   ///
   /// - [diaryId] - The ID of the diary entry.
-  /// - [bytes] - The encoded image picked by the user.
+  /// - [fileName] - The file name returned by [storePhoto].
   Future<DiaryImage> addDiaryImage({
     required int diaryId,
-    required Uint8List bytes,
+    required String fileName,
   }) async {
-    final encoded = await photoEncoder.encode(bytes);
-    final fileName = await photoStorage.save(encoded);
     return dbClient.insertDiaryImage(diaryId: diaryId, fileName: fileName);
   }
 

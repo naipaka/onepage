@@ -20,3 +20,20 @@ DiaryImageCommand diaryImageCommand(Ref ref) {
     photoStorage: photoStorage,
   );
 }
+
+/// Whether a picked photo is being saved.
+@Riverpod(keepAlive: true)
+class DiaryImageSaving extends _$DiaryImageSaving {
+  @override
+  bool build() => false;
+
+  /// Marks that saving has started.
+  void start() {
+    state = true;
+  }
+
+  /// Marks that saving has finished.
+  void finish() {
+    state = false;
+  }
+}

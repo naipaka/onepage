@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:photo_client/photo_client.dart';
@@ -26,12 +24,13 @@ class _FakeImagePicker extends ImagePickerPlatform
 
 void main() {
   group('pickPhoto', () {
-    test('returns the bytes of the picked photo', () async {
-      final bytes = Uint8List.fromList([1, 2, 3]);
-      final picker = _FakeImagePicker(XFile.fromData(bytes));
+    test('returns the picked photo file', () async {
+      final picker = _FakeImagePicker(XFile('picked.jpg'));
       ImagePickerPlatform.instance = picker;
 
-      expect(await pickPhoto(), bytes);
+      final file = await pickPhoto();
+
+      expect(file?.path, 'picked.jpg');
       expect(picker.source, ImageSource.gallery);
       expect(picker.options?.requestFullMetadata, isFalse);
     });
