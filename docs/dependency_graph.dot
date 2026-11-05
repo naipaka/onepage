@@ -11,6 +11,7 @@ digraph packages {
   notification_client [shape="box"; color="#4d6b02"];
   onepage [shape="box"; color="#08802d"];
   photo_client [shape="box"; color="#e227a9"];
+  photo_storage [shape="box"; color="#c6f715"];
   prefs_client [shape="box"; color="#080f51"];
   provider_utils [shape="box"; color="#f445c4"];
   scroll_calendar [shape="box"; color="#713e2e"];
@@ -21,6 +22,7 @@ digraph packages {
   widgets [shape="box"; color="#3ed5a4"];
   backup -> db_client [style="filled"; color="#c4fbfc"];
   diary -> db_client [style="filled"; color="#c4fbfc"];
+  diary -> photo_storage [style="filled"; color="#c6f715"];
   diary -> utils [style="filled"; color="#f548cf"];
   exporter -> db_client [style="filled"; color="#c4fbfc"];
   haptics -> prefs_client [style="filled"; color="#080f51"];
@@ -36,6 +38,7 @@ digraph packages {
   onepage -> in_app_reviewer [style="filled"; color="#1253da"];
   onepage -> notification_client [style="filled"; color="#4d6b02"];
   onepage -> photo_client [style="filled"; color="#e227a9"];
+  onepage -> photo_storage [style="filled"; color="#c6f715"];
   onepage -> prefs_client [style="filled"; color="#080f51"];
   onepage -> provider_utils [style="filled"; color="#f445c4"];
   onepage -> scroll_calendar [style="filled"; color="#713e2e"];
@@ -66,6 +69,7 @@ digraph packages {
     i18n;
     notification_client;
     photo_client;
+    photo_storage;
     prefs_client;
     provider_utils;
     theme;
