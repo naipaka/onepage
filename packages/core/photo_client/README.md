@@ -23,9 +23,10 @@ dependencies:
 ```dart
 import 'package:photo_client/photo_client.dart';
 
-final bytes = await pickPhoto();
-if (bytes != null) {
-  // Store the encoded image.
+final photo = await pickPhoto();
+if (photo != null) {
+  // Store the photo, then delete the temporary copy.
+  await photo.delete();
 }
 
 PhotoFileThumbnail(file: file, width: 64, height: 64);

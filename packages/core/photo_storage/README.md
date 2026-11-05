@@ -23,7 +23,7 @@ dependencies:
 ```dart
 final storage = await PhotoStorage.create();
 
-final encoded = await const PhotoEncoder().encode(bytes);
+final encoded = await const PhotoEncoder().encode(path);
 final fileName = await storage.save(encoded);
 final file = storage.file(fileName);
 
