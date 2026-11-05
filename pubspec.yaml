@@ -10,6 +10,7 @@ workspace:
   - packages/core/i18n
   - packages/core/notification_client
   - packages/core/photo_client
+  - packages/core/photo_storage
   - packages/core/prefs_client
   - packages/core/provider_utils
   - packages/core/theme
