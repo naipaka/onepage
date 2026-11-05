@@ -60,6 +60,27 @@ void main() {
         expect(image.fileName, 'photo.jpg');
       });
 
+      test('getDiaries groups the images of a diary', () async {
+        await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
+        await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'b.jpg');
+
+        final diaries = await dbClient.getDiaries(
+          from: DateTime(2023),
+          to: DateTime(2025),
+        );
+
+        expect(diaries.single.images.map((image) => image.fileName), [
+          'a.jpg',
+          'b.jpg',
+        ]);
+      });
+
+      test('watchDiaryImageCount emits the image count', () async {
+        await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
+
+        expect(await dbClient.watchDiaryImageCount().first, 1);
+      });
+
       test('deleteDiaryImage returns the file name of the image', () async {
         final image = await dbClient.insertDiaryImage(
           diaryId: diary.id,
