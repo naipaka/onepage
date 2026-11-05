@@ -19,7 +19,7 @@ home:
   photoSelector:
     notice:
       title: "Important Notes about Photos"
-      message: "• One photo per date\n• Photos are compressed and saved in the app\n• May not transfer when switching devices\n• Cloud backup coming soon"
+      message: "• One photo per date\n• May not transfer when switching devices\n• Cloud backup planned for the future"
       confirm: "OK"
     error:
       title: "An error occurred while saving the image"

@@ -241,7 +241,7 @@ class _Translations$home$photoSelector$notice$ja implements Translations$home$ph
 
 	// Translations
 	@override String get title => '写真の注意点';
-	@override String get message => '• 日付ごとに1枚まで添付できます\n• 写真は圧縮してアプリ内に保存されます\n• 機種変更で失われる可能性があります\n• クラウド保存は対応予定です';
+	@override String get message => '• 日付ごとに1枚まで添付できます\n• 機種変更で失われる可能性があります\n• クラウド保存は将来的に対応予定です';
 	@override String get confirm => 'OK';
 }
 
@@ -279,7 +279,7 @@ extension on TranslationsJa {
 			'home.datePickerCancel' => 'キャンセル',
 			'home.datePickerConfirm' => '決定',
 			'home.photoSelector.notice.title' => '写真の注意点',
-			'home.photoSelector.notice.message' => '• 日付ごとに1枚まで添付できます\n• 写真は圧縮してアプリ内に保存されます\n• 機種変更で失われる可能性があります\n• クラウド保存は対応予定です',
+			'home.photoSelector.notice.message' => '• 日付ごとに1枚まで添付できます\n• 機種変更で失われる可能性があります\n• クラウド保存は将来的に対応予定です',
 			'home.photoSelector.notice.confirm' => 'OK',
 			'home.photoSelector.error.title' => '画像の保存中にエラーが発生しました',
 			'home.photoSelector.error.description' => 'もう一度お試しください',

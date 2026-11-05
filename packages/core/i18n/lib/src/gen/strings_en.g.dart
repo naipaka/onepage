@@ -375,8 +375,8 @@ class Translations$home$photoSelector$notice$en {
 	/// en: 'Important Notes about Photos'
 	String get title => 'Important Notes about Photos';
 
-	/// en: '• One photo per date • Photos are compressed and saved in the app • May not transfer when switching devices • Cloud backup coming soon'
-	String get message => '• One photo per date\n• Photos are compressed and saved in the app\n• May not transfer when switching devices\n• Cloud backup coming soon';
+	/// en: '• One photo per date • May not transfer when switching devices • Cloud backup planned for the future'
+	String get message => '• One photo per date\n• May not transfer when switching devices\n• Cloud backup planned for the future';
 
 	/// en: 'OK'
 	String get confirm => 'OK';
@@ -420,7 +420,7 @@ extension on Translations {
 			'home.datePickerCancel' => 'Cancel',
 			'home.datePickerConfirm' => 'OK',
 			'home.photoSelector.notice.title' => 'Important Notes about Photos',
-			'home.photoSelector.notice.message' => '• One photo per date\n• Photos are compressed and saved in the app\n• May not transfer when switching devices\n• Cloud backup coming soon',
+			'home.photoSelector.notice.message' => '• One photo per date\n• May not transfer when switching devices\n• Cloud backup planned for the future',
 			'home.photoSelector.notice.confirm' => 'OK',
 			'home.photoSelector.error.title' => 'An error occurred while saving the image',
 			'home.photoSelector.error.description' => 'Please try again',
