@@ -409,9 +409,20 @@ class $DiaryImagesTable extends DiaryImages
   late final GeneratedColumn<String> photoId = GeneratedColumn<String>(
     'photo_id',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _fileNameMeta = const VerificationMeta(
+    'fileName',
+  );
+  @override
+  late final GeneratedColumn<String> fileName = GeneratedColumn<String>(
+    'file_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -442,6 +453,7 @@ class $DiaryImagesTable extends DiaryImages
     id,
     diaryId,
     photoId,
+    fileName,
     createdAt,
     updatedAt,
   ];
@@ -473,8 +485,12 @@ class $DiaryImagesTable extends DiaryImages
         _photoIdMeta,
         photoId.isAcceptableOrUnknown(data['photo_id']!, _photoIdMeta),
       );
-    } else if (isInserting) {
-      context.missing(_photoIdMeta);
+    }
+    if (data.containsKey('file_name')) {
+      context.handle(
+        _fileNameMeta,
+        fileName.isAcceptableOrUnknown(data['file_name']!, _fileNameMeta),
+      );
     }
     if (data.containsKey('created_at')) {
       context.handle(
@@ -508,7 +524,11 @@ class $DiaryImagesTable extends DiaryImages
       photoId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}photo_id'],
-      )!,
+      ),
+      fileName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}file_name'],
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -544,7 +564,14 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
   /// This column stores the platform-specific photo identifier:
   /// - iOS: PHAsset localIdentifier
   /// - Android: MediaStore ID
-  final String photoId;
+  ///
+  /// It is null for photos that were added as app files.
+  final String? photoId;
+
+  /// The name of the photo file stored by the app.
+  ///
+  /// It is null for photos that exist only in the device's photo library.
+  final String? fileName;
 
   /// The creation timestamp of the diary image entry.
   ///
@@ -560,7 +587,8 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
   const DiaryImage({
     required this.id,
     required this.diaryId,
-    required this.photoId,
+    this.photoId,
+    this.fileName,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -569,7 +597,12 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['diary_id'] = Variable<int>(diaryId);
-    map['photo_id'] = Variable<String>(photoId);
+    if (!nullToAbsent || photoId != null) {
+      map['photo_id'] = Variable<String>(photoId);
+    }
+    if (!nullToAbsent || fileName != null) {
+      map['file_name'] = Variable<String>(fileName);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
@@ -579,7 +612,12 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
     return DiaryImagesCompanion(
       id: Value(id),
       diaryId: Value(diaryId),
-      photoId: Value(photoId),
+      photoId: photoId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(photoId),
+      fileName: fileName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fileName),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
     );
@@ -593,7 +631,8 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
     return DiaryImage(
       id: serializer.fromJson<int>(json['id']),
       diaryId: serializer.fromJson<int>(json['diaryId']),
-      photoId: serializer.fromJson<String>(json['photoId']),
+      photoId: serializer.fromJson<String?>(json['photoId']),
+      fileName: serializer.fromJson<String?>(json['fileName']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
@@ -604,7 +643,8 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'diaryId': serializer.toJson<int>(diaryId),
-      'photoId': serializer.toJson<String>(photoId),
+      'photoId': serializer.toJson<String?>(photoId),
+      'fileName': serializer.toJson<String?>(fileName),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
@@ -613,13 +653,15 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
   DiaryImage copyWith({
     int? id,
     int? diaryId,
-    String? photoId,
+    Value<String?> photoId = const Value.absent(),
+    Value<String?> fileName = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
   }) => DiaryImage(
     id: id ?? this.id,
     diaryId: diaryId ?? this.diaryId,
-    photoId: photoId ?? this.photoId,
+    photoId: photoId.present ? photoId.value : this.photoId,
+    fileName: fileName.present ? fileName.value : this.fileName,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
   );
@@ -628,6 +670,7 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
       id: data.id.present ? data.id.value : this.id,
       diaryId: data.diaryId.present ? data.diaryId.value : this.diaryId,
       photoId: data.photoId.present ? data.photoId.value : this.photoId,
+      fileName: data.fileName.present ? data.fileName.value : this.fileName,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -639,6 +682,7 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
           ..write('id: $id, ')
           ..write('diaryId: $diaryId, ')
           ..write('photoId: $photoId, ')
+          ..write('fileName: $fileName, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -646,7 +690,8 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
   }
 
   @override
-  int get hashCode => Object.hash(id, diaryId, photoId, createdAt, updatedAt);
+  int get hashCode =>
+      Object.hash(id, diaryId, photoId, fileName, createdAt, updatedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -654,6 +699,7 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
           other.id == this.id &&
           other.diaryId == this.diaryId &&
           other.photoId == this.photoId &&
+          other.fileName == this.fileName &&
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt);
 }
@@ -661,28 +707,31 @@ class DiaryImage extends DataClass implements Insertable<DiaryImage> {
 class DiaryImagesCompanion extends UpdateCompanion<DiaryImage> {
   final Value<int> id;
   final Value<int> diaryId;
-  final Value<String> photoId;
+  final Value<String?> photoId;
+  final Value<String?> fileName;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   const DiaryImagesCompanion({
     this.id = const Value.absent(),
     this.diaryId = const Value.absent(),
     this.photoId = const Value.absent(),
+    this.fileName = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
   });
   DiaryImagesCompanion.insert({
     this.id = const Value.absent(),
     required int diaryId,
-    required String photoId,
+    this.photoId = const Value.absent(),
+    this.fileName = const Value.absent(),
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
-  }) : diaryId = Value(diaryId),
-       photoId = Value(photoId);
+  }) : diaryId = Value(diaryId);
   static Insertable<DiaryImage> custom({
     Expression<int>? id,
     Expression<int>? diaryId,
     Expression<String>? photoId,
+    Expression<String>? fileName,
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
   }) {
@@ -690,6 +739,7 @@ class DiaryImagesCompanion extends UpdateCompanion<DiaryImage> {
       if (id != null) 'id': id,
       if (diaryId != null) 'diary_id': diaryId,
       if (photoId != null) 'photo_id': photoId,
+      if (fileName != null) 'file_name': fileName,
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
     });
@@ -698,7 +748,8 @@ class DiaryImagesCompanion extends UpdateCompanion<DiaryImage> {
   DiaryImagesCompanion copyWith({
     Value<int>? id,
     Value<int>? diaryId,
-    Value<String>? photoId,
+    Value<String?>? photoId,
+    Value<String?>? fileName,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
   }) {
@@ -706,6 +757,7 @@ class DiaryImagesCompanion extends UpdateCompanion<DiaryImage> {
       id: id ?? this.id,
       diaryId: diaryId ?? this.diaryId,
       photoId: photoId ?? this.photoId,
+      fileName: fileName ?? this.fileName,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -723,6 +775,9 @@ class DiaryImagesCompanion extends UpdateCompanion<DiaryImage> {
     if (photoId.present) {
       map['photo_id'] = Variable<String>(photoId.value);
     }
+    if (fileName.present) {
+      map['file_name'] = Variable<String>(fileName.value);
+    }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
@@ -738,6 +793,7 @@ class DiaryImagesCompanion extends UpdateCompanion<DiaryImage> {
           ..write('id: $id, ')
           ..write('diaryId: $diaryId, ')
           ..write('photoId: $photoId, ')
+          ..write('fileName: $fileName, ')
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
@@ -1075,7 +1131,8 @@ typedef $$DiaryImagesTableCreateCompanionBuilder =
     DiaryImagesCompanion Function({
       Value<int> id,
       required int diaryId,
-      required String photoId,
+      Value<String?> photoId,
+      Value<String?> fileName,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -1083,7 +1140,8 @@ typedef $$DiaryImagesTableUpdateCompanionBuilder =
     DiaryImagesCompanion Function({
       Value<int> id,
       Value<int> diaryId,
-      Value<String> photoId,
+      Value<String?> photoId,
+      Value<String?> fileName,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
     });
@@ -1126,6 +1184,11 @@ class $$DiaryImagesTableFilterComposer
 
   ColumnFilters<String> get photoId => $composableBuilder(
     column: $table.photoId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fileName => $composableBuilder(
+    column: $table.fileName,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1182,6 +1245,11 @@ class $$DiaryImagesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get fileName => $composableBuilder(
+    column: $table.fileName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
@@ -1230,6 +1298,9 @@ class $$DiaryImagesTableAnnotationComposer
 
   GeneratedColumn<String> get photoId =>
       $composableBuilder(column: $table.photoId, builder: (column) => column);
+
+  GeneratedColumn<String> get fileName =>
+      $composableBuilder(column: $table.fileName, builder: (column) => column);
 
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
@@ -1291,13 +1362,15 @@ class $$DiaryImagesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 Value<int> diaryId = const Value.absent(),
-                Value<String> photoId = const Value.absent(),
+                Value<String?> photoId = const Value.absent(),
+                Value<String?> fileName = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => DiaryImagesCompanion(
                 id: id,
                 diaryId: diaryId,
                 photoId: photoId,
+                fileName: fileName,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),
@@ -1305,13 +1378,15 @@ class $$DiaryImagesTableTableManager
               ({
                 Value<int> id = const Value.absent(),
                 required int diaryId,
-                required String photoId,
+                Value<String?> photoId = const Value.absent(),
+                Value<String?> fileName = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
               }) => DiaryImagesCompanion.insert(
                 id: id,
                 diaryId: diaryId,
                 photoId: photoId,
+                fileName: fileName,
                 createdAt: createdAt,
                 updatedAt: updatedAt,
               ),

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
-import 'package:drift/drift.dart';
+import 'package:drift/drift.dart' hide isNull;
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -38,6 +38,59 @@ void main() {
 
     tearDown(() async {
       await dbClient.close();
+    });
+
+    group('diary images', () {
+      late DiaryEntry diary;
+
+      setUp(() async {
+        diary = await dbClient.insertDiary(
+          content: 'Diary',
+          date: DateTime(2024),
+        );
+      });
+
+      test('insertDiaryImage stores a device photo ID', () async {
+        final image = await dbClient.insertDiaryImage(
+          diaryId: diary.id,
+          photoId: 'photo-id',
+        );
+
+        expect(image.photoId, 'photo-id');
+        expect(image.fileName, isNull);
+      });
+
+      test('insertDiaryImage stores a file name', () async {
+        final image = await dbClient.insertDiaryImage(
+          diaryId: diary.id,
+          fileName: 'photo.jpg',
+        );
+
+        expect(image.photoId, isNull);
+        expect(image.fileName, 'photo.jpg');
+      });
+
+      test('deleteDiaryImage returns the file name of the image', () async {
+        final image = await dbClient.insertDiaryImage(
+          diaryId: diary.id,
+          fileName: 'photo.jpg',
+        );
+
+        expect(await dbClient.deleteDiaryImage(id: image.id), 'photo.jpg');
+      });
+
+      test('deleteDiaryImage returns null without a file', () async {
+        final image = await dbClient.insertDiaryImage(
+          diaryId: diary.id,
+          photoId: 'photo-id',
+        );
+
+        expect(await dbClient.deleteDiaryImage(id: image.id), isNull);
+      });
+
+      test('deleteDiaryImage returns null for an unknown ID', () async {
+        expect(await dbClient.deleteDiaryImage(id: 999), isNull);
+      });
     });
 
     group('writeBackupToFile', () {
