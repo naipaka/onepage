@@ -24,7 +24,6 @@ import '../../adapters/adapters.dart';
 import '../../gen/assets.gen.dart';
 import '../../keys.dart';
 import '../../router/src/app_routes.dart';
-import '../../router/src/router_provider.dart';
 import '../../widgets/widgets.dart';
 
 /// {@template onepage.HomePage}
@@ -139,7 +138,7 @@ class HomePage extends HookConsumerWidget {
             TextHistoryActionButton.undo(scope: scope),
             TextHistoryActionButton.redo(scope: scope),
             // Image selection button
-            _ImageSelectionActionButton(scope: scope, pageContext: context),
+            _ImageSelectionActionButton(scope: scope),
           ];
         },
         onDismiss: checkInAppReview,
@@ -332,7 +331,7 @@ class _DiaryItem extends ConsumerWidget {
             const Gap(8),
             if (image.fileName case final fileName?)
               PhotoFileThumbnail(
-                file: ref.read(photoStorageProvider).file(fileName),
+                file: ref.watch(photoFileProvider(fileName)),
                 width: 64,
                 height: 64,
                 onDeleted: deleteImage,
@@ -913,13 +912,10 @@ class _HighlightedText extends StatelessWidget {
 /// When an image is picked, it stores the photo for the currently focused
 /// diary entry.
 class _ImageSelectionActionButton extends ConsumerWidget {
-  const new({required this.scope, required this.pageContext});
+  const new({required this.scope});
 
   /// The focus scope node to monitor for the currently focused diary entry.
   final FocusScopeNode scope;
-
-  /// The context of the page, which stays mounted while the picker is open.
-  final BuildContext pageContext;
 
   /// Gets the currently focused diary context.
   _DiaryContext? get _currentDiaryContext {
@@ -941,8 +937,6 @@ class _ImageSelectionActionButton extends ConsumerWidget {
     final tracker = ref.watch(trackerProvider);
     final prefsClient = ref.watch(prefsClientProvider);
     final imageCount = ref.watch(diaryImageCountProvider);
-    final isSavingImage = ref.watch(diaryImageSavingProvider);
-    final imageSaving = ref.watch(diaryImageSavingProvider.notifier);
     final colorScheme = context.colorScheme;
 
     return ListenableBuilder(
@@ -961,15 +955,6 @@ class _ImageSelectionActionButton extends ConsumerWidget {
           return DateUtils.isSameDay(d.entry.date, diaryContext.date);
         });
         final images = diary?.images ?? [];
-        if (isSavingImage) {
-          return const IconButton(
-            onPressed: null,
-            icon: SizedBox.square(
-              dimension: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          );
-        }
 
         final hasImage = images.isNotEmpty;
         if (hasImage) {
@@ -986,23 +971,21 @@ class _ImageSelectionActionButton extends ConsumerWidget {
               return;
             }
 
-            imageSaving.start();
             try {
               await cachedDiaries.addImage(
                 date: diaryContext.date,
                 path: photo.path,
               );
             } finally {
-              imageSaving.finish();
               await photo.delete();
             }
           } on Object catch (e) {
             unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
-            if (!pageContext.mounted) {
+            if (!context.mounted) {
               return;
             }
             showErrorToast(
-              pageContext,
+              context,
               title: t.error.title,
               description: t.error.description,
             );
@@ -1013,17 +996,12 @@ class _ImageSelectionActionButton extends ConsumerWidget {
             return;
           }
 
-          // Use root navigator context instead of local context because
-          // the local context becomes unmounted when the photo picker
-          // displays. When the picker shows, the keyboard closes, causing
-          // the toolbar to hide and this widget to be disposed.
-          final rootContext = rootNavigatorKey.currentContext;
-          if (rootContext == null || !rootContext.mounted) {
+          if (!context.mounted) {
             return;
           }
 
           await showOkAlertDialog(
-            context: rootContext,
+            context: context,
             title: t.notice.title,
             message: t.notice.message,
             okLabel: t.notice.confirm,

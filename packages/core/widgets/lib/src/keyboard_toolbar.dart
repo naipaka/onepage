@@ -67,17 +67,19 @@ class _KeyboardToolbarState extends State<KeyboardToolbar> {
           node: _scope,
           child: widget.child,
         ),
-        if (_showToolbar)
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
+        Positioned(
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Offstage(
+            offstage: !_showToolbar,
             child: _KeyboardToolbarContent(
               scope: _scope,
               actions: widget.actions,
               onDismiss: widget.onDismiss,
             ),
           ),
+        ),
       ],
     );
   }

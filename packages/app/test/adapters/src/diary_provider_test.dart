@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
@@ -35,19 +37,25 @@ class _FakeDiaryCommand implements DiaryCommand {
   }
 
   @override
+  Future<void> updateDiary({
+    required int id,
+    required String content,
+  }) async {}
+
+  @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class _FakeDiaryImageCommand implements DiaryImageCommand {
   bool failsToStore = false;
-  bool failsToAdd = false;
-  final deleted = <String>[];
+  Completer<void>? storing;
 
   @override
   Future<String> storePhoto(String path) async {
     if (failsToStore) {
       throw Exception('store');
     }
+    await storing?.future;
     return 'photo.jpg';
   }
 
@@ -56,9 +64,6 @@ class _FakeDiaryImageCommand implements DiaryImageCommand {
     required int diaryId,
     required String fileName,
   }) async {
-    if (failsToAdd) {
-      throw Exception('add');
-    }
     return DiaryImage(
       id: 1,
       diaryId: diaryId,
@@ -66,11 +71,6 @@ class _FakeDiaryImageCommand implements DiaryImageCommand {
       createdAt: clock.now(),
       updatedAt: clock.now(),
     );
-  }
-
-  @override
-  Future<void> deletePhoto(String fileName) async {
-    deleted.add(fileName);
   }
 
   @override
@@ -112,31 +112,27 @@ void main() {
       expect(state.diaries.single.images.single.fileName, 'photo.jpg');
     });
 
+    test('keeps a diary edited while the photo is being stored', () async {
+      final notifier = container.read(cachedDiariesProvider.notifier);
+      await notifier.addDiary(date: date, content: 'old');
+      imageCommand.storing = Completer<void>();
+
+      final adding = addImage();
+      await notifier.updateDiary(id: 1, content: 'new');
+      imageCommand.storing!.complete();
+      await adding;
+
+      final state = container.read(cachedDiariesProvider).requireValue;
+      expect(state.diaries.single.entry.content, 'new');
+      expect(state.diaries.single.images, hasLength(1));
+    });
+
     test('does not create a diary when the photo cannot be stored', () async {
       imageCommand.failsToStore = true;
 
       await expectLater(addImage(), throwsException);
 
       expect(diaryCommand.addDiaryCalls, 0);
-    });
-
-    test('deletes the stored photo when the row cannot be added', () async {
-      imageCommand.failsToAdd = true;
-
-      await expectLater(addImage(), throwsException);
-
-      expect(imageCommand.deleted, ['photo.jpg']);
-    });
-  });
-
-  group('diaryImageSavingProvider', () {
-    test('tracks the saving state', () {
-      final notifier = container.read(diaryImageSavingProvider.notifier)
-        ..start();
-      expect(container.read(diaryImageSavingProvider), isTrue);
-
-      notifier.finish();
-      expect(container.read(diaryImageSavingProvider), isFalse);
     });
   });
 }

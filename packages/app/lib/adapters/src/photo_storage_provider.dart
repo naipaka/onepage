@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:photo_storage/photo_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,4 +15,10 @@ PhotoStorage photoStorage(Ref ref) {
     'PhotoStorage provider must be overridden with an initialized instance '
     'in main.dart',
   );
+}
+
+/// Provider for the file of a stored photo.
+@riverpod
+File photoFile(Ref ref, String fileName) {
+  return ref.watch(photoStorageProvider).file(fileName);
 }

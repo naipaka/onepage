@@ -64,3 +64,88 @@ final class PhotoStorageProvider
 }
 
 String _$photoStorageHash() => r'4ce07f72303ff9e1820f34dfc487bd2243d53a4c';
+
+/// Provider for the file of a stored photo.
+
+@ProviderFor(photoFile)
+final photoFileProvider = PhotoFileFamily._();
+
+/// Provider for the file of a stored photo.
+
+final class PhotoFileProvider extends $FunctionalProvider<File, File, File>
+    with $Provider<File> {
+  /// Provider for the file of a stored photo.
+  PhotoFileProvider._({
+    required PhotoFileFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'photoFileProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$photoFileHash();
+
+  @override
+  String toString() {
+    return r'photoFileProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $ProviderElement<File> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  File create(Ref ref) {
+    final argument = this.argument as String;
+    return photoFile(ref, argument);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(File value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<File>(value),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PhotoFileProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$photoFileHash() => r'747454b410e4efd762d188428abc4adb6fd9d678';
+
+/// Provider for the file of a stored photo.
+
+final class PhotoFileFamily extends $Family
+    with $FunctionalFamilyOverride<File, String> {
+  PhotoFileFamily._()
+    : super(
+        retry: null,
+        name: r'photoFileProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provider for the file of a stored photo.
+
+  PhotoFileProvider call(String fileName) =>
+      PhotoFileProvider._(argument: fileName, from: this);
+
+  @override
+  String toString() => r'photoFileProvider';
+}

@@ -34,14 +34,6 @@ void main() {
     });
   });
 
-  group('deletePhoto', () {
-    test('deletes the stored file', () async {
-      await command.deletePhoto('photo.jpg');
-
-      verify(photoStorage.delete('photo.jpg')).called(1);
-    });
-  });
-
   group('addDiaryImage', () {
     test('inserts a row for the stored file', () async {
       final image = DiaryImage(

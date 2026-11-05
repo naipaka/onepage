@@ -33,11 +33,6 @@ class DiaryImageCommand {
     return photoStorage.save(encoded);
   }
 
-  /// Deletes the stored photo named [fileName].
-  Future<void> deletePhoto(String fileName) async {
-    await photoStorage.delete(fileName);
-  }
-
   /// Adds a new diary image entry to the database.
   ///
   /// - [diaryId] - The ID of the diary entry.
