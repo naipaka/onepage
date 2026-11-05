@@ -139,7 +139,7 @@ class HomePage extends HookConsumerWidget {
             TextHistoryActionButton.undo(scope: scope),
             TextHistoryActionButton.redo(scope: scope),
             // Image selection button
-            _ImageSelectionActionButton(scope: scope),
+            _ImageSelectionActionButton(scope: scope, pageContext: context),
           ];
         },
         onDismiss: checkInAppReview,
@@ -913,10 +913,13 @@ class _HighlightedText extends StatelessWidget {
 /// When an image is picked, it stores the photo for the currently focused
 /// diary entry.
 class _ImageSelectionActionButton extends ConsumerWidget {
-  const new({required this.scope});
+  const new({required this.scope, required this.pageContext});
 
   /// The focus scope node to monitor for the currently focused diary entry.
   final FocusScopeNode scope;
+
+  /// The context of the page, which stays mounted while the picker is open.
+  final BuildContext pageContext;
 
   /// Gets the currently focused diary context.
   _DiaryContext? get _currentDiaryContext {
@@ -977,11 +980,11 @@ class _ImageSelectionActionButton extends ConsumerWidget {
             );
           } on Object catch (e) {
             unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
-            if (!context.mounted) {
+            if (!pageContext.mounted) {
               return;
             }
             showErrorToast(
-              context,
+              pageContext,
               title: t.error.title,
               description: t.error.description,
             );
