@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
@@ -130,7 +131,7 @@ class CachedDiaries extends _$CachedDiaries {
   /// creates an empty diary first.
   Future<void> addImage({
     required DateTime date,
-    required String photoId,
+    required Uint8List bytes,
   }) async {
     final current = state.requireValue;
     final existingDiary = current.diaries.where((d) {
@@ -143,7 +144,7 @@ class CachedDiaries extends _$CachedDiaries {
       final entry = await _diaryCommand.addDiary(date: date, content: '');
       final newImage = await _imageCommand.addDiaryImage(
         diaryId: entry.id,
-        photoId: photoId,
+        bytes: bytes,
       );
 
       state = AsyncValue.data((
@@ -161,7 +162,7 @@ class CachedDiaries extends _$CachedDiaries {
     // because DiaryImage is needed for state update.
     final newImage = await _imageCommand.addDiaryImage(
       diaryId: entry.id,
-      photoId: photoId,
+      bytes: bytes,
     );
 
     final updatedDiaries = current.diaries.map((d) {

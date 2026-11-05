@@ -1,5 +1,5 @@
 name: photo_client
-description: A package for photo management including selection and viewing from device photo library with permission handling and album browsing.
+description: A package for picking photos and viewing them.
 version: 1.0.0
 publish_to: "none"
 
@@ -9,14 +9,16 @@ environment:
 resolution: workspace
 
 dependencies:
-  app_settings: ^7.0.0
   flutter:
     sdk: flutter
+  image_picker: ^1.2.0
+  image_picker_android: ^0.8.13
+  image_picker_platform_interface: ^2.11.0
   photo_manager: ^3.10.0
   photo_manager_image_provider: ^2.2.0
-  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   altive_lints: ^4.1.0
   flutter_test:
     sdk: flutter
+  plugin_platform_interface: ^2.1.8

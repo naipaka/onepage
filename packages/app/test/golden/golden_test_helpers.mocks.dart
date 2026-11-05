@@ -496,12 +496,10 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   _i6.Future<_i3.DiaryImage> insertDiaryImage({
     required int? diaryId,
-    String? photoId,
-    String? fileName,
+    required String? fileName,
   }) => (super.noSuchMethod(
     Invocation.method(#insertDiaryImage, [], {
       #diaryId: diaryId,
-      #photoId: photoId,
       #fileName: fileName,
     }),
     returnValue: _i6.Future<_i3.DiaryImage>.value(
@@ -509,7 +507,6 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
         this,
         Invocation.method(#insertDiaryImage, [], {
           #diaryId: diaryId,
-          #photoId: photoId,
           #fileName: fileName,
         }),
       ),

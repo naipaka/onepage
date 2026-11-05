@@ -280,6 +280,15 @@ class _DiaryItem extends ConsumerWidget {
       }
     }
 
+    Future<void> showPhotoNotice() async {
+      await showOkAlertDialog(
+        context: context,
+        title: t.home.photoSelector.notice.title,
+        message: t.home.photoSelector.notice.message,
+        okLabel: t.home.photoSelector.notice.confirm,
+      );
+    }
+
     return _DiaryContext(
       date: date,
       child: Row(
@@ -319,22 +328,24 @@ class _DiaryItem extends ConsumerWidget {
               },
             ),
           ),
-          if (images.firstOrNull?.photoId case final photoId?) ...[
+          if (images.firstOrNull case final image?) ...[
             const Gap(8),
-            PhotoThumbnail(
-              photoId: photoId,
-              width: 64,
-              height: 64,
-              onDeleted: deleteImage,
-              onInfoShown: () async {
-                await showOkAlertDialog(
-                  context: context,
-                  title: t.home.photoSelector.notice.title,
-                  message: t.home.photoSelector.notice.message,
-                  okLabel: t.home.photoSelector.notice.confirm,
-                );
-              },
-            ),
+            if (image.fileName case final fileName?)
+              PhotoFileThumbnail(
+                file: ref.read(photoStorageProvider).file(fileName),
+                width: 64,
+                height: 64,
+                onDeleted: deleteImage,
+                onInfoShown: showPhotoNotice,
+              )
+            else if (image.photoId case final photoId?)
+              PhotoThumbnail(
+                photoId: photoId,
+                width: 64,
+                height: 64,
+                onDeleted: deleteImage,
+                onInfoShown: showPhotoNotice,
+              ),
           ],
         ],
       ),
@@ -897,10 +908,9 @@ class _HighlightedText extends StatelessWidget {
   }
 }
 
-/// A button widget that opens the photo selector to pick an image
-/// from the device's photo library.
+/// A button widget that opens the system photo picker.
 ///
-/// When an image is selected, it saves the photo ID to the currently focused
+/// When an image is picked, it stores the photo for the currently focused
 /// diary entry.
 class _ImageSelectionActionButton extends ConsumerWidget {
   const new({required this.scope});
@@ -955,22 +965,15 @@ class _ImageSelectionActionButton extends ConsumerWidget {
         }
 
         Future<void> selectImage() async {
-          final photoId = await showPhotoSelector(
-            context,
-            confirmLabel: t.confirm,
-            noPhotosLabel: t.noPhotos,
-            permissionDeniedTitle: t.permission.deniedTitle,
-            permissionDeniedMessage: t.permission.deniedMessage,
-            openSettingsLabel: t.permission.openSettings,
-          );
-          if (photoId == null) {
-            return;
-          }
-
           try {
+            final bytes = await pickPhoto();
+            if (bytes == null) {
+              return;
+            }
+
             await cachedDiaries.addImage(
               date: diaryContext.date,
-              photoId: photoId,
+              bytes: bytes,
             );
           } on Object catch (e) {
             unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
@@ -990,9 +993,9 @@ class _ImageSelectionActionButton extends ConsumerWidget {
           }
 
           // Use root navigator context instead of local context because
-          // the local context becomes unmounted when showPhotoSelector
-          // displays. When the photo selector shows, the keyboard closes,
-          // causing the toolbar to hide and this widget to be disposed.
+          // the local context becomes unmounted when the photo picker
+          // displays. When the picker shows, the keyboard closes, causing
+          // the toolbar to hide and this widget to be disposed.
           final rootContext = rootNavigatorKey.currentContext;
           if (rootContext == null || !rootContext.mounted) {
             return;

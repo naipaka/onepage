@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:db_client/db_client.dart';
 import 'package:photo_storage/photo_storage.dart';
 
@@ -10,30 +12,34 @@ class DiaryImageCommand {
   ///
   /// The [dbClient] parameter is required and should be an instance
   /// of [DbClient] that will be used to perform database operations.
+  /// The [photoEncoder] parameter compresses photos before they are stored.
   /// The [photoStorage] parameter is the storage that holds photo files.
   const new({
     required this.dbClient,
+    required this.photoEncoder,
     required this.photoStorage,
   });
 
   /// Database client.
   final DbClient dbClient;
 
+  /// Encoder that compresses photos.
+  final PhotoEncoder photoEncoder;
+
   /// Storage for photo files.
   final PhotoStorage photoStorage;
 
-  /// Adds a new diary image entry to the database.
+  /// Compresses and stores a photo, then adds its diary image entry.
   ///
   /// - [diaryId] - The ID of the diary entry.
-  /// - [photoId] - The photo ID from the device's photo library.
+  /// - [bytes] - The encoded image picked by the user.
   Future<DiaryImage> addDiaryImage({
     required int diaryId,
-    required String photoId,
+    required Uint8List bytes,
   }) async {
-    return dbClient.insertDiaryImage(
-      diaryId: diaryId,
-      photoId: photoId,
-    );
+    final encoded = await photoEncoder.encode(bytes);
+    final fileName = await photoStorage.save(encoded);
+    return dbClient.insertDiaryImage(diaryId: diaryId, fileName: fileName);
   }
 
   /// Deletes a diary image entry from the database and its photo file.

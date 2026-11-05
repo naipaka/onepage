@@ -50,16 +50,6 @@ void main() {
         );
       });
 
-      test('insertDiaryImage stores a device photo ID', () async {
-        final image = await dbClient.insertDiaryImage(
-          diaryId: diary.id,
-          photoId: 'photo-id',
-        );
-
-        expect(image.photoId, 'photo-id');
-        expect(image.fileName, isNull);
-      });
-
       test('insertDiaryImage stores a file name', () async {
         final image = await dbClient.insertDiaryImage(
           diaryId: diary.id,
@@ -80,10 +70,14 @@ void main() {
       });
 
       test('deleteDiaryImage returns null without a file', () async {
-        final image = await dbClient.insertDiaryImage(
-          diaryId: diary.id,
-          photoId: 'photo-id',
-        );
+        final image = await dbClient
+            .into(dbClient.diaryImages)
+            .insertReturning(
+              DiaryImagesCompanion.insert(
+                diaryId: diary.id,
+                photoId: const Value('photo-id'),
+              ),
+            );
 
         expect(await dbClient.deleteDiaryImage(id: image.id), isNull);
       });

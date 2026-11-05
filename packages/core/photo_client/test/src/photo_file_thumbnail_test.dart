@@ -1,0 +1,52 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:photo_client/photo_client.dart';
+
+void main() {
+  Widget build({VoidCallback? onDeleted, VoidCallback? onInfoShown}) {
+    return MaterialApp(
+      home: Scaffold(
+        body: PhotoFileThumbnail(
+          file: File('missing.jpg'),
+          width: 64,
+          height: 64,
+          onDeleted: onDeleted,
+          onInfoShown: onInfoShown,
+        ),
+      ),
+    );
+  }
+
+  testWidgets('shows a placeholder when the file cannot be read', (
+    tester,
+  ) async {
+    await tester.pumpWidget(build());
+    await tester.runAsync(() async {
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+    });
+    await tester.pump();
+
+    expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
+  });
+
+  testWidgets('opens the viewer with its actions', (tester) async {
+    var deleted = false;
+    var infoShown = false;
+    await tester.pumpWidget(
+      build(
+        onDeleted: () => deleted = true,
+        onInfoShown: () => infoShown = true,
+      ),
+    );
+
+    await tester.tap(find.byType(PhotoFileThumbnail));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.info_outline));
+    await tester.tap(find.byIcon(Icons.delete));
+
+    expect(infoShown, isTrue);
+    expect(deleted, isTrue);
+  });
+}

@@ -294,14 +294,6 @@ class Translations$home$photoSelector$en {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-
-	/// en: 'OK'
-	String get confirm => 'OK';
-
-	/// en: 'No photos available'
-	String get noPhotos => 'No photos available';
-
-	late final Translations$home$photoSelector$permission$en permission = Translations$home$photoSelector$permission$en._(_root);
 	late final Translations$home$photoSelector$notice$en notice = Translations$home$photoSelector$notice$en._(_root);
 	late final Translations$home$photoSelector$error$en error = Translations$home$photoSelector$error$en._(_root);
 }
@@ -372,24 +364,6 @@ class Translations$export$actions$en {
 	String get export => 'Export';
 }
 
-// Path: home.photoSelector.permission
-class Translations$home$photoSelector$permission$en {
-	Translations$home$photoSelector$permission$en._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// en: 'Photo library access required'
-	String get deniedTitle => 'Photo library access required';
-
-	/// en: 'Please allow access to your photo library in settings'
-	String get deniedMessage => 'Please allow access to your photo library in settings';
-
-	/// en: 'Open Settings'
-	String get openSettings => 'Open Settings';
-}
-
 // Path: home.photoSelector.notice
 class Translations$home$photoSelector$notice$en {
 	Translations$home$photoSelector$notice$en._(this._root);
@@ -401,8 +375,8 @@ class Translations$home$photoSelector$notice$en {
 	/// en: 'Important Notes about Photos'
 	String get title => 'Important Notes about Photos';
 
-	/// en: '• One photo per date • Deleted from device won't show • May not transfer when switching devices • Cloud backup coming soon'
-	String get message => '• One photo per date\n• Deleted from device won\'t show\n• May not transfer when switching devices\n• Cloud backup coming soon';
+	/// en: '• One photo per date • Photos are compressed and saved in the app • May not transfer when switching devices • Cloud backup coming soon'
+	String get message => '• One photo per date\n• Photos are compressed and saved in the app\n• May not transfer when switching devices\n• Cloud backup coming soon';
 
 	/// en: 'OK'
 	String get confirm => 'OK';
@@ -445,13 +419,8 @@ extension on Translations {
 			'home.errorSavingDiarySolution' => 'We apologize, but please copy your text and restart the app',
 			'home.datePickerCancel' => 'Cancel',
 			'home.datePickerConfirm' => 'OK',
-			'home.photoSelector.confirm' => 'OK',
-			'home.photoSelector.noPhotos' => 'No photos available',
-			'home.photoSelector.permission.deniedTitle' => 'Photo library access required',
-			'home.photoSelector.permission.deniedMessage' => 'Please allow access to your photo library in settings',
-			'home.photoSelector.permission.openSettings' => 'Open Settings',
 			'home.photoSelector.notice.title' => 'Important Notes about Photos',
-			'home.photoSelector.notice.message' => '• One photo per date\n• Deleted from device won\'t show\n• May not transfer when switching devices\n• Cloud backup coming soon',
+			'home.photoSelector.notice.message' => '• One photo per date\n• Photos are compressed and saved in the app\n• May not transfer when switching devices\n• Cloud backup coming soon',
 			'home.photoSelector.notice.confirm' => 'OK',
 			'home.photoSelector.error.title' => 'An error occurred while saving the image',
 			'home.photoSelector.error.description' => 'Please try again',
