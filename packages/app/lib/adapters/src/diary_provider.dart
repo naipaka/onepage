@@ -124,16 +124,16 @@ class CachedDiaries extends _$CachedDiaries {
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 
-  /// Add an image to a diary entry.
+  /// Add the photo at [path] to a diary entry.
   ///
   /// If a diary doesn't exist for the specified date,
   /// creates an empty diary first.
   Future<void> addImage({
     required DateTime date,
-    required String photoId,
+    required String path,
   }) async {
-    final current = state.requireValue;
-    final existingDiary = current.diaries.where((d) {
+    final fileName = await _imageCommand.storePhoto(path);
+    final existingDiary = state.requireValue.diaries.where((d) {
       return d.entry.date == date;
     }).firstOrNull;
 
@@ -143,9 +143,10 @@ class CachedDiaries extends _$CachedDiaries {
       final entry = await _diaryCommand.addDiary(date: date, content: '');
       final newImage = await _imageCommand.addDiaryImage(
         diaryId: entry.id,
-        photoId: photoId,
+        fileName: fileName,
       );
 
+      final current = state.requireValue;
       state = AsyncValue.data((
         diaries: [
           ...current.diaries,
@@ -161,9 +162,10 @@ class CachedDiaries extends _$CachedDiaries {
     // because DiaryImage is needed for state update.
     final newImage = await _imageCommand.addDiaryImage(
       diaryId: entry.id,
-      photoId: photoId,
+      fileName: fileName,
     );
 
+    final current = state.requireValue;
     final updatedDiaries = current.diaries.map((d) {
       if (d.entry.id == entry.id) {
         return d.copyWith(images: [...d.images, newImage]);

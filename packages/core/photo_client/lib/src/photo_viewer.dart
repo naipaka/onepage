@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:photo_manager/photo_manager.dart';
@@ -141,7 +143,7 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
           pageBuilder: (_, _, _) {
             return _PhotoViewer(
               heroTag: _heroTag,
-              asset: asset,
+              image: AssetEntityImage(asset),
               onDeleted: widget.onDeleted,
               onInfoShown: widget.onInfoShown,
             );
@@ -173,6 +175,130 @@ class _PhotoThumbnailState extends State<PhotoThumbnail> {
   }
 }
 
+/// {@template photo_client.PhotoFileThumbnail}
+/// A widget that displays a thumbnail of a photo file.
+///
+/// Tapping the thumbnail opens a full-screen viewer with zoom and optional
+/// delete functionality.
+///
+/// ### Parameters
+/// - [file] : The photo file to display.
+/// - [width] : The width of the thumbnail in logical pixels.
+/// - [height] : The height of the thumbnail in logical pixels.
+/// - [onDeleted] : Called when the delete button is pressed.
+/// - [onInfoShown] : Called when the info button is pressed.
+/// {@endtemplate}
+class PhotoFileThumbnail extends StatelessWidget {
+  /// {@macro photo_client.PhotoFileThumbnail}
+  const new({
+    super.key,
+    required this.file,
+    required this.width,
+    required this.height,
+    this.onDeleted,
+    this.onInfoShown,
+  });
+
+  /// The photo file to display.
+  final File file;
+
+  /// The width of the thumbnail in logical pixels.
+  final double width;
+
+  /// The height of the thumbnail in logical pixels.
+  final double height;
+
+  /// Callback when the delete button is pressed.
+  final VoidCallback? onDeleted;
+
+  /// Callback when the info button is pressed.
+  final VoidCallback? onInfoShown;
+
+  @override
+  Widget build(BuildContext context) {
+    final pixelRatio = MediaQuery.devicePixelRatioOf(context);
+    final cacheSize = (max(width, height) * pixelRatio * 2).toInt();
+    final heroTag = file.path;
+
+    Future<void> showPhotoViewer() async {
+      await Navigator.of(context).push<void>(
+        PageRouteBuilder(
+          pageBuilder: (_, _, _) {
+            return _PhotoViewer(
+              heroTag: heroTag,
+              image: Image.file(
+                file,
+                errorBuilder: (_, _, _) => const _BrokenPhoto(),
+              ),
+              onDeleted: onDeleted,
+              onInfoShown: onInfoShown,
+            );
+          },
+          transitionsBuilder: (_, animation, _, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: showPhotoViewer,
+      child: Hero(
+        tag: heroTag,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image(
+            image: ResizeImage(
+              FileImage(file),
+              width: cacheSize,
+              height: cacheSize,
+              policy: ResizeImagePolicy.fit,
+            ),
+            width: width,
+            height: height,
+            fit: BoxFit.cover,
+            errorBuilder: (_, _, _) {
+              return _BrokenPhoto(width: width, height: height);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// {@template photo_client._BrokenPhoto}
+/// A placeholder shown when a photo file cannot be read.
+/// {@endtemplate}
+class _BrokenPhoto extends StatelessWidget {
+  /// {@macro photo_client._BrokenPhoto}
+  const new({this.width, this.height});
+
+  /// The width of the placeholder in logical pixels.
+  final double? width;
+
+  /// The height of the placeholder in logical pixels.
+  final double? height;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return ColoredBox(
+      color: colorScheme.surfaceContainerHighest,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Icon(
+          Icons.broken_image_outlined,
+          size: 48,
+          color: colorScheme.onSurface.withValues(alpha: 0.6),
+        ),
+      ),
+    );
+  }
+}
+
 /// {@template photo_selector._PhotoViewer}
 /// Displays a photo in full-screen mode.
 ///
@@ -184,7 +310,7 @@ class _PhotoViewer extends StatefulWidget {
   /// {@macro photo_selector._PhotoViewer}
   const new({
     required this.heroTag,
-    required this.asset,
+    required this.image,
     this.onDeleted,
     this.onInfoShown,
   });
@@ -192,8 +318,8 @@ class _PhotoViewer extends StatefulWidget {
   /// Unique tag for Hero animation.
   final Object heroTag;
 
-  /// The asset entity to display.
-  final AssetEntity asset;
+  /// The full-size image to display.
+  final Widget image;
 
   /// Callback when the delete button is pressed.
   final VoidCallback? onDeleted;
@@ -299,9 +425,7 @@ class _PhotoViewerState extends State<_PhotoViewer> {
                   onInteractionEnd: _onInteractionEnd,
                   maxScale: 5,
                   clipBehavior: Clip.none,
-                  child: AssetEntityImage(
-                    widget.asset,
-                  ),
+                  child: widget.image,
                 ),
               ),
             ),

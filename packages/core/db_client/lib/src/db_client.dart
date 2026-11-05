@@ -188,18 +188,15 @@ class DbClient extends _$DbClient {
 
   /// Adds a diary image entry to the database.
   ///
-  /// This method takes [diaryId] and either [photoId] or [fileName] as
-  /// parameters and inserts a new diary image entry into the 'diary_images'
-  /// table. It returns the inserted diary image entry.
+  /// This method takes [diaryId] and [fileName] as parameters and inserts
+  /// a new diary image entry into the 'diary_images' table.
+  /// It returns the inserted diary image entry.
   Future<DiaryImage> insertDiaryImage({
     required int diaryId,
-    // NOTE: Remove this parameter once new photos are stored as files.
-    String? photoId,
-    String? fileName,
+    required String fileName,
   }) {
     final diaryImage = DiaryImagesCompanion(
       diaryId: Value(diaryId),
-      photoId: Value(photoId),
       fileName: Value(fileName),
     );
     return into(diaryImages).insertReturning(diaryImage);

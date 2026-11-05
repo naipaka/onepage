@@ -183,9 +183,6 @@ class _Translations$home$photoSelector$ja implements Translations$home$photoSele
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
-	@override String get confirm => '決定';
-	@override String get noPhotos => '写真がありません';
-	@override late final _Translations$home$photoSelector$permission$ja permission = _Translations$home$photoSelector$permission$ja._(_root);
 	@override late final _Translations$home$photoSelector$notice$ja notice = _Translations$home$photoSelector$notice$ja._(_root);
 	@override late final _Translations$home$photoSelector$error$ja error = _Translations$home$photoSelector$error$ja._(_root);
 }
@@ -236,18 +233,6 @@ class _Translations$export$actions$ja implements Translations$export$actions$en 
 	@override String get export => 'エクスポート';
 }
 
-// Path: home.photoSelector.permission
-class _Translations$home$photoSelector$permission$ja implements Translations$home$photoSelector$permission$en {
-	_Translations$home$photoSelector$permission$ja._(this._root);
-
-	final TranslationsJa _root; // ignore: unused_field
-
-	// Translations
-	@override String get deniedTitle => '写真ライブラリへのアクセス権限が必要です';
-	@override String get deniedMessage => '設定からアプリに写真ライブラリへのアクセスを許可してください';
-	@override String get openSettings => '設定を開く';
-}
-
 // Path: home.photoSelector.notice
 class _Translations$home$photoSelector$notice$ja implements Translations$home$photoSelector$notice$en {
 	_Translations$home$photoSelector$notice$ja._(this._root);
@@ -256,7 +241,7 @@ class _Translations$home$photoSelector$notice$ja implements Translations$home$ph
 
 	// Translations
 	@override String get title => '写真の注意点';
-	@override String get message => '• 日付ごとに1枚まで添付できます\n• 端末から削除すると表示されません\n• 機種変更で失われる可能性があります\n• クラウド保存は対応予定です';
+	@override String get message => '• 日付ごとに1枚まで添付できます\n• 機種変更で失われる可能性があります\n• クラウド保存は将来的に対応予定です';
 	@override String get confirm => 'OK';
 }
 
@@ -293,13 +278,8 @@ extension on TranslationsJa {
 			'home.errorSavingDiarySolution' => '申し訳ありませんが、入力中のテキストをコピーしてからアプリを再起動してください',
 			'home.datePickerCancel' => 'キャンセル',
 			'home.datePickerConfirm' => '決定',
-			'home.photoSelector.confirm' => '決定',
-			'home.photoSelector.noPhotos' => '写真がありません',
-			'home.photoSelector.permission.deniedTitle' => '写真ライブラリへのアクセス権限が必要です',
-			'home.photoSelector.permission.deniedMessage' => '設定からアプリに写真ライブラリへのアクセスを許可してください',
-			'home.photoSelector.permission.openSettings' => '設定を開く',
 			'home.photoSelector.notice.title' => '写真の注意点',
-			'home.photoSelector.notice.message' => '• 日付ごとに1枚まで添付できます\n• 端末から削除すると表示されません\n• 機種変更で失われる可能性があります\n• クラウド保存は対応予定です',
+			'home.photoSelector.notice.message' => '• 日付ごとに1枚まで添付できます\n• 機種変更で失われる可能性があります\n• クラウド保存は将来的に対応予定です',
 			'home.photoSelector.notice.confirm' => 'OK',
 			'home.photoSelector.error.title' => '画像の保存中にエラーが発生しました',
 			'home.photoSelector.error.description' => 'もう一度お試しください',

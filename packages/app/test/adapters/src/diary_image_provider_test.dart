@@ -25,6 +25,7 @@ void main() {
         container.read(diaryImageCommandProvider),
         isA<DiaryImageCommand>()
             .having((c) => c.dbClient, 'dbClient', dbClient)
+            .having((c) => c.photoEncoder, 'photoEncoder', isA<PhotoEncoder>())
             .having((c) => c.photoStorage, 'photoStorage', photoStorage),
       );
     });

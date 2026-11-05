@@ -14,7 +14,8 @@ import 'package:drift/drift.dart' as _i2;
 import 'package:drift/src/runtime/executor/stream_queries.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i8;
-import 'package:photo_storage/src/photo_storage.dart' as _i10;
+import 'package:photo_storage/src/photo_encoder.dart' as _i10;
+import 'package:photo_storage/src/photo_storage.dart' as _i12;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -446,12 +447,10 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   _i6.Future<_i3.DiaryImage> insertDiaryImage({
     required int? diaryId,
-    String? photoId,
-    String? fileName,
+    required String? fileName,
   }) => (super.noSuchMethod(
     Invocation.method(#insertDiaryImage, [], {
       #diaryId: diaryId,
-      #photoId: photoId,
       #fileName: fileName,
     }),
     returnValue: _i6.Future<_i3.DiaryImage>.value(
@@ -459,7 +458,6 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
         this,
         Invocation.method(#insertDiaryImage, [], {
           #diaryId: diaryId,
-          #photoId: photoId,
           #fileName: fileName,
         }),
       ),
@@ -469,7 +467,6 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
         this,
         Invocation.method(#insertDiaryImage, [], {
           #diaryId: diaryId,
-          #photoId: photoId,
           #fileName: fileName,
         }),
       ),
@@ -1032,10 +1029,24 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) as String);
 }
 
+/// A class which mocks [PhotoEncoder].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPhotoEncoder extends _i1.Mock implements _i10.PhotoEncoder {
+  @override
+  _i6.Future<_i11.Uint8List> encode(String? path) => (super.noSuchMethod(
+    Invocation.method(#encode, [path]),
+    returnValue: _i6.Future<_i11.Uint8List>.value(_i11.Uint8List(0)),
+    returnValueForMissingStub: _i6.Future<_i11.Uint8List>.value(
+      _i11.Uint8List(0),
+    ),
+  ) as _i6.Future<_i11.Uint8List>);
+}
+
 /// A class which mocks [PhotoStorage].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPhotoStorage extends _i1.Mock implements _i10.PhotoStorage {
+class MockPhotoStorage extends _i1.Mock implements _i12.PhotoStorage {
   @override
   _i7.Directory get directory => (super.noSuchMethod(
     Invocation.getter(#directory),

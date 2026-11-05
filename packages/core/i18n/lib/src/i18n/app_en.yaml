@@ -17,15 +17,9 @@ home:
   datePickerCancel: "Cancel"
   datePickerConfirm: "OK"
   photoSelector:
-    confirm: "OK"
-    noPhotos: "No photos available"
-    permission:
-      deniedTitle: "Photo library access required"
-      deniedMessage: "Please allow access to your photo library in settings"
-      openSettings: "Open Settings"
     notice:
       title: "Important Notes about Photos"
-      message: "• One photo per date\n• Deleted from device won't show\n• May not transfer when switching devices\n• Cloud backup coming soon"
+      message: "• One photo per date\n• May not transfer when switching devices\n• Cloud backup planned for the future"
       confirm: "OK"
     error:
       title: "An error occurred while saving the image"
