@@ -4,30 +4,31 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
-import 'dart:io' as _i8;
-import 'dart:isolate' as _i9;
+import 'dart:io' as _i9;
+import 'dart:isolate' as _i10;
 
-import 'package:backup/src/backup_controller.dart' as _i13;
+import 'package:backup/src/backup_controller.dart' as _i14;
 import 'package:db_client/db_client.dart' as _i3;
 import 'package:drift/backends.dart' as _i4;
 import 'package:drift/drift.dart' as _i2;
 import 'package:drift/src/runtime/executor/stream_queries.dart' as _i5;
-import 'package:exporter/src/csv_exporter.dart' as _i16;
-import 'package:exporter/src/markdown_exporter.dart' as _i17;
-import 'package:exporter/src/models/models.dart' as _i15;
-import 'package:exporter/src/pdf_exporter.dart' as _i14;
-import 'package:firebase_analytics/firebase_analytics.dart' as _i22;
-import 'package:flutter/foundation.dart' as _i21;
-import 'package:flutter/material.dart' as _i10;
-import 'package:haptics/src/haptics.dart' as _i18;
-import 'package:in_app_reviewer/src/in_app_reviewer.dart' as _i19;
+import 'package:exporter/src/csv_exporter.dart' as _i17;
+import 'package:exporter/src/markdown_exporter.dart' as _i18;
+import 'package:exporter/src/models/models.dart' as _i16;
+import 'package:exporter/src/pdf_exporter.dart' as _i15;
+import 'package:firebase_analytics/firebase_analytics.dart' as _i23;
+import 'package:flutter/foundation.dart' as _i22;
+import 'package:flutter/material.dart' as _i11;
+import 'package:haptics/src/haptics.dart' as _i19;
+import 'package:in_app_reviewer/src/in_app_reviewer.dart' as _i20;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i12;
-import 'package:notification_client/src/models/models.dart' as _i24;
-import 'package:notification_client/src/notification_client.dart' as _i23;
+import 'package:mockito/src/dummies.dart' as _i13;
+import 'package:notification_client/src/models/models.dart' as _i25;
+import 'package:notification_client/src/notification_client.dart' as _i24;
 import 'package:package_info_plus/package_info_plus.dart' as _i7;
-import 'package:prefs_client/prefs_client.dart' as _i11;
-import 'package:tracker/src/tracker.dart' as _i20;
+import 'package:photo_storage/photo_storage.dart' as _i8;
+import 'package:prefs_client/prefs_client.dart' as _i12;
+import 'package:tracker/src/tracker.dart' as _i21;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -198,26 +199,31 @@ class _FakePackageInfo_26 extends _i1.SmartFake implements _i7.PackageInfo {
     : super(parent, parentInvocation);
 }
 
-class _FakeFile_27 extends _i1.SmartFake implements _i8.File {
-  _FakeFile_27(Object parent, Invocation parentInvocation)
+class _FakePhotoStorage_27 extends _i1.SmartFake implements _i8.PhotoStorage {
+  _FakePhotoStorage_27(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeSendPort_28 extends _i1.SmartFake implements _i9.SendPort {
-  _FakeSendPort_28(Object parent, Invocation parentInvocation)
+class _FakeFile_28 extends _i1.SmartFake implements _i9.File {
+  _FakeFile_28(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeNavigatorObserver_29 extends _i1.SmartFake
-    implements _i10.NavigatorObserver {
-  _FakeNavigatorObserver_29(Object parent, Invocation parentInvocation)
+class _FakeSendPort_29 extends _i1.SmartFake implements _i10.SendPort {
+  _FakeSendPort_29(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeNavigatorObserver_30 extends _i1.SmartFake
+    implements _i11.NavigatorObserver {
+  _FakeNavigatorObserver_30(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
 /// A class which mocks [PrefsClient].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPrefsClient extends _i1.Mock implements _i11.PrefsClient {
+class MockPrefsClient extends _i1.Mock implements _i12.PrefsClient {
   MockPrefsClient() {
     _i1.throwOnMissingStub(this);
   }
@@ -399,7 +405,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   _i2.SqlTypes get typeMapping => (super.noSuchMethod(
     Invocation.getter(#typeMapping),
-    returnValue: _i12.dummyValue<_i2.SqlTypes>(
+    returnValue: _i13.dummyValue<_i2.SqlTypes>(
       this,
       Invocation.getter(#typeMapping),
     ),
@@ -521,6 +527,12 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       ) as _i6.Future<String?>);
 
   @override
+  _i6.Future<Set<String>> getDiaryImageFileNames() => (super.noSuchMethod(
+    Invocation.method(#getDiaryImageFileNames, []),
+    returnValue: _i6.Future<Set<String>>.value(<String>{}),
+  ) as _i6.Future<Set<String>>);
+
+  @override
   _i6.Stream<int> watchDiaryImageCount() => (super.noSuchMethod(
     Invocation.method(#watchDiaryImageCount, []),
     returnValue: _i6.Stream<int>.empty(),
@@ -559,8 +571,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       #connect: connect,
     }),
     returnValue:
-        _i12.ifNotNull(
-          _i12.dummyValueOrNull<Ret>(
+        _i13.ifNotNull(
+          _i13.dummyValueOrNull<Ret>(
             this,
             Invocation.method(#computeWithDatabase, [], {
               #computation: computation,
@@ -590,7 +602,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   T alias<T, D>(_i2.ResultSetImplementation<T, D>? table, String? alias) =>
       (super.noSuchMethod(
         Invocation.method(#alias, [table, alias]),
-        returnValue: _i12.dummyValue<T>(
+        returnValue: _i13.dummyValue<T>(
           this,
           Invocation.method(#alias, [table, alias]),
         ),
@@ -623,8 +635,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) => (super.noSuchMethod(
     Invocation.method(#doWhenOpened, [fn]),
     returnValue:
-        _i12.ifNotNull(
-          _i12.dummyValueOrNull<T>(
+        _i13.ifNotNull(
+          _i13.dummyValueOrNull<T>(
             this,
             Invocation.method(#doWhenOpened, [fn]),
           ),
@@ -802,8 +814,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   }) => (super.noSuchMethod(
     Invocation.method(#transaction, [action], {#requireNew: requireNew}),
     returnValue:
-        _i12.ifNotNull(
-          _i12.dummyValueOrNull<T>(
+        _i13.ifNotNull(
+          _i13.dummyValueOrNull<T>(
             this,
             Invocation.method(
               #transaction,
@@ -824,8 +836,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       (super.noSuchMethod(
         Invocation.method(#exclusively, [action]),
         returnValue:
-            _i12.ifNotNull(
-              _i12.dummyValueOrNull<T>(
+            _i13.ifNotNull(
+              _i13.dummyValueOrNull<T>(
                 this,
                 Invocation.method(#exclusively, [action]),
               ),
@@ -853,8 +865,8 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       {#interceptor: interceptor},
     ),
     returnValue:
-        _i12.ifNotNull(
-          _i12.dummyValueOrNull<T>(
+        _i13.ifNotNull(
+          _i13.dummyValueOrNull<T>(
             this,
             Invocation.method(
               #runWithInterceptor,
@@ -919,7 +931,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   @override
   String $expandVar(int? start, int? amount) => (super.noSuchMethod(
     Invocation.method(#$expandVar, [start, amount]),
-    returnValue: _i12.dummyValue<String>(
+    returnValue: _i13.dummyValue<String>(
       this,
       Invocation.method(#$expandVar, [start, amount]),
     ),
@@ -929,7 +941,7 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
 /// A class which mocks [BackupController].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockBackupController extends _i1.Mock implements _i13.BackupController {
+class MockBackupController extends _i1.Mock implements _i14.BackupController {
   MockBackupController() {
     _i1.throwOnMissingStub(this);
   }
@@ -953,35 +965,57 @@ class MockBackupController extends _i1.Mock implements _i13.BackupController {
   ) as _i7.PackageInfo);
 
   @override
+  _i8.PhotoStorage get photoStorage => (super.noSuchMethod(
+    Invocation.getter(#photoStorage),
+    returnValue: _FakePhotoStorage_27(this, Invocation.getter(#photoStorage)),
+  ) as _i8.PhotoStorage);
+
+  @override
   String get appName => (super.noSuchMethod(
     Invocation.getter(#appName),
-    returnValue: _i12.dummyValue<String>(this, Invocation.getter(#appName)),
+    returnValue: _i13.dummyValue<String>(this, Invocation.getter(#appName)),
   ) as String);
 
   @override
   String get version => (super.noSuchMethod(
     Invocation.getter(#version),
-    returnValue: _i12.dummyValue<String>(this, Invocation.getter(#version)),
+    returnValue: _i13.dummyValue<String>(this, Invocation.getter(#version)),
   ) as String);
 
   @override
-  _i6.Future<void> createBackupFile() => (super.noSuchMethod(
-    Invocation.method(#createBackupFile, []),
+  _i6.Future<void> createBackupFile({
+    _i14.BackupProgressCallback? onProgress,
+  }) => (super.noSuchMethod(
+    Invocation.method(#createBackupFile, [], {#onProgress: onProgress}),
     returnValue: _i6.Future<void>.value(),
     returnValueForMissingStub: _i6.Future<void>.value(),
   ) as _i6.Future<void>);
 
   @override
-  _i6.Future<String?> restoreBackupFile() => (super.noSuchMethod(
-    Invocation.method(#restoreBackupFile, []),
-    returnValue: _i6.Future<String?>.value(),
-  ) as _i6.Future<String?>);
+  _i6.Future<_i14.BackupFile?> pickBackupFile() => (super.noSuchMethod(
+    Invocation.method(#pickBackupFile, []),
+    returnValue: _i6.Future<_i14.BackupFile?>.value(),
+  ) as _i6.Future<_i14.BackupFile?>);
+
+  @override
+  _i6.Future<void> restoreBackupFile(
+    _i14.BackupFile? backupFile, {
+    _i14.BackupProgressCallback? onProgress,
+  }) => (super.noSuchMethod(
+    Invocation.method(
+      #restoreBackupFile,
+      [backupFile],
+      {#onProgress: onProgress},
+    ),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
 }
 
 /// A class which mocks [PdfExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPdfExporter extends _i1.Mock implements _i14.PdfExporter {
+class MockPdfExporter extends _i1.Mock implements _i15.PdfExporter {
   MockPdfExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -993,20 +1027,20 @@ class MockPdfExporter extends _i1.Mock implements _i14.PdfExporter {
   ) as _i7.PackageInfo);
 
   @override
-  _i6.Future<_i8.File> export({required List<_i15.ExportDiary>? entries}) =>
+  _i6.Future<_i9.File> export({required List<_i16.ExportDiary>? entries}) =>
       (super.noSuchMethod(
         Invocation.method(#export, [], {#entries: entries}),
-        returnValue: _i6.Future<_i8.File>.value(
-          _FakeFile_27(
+        returnValue: _i6.Future<_i9.File>.value(
+          _FakeFile_28(
             this,
             Invocation.method(#export, [], {#entries: entries}),
           ),
         ),
-      ) as _i6.Future<_i8.File>);
+      ) as _i6.Future<_i9.File>);
 
   @override
-  _i6.Future<_i8.File> exportMonth({
-    required List<_i15.ExportDiary>? entries,
+  _i6.Future<_i9.File> exportMonth({
+    required List<_i16.ExportDiary>? entries,
     required int? year,
     required int? month,
   }) => (super.noSuchMethod(
@@ -1015,8 +1049,8 @@ class MockPdfExporter extends _i1.Mock implements _i14.PdfExporter {
       #year: year,
       #month: month,
     }),
-    returnValue: _i6.Future<_i8.File>.value(
-      _FakeFile_27(
+    returnValue: _i6.Future<_i9.File>.value(
+      _FakeFile_28(
         this,
         Invocation.method(#exportMonth, [], {
           #entries: entries,
@@ -1025,11 +1059,11 @@ class MockPdfExporter extends _i1.Mock implements _i14.PdfExporter {
         }),
       ),
     ),
-  ) as _i6.Future<_i8.File>);
+  ) as _i6.Future<_i9.File>);
 
   @override
-  _i6.Future<_i8.File> exportDateRange({
-    required List<_i15.ExportDiary>? entries,
+  _i6.Future<_i9.File> exportDateRange({
+    required List<_i16.ExportDiary>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) => (super.noSuchMethod(
@@ -1038,8 +1072,8 @@ class MockPdfExporter extends _i1.Mock implements _i14.PdfExporter {
       #startDate: startDate,
       #endDate: endDate,
     }),
-    returnValue: _i6.Future<_i8.File>.value(
-      _FakeFile_27(
+    returnValue: _i6.Future<_i9.File>.value(
+      _FakeFile_28(
         this,
         Invocation.method(#exportDateRange, [], {
           #entries: entries,
@@ -1048,13 +1082,13 @@ class MockPdfExporter extends _i1.Mock implements _i14.PdfExporter {
         }),
       ),
     ),
-  ) as _i6.Future<_i8.File>);
+  ) as _i6.Future<_i9.File>);
 }
 
 /// A class which mocks [CsvExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockCsvExporter extends _i1.Mock implements _i16.CsvExporter {
+class MockCsvExporter extends _i1.Mock implements _i17.CsvExporter {
   MockCsvExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1066,20 +1100,20 @@ class MockCsvExporter extends _i1.Mock implements _i16.CsvExporter {
   ) as _i7.PackageInfo);
 
   @override
-  _i6.Future<_i8.File> export({required List<_i15.ExportDiary>? entries}) =>
+  _i6.Future<_i9.File> export({required List<_i16.ExportDiary>? entries}) =>
       (super.noSuchMethod(
         Invocation.method(#export, [], {#entries: entries}),
-        returnValue: _i6.Future<_i8.File>.value(
-          _FakeFile_27(
+        returnValue: _i6.Future<_i9.File>.value(
+          _FakeFile_28(
             this,
             Invocation.method(#export, [], {#entries: entries}),
           ),
         ),
-      ) as _i6.Future<_i8.File>);
+      ) as _i6.Future<_i9.File>);
 
   @override
-  _i6.Future<_i8.File> exportMonth({
-    required List<_i15.ExportDiary>? entries,
+  _i6.Future<_i9.File> exportMonth({
+    required List<_i16.ExportDiary>? entries,
     required int? year,
     required int? month,
   }) => (super.noSuchMethod(
@@ -1088,8 +1122,8 @@ class MockCsvExporter extends _i1.Mock implements _i16.CsvExporter {
       #year: year,
       #month: month,
     }),
-    returnValue: _i6.Future<_i8.File>.value(
-      _FakeFile_27(
+    returnValue: _i6.Future<_i9.File>.value(
+      _FakeFile_28(
         this,
         Invocation.method(#exportMonth, [], {
           #entries: entries,
@@ -1098,11 +1132,11 @@ class MockCsvExporter extends _i1.Mock implements _i16.CsvExporter {
         }),
       ),
     ),
-  ) as _i6.Future<_i8.File>);
+  ) as _i6.Future<_i9.File>);
 
   @override
-  _i6.Future<_i8.File> exportDateRange({
-    required List<_i15.ExportDiary>? entries,
+  _i6.Future<_i9.File> exportDateRange({
+    required List<_i16.ExportDiary>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) => (super.noSuchMethod(
@@ -1111,8 +1145,8 @@ class MockCsvExporter extends _i1.Mock implements _i16.CsvExporter {
       #startDate: startDate,
       #endDate: endDate,
     }),
-    returnValue: _i6.Future<_i8.File>.value(
-      _FakeFile_27(
+    returnValue: _i6.Future<_i9.File>.value(
+      _FakeFile_28(
         this,
         Invocation.method(#exportDateRange, [], {
           #entries: entries,
@@ -1121,13 +1155,13 @@ class MockCsvExporter extends _i1.Mock implements _i16.CsvExporter {
         }),
       ),
     ),
-  ) as _i6.Future<_i8.File>);
+  ) as _i6.Future<_i9.File>);
 }
 
 /// A class which mocks [MarkdownExporter].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMarkdownExporter extends _i1.Mock implements _i17.MarkdownExporter {
+class MockMarkdownExporter extends _i1.Mock implements _i18.MarkdownExporter {
   MockMarkdownExporter() {
     _i1.throwOnMissingStub(this);
   }
@@ -1139,20 +1173,20 @@ class MockMarkdownExporter extends _i1.Mock implements _i17.MarkdownExporter {
   ) as _i7.PackageInfo);
 
   @override
-  _i6.Future<_i8.File> export({required List<_i15.ExportDiary>? entries}) =>
+  _i6.Future<_i9.File> export({required List<_i16.ExportDiary>? entries}) =>
       (super.noSuchMethod(
         Invocation.method(#export, [], {#entries: entries}),
-        returnValue: _i6.Future<_i8.File>.value(
-          _FakeFile_27(
+        returnValue: _i6.Future<_i9.File>.value(
+          _FakeFile_28(
             this,
             Invocation.method(#export, [], {#entries: entries}),
           ),
         ),
-      ) as _i6.Future<_i8.File>);
+      ) as _i6.Future<_i9.File>);
 
   @override
-  _i6.Future<_i8.File> exportMonth({
-    required List<_i15.ExportDiary>? entries,
+  _i6.Future<_i9.File> exportMonth({
+    required List<_i16.ExportDiary>? entries,
     required int? year,
     required int? month,
   }) => (super.noSuchMethod(
@@ -1161,8 +1195,8 @@ class MockMarkdownExporter extends _i1.Mock implements _i17.MarkdownExporter {
       #year: year,
       #month: month,
     }),
-    returnValue: _i6.Future<_i8.File>.value(
-      _FakeFile_27(
+    returnValue: _i6.Future<_i9.File>.value(
+      _FakeFile_28(
         this,
         Invocation.method(#exportMonth, [], {
           #entries: entries,
@@ -1171,11 +1205,11 @@ class MockMarkdownExporter extends _i1.Mock implements _i17.MarkdownExporter {
         }),
       ),
     ),
-  ) as _i6.Future<_i8.File>);
+  ) as _i6.Future<_i9.File>);
 
   @override
-  _i6.Future<_i8.File> exportDateRange({
-    required List<_i15.ExportDiary>? entries,
+  _i6.Future<_i9.File> exportDateRange({
+    required List<_i16.ExportDiary>? entries,
     required DateTime? startDate,
     required DateTime? endDate,
   }) => (super.noSuchMethod(
@@ -1184,8 +1218,8 @@ class MockMarkdownExporter extends _i1.Mock implements _i17.MarkdownExporter {
       #startDate: startDate,
       #endDate: endDate,
     }),
-    returnValue: _i6.Future<_i8.File>.value(
-      _FakeFile_27(
+    returnValue: _i6.Future<_i9.File>.value(
+      _FakeFile_28(
         this,
         Invocation.method(#exportDateRange, [], {
           #entries: entries,
@@ -1194,13 +1228,13 @@ class MockMarkdownExporter extends _i1.Mock implements _i17.MarkdownExporter {
         }),
       ),
     ),
-  ) as _i6.Future<_i8.File>);
+  ) as _i6.Future<_i9.File>);
 }
 
 /// A class which mocks [Haptics].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockHaptics extends _i1.Mock implements _i18.Haptics {
+class MockHaptics extends _i1.Mock implements _i19.Haptics {
   MockHaptics() {
     _i1.throwOnMissingStub(this);
   }
@@ -1239,7 +1273,7 @@ class MockHaptics extends _i1.Mock implements _i18.Haptics {
 /// A class which mocks [InAppReviewer].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockInAppReviewer extends _i1.Mock implements _i19.InAppReviewer {
+class MockInAppReviewer extends _i1.Mock implements _i20.InAppReviewer {
   MockInAppReviewer() {
     _i1.throwOnMissingStub(this);
   }
@@ -1289,14 +1323,14 @@ class MockInAppReviewer extends _i1.Mock implements _i19.InAppReviewer {
 /// A class which mocks [Tracker].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTracker extends _i1.Mock implements _i20.Tracker {
+class MockTracker extends _i1.Mock implements _i21.Tracker {
   MockTracker() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
   _i6.Future<void> onFlutterError(
-    _i21.FlutterErrorDetails? flutterErrorDetails, {
+    _i22.FlutterErrorDetails? flutterErrorDetails, {
     bool? fatal = false,
   }) => (super.noSuchMethod(
     Invocation.method(#onFlutterError, [flutterErrorDetails], {#fatal: fatal}),
@@ -1311,13 +1345,13 @@ class MockTracker extends _i1.Mock implements _i20.Tracker {
   ) as bool);
 
   @override
-  _i9.SendPort isolateErrorListener() => (super.noSuchMethod(
+  _i10.SendPort isolateErrorListener() => (super.noSuchMethod(
     Invocation.method(#isolateErrorListener, []),
-    returnValue: _FakeSendPort_28(
+    returnValue: _FakeSendPort_29(
       this,
       Invocation.method(#isolateErrorListener, []),
     ),
-  ) as _i9.SendPort);
+  ) as _i10.SendPort);
 
   @override
   _i6.Future<void> recordError(
@@ -1353,36 +1387,36 @@ class MockTracker extends _i1.Mock implements _i20.Tracker {
       ) as _i6.Future<void>);
 
   @override
-  _i10.NavigatorObserver navigatorObserver({
-    String? Function(_i10.RouteSettings)? nameExtractor =
-        _i22.defaultNameExtractor,
-    bool Function(_i10.Route<dynamic>?)? routeFilter = _i22.defaultRouteFilter,
+  _i11.NavigatorObserver navigatorObserver({
+    String? Function(_i11.RouteSettings)? nameExtractor =
+        _i23.defaultNameExtractor,
+    bool Function(_i11.Route<dynamic>?)? routeFilter = _i23.defaultRouteFilter,
   }) => (super.noSuchMethod(
     Invocation.method(#navigatorObserver, [], {
       #nameExtractor: nameExtractor,
       #routeFilter: routeFilter,
     }),
-    returnValue: _FakeNavigatorObserver_29(
+    returnValue: _FakeNavigatorObserver_30(
       this,
       Invocation.method(#navigatorObserver, [], {
         #nameExtractor: nameExtractor,
         #routeFilter: routeFilter,
       }),
     ),
-  ) as _i10.NavigatorObserver);
+  ) as _i11.NavigatorObserver);
 
   @override
-  List<_i10.NavigatorObserver> navigatorObservers({
-    String? Function(_i10.RouteSettings)? nameExtractor =
-        _i22.defaultNameExtractor,
-    bool Function(_i10.Route<dynamic>?)? routeFilter = _i22.defaultRouteFilter,
+  List<_i11.NavigatorObserver> navigatorObservers({
+    String? Function(_i11.RouteSettings)? nameExtractor =
+        _i23.defaultNameExtractor,
+    bool Function(_i11.Route<dynamic>?)? routeFilter = _i23.defaultRouteFilter,
   }) => (super.noSuchMethod(
     Invocation.method(#navigatorObservers, [], {
       #nameExtractor: nameExtractor,
       #routeFilter: routeFilter,
     }),
-    returnValue: <_i10.NavigatorObserver>[],
-  ) as List<_i10.NavigatorObserver>);
+    returnValue: <_i11.NavigatorObserver>[],
+  ) as List<_i11.NavigatorObserver>);
 
   @override
   _i6.Future<void> trackScreenView(String? screenName) => (super.noSuchMethod(
@@ -1406,7 +1440,7 @@ class MockTracker extends _i1.Mock implements _i20.Tracker {
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockNotificationClient extends _i1.Mock
-    implements _i23.NotificationClient {
+    implements _i24.NotificationClient {
   MockNotificationClient() {
     _i1.throwOnMissingStub(this);
   }
@@ -1426,7 +1460,7 @@ class MockNotificationClient extends _i1.Mock
 
   @override
   _i6.Future<void> scheduleNotifications(
-    List<_i24.NotificationSetting>? settings, {
+    List<_i25.NotificationSetting>? settings, {
     required String? title,
     required String? message,
   }) => (super.noSuchMethod(
