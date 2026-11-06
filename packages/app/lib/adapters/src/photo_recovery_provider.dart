@@ -1,6 +1,6 @@
 import 'package:db_client/db_client.dart';
-import 'package:diary/diary.dart';
-import 'package:photo_client/photo_client.dart';
+import 'package:device_photos/device_photos.dart';
+import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -46,9 +46,9 @@ class PhotoRecoveryState {
   bool get isRunning => progress != null;
 }
 
-/// Provides the device photo library.
+/// Provides the photos saved on the device.
 @riverpod
-PhotoLibrary photoLibrary(Ref ref) => const PhotoLibrary();
+DevicePhotos devicePhotos(Ref ref) => const DevicePhotos();
 
 /// Provides the diary images that are not stored in the app.
 ///
@@ -66,7 +66,7 @@ Future<List<DiaryImage>> unmigratedDiaryImages(Ref ref) {
 PhotoRecoveryCommand photoRecoveryCommand(Ref ref) {
   return PhotoRecoveryCommand(
     dbClient: ref.watch(dbClientProvider),
-    photoLibrary: ref.watch(photoLibraryProvider),
+    devicePhotos: ref.watch(devicePhotosProvider),
     photoEncoder: const PhotoEncoder(),
     photoStorage: ref.watch(photoStorageProvider),
   );
@@ -82,29 +82,29 @@ class PhotoRecovery extends _$PhotoRecovery {
     return const PhotoRecoveryState();
   }
 
-  /// Recovers what the library can read and decides what the user can do.
+  /// Recovers what the device can read and decides what the user can do.
   ///
   /// This only runs once for each database unless [retry] is true.
-  Future<void> importFromLibrary({bool retry = false}) async {
+  Future<void> importFromDevice({bool retry = false}) async {
     if (state.isRunning ||
         (state.action != PhotoRecoveryAction.unknown && !retry)) {
       return;
     }
-    final library = ref.read(photoLibraryProvider);
+    final devicePhotos = ref.read(devicePhotosProvider);
     state = PhotoRecoveryState(action: state.action, progress: (0, 0));
-    final access = await library.requestAccess();
-    final recovered = access == PhotoLibraryAccess.denied
+    final access = await devicePhotos.requestAccess();
+    final recovered = access == DevicePhotoAccess.denied
         ? 0
         : await _run(
             (onProgress) => ref
                 .read(photoRecoveryCommandProvider)
-                .recoverFromLibrary(onProgress: onProgress),
+                .recoverFromDevice(onProgress: onProgress),
           );
-    final supportsFolder = await library.supportsFolder;
+    final supportsFolder = await devicePhotos.supportsFolder;
     state = PhotoRecoveryState(
       action: switch (access) {
         _ when supportsFolder => PhotoRecoveryAction.pickFolder,
-        PhotoLibraryAccess.full => PhotoRecoveryAction.none,
+        DevicePhotoAccess.full => PhotoRecoveryAction.none,
         _ => PhotoRecoveryAction.openSettings,
       },
     );
@@ -115,7 +115,7 @@ class PhotoRecovery extends _$PhotoRecovery {
   ///
   /// Returns the number of recovered photos, or null if the user cancels.
   Future<int?> importFromFolder() async {
-    final folder = await ref.read(photoLibraryProvider).pickFolder();
+    final folder = await ref.read(devicePhotosProvider).pickFolder();
     if (folder == null) {
       return null;
     }

@@ -7,6 +7,7 @@ workspace:
   - packages/app
   - packages/core/configurator
   - packages/core/db_client
+  - packages/core/device_photos
   - packages/core/i18n
   - packages/core/notification_client
   - packages/core/photo_client
@@ -22,6 +23,7 @@ workspace:
   - packages/features/exporter
   - packages/features/haptics
   - packages/features/in_app_reviewer
+  - packages/features/photo_recovery
   - packages/features/scroll_calendar
   - packages/features/update_requester
 

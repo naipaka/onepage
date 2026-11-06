@@ -156,7 +156,7 @@ class HomePage extends HookConsumerWidget {
                         unawaited(
                           ref
                               .read(photoRecoveryProvider.notifier)
-                              .importFromLibrary(),
+                              .importFromDevice(),
                         );
                       }
                     });
@@ -292,7 +292,6 @@ class _DiaryItem extends ConsumerWidget {
       try {
         Navigator.pop(context);
         await notifier.deleteImage(imageId: image.id);
-        ref.invalidate(unmigratedDiaryImagesProvider);
       } on Object catch (e) {
         unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
       }

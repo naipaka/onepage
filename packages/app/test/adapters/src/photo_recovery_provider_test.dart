@@ -9,7 +9,7 @@ import '../../golden/golden_test_helpers.mocks.dart';
 
 void main() {
   group('photoRecoveryCommandProvider', () {
-    test('uses the photo storage and the photo library', () {
+    test('uses the photo storage and the device photos', () {
       final photoStorage = PhotoStorage(directory: Directory.systemTemp);
       final container = ProviderContainer(
         overrides: [
@@ -22,7 +22,7 @@ void main() {
       final command = container.read(photoRecoveryCommandProvider);
 
       expect(command.photoStorage, photoStorage);
-      expect(command.photoLibrary, container.read(photoLibraryProvider));
+      expect(command.devicePhotos, container.read(devicePhotosProvider));
     });
   });
 }

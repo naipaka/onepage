@@ -109,12 +109,12 @@ class PhotoRecoveryPage extends ConsumerWidget {
                   BodyLargeText(t.photoRecovery.settings.message),
                   const Gap(24),
                   HapticFilledButton(
-                    onPressed: ref.read(photoLibraryProvider).openSettings,
+                    onPressed: ref.read(devicePhotosProvider).openSettings,
                     child: Text(t.photoRecovery.settings.action),
                   ),
                   const Gap(12),
                   TextButton(
-                    onPressed: () => notifier.importFromLibrary(retry: true),
+                    onPressed: () => notifier.importFromDevice(retry: true),
                     child: Text(t.photoRecovery.settings.retry),
                   ),
                 ],

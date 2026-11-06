@@ -10,51 +10,51 @@ part of 'photo_recovery_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Provides the device photo library.
+/// Provides the photos saved on the device.
 
-@ProviderFor(photoLibrary)
-final photoLibraryProvider = PhotoLibraryProvider._();
+@ProviderFor(devicePhotos)
+final devicePhotosProvider = DevicePhotosProvider._();
 
-/// Provides the device photo library.
+/// Provides the photos saved on the device.
 
-final class PhotoLibraryProvider
-    extends $FunctionalProvider<PhotoLibrary, PhotoLibrary, PhotoLibrary>
-    with $Provider<PhotoLibrary> {
-  /// Provides the device photo library.
-  PhotoLibraryProvider._()
+final class DevicePhotosProvider
+    extends $FunctionalProvider<DevicePhotos, DevicePhotos, DevicePhotos>
+    with $Provider<DevicePhotos> {
+  /// Provides the photos saved on the device.
+  DevicePhotosProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'photoLibraryProvider',
+        name: r'devicePhotosProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$photoLibraryHash();
+  String debugGetCreateSourceHash() => _$devicePhotosHash();
 
   @$internal
   @override
-  $ProviderElement<PhotoLibrary> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<DevicePhotos> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  PhotoLibrary create(Ref ref) {
-    return photoLibrary(ref);
+  DevicePhotos create(Ref ref) {
+    return devicePhotos(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PhotoLibrary value) {
+  Override overrideWithValue(DevicePhotos value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<PhotoLibrary>(value),
+      providerOverride: $SyncValueProvider<DevicePhotos>(value),
     );
   }
 }
 
-String _$photoLibraryHash() => r'8276c34458d4f24c7ab3a3c164fbe1b02d5716c0';
+String _$devicePhotosHash() => r'e4eb7918d5463fc54d33f3072f598cb01832fb27';
 
 /// Provides the diary images that are not stored in the app.
 ///
@@ -167,7 +167,7 @@ final class PhotoRecoveryCommandProvider
 }
 
 String _$photoRecoveryCommandHash() =>
-    r'6a22f7eaa378ba29aa2e45ca2aafeda02db5cfc1';
+    r'99437920db21bd1c0700a575db342349d04e95a4';
 
 /// Recovers photos and reports the progress.
 
@@ -205,7 +205,7 @@ final class PhotoRecoveryProvider
   }
 }
 
-String _$photoRecoveryHash() => r'ac04c527d7731f3b8fd91aa62727071be72e8603';
+String _$photoRecoveryHash() => r'a333e549c49676d3e100b2dd21781b3119e3791e';
 
 /// Recovers photos and reports the progress.
 

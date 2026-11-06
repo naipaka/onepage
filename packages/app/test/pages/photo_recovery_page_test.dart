@@ -6,7 +6,7 @@ import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
-import 'package:diary/diary.dart';
+import 'package:device_photos/device_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -16,22 +16,22 @@ import 'package:mockito/mockito.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/pages/pages.dart';
 import 'package:onepage/router/router.dart';
-import 'package:photo_client/photo_client.dart';
+import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:theme/theme.dart';
 
 import '../golden/golden_test_helpers.mocks.dart';
 
-class _FakeLibrary extends Fake implements PhotoLibrary {
+class _FakeLibrary extends Fake implements DevicePhotos {
   new({required this.access, required this.folderSupported});
 
-  final PhotoLibraryAccess access;
+  final DevicePhotoAccess access;
   final bool folderSupported;
   String? folder = 'folder';
   int settingsOpened = 0;
 
   @override
-  Future<PhotoLibraryAccess> requestAccess() async => access;
+  Future<DevicePhotoAccess> requestAccess() async => access;
 
   @override
   Future<bool> get supportsFolder async => folderSupported;
@@ -48,13 +48,13 @@ class _FakeLibrary extends Fake implements PhotoLibrary {
 class _FakeRouterState extends Fake implements GoRouterState;
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
-  int libraryRuns = 0;
+  int deviceRuns = 0;
   Exception? folderError;
   Completer<void>? gate;
 
   @override
-  Future<int> recoverFromLibrary({PhotoRecoveryProgress? onProgress}) async {
-    libraryRuns++;
+  Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
+    deviceRuns++;
     onProgress?.call(1, 1);
     return 0;
   }
@@ -116,7 +116,7 @@ void main() {
 
     Future<void> pumpPage(
       WidgetTester tester, {
-      PhotoLibraryAccess access = PhotoLibraryAccess.denied,
+      DevicePhotoAccess access = DevicePhotoAccess.denied,
       bool folderSupported = true,
       _FakeLibrary? library,
       int? imageId,
@@ -130,7 +130,7 @@ void main() {
         ProviderScope(
           overrides: [
             dbClientProvider.overrideWithValue(dbClient),
-            photoLibraryProvider.overrideWithValue(
+            devicePhotosProvider.overrideWithValue(
               library ??
                   _FakeLibrary(
                     access: access,
@@ -159,7 +159,7 @@ void main() {
       await tester
           .container()
           .read(photoRecoveryProvider.notifier)
-          .importFromLibrary();
+          .importFromDevice();
       await tester.pump();
       await tester.pump();
     }
@@ -187,23 +187,23 @@ void main() {
     testWidgets('does not import from a denied library', (tester) async {
       await pumpPage(tester);
 
-      expect(command.libraryRuns, 0);
+      expect(command.deviceRuns, 0);
     });
 
     testWidgets('imports from an allowed library once', (tester) async {
-      await pumpPage(tester, access: PhotoLibraryAccess.limited);
+      await pumpPage(tester, access: DevicePhotoAccess.limited);
 
       await tester
           .container()
           .read(photoRecoveryProvider.notifier)
-          .importFromLibrary();
+          .importFromDevice();
 
-      expect(command.libraryRuns, 1);
+      expect(command.deviceRuns, 1);
     });
 
     testWidgets('guides to Settings without folder selection', (tester) async {
       final library = _FakeLibrary(
-        access: PhotoLibraryAccess.limited,
+        access: DevicePhotoAccess.limited,
         folderSupported: false,
       );
       await pumpPage(tester, library: library);
@@ -213,13 +213,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(library.settingsOpened, 1);
-      expect(command.libraryRuns, 2);
+      expect(command.deviceRuns, 2);
     });
 
     testWidgets('reports missing originals with full access', (tester) async {
       await pumpPage(
         tester,
-        access: PhotoLibraryAccess.full,
+        access: DevicePhotoAccess.full,
         folderSupported: false,
       );
 
@@ -339,7 +339,7 @@ void main() {
       tester,
     ) async {
       final library = _FakeLibrary(
-        access: PhotoLibraryAccess.denied,
+        access: DevicePhotoAccess.denied,
         folderSupported: true,
       )..folder = null;
       await pumpPage(tester, library: library);

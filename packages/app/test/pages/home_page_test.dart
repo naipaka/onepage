@@ -5,7 +5,7 @@ import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
-import 'package:diary/diary.dart';
+import 'package:device_photos/device_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -15,6 +15,7 @@ import 'package:mockito/mockito.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/router/router.dart';
 import 'package:photo_client/photo_client.dart';
+import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:theme/theme.dart';
 
@@ -23,24 +24,24 @@ import '../golden/golden_test_helpers.mocks.dart';
 const _banner = 'Some photos need to be recovered';
 const _title = 'Recover Photos';
 
-class _FakeLibrary extends Fake implements PhotoLibrary {
+class _FakeLibrary extends Fake implements DevicePhotos {
   new(this.access);
 
-  final PhotoLibraryAccess access;
+  final DevicePhotoAccess access;
 
   @override
-  Future<PhotoLibraryAccess> requestAccess() async => access;
+  Future<DevicePhotoAccess> requestAccess() async => access;
 
   @override
   Future<bool> get supportsFolder async => true;
 }
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
-  int libraryRuns = 0;
+  int deviceRuns = 0;
 
   @override
-  Future<int> recoverFromLibrary({PhotoRecoveryProgress? onProgress}) async {
-    libraryRuns++;
+  Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
+    deviceRuns++;
     return 0;
   }
 }
@@ -94,7 +95,7 @@ void main() {
 
     Future<void> pumpHome(
       WidgetTester tester, {
-      PhotoLibraryAccess access = PhotoLibraryAccess.denied,
+      DevicePhotoAccess access = DevicePhotoAccess.denied,
     }) async {
       LocaleSettings.setLocaleRawSync('en');
       await tester.binding.setSurfaceSize(const Size(800, 1400));
@@ -112,7 +113,7 @@ void main() {
             inAppReviewerProvider.overrideWith(
               (ref) async => MockInAppReviewer(),
             ),
-            photoLibraryProvider.overrideWithValue(_FakeLibrary(access)),
+            devicePhotosProvider.overrideWithValue(_FakeLibrary(access)),
             photoRecoveryCommandProvider.overrideWithValue(command),
             photoStorageProvider.overrideWithValue(
               PhotoStorage(directory: Directory.systemTemp),
@@ -166,16 +167,16 @@ void main() {
 
     testWidgets('imports photos when the library is readable', (tester) async {
       stubUnmigrated([image]);
-      await pumpHome(tester, access: PhotoLibraryAccess.full);
+      await pumpHome(tester, access: DevicePhotoAccess.full);
 
-      expect(command.libraryRuns, 1);
+      expect(command.deviceRuns, 1);
     });
 
     testWidgets('does not import without unmigrated photos', (tester) async {
       stubUnmigrated([]);
-      await pumpHome(tester, access: PhotoLibraryAccess.full);
+      await pumpHome(tester, access: DevicePhotoAccess.full);
 
-      expect(command.libraryRuns, 0);
+      expect(command.deviceRuns, 0);
       expect(find.text(_banner), findsNothing);
     });
 
