@@ -62,10 +62,14 @@ class DbConnection {
   Future<File> createValidBackupFile({required String backupFilePath}) async {
     final newDbFileDir = await getTemporaryDirectory();
     final newDbFilePath = p.join(newDbFileDir.path, 'import.sqlite');
+    final newDbFile = File(newDbFilePath);
+    if (newDbFile.existsSync()) {
+      await newDbFile.delete();
+    }
     sqlite3Instance.open(backupFilePath)
       ..execute('VACUUM INTO ?', [newDbFilePath])
       ..close();
-    return File(newDbFilePath);
+    return newDbFile;
   }
 
   /// Restores the database from the provided backup file.
