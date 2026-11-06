@@ -14,7 +14,6 @@ dependencies:
   image_picker: ^1.2.0
   image_picker_android: ^0.8.13
   image_picker_platform_interface: ^2.11.0
-  photo_manager: ^3.10.0
 
 dev_dependencies:
   altive_lints: ^4.1.0

@@ -87,6 +87,52 @@ void main() {
     expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
   });
 
+  Future<void> openViewer(WidgetTester tester) async {
+    await tester.pumpWidget(build());
+    await tester.tap(find.byType(PhotoFileThumbnail));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('closes the viewer with the close button', (tester) async {
+    await openViewer(tester);
+
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InteractiveViewer), findsNothing);
+  });
+
+  testWidgets('closes the viewer after a long drag', (tester) async {
+    await openViewer(tester);
+
+    await tester.drag(find.byType(InteractiveViewer), const Offset(0, 400));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InteractiveViewer), findsNothing);
+  });
+
+  testWidgets('keeps the viewer after a short drag', (tester) async {
+    await openViewer(tester);
+
+    await tester.drag(find.byType(InteractiveViewer), const Offset(0, 40));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InteractiveViewer), findsOneWidget);
+  });
+
+  testWidgets('updates the zoom state when an interaction ends', (
+    tester,
+  ) async {
+    await openViewer(tester);
+
+    tester
+        .widget<InteractiveViewer>(find.byType(InteractiveViewer))
+        .onInteractionEnd!(ScaleEndDetails());
+    await tester.pump();
+
+    expect(find.byType(InteractiveViewer), findsOneWidget);
+  });
+
   testWidgets('opens the viewer with its actions', (tester) async {
     var deleted = false;
     var infoShown = false;
