@@ -17,6 +17,9 @@ part 'app_routes.g.dart';
     TypedGoRoute<BackupRouteData>(
       path: BackupRouteData.path,
     ),
+    TypedGoRoute<PhotoRecoveryRouteData>(
+      path: PhotoRecoveryRouteData.path,
+    ),
     TypedGoRoute<ExportRouteData>(
       path: ExportRouteData.path,
     ),
@@ -59,6 +62,25 @@ class NotificationsRouteData extends GoRouteData with $NotificationsRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const NotificationsPage();
+  }
+}
+
+/// {@template onepage.PhotoRecoveryRouteData}
+/// Photo recovery route data.
+/// {@endtemplate}
+class PhotoRecoveryRouteData extends GoRouteData with $PhotoRecoveryRouteData {
+  /// {@macro onepage.PhotoRecoveryRouteData}
+  const new({this.imageId});
+
+  /// The route path.
+  static const path = 'photo-recovery';
+
+  /// The diary image the page was opened from.
+  final int? imageId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return PhotoRecoveryPage(imageId: imageId);
   }
 }
 

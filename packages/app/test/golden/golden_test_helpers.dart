@@ -56,6 +56,7 @@ abstract final class GoldenTestHelpers {
     when(mockPrefsClient.textInputHapticEnabled).thenReturn(true);
     when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
     when(mockPrefsClient.notificationSettings).thenReturn([]);
+    when(mockPrefsClient.photoRecoveryDismissed).thenReturn(false);
 
     // Mock DbClient methods
     when(

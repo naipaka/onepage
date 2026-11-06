@@ -144,66 +144,84 @@ class HomePage extends HookConsumerWidget {
         onDismiss: checkInAppReview,
         child: SafeArea(
           bottom: false,
-          child: Consumer(
-            builder: (context, ref, child) {
-              final asyncDiaries = ref.watch(cachedDiariesProvider);
-              final notifier = ref.watch(cachedDiariesProvider.notifier);
-              return asyncDiaries.when(
-                loading: () => centerLoadingIndicator,
-                error: (error, _) => Center(
-                  child: Column(
-                    children: [
-                      Icon(Icons.error, color: colorScheme.error),
-                      Text(error.toString()),
-                    ],
-                  ),
-                ),
-                data: (diariesWithDates) {
-                  final diaries = diariesWithDates.diaries;
-                  final dates = diariesWithDates.dates;
-                  // Wrapped with [TextFieldTapRegion] to prevent keyboard
-                  // hiding when tapping text fields during scroll.
-                  // By wrapping with [TextFieldTapRegion],
-                  // the TextField's onTapOutside event will not fire.
-                  return TextFieldTapRegion(
-                    child: VerticalScrollCalendar(
-                      key: K.diaryCalendar,
-                      controller: scrollCalendarController,
-                      dates: dates,
-                      loadMoreOlder: notifier.loadMoreOlder,
-                      onVisibleDateChanged: (date) {
-                        visibleDateState.value = date;
-                      },
-                      loadingIndicator: centerLoadingIndicator,
-                      separatorBuilder: (_, date) {
-                        if (date.day != 1) {
-                          return const Gap(32);
-                        }
-                        return const Padding(
-                          padding: EdgeInsets.all(32),
-                          child: DashedDivider(
-                            dashedHeight: 2,
-                            dashedWidth: 2,
-                            dashedSpace: 16,
+          child: Column(
+            children: [
+              const _PhotoRecoveryBanner(),
+              Expanded(
+                child: Consumer(
+                  builder: (context, ref, child) {
+                    // Unmigrated photos are imported as soon as they are found.
+                    ref.listen(unmigratedDiaryImagesProvider, (_, images) {
+                      if (images.value?.isNotEmpty ?? false) {
+                        unawaited(
+                          ref
+                              .read(photoRecoveryProvider.notifier)
+                              .importFromLibrary(),
+                        );
+                      }
+                    });
+                    final asyncDiaries = ref.watch(cachedDiariesProvider);
+                    final notifier = ref.watch(cachedDiariesProvider.notifier);
+                    return asyncDiaries.when(
+                      loading: () => centerLoadingIndicator,
+                      error: (error, _) => Center(
+                        child: Column(
+                          children: [
+                            Icon(Icons.error, color: colorScheme.error),
+                            Text(error.toString()),
+                          ],
+                        ),
+                      ),
+                      data: (diariesWithDates) {
+                        final diaries = diariesWithDates.diaries;
+                        final dates = diariesWithDates.dates;
+                        // Wrapped with [TextFieldTapRegion] to prevent keyboard
+                        // hiding when tapping text fields during scroll.
+                        // By wrapping with [TextFieldTapRegion],
+                        // the TextField's onTapOutside event will not fire.
+                        return TextFieldTapRegion(
+                          child: VerticalScrollCalendar(
+                            key: K.diaryCalendar,
+                            controller: scrollCalendarController,
+                            dates: dates,
+                            loadMoreOlder: notifier.loadMoreOlder,
+                            onVisibleDateChanged: (date) {
+                              visibleDateState.value = date;
+                            },
+                            loadingIndicator: centerLoadingIndicator,
+                            separatorBuilder: (_, date) {
+                              if (date.day != 1) {
+                                return const Gap(32);
+                              }
+                              return const Padding(
+                                padding: EdgeInsets.all(32),
+                                child: DashedDivider(
+                                  dashedHeight: 2,
+                                  dashedWidth: 2,
+                                  dashedSpace: 16,
+                                ),
+                              );
+                            },
+                            dateItemBuilder: (_, date) {
+                              final diary = diaries.firstWhereOrNull(
+                                (e) => DateUtils.isSameDay(e.entry.date, date),
+                              );
+
+                              return _DiaryItem(
+                                scrollCalendarController:
+                                    scrollCalendarController,
+                                date: date,
+                                diary: diary,
+                              );
+                            },
                           ),
                         );
                       },
-                      dateItemBuilder: (_, date) {
-                        final diary = diaries.firstWhereOrNull(
-                          (e) => DateUtils.isSameDay(e.entry.date, date),
-                        );
-
-                        return _DiaryItem(
-                          scrollCalendarController: scrollCalendarController,
-                          date: date,
-                          diary: diary,
-                        );
-                      },
-                    ),
-                  );
-                },
-              );
-            },
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -274,6 +292,7 @@ class _DiaryItem extends ConsumerWidget {
       try {
         Navigator.pop(context);
         await notifier.deleteImage(imageId: image.id);
+        ref.invalidate(unmigratedDiaryImagesProvider);
       } on Object catch (e) {
         unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
       }
@@ -337,16 +356,72 @@ class _DiaryItem extends ConsumerWidget {
                 onDeleted: deleteImage,
                 onInfoShown: showPhotoNotice,
               )
-            else if (image.photoId case final photoId?)
-              PhotoThumbnail(
-                photoId: photoId,
+            else
+              PhotoPlaceholder(
                 width: 64,
                 height: 64,
-                onDeleted: deleteImage,
-                onInfoShown: showPhotoNotice,
+                onTap: () async {
+                  await PhotoRecoveryRouteData(imageId: image.id).push<void>(
+                    context,
+                  );
+                },
               ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _PhotoRecoveryTile extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final images = ref.watch(unmigratedDiaryImagesProvider).value;
+    if (images == null || images.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: HapticNavigationListTile(
+        leading: const Icon(Icons.photo_library_outlined),
+        title: Text(context.t.photoRecovery.title),
+        onTap: () async {
+          Scaffold.of(context).closeDrawer();
+          await const PhotoRecoveryRouteData().push<void>(context);
+        },
+      ),
+    );
+  }
+}
+
+class _PhotoRecoveryBanner extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final images = ref.watch(unmigratedDiaryImagesProvider).value;
+    final recovery = ref.watch(photoRecoveryProvider);
+    final dismissed = ref.watch(prefsClientProvider).photoRecoveryDismissed;
+    final hidden =
+        images == null ||
+        images.isEmpty ||
+        dismissed ||
+        recovery.action == PhotoRecoveryAction.none;
+    if (hidden) {
+      return const SizedBox.shrink();
+    }
+
+    return Material(
+      color: context.colorScheme.secondaryContainer,
+      child: ListTile(
+        leading: const Icon(Icons.photo_library_outlined),
+        title: Text(context.t.photoRecovery.banner),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () async {
+          await const PhotoRecoveryRouteData().push<void>(context);
+        },
       ),
     );
   }
@@ -405,6 +480,7 @@ class _Drawer extends StatelessWidget {
               const BackupRouteData().go(context);
             },
           ),
+          const _PhotoRecoveryTile(),
           const Gap(8),
           HapticNavigationListTile(
             leading: const Icon(Icons.picture_as_pdf_outlined),
