@@ -50,6 +50,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 
 	late final Translations$updateRequest$en updateRequest = Translations$updateRequest$en._(_root);
 	late final Translations$home$en home = Translations$home$en._(_root);
+	late final Translations$photoRecovery$en photoRecovery = Translations$photoRecovery$en._(_root);
 	late final Translations$backup$en backup = Translations$backup$en._(_root);
 	late final Translations$settings$en settings = Translations$settings$en._(_root);
 	late final Translations$search$en search = Translations$search$en._(_root);
@@ -111,6 +112,45 @@ class Translations$home$en {
 
 	late final Translations$home$photoSelector$en photoSelector = Translations$home$photoSelector$en._(_root);
 	late final Translations$home$deleteImage$en deleteImage = Translations$home$deleteImage$en._(_root);
+}
+
+// Path: photoRecovery
+class Translations$photoRecovery$en {
+	Translations$photoRecovery$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Recover Photos'
+	String get title => 'Recover Photos';
+
+	/// en: 'Some photos need to be recovered'
+	String get banner => 'Some photos need to be recovered';
+
+	/// en: 'Photos left to recover: $count'
+	String remaining({required Object count}) => 'Photos left to recover: ${count}';
+
+	/// en: 'Recovering photos'
+	String get progress => 'Recovering photos';
+
+	late final Translations$photoRecovery$folder$en folder = Translations$photoRecovery$folder$en._(_root);
+	late final Translations$photoRecovery$settings$en settings = Translations$photoRecovery$settings$en._(_root);
+
+	/// en: 'The original photos could not be found on this device. You can delete a photo after opening it from your diary.'
+	String get missing => 'The original photos could not be found on this device. You can delete a photo after opening it from your diary.';
+
+	/// en: 'Delete This Photo'
+	String get deletePhoto => 'Delete This Photo';
+
+	late final Translations$photoRecovery$deleteConfirm$en deleteConfirm = Translations$photoRecovery$deleteConfirm$en._(_root);
+	late final Translations$photoRecovery$dismiss$en dismiss = Translations$photoRecovery$dismiss$en._(_root);
+
+	/// en: 'Photos recovered: $count'
+	String recovered({required Object count}) => 'Photos recovered: ${count}';
+
+	/// en: 'Could not recover photos'
+	String get failed => 'Could not recover photos';
 }
 
 // Path: backup
@@ -315,6 +355,72 @@ class Translations$home$deleteImage$en {
 	String get message => 'Are you sure you want to delete this image?';
 }
 
+// Path: photoRecovery.folder
+class Translations$photoRecovery$folder$en {
+	Translations$photoRecovery$folder$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Select the folder that holds your photos, such as DCIM or Pictures. The app copies the photos it needs and leaves the originals as they are.'
+	String get message => 'Select the folder that holds your photos, such as DCIM or Pictures. The app copies the photos it needs and leaves the originals as they are.';
+
+	/// en: 'Select Folder'
+	String get action => 'Select Folder';
+}
+
+// Path: photoRecovery.settings
+class Translations$photoRecovery$settings$en {
+	Translations$photoRecovery$settings$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Allow access to all photos in Settings, then come back and try again.'
+	String get message => 'Allow access to all photos in Settings, then come back and try again.';
+
+	/// en: 'Open Settings'
+	String get action => 'Open Settings';
+
+	/// en: 'Try Again'
+	String get retry => 'Try Again';
+}
+
+// Path: photoRecovery.deleteConfirm
+class Translations$photoRecovery$deleteConfirm$en {
+	Translations$photoRecovery$deleteConfirm$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Delete Photo'
+	String get title => 'Delete Photo';
+
+	/// en: 'Delete this photo from your diary?'
+	String get message => 'Delete this photo from your diary?';
+}
+
+// Path: photoRecovery.dismiss
+class Translations$photoRecovery$dismiss$en {
+	Translations$photoRecovery$dismiss$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Do Not Recover the Remaining Photos'
+	String get action => 'Do Not Recover the Remaining Photos';
+
+	/// en: 'Stop recovering photos?'
+	String get title => 'Stop recovering photos?';
+
+	/// en: 'The reminder on the home screen goes away. You can still recover photos from the menu.'
+	String get message => 'The reminder on the home screen goes away. You can still recover photos from the menu.';
+}
+
 // Path: backup.progress
 class Translations$backup$progress$en {
 	Translations$backup$progress$en._(this._root);
@@ -464,6 +570,24 @@ extension on Translations {
 			'home.photoSelector.error.description' => 'Please try again',
 			'home.deleteImage.title' => 'Delete Image',
 			'home.deleteImage.message' => 'Are you sure you want to delete this image?',
+			'photoRecovery.title' => 'Recover Photos',
+			'photoRecovery.banner' => 'Some photos need to be recovered',
+			'photoRecovery.remaining' => ({required Object count}) => 'Photos left to recover: ${count}',
+			'photoRecovery.progress' => 'Recovering photos',
+			'photoRecovery.folder.message' => 'Select the folder that holds your photos, such as DCIM or Pictures. The app copies the photos it needs and leaves the originals as they are.',
+			'photoRecovery.folder.action' => 'Select Folder',
+			'photoRecovery.settings.message' => 'Allow access to all photos in Settings, then come back and try again.',
+			'photoRecovery.settings.action' => 'Open Settings',
+			'photoRecovery.settings.retry' => 'Try Again',
+			'photoRecovery.missing' => 'The original photos could not be found on this device. You can delete a photo after opening it from your diary.',
+			'photoRecovery.deletePhoto' => 'Delete This Photo',
+			'photoRecovery.deleteConfirm.title' => 'Delete Photo',
+			'photoRecovery.deleteConfirm.message' => 'Delete this photo from your diary?',
+			'photoRecovery.dismiss.action' => 'Do Not Recover the Remaining Photos',
+			'photoRecovery.dismiss.title' => 'Stop recovering photos?',
+			'photoRecovery.dismiss.message' => 'The reminder on the home screen goes away. You can still recover photos from the menu.',
+			'photoRecovery.recovered' => ({required Object count}) => 'Photos recovered: ${count}',
+			'photoRecovery.failed' => 'Could not recover photos',
 			'backup.title' => 'Backup',
 			'backup.description' => 'Backup for a Smooth Device Switch',
 			'backup.explanation' => 'Easily generate a backup file and save it wherever you prefer (e.g., iCloud, Google Drive, etc.).',

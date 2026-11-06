@@ -27,6 +27,29 @@ home:
   deleteImage:
     title: "Delete Image"
     message: "Are you sure you want to delete this image?"
+photoRecovery:
+  title: "Recover Photos"
+  banner: "Some photos need to be recovered"
+  remaining: "Photos left to recover: $count"
+  progress: "Recovering photos"
+  folder:
+    message: "Select the folder that holds your photos, such as DCIM or Pictures. The app copies the photos it needs and leaves the originals as they are."
+    action: "Select Folder"
+  settings:
+    message: "Allow access to all photos in Settings, then come back and try again."
+    action: "Open Settings"
+    retry: "Try Again"
+  missing: "The original photos could not be found on this device. You can delete a photo after opening it from your diary."
+  deletePhoto: "Delete This Photo"
+  deleteConfirm:
+    title: "Delete Photo"
+    message: "Delete this photo from your diary?"
+  dismiss:
+    action: "Do Not Recover the Remaining Photos"
+    title: "Stop recovering photos?"
+    message: "The reminder on the home screen goes away. You can still recover photos from the menu."
+  recovered: "Photos recovered: $count"
+  failed: "Could not recover photos"
 backup:
   title: "Backup"
   description: "Backup for a Smooth Device Switch"
