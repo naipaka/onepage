@@ -42,10 +42,11 @@
       "Bash(rm:*)"
     ],
     "deny": [
+      "Bash(git reset --hard:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
       "Bash(sudo:*)",
       "Bash(rm -rf:*)",
-      "Bash(git reset:*)",
-      "Bash(git rebase:*)",
       "Bash(git clean:*)",
       "Bash(curl:*)",
       "Bash(wget:*)",
