@@ -1,17 +1,23 @@
 // Test files do not need to specify provider dependencies
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:mockito/mockito.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/pages/pages.dart';
+import 'package:onepage/router/router.dart';
 import 'package:photo_client/photo_client.dart';
+import 'package:photo_storage/photo_storage.dart';
 import 'package:theme/theme.dart';
 
 import '../golden/golden_test_helpers.mocks.dart';
@@ -37,8 +43,14 @@ class _FakeLibrary extends Fake implements PhotoLibrary {
   Future<void> openSettings() async => settingsOpened++;
 }
 
+// GoRouterState has no public constructor for tests.
+// ignore: avoid_implementing_value_types
+class _FakeRouterState extends Fake implements GoRouterState;
+
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
   int libraryRuns = 0;
+  Exception? folderError;
+  Completer<void>? gate;
 
   @override
   Future<int> recoverFromLibrary({PhotoRecoveryProgress? onProgress}) async {
@@ -52,6 +64,11 @@ class _FakeCommand extends Fake implements PhotoRecoveryCommand {
     String folder, {
     PhotoRecoveryProgress? onProgress,
   }) async {
+    onProgress?.call(1, 2);
+    await gate?.future;
+    if (folderError case final error?) {
+      throw error;
+    }
     return 2;
   }
 }
@@ -60,6 +77,7 @@ void main() {
   group('PhotoRecoveryPage', () {
     late MockTracker tracker;
     late MockPrefsClient prefsClient;
+    late MockDbClient dbClient;
     late _FakeCommand command;
     late List<DiaryImage> images;
     var dismissed = false;
@@ -79,6 +97,7 @@ void main() {
       dismissed = false;
       tracker = MockTracker();
       prefsClient = MockPrefsClient();
+      dbClient = MockDbClient();
       command = _FakeCommand();
       images = [image()];
 
@@ -92,9 +111,7 @@ void main() {
         dismissed = true;
         return true;
       });
-      when(
-        tracker.recordError(any, any, fatal: anyNamed('fatal')),
-      ).thenAnswer((_) async {});
+      when(tracker.recordError(any, any)).thenAnswer((_) async {});
     });
 
     Future<void> pumpPage(
@@ -107,7 +124,6 @@ void main() {
       LocaleSettings.setLocaleRawSync('en');
       await tester.binding.setSurfaceSize(const Size(800, 1400));
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      final dbClient = MockDbClient();
       when(dbClient.getUnmigratedDiaryImages()).thenAnswer((_) async => images);
 
       await tester.pumpWidget(
@@ -123,6 +139,9 @@ void main() {
             ),
             photoRecoveryCommandProvider.overrideWithValue(command),
             prefsClientProvider.overrideWithValue(prefsClient),
+            photoStorageProvider.overrideWithValue(
+              PhotoStorage(directory: Directory.systemTemp),
+            ),
             trackerProvider.overrideWithValue(tracker),
           ],
           child: TranslationProvider(
@@ -143,6 +162,18 @@ void main() {
           .importFromLibrary();
       await tester.pump();
       await tester.pump();
+    }
+
+    Future<void> showToast(WidgetTester tester) async {
+      await tester.pump();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
+    }
+
+    Future<void> dismissToast(WidgetTester tester) async {
+      await tester.pump(const Duration(seconds: 5));
+      await tester.pumpAndSettle();
     }
 
     testWidgets('offers folder selection when it is supported', (tester) async {
@@ -208,6 +239,100 @@ void main() {
 
       expect(recovered, 2);
       expect(tester.container().read(photoRecoveryProvider).isRunning, isFalse);
+    });
+
+    testWidgets('shows the recovered count from the button', (tester) async {
+      await pumpPage(tester);
+
+      await tester.tap(find.text('Select Folder'));
+      await tester.pump();
+      await tester.pump();
+      await showToast(tester);
+
+      expect(find.text('Photos recovered: 2'), findsOneWidget);
+      await dismissToast(tester);
+    });
+
+    testWidgets('shows progress while recovering', (tester) async {
+      command.gate = Completer();
+      await pumpPage(tester);
+
+      await tester.tap(find.text('Select Folder'));
+      await tester.pump();
+      await tester.pump();
+
+      expect(find.text('Recovering photos'), findsOneWidget);
+      expect(find.byType(LinearProgressIndicator), findsOneWidget);
+
+      command.gate!.complete();
+      await showToast(tester);
+      await dismissToast(tester);
+    });
+
+    testWidgets('shows an error when recovery fails', (tester) async {
+      command.folderError = Exception('failed');
+      await pumpPage(tester);
+
+      await tester.tap(find.text('Select Folder'));
+      await showToast(tester);
+
+      expect(find.text('Could not recover photos'), findsOneWidget);
+      expect(find.text('Select Folder'), findsOneWidget);
+      verify(tracker.recordError(any, any)).called(1);
+      await dismissToast(tester);
+    });
+
+    Future<void> openDelete(WidgetTester tester) async {
+      when(
+        dbClient.getDiaries(from: anyNamed('from'), to: anyNamed('to')),
+      ).thenAnswer((_) async => []);
+      when(
+        dbClient.deleteDiaryImage(id: anyNamed('id')),
+      ).thenAnswer((_) async => null);
+      await pumpPage(tester);
+      tester.container().listen(cachedDiariesProvider, (_, _) {});
+      await tester.container().read(cachedDiariesProvider.future);
+      final navigator = tester.state<NavigatorState>(find.byType(Navigator));
+      navigator
+          .push(
+            MaterialPageRoute<void>(
+              builder: (_) => const PhotoRecoveryPage(imageId: 1),
+            ),
+          )
+          .ignore();
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Delete This Photo'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('deletes the photo after confirmation', (tester) async {
+      await openDelete(tester);
+
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+
+      verify(dbClient.deleteDiaryImage(id: 1)).called(1);
+      expect(find.text('Delete This Photo'), findsNothing);
+    });
+
+    testWidgets('keeps the photo when deletion is canceled', (tester) async {
+      await openDelete(tester);
+
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      verifyNever(dbClient.deleteDiaryImage(id: anyNamed('id')));
+      expect(find.text('Delete This Photo'), findsOneWidget);
+    });
+
+    testWidgets('route opens the page for an image', (tester) async {
+      await pumpPage(tester);
+
+      final page = const PhotoRecoveryRouteData(
+        imageId: 1,
+      ).build(tester.element(find.byType(Scaffold).first), _FakeRouterState());
+
+      expect((page as PhotoRecoveryPage).imageId, 1);
     });
 
     testWidgets('does nothing when folder selection is canceled', (
