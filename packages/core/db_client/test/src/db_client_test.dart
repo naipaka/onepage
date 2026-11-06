@@ -89,6 +89,45 @@ void main() {
         expect(await dbClient.getDiaryImageFileNames(), {'a.jpg'});
       });
 
+      group('unmigrated diary images', () {
+        late int unmigratedId;
+
+        setUp(() async {
+          unmigratedId = await dbClient
+              .into(dbClient.diaryImages)
+              .insert(
+                DiaryImagesCompanion.insert(
+                  diaryId: diary.id,
+                  photoId: const Value('photo-id'),
+                ),
+              );
+          await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
+        });
+
+        test(
+          'getUnmigratedDiaryImages returns images without a file',
+          () async {
+            final images = await dbClient.getUnmigratedDiaryImages();
+
+            expect(images.map((image) => image.id), [unmigratedId]);
+          },
+        );
+
+        test('watchUnmigratedDiaryImageCount emits the count', () async {
+          expect(await dbClient.watchUnmigratedDiaryImageCount().first, 1);
+        });
+
+        test('setDiaryImageFileName removes an image from the list', () async {
+          await dbClient.setDiaryImageFileName(
+            id: unmigratedId,
+            fileName: 'b.jpg',
+          );
+
+          expect(await dbClient.getUnmigratedDiaryImages(), isEmpty);
+          expect(await dbClient.getDiaryImageFileNames(), {'a.jpg', 'b.jpg'});
+        });
+      });
+
       test('watchDiaryImageCount emits the image count', () async {
         await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
 

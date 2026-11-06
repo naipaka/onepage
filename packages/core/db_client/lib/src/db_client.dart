@@ -222,6 +222,31 @@ class DbClient extends _$DbClient {
     return rows.map((row) => row.read(diaryImages.fileName)!).toSet();
   }
 
+  /// Returns the diary images that only have a device photo ID.
+  Future<List<DiaryImage>> getUnmigratedDiaryImages() {
+    final query = select(diaryImages)
+      ..where((tbl) => tbl.fileName.isNull() & tbl.photoId.isNotNull());
+    return query.get();
+  }
+
+  /// Watches the number of diary images that only have a device photo ID.
+  Stream<int> watchUnmigratedDiaryImageCount() {
+    final countExpr = diaryImages.id.count();
+    final query = selectOnly(diaryImages)
+      ..addColumns([countExpr])
+      ..where(diaryImages.fileName.isNull() & diaryImages.photoId.isNotNull());
+    return query.map((row) => row.read(countExpr) ?? 0).watchSingle();
+  }
+
+  /// Stores [fileName] as the photo file of the diary image [id].
+  Future<void> setDiaryImageFileName({
+    required int id,
+    required String fileName,
+  }) async {
+    final query = update(diaryImages)..where((tbl) => tbl.id.equals(id));
+    await query.write(DiaryImagesCompanion(fileName: Value(fileName)));
+  }
+
   /// Watches the total count of diary images in the database.
   ///
   /// Returns a stream that emits the current count whenever
