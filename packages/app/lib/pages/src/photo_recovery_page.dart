@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -39,7 +41,7 @@ class PhotoRecoveryPage extends ConsumerWidget {
           );
         }
       } on Object catch (e, stackTrace) {
-        await ref.read(trackerProvider).recordError(e, stackTrace);
+        unawaited(ref.read(trackerProvider).recordError(e, stackTrace));
         if (context.mounted) {
           showErrorToast(context, title: t.photoRecovery.failed);
         }

@@ -119,14 +119,17 @@ class PhotoRecovery extends _$PhotoRecovery {
     if (folder == null) {
       return null;
     }
-    final recovered = await _run(
-      (onProgress) => ref
-          .read(photoRecoveryCommandProvider)
-          .recoverFromFolder(folder, onProgress: onProgress),
-    );
-    state = PhotoRecoveryState(action: state.action);
-    _refresh(recovered);
-    return recovered;
+    try {
+      final recovered = await _run(
+        (onProgress) => ref
+            .read(photoRecoveryCommandProvider)
+            .recoverFromFolder(folder, onProgress: onProgress),
+      );
+      _refresh(recovered);
+      return recovered;
+    } finally {
+      state = PhotoRecoveryState(action: state.action);
+    }
   }
 
   /// Stops reminding the user about the remaining photos.
