@@ -157,8 +157,11 @@ class BackupPage extends ConsumerWidget {
                               backupFile,
                               onProgress: onProgress,
                             ),
+                          ).whenComplete(
+                            // restoreBackupFile closes the client even when
+                            // it fails.
+                            () => ref.invalidate(dbClientProvider),
                           );
-                          ref.invalidate(dbClientProvider);
 
                           if (!context.mounted) {
                             return;
@@ -168,8 +171,6 @@ class BackupPage extends ConsumerWidget {
                           // while handling the loading indicator dismissal.
                           unawaited(_BackupRestoreDialog.show(context));
                         } on Object catch (e) {
-                          await ref.read(dbClientProvider).close();
-                          ref.invalidate(dbClientProvider);
                           final tracker = ref.read(trackerProvider);
                           unawaited(
                             tracker.recordError(

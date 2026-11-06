@@ -18,13 +18,11 @@ import '../golden/golden_test_helpers.mocks.dart';
 void main() {
   group('BackupPage', () {
     late MockBackupController controller;
-    late MockDbClient dbClient;
     late MockTracker tracker;
     late MockPrefsClient prefsClient;
 
     setUp(() {
       controller = MockBackupController();
-      dbClient = MockDbClient();
       tracker = MockTracker();
       prefsClient = MockPrefsClient();
 
@@ -33,10 +31,15 @@ void main() {
       when(
         tracker.recordError(any, any, fatal: anyNamed('fatal')),
       ).thenAnswer((_) async {});
-      when(dbClient.watchDiaryImageCount()).thenAnswer(
+    });
+
+    MockDbClient createDbClient() {
+      final client = MockDbClient();
+      when(client.watchDiaryImageCount()).thenAnswer(
         (_) => const Stream.empty(),
       );
-    });
+      return client;
+    }
 
     Future<void> pumpPage(WidgetTester tester) async {
       LocaleSettings.setLocaleRawSync('en');
@@ -50,7 +53,7 @@ void main() {
         ProviderScope(
           overrides: [
             backupControllerProvider.overrideWithValue(controller),
-            dbClientProvider.overrideWithValue(dbClient),
+            dbClientProvider.overrideWith((_) => createDbClient()),
             trackerProvider.overrideWithValue(tracker),
             prefsClientProvider.overrideWithValue(prefsClient),
           ],
@@ -68,6 +71,7 @@ void main() {
     }
 
     Future<void> showToast(WidgetTester tester) async {
+      await tester.pump();
       await tester.pump(const Duration(milliseconds: 500));
       await tester.pump(const Duration(milliseconds: 500));
     }
@@ -156,6 +160,24 @@ void main() {
         );
       });
 
+      testWidgets('shows an error when picking a file fails', (tester) async {
+        when(controller.pickBackupFile()).thenThrow(Exception('failed'));
+        await pumpPage(tester);
+        final client = tester.container().read(dbClientProvider);
+
+        await tester.tap(find.text('Restore Backup'));
+        await showToast(tester);
+
+        expect(find.text('Failed to restore backup'), findsOneWidget);
+        expect(tester.container().read(dbClientProvider), same(client));
+        verifyNever(client.close());
+        verifyNever(
+          controller.restoreBackupFile(any, onProgress: anyNamed('onProgress')),
+        );
+        verify(tracker.recordError(any, any, fatal: true)).called(1);
+        await dismissToast(tester);
+      });
+
       testWidgets('shows progress while restoring', (tester) async {
         final completer = Completer<void>();
         stubPick(isLegacy: false);
@@ -219,8 +241,8 @@ void main() {
       testWidgets('shows an error when restoring fails', (tester) async {
         stubPick(isLegacy: false);
         stubRestore((_) async => throw Exception('failed'));
-        when(dbClient.close()).thenAnswer((_) async {});
         await pumpPage(tester);
+        final client = tester.container().read(dbClientProvider);
 
         await tester.tap(find.text('Restore Backup'));
         await tester.pump();
@@ -229,7 +251,10 @@ void main() {
 
         expect(find.text('Restoring backup'), findsNothing);
         expect(find.text('Failed to restore backup'), findsOneWidget);
-        verify(dbClient.close()).called(1);
+        expect(
+          tester.container().read(dbClientProvider),
+          isNot(same(client)),
+        );
         verify(tracker.recordError(any, any, fatal: true)).called(1);
         await dismissToast(tester);
       });

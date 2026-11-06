@@ -127,12 +127,15 @@ class BackupController {
   /// Replaces the database and photos with the contents of [backupFile].
   ///
   /// The current data stays in place if [backupFile] is invalid.
-  /// [dbClient] is closed before anything is replaced, so the caller must
-  /// create a new one afterwards.
+  /// [dbClient] is always closed, so the caller must create a new one
+  /// afterwards.
   Future<void> restoreBackupFile(
     BackupFile backupFile, {
     BackupProgressCallback? onProgress,
   }) async {
+    // Closing first leaves the client closed on every failure, so the caller
+    // has one state to handle.
+    await dbClient.close();
     await photoStorage.resetStaging();
     final tmpDir = await getTemporaryDirectory();
     final workDirectory = await tmpDir.createTemp('restore');
@@ -144,7 +147,6 @@ class BackupController {
         backupFilePath: databasePath,
       );
 
-      await dbClient.close();
       await photoStorage.replaceWithStaged();
       try {
         await dbConnection.restoreBackup(validBackupFile: validBackupFile);

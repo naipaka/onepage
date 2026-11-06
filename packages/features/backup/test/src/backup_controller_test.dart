@@ -252,15 +252,28 @@ void main() {
         expect(progress, [(1, 2), (2, 2)]);
       });
 
-      test('closes the database before replacing it', () async {
+      test('closes the database once before anything else', () async {
         await restore(validZip());
 
         verifyInOrder([
           mockDbClient.close(),
+          mockDbConnection.createValidBackupFile(
+            backupFilePath: anyNamed('backupFilePath'),
+          ),
           mockDbConnection.restoreBackup(
             validBackupFile: anyNamed('validBackupFile'),
           ),
         ]);
+        verifyNoMoreInteractions(mockDbClient);
+      });
+
+      test('closes the database when the backup is invalid', () async {
+        await expectLater(
+          restore(validZip(version: 2)),
+          throwsFormatException,
+        );
+
+        verify(mockDbClient.close()).called(1);
       });
 
       test('removes the photos when restoring a legacy backup', () async {
