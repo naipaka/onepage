@@ -41,6 +41,6 @@ if (await devicePhotos.supportsFolder) {
 The folder scan has JVM unit tests:
 
 ```bash
-cd packages/app/android
+cd packages/core/device_photos/example/android
 ./gradlew :device_photos:testDebugUnitTest
 ```

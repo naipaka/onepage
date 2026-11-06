@@ -1,0 +1,17 @@
+name: device_photos_example
+description: Hosts the Android unit tests of the device_photos plugin.
+publish_to: "none"
+
+environment:
+  sdk: ^3.13.2
+
+resolution: workspace
+
+dependencies:
+  device_photos:
+    path: ../
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  altive_lints: ^4.1.0

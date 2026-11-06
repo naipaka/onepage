@@ -8,6 +8,7 @@ workspace:
   - packages/core/configurator
   - packages/core/db_client
   - packages/core/device_photos
+  - packages/core/device_photos/example
   - packages/core/i18n
   - packages/core/notification_client
   - packages/core/photo_client
@@ -68,7 +69,7 @@ melos:
       # non-zero when that call does. Shell variables are avoided on purpose:
       # melos interpolates `$name` in scripts before the shell sees them.
       exec: |
-        find . -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "./.dart_tool/*" -o -path "./build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
+        find . -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
       description: Check formatting without writing.
       packageFilters:
         flutter: true
@@ -178,6 +179,18 @@ melos:
       packageFilters:
         flutter: true
         dirExists: test
+
+    test:android:
+      # `\$` keeps the calling shell from expanding the name before melos sets it
+      # for each package.
+      exec: >-
+        cd example &&
+        flutter build apk --debug --config-only &&
+        cd android &&
+        ./gradlew :\$MELOS_PACKAGE_NAME:testDebugUnitTest
+      description: Run the Android unit tests of each plugin.
+      packageFilters:
+        dirExists: example/android
 
     golden:
       exec: flutter test --tags=golden
