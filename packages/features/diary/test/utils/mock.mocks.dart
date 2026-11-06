@@ -14,8 +14,9 @@ import 'package:drift/drift.dart' as _i2;
 import 'package:drift/src/runtime/executor/stream_queries.dart' as _i5;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i8;
+import 'package:photo_client/src/photo_library.dart' as _i12;
 import 'package:photo_storage/src/photo_encoder.dart' as _i10;
-import 'package:photo_storage/src/photo_storage.dart' as _i12;
+import 'package:photo_storage/src/photo_storage.dart' as _i13;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -171,13 +172,13 @@ class _FakeGenerationContext_23 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeDirectory_24 extends _i1.SmartFake implements _i7.Directory {
-  _FakeDirectory_24(Object parent, Invocation parentInvocation)
+class _FakeFile_24 extends _i1.SmartFake implements _i7.File {
+  _FakeFile_24(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeFile_25 extends _i1.SmartFake implements _i7.File {
-  _FakeFile_25(Object parent, Invocation parentInvocation)
+class _FakeDirectory_25 extends _i1.SmartFake implements _i7.Directory {
+  _FakeDirectory_25(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -487,6 +488,29 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
     returnValue: _i6.Future<Set<String>>.value(<String>{}),
     returnValueForMissingStub: _i6.Future<Set<String>>.value(<String>{}),
   ) as _i6.Future<Set<String>>);
+
+  @override
+  _i6.Future<List<_i3.DiaryImage>> getUnmigratedDiaryImages() =>
+      (super.noSuchMethod(
+        Invocation.method(#getUnmigratedDiaryImages, []),
+        returnValue: _i6.Future<List<_i3.DiaryImage>>.value(<_i3.DiaryImage>[]),
+        returnValueForMissingStub: _i6.Future<List<_i3.DiaryImage>>.value(
+          <_i3.DiaryImage>[],
+        ),
+      ) as _i6.Future<List<_i3.DiaryImage>>);
+
+  @override
+  _i6.Future<void> setDiaryImageFileName({
+    required int? id,
+    required String? fileName,
+  }) => (super.noSuchMethod(
+    Invocation.method(#setDiaryImageFileName, [], {
+      #id: id,
+      #fileName: fileName,
+    }),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
 
   @override
   _i6.Stream<int> watchDiaryImageCount() => (super.noSuchMethod(
@@ -1050,15 +1074,82 @@ class MockPhotoEncoder extends _i1.Mock implements _i10.PhotoEncoder {
   ) as _i6.Future<_i11.Uint8List>);
 }
 
+/// A class which mocks [PhotoLibrary].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPhotoLibrary extends _i1.Mock implements _i12.PhotoLibrary {
+  @override
+  _i6.Future<bool> get supportsFolder => (super.noSuchMethod(
+    Invocation.getter(#supportsFolder),
+    returnValue: _i6.Future<bool>.value(false),
+    returnValueForMissingStub: _i6.Future<bool>.value(false),
+  ) as _i6.Future<bool>);
+
+  @override
+  _i6.Future<_i12.PhotoLibraryAccess> requestAccess() => (super.noSuchMethod(
+    Invocation.method(#requestAccess, []),
+    returnValue: _i6.Future<_i12.PhotoLibraryAccess>.value(
+      _i12.PhotoLibraryAccess.full,
+    ),
+    returnValueForMissingStub: _i6.Future<_i12.PhotoLibraryAccess>.value(
+      _i12.PhotoLibraryAccess.full,
+    ),
+  ) as _i6.Future<_i12.PhotoLibraryAccess>);
+
+  @override
+  _i6.Future<_i7.File?> read(String? id) => (super.noSuchMethod(
+    Invocation.method(#read, [id]),
+    returnValue: _i6.Future<_i7.File?>.value(),
+    returnValueForMissingStub: _i6.Future<_i7.File?>.value(),
+  ) as _i6.Future<_i7.File?>);
+
+  @override
+  _i6.Future<void> openSettings() => (super.noSuchMethod(
+    Invocation.method(#openSettings, []),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<String?> pickFolder() => (super.noSuchMethod(
+    Invocation.method(#pickFolder, []),
+    returnValue: _i6.Future<String?>.value(),
+    returnValueForMissingStub: _i6.Future<String?>.value(),
+  ) as _i6.Future<String?>);
+
+  @override
+  _i6.Future<Map<String, String>> findInFolder({
+    required String? folder,
+    required List<String>? ids,
+  }) => (super.noSuchMethod(
+    Invocation.method(#findInFolder, [], {#folder: folder, #ids: ids}),
+    returnValue: _i6.Future<Map<String, String>>.value(<String, String>{}),
+    returnValueForMissingStub: _i6.Future<Map<String, String>>.value(
+      <String, String>{},
+    ),
+  ) as _i6.Future<Map<String, String>>);
+
+  @override
+  _i6.Future<_i7.File> copyDocument(String? document) => (super.noSuchMethod(
+    Invocation.method(#copyDocument, [document]),
+    returnValue: _i6.Future<_i7.File>.value(
+      _FakeFile_24(this, Invocation.method(#copyDocument, [document])),
+    ),
+    returnValueForMissingStub: _i6.Future<_i7.File>.value(
+      _FakeFile_24(this, Invocation.method(#copyDocument, [document])),
+    ),
+  ) as _i6.Future<_i7.File>);
+}
+
 /// A class which mocks [PhotoStorage].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockPhotoStorage extends _i1.Mock implements _i12.PhotoStorage {
+class MockPhotoStorage extends _i1.Mock implements _i13.PhotoStorage {
   @override
   _i7.Directory get directory => (super.noSuchMethod(
     Invocation.getter(#directory),
-    returnValue: _FakeDirectory_24(this, Invocation.getter(#directory)),
-    returnValueForMissingStub: _FakeDirectory_24(
+    returnValue: _FakeDirectory_25(this, Invocation.getter(#directory)),
+    returnValueForMissingStub: _FakeDirectory_25(
       this,
       Invocation.getter(#directory),
     ),
@@ -1067,8 +1158,8 @@ class MockPhotoStorage extends _i1.Mock implements _i12.PhotoStorage {
   @override
   _i7.Directory get stagingDirectory => (super.noSuchMethod(
     Invocation.getter(#stagingDirectory),
-    returnValue: _FakeDirectory_24(this, Invocation.getter(#stagingDirectory)),
-    returnValueForMissingStub: _FakeDirectory_24(
+    returnValue: _FakeDirectory_25(this, Invocation.getter(#stagingDirectory)),
+    returnValueForMissingStub: _FakeDirectory_25(
       this,
       Invocation.getter(#stagingDirectory),
     ),
@@ -1077,8 +1168,8 @@ class MockPhotoStorage extends _i1.Mock implements _i12.PhotoStorage {
   @override
   _i7.File file(String? fileName) => (super.noSuchMethod(
     Invocation.method(#file, [fileName]),
-    returnValue: _FakeFile_25(this, Invocation.method(#file, [fileName])),
-    returnValueForMissingStub: _FakeFile_25(
+    returnValue: _FakeFile_24(this, Invocation.method(#file, [fileName])),
+    returnValueForMissingStub: _FakeFile_24(
       this,
       Invocation.method(#file, [fileName]),
     ),
