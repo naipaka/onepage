@@ -3,17 +3,17 @@ import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
-import 'package:diary/diary.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as p;
+import 'package:photo_recovery/photo_recovery.dart';
 
 import '../utils/mock.mocks.dart';
 
 void main() {
   group('PhotoRecoveryCommand', () {
     late MockDbClient dbClient;
-    late MockPhotoLibrary photoLibrary;
+    late MockDevicePhotos devicePhotos;
     late MockPhotoEncoder photoEncoder;
     late MockPhotoStorage photoStorage;
     late PhotoRecoveryCommand command;
@@ -32,12 +32,12 @@ void main() {
 
     setUp(() {
       dbClient = MockDbClient();
-      photoLibrary = MockPhotoLibrary();
+      devicePhotos = MockDevicePhotos();
       photoEncoder = MockPhotoEncoder();
       photoStorage = MockPhotoStorage();
       command = PhotoRecoveryCommand(
         dbClient: dbClient,
-        photoLibrary: photoLibrary,
+        devicePhotos: devicePhotos,
         photoEncoder: photoEncoder,
         photoStorage: photoStorage,
       );
@@ -51,12 +51,12 @@ void main() {
       when(photoStorage.save(any)).thenAnswer((_) async => 'stored.jpg');
     });
 
-    group('recoverFromLibrary', () {
+    group('recoverFromDevice', () {
       test('stores the photos the library can read', () async {
-        when(photoLibrary.read('a')).thenAnswer((_) async => File('a.jpg'));
-        when(photoLibrary.read('b')).thenAnswer((_) async => null);
+        when(devicePhotos.read('a')).thenAnswer((_) async => File('a.jpg'));
+        when(devicePhotos.read('b')).thenAnswer((_) async => null);
 
-        final recovered = await command.recoverFromLibrary();
+        final recovered = await command.recoverFromDevice();
 
         expect(recovered, 1);
         verify(
@@ -71,21 +71,21 @@ void main() {
       });
 
       test('continues after a photo fails', () async {
-        when(photoLibrary.read(any)).thenAnswer((_) async => File('a.jpg'));
+        when(devicePhotos.read(any)).thenAnswer((_) async => File('a.jpg'));
         when(photoEncoder.encode(any)).thenAnswer((_) async {
           throw Exception('failed');
         });
 
-        expect(await command.recoverFromLibrary(), 0);
-        verify(photoLibrary.read('a')).called(1);
-        verify(photoLibrary.read('b')).called(1);
+        expect(await command.recoverFromDevice(), 0);
+        verify(devicePhotos.read('a')).called(1);
+        verify(devicePhotos.read('b')).called(1);
       });
 
       test('reports progress for each photo', () async {
-        when(photoLibrary.read(any)).thenAnswer((_) async => null);
+        when(devicePhotos.read(any)).thenAnswer((_) async => null);
         final progress = <(int, int)>[];
 
-        await command.recoverFromLibrary(
+        await command.recoverFromDevice(
           onProgress: (completed, total) => progress.add((completed, total)),
         );
 
@@ -99,10 +99,10 @@ void main() {
       setUp(() {
         copy = File(p.join(directory.path, 'copy'))..writeAsBytesSync([1]);
         when(
-          photoLibrary.findInFolder(folder: 'folder', ids: ['a', 'b']),
+          devicePhotos.findInFolder(folder: 'folder', ids: ['a', 'b']),
         ).thenAnswer((_) async => {'a': 'document'});
         when(
-          photoLibrary.copyDocument('document'),
+          devicePhotos.copyDocument('document'),
         ).thenAnswer((_) async => copy);
       });
 

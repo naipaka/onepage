@@ -14,8 +14,6 @@ dependencies:
     path: ../../core/db_client/
   flutter:
     sdk: flutter
-  photo_client:
-    path: ../../core/photo_client/
   photo_storage:
     path: ../../core/photo_storage/
   utils:

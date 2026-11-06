@@ -1,23 +1,23 @@
 import 'dart:io';
 
 import 'package:db_client/db_client.dart';
-import 'package:photo_client/photo_client.dart';
+import 'package:device_photos/device_photos.dart';
 import 'package:photo_storage/photo_storage.dart';
 
 /// Called after each photo is processed.
 typedef PhotoRecoveryProgress = void Function(int completed, int total);
 
-/// {@template diary.PhotoRecoveryCommand}
+/// {@template photo_recovery.PhotoRecoveryCommand}
 /// Copies photos saved on the device into app storage.
 ///
 /// Each photo is committed on its own, so a stopped recovery continues with
 /// the photos that remain.
 /// {@endtemplate}
 class PhotoRecoveryCommand {
-  /// {@macro diary.PhotoRecoveryCommand}
+  /// {@macro photo_recovery.PhotoRecoveryCommand}
   const new({
     required this.dbClient,
-    required this.photoLibrary,
+    required this.devicePhotos,
     required this.photoEncoder,
     required this.photoStorage,
   });
@@ -25,8 +25,8 @@ class PhotoRecoveryCommand {
   /// Database client.
   final DbClient dbClient;
 
-  /// Device photo library.
-  final PhotoLibrary photoLibrary;
+  /// Photos saved on the device.
+  final DevicePhotos devicePhotos;
 
   /// Encoder that compresses photos.
   final PhotoEncoder photoEncoder;
@@ -34,16 +34,16 @@ class PhotoRecoveryCommand {
   /// Storage for photo files.
   final PhotoStorage photoStorage;
 
-  /// Recovers the photos that the library can read.
+  /// Recovers the photos that the device can read.
   ///
   /// Returns the number of recovered photos.
-  Future<int> recoverFromLibrary({PhotoRecoveryProgress? onProgress}) async {
+  Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
     final images = await dbClient.getUnmigratedDiaryImages();
     return _recover(
       images,
       onProgress: onProgress,
       recover: (photoId) async {
-        final file = await photoLibrary.read(photoId);
+        final file = await devicePhotos.read(photoId);
         if (file == null) {
           return null;
         }
@@ -60,7 +60,7 @@ class PhotoRecoveryCommand {
     PhotoRecoveryProgress? onProgress,
   }) async {
     final images = await dbClient.getUnmigratedDiaryImages();
-    final documents = await photoLibrary.findInFolder(
+    final documents = await devicePhotos.findInFolder(
       folder: folder,
       ids: [for (final image in images) image.photoId!],
     );
@@ -72,7 +72,7 @@ class PhotoRecoveryCommand {
         if (document == null) {
           return null;
         }
-        final copy = await photoLibrary.copyDocument(document);
+        final copy = await devicePhotos.copyDocument(document);
         try {
           return await _store(copy);
         } finally {
