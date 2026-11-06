@@ -19,7 +19,6 @@
       "Bash(flutter create:*)",
       "Bash(fvm dart:*)",
       "Bash(fvm flutter:*)",
-      "Bash(git:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
