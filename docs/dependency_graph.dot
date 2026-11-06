@@ -21,6 +21,7 @@ digraph packages {
   utils [shape="box"; color="#f548cf"];
   widgets [shape="box"; color="#3ed5a4"];
   backup -> db_client [style="filled"; color="#c4fbfc"];
+  backup -> photo_storage [style="filled"; color="#c6f715"];
   diary -> db_client [style="filled"; color="#c4fbfc"];
   diary -> photo_storage [style="filled"; color="#c6f715"];
   diary -> utils [style="filled"; color="#f548cf"];
