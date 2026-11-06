@@ -45,7 +45,6 @@ class BackupController {
   });
 
   static const _manifestName = 'manifest.json';
-  static const _databaseName = 'onepage.sqlite';
   static const _photosDirectoryName = 'photos';
   static const _formatVersion = 1;
   static const _zipSignature = [0x50, 0x4B, 0x03, 0x04];
@@ -83,14 +82,17 @@ class BackupController {
 
     final workDirectory = await tmpDir.createTemp('backup');
     try {
-      final databasePath = p.join(workDirectory.path, _databaseName);
+      final databasePath = p.join(
+        workDirectory.path,
+        DbConnection.databaseFileName,
+      );
       await dbClient.writeBackupToFile(filePath: databasePath);
       final manifest = File(p.join(workDirectory.path, _manifestName))
         ..writeAsStringSync(jsonEncode({'version': _formatVersion}));
 
       final encoder = ZipFileEncoder()..create(backupFilePath);
       await encoder.addFile(manifest, _manifestName);
-      await encoder.addFile(File(databasePath), _databaseName);
+      await encoder.addFile(File(databasePath), DbConnection.databaseFileName);
       final fileNames = await dbClient.getDiaryImageFileNames();
       final photos = fileNames
           .where((fileName) => photoStorage.file(fileName).existsSync())
@@ -182,7 +184,7 @@ class BackupController {
     String outputDirectory,
     BackupProgressCallback? onProgress,
   ) async {
-    final databasePath = p.join(outputDirectory, _databaseName);
+    final databasePath = p.join(outputDirectory, DbConnection.databaseFileName);
     final input = InputFileStream(path);
     try {
       final archive = ZipDecoder().decodeStream(input);
@@ -197,7 +199,7 @@ class BackupController {
         throw const FormatException('Unsupported backup version.');
       }
 
-      final database = archive.findFile(_databaseName);
+      final database = archive.findFile(DbConnection.databaseFileName);
       if (database == null) {
         throw const FormatException('The backup has no database.');
       }
