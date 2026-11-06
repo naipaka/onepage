@@ -113,10 +113,6 @@ void main() {
           },
         );
 
-        test('watchUnmigratedDiaryImageCount emits the count', () async {
-          expect(await dbClient.watchUnmigratedDiaryImageCount().first, 1);
-        });
-
         test('setDiaryImageFileName removes an image from the list', () async {
           await dbClient.setDiaryImageFileName(
             id: unmigratedId,

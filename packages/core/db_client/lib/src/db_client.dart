@@ -229,15 +229,6 @@ class DbClient extends _$DbClient {
     return query.get();
   }
 
-  /// Watches the number of diary images that only have a device photo ID.
-  Stream<int> watchUnmigratedDiaryImageCount() {
-    final countExpr = diaryImages.id.count();
-    final query = selectOnly(diaryImages)
-      ..addColumns([countExpr])
-      ..where(diaryImages.fileName.isNull() & diaryImages.photoId.isNotNull());
-    return query.map((row) => row.read(countExpr) ?? 0).watchSingle();
-  }
-
   /// Stores [fileName] as the photo file of the diary image [id].
   Future<void> setDiaryImageFileName({
     required int id,
