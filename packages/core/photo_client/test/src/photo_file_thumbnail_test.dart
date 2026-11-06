@@ -19,6 +19,23 @@ void main() {
     );
   }
 
+  testWidgets('PhotoPlaceholder reports taps', (tester) async {
+    var tapped = false;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PhotoPlaceholder(
+          width: 64,
+          height: 64,
+          onTap: () => tapped = true,
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(PhotoPlaceholder));
+
+    expect(tapped, isTrue);
+  });
+
   testWidgets('shows a placeholder when the file cannot be read', (
     tester,
   ) async {
