@@ -213,6 +213,15 @@ class DbClient extends _$DbClient {
     return deleted.firstOrNull?.fileName;
   }
 
+  /// Returns the names of all photo files referenced by diary images.
+  Future<Set<String>> getDiaryImageFileNames() async {
+    final query = selectOnly(diaryImages)
+      ..addColumns([diaryImages.fileName])
+      ..where(diaryImages.fileName.isNotNull());
+    final rows = await query.get();
+    return rows.map((row) => row.read(diaryImages.fileName)!).toSet();
+  }
+
   /// Watches the total count of diary images in the database.
   ///
   /// Returns a stream that emits the current count whenever
