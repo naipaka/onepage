@@ -19,6 +19,7 @@
       "Bash(flutter create:*)",
       "Bash(fvm dart:*)",
       "Bash(fvm flutter:*)",
+      "Bash(git:*)",
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
@@ -39,8 +40,6 @@
       "mcp__Framelink_Figma_MCP__get_figma_data"
     ],
     "ask": [
-      "Bash(git checkout:*)",
-      "Bash(git stash:*)",
       "Bash(rm:*)"
     ],
     "deny": [
