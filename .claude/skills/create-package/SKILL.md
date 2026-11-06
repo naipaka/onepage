@@ -27,6 +27,18 @@ fvm flutter create -t package packages/core/my_utils --project-name my_utils
 fvm flutter create -t package packages/features/my_feature --project-name my_feature
 ```
 
+For a package with native code, create a plugin instead:
+
+```bash
+fvm flutter create -t plugin --platforms=android --org com.naipaka -a kotlin packages/<directory>/<package_name> --project-name <package_name>
+```
+
+Then follow the steps below, and also:
+
+- Keep `example/`, because plugin Kotlin tests run from `example/android`. Reduce it to what hosts those tests, with `resolution: workspace`.
+- Add `packages/<directory>/<package_name>/example` to the root `workspace:` section.
+- Put Kotlin tests in `android/src/test/kotlin`. `fvm dart run melos run test:android --no-select` finds them through `example/android`, so CI needs no change.
+
 ---
 
 ## Step 2 — Replace the LICENSE with a symbolic link

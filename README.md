@@ -50,9 +50,9 @@ The dependency graph below is updated automatically: a GitHub Actions workflow o
 |---|---|
 | [configurator](packages/core/configurator) | Firebase Remote Config |
 | [db_client](packages/core/db_client) | Database client built on Drift |
+| [device_photos](packages/core/device_photos) | Reading photos saved on the device by their stored IDs |
 | [i18n](packages/core/i18n) | Translations for all texts in the app |
 | [notification_client](packages/core/notification_client) | Local notifications for diary reminders, scheduled with time zones |
-| [device_photos](packages/core/device_photos) | Reading photos saved on the device by their stored IDs |
 | [photo_client](packages/core/photo_client) | Picking photos with the system picker and viewing them |
 | [photo_storage](packages/core/photo_storage) | Compressing diary photos and storing them in app storage |
 | [prefs_client](packages/core/prefs_client) | Type-safe wrapper around SharedPreferences |
@@ -71,6 +71,7 @@ The dependency graph below is updated automatically: a GitHub Actions workflow o
 | [exporter](packages/features/exporter) | Export to CSV, PDF, and Markdown |
 | [haptics](packages/features/haptics) | Haptic feedback that can be turned on and off in settings |
 | [in_app_reviewer](packages/features/in_app_reviewer) | In-app review requests |
+| [photo_recovery](packages/features/photo_recovery) | Recovering photos of diaries saved before they were stored in app storage |
 | [scroll_calendar](packages/features/scroll_calendar) | Scrollable calendar |
 | [update_requester](packages/features/update_requester) | Application updates |
 
