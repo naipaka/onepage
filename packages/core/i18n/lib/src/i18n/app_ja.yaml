@@ -36,6 +36,14 @@ backup:
   failedMessage: "バックアップの作成に失敗しました"
   restoreFailedMessage: "バックアップの復元に失敗しました"
   restoreSuccess: "復元が完了しました"
+  progress:
+    creating: "バックアップを作成しています"
+    restoring: "バックアップを復元しています"
+  legacyRestore:
+    title: "写真が含まれていません"
+    message: "古い形式のバックアップです\n復元すると、現在の日記と写真はバックアップの内容に置き換わります"
+    confirm: "復元する"
+    cancel: "キャンセル"
   actions:
     create: "バックアップを作成"
     restore: "バックアップを復元"

@@ -145,6 +145,8 @@ class Translations$backup$en {
 	/// en: 'Restoring your backup was successful'
 	String get restoreSuccess => 'Restoring your backup was successful';
 
+	late final Translations$backup$progress$en progress = Translations$backup$progress$en._(_root);
+	late final Translations$backup$legacyRestore$en legacyRestore = Translations$backup$legacyRestore$en._(_root);
 	late final Translations$backup$actions$en actions = Translations$backup$actions$en._(_root);
 }
 
@@ -313,6 +315,42 @@ class Translations$home$deleteImage$en {
 	String get message => 'Are you sure you want to delete this image?';
 }
 
+// Path: backup.progress
+class Translations$backup$progress$en {
+	Translations$backup$progress$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Creating backup'
+	String get creating => 'Creating backup';
+
+	/// en: 'Restoring backup'
+	String get restoring => 'Restoring backup';
+}
+
+// Path: backup.legacyRestore
+class Translations$backup$legacyRestore$en {
+	Translations$backup$legacyRestore$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Photos are not included'
+	String get title => 'Photos are not included';
+
+	/// en: 'This backup uses an older format. Restoring replaces your current diary and photos with its contents.'
+	String get message => 'This backup uses an older format.\nRestoring replaces your current diary and photos with its contents.';
+
+	/// en: 'Restore'
+	String get confirm => 'Restore';
+
+	/// en: 'Cancel'
+	String get cancel => 'Cancel';
+}
+
 // Path: backup.actions
 class Translations$backup$actions$en {
 	Translations$backup$actions$en._(this._root);
@@ -434,6 +472,12 @@ extension on Translations {
 			'backup.failedMessage' => 'Failed to create backup',
 			'backup.restoreFailedMessage' => 'Failed to restore backup',
 			'backup.restoreSuccess' => 'Restoring your backup was successful',
+			'backup.progress.creating' => 'Creating backup',
+			'backup.progress.restoring' => 'Restoring backup',
+			'backup.legacyRestore.title' => 'Photos are not included',
+			'backup.legacyRestore.message' => 'This backup uses an older format.\nRestoring replaces your current diary and photos with its contents.',
+			'backup.legacyRestore.confirm' => 'Restore',
+			'backup.legacyRestore.cancel' => 'Cancel',
 			'backup.actions.create' => 'Create Backup',
 			'backup.actions.restore' => 'Restore Backup',
 			'backup.actions.goToHome' => 'Go to Home',
