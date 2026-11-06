@@ -104,6 +104,12 @@ jobs:
       - name: Run package tests
         run: melos run test:ci --no-select
 
+      - name: Run Android unit tests
+        working-directory: packages/app
+        run: |
+          flutter build apk --config-only
+          ./android/gradlew -p android :device_photos:testDebugUnitTest
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
         with:
