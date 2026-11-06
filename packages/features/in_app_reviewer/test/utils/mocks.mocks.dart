@@ -44,6 +44,13 @@ class MockPrefsClient extends _i1.Mock implements _i2.PrefsClient {
   ) as bool);
 
   @override
+  bool get photoRecoveryDismissed => (super.noSuchMethod(
+    Invocation.getter(#photoRecoveryDismissed),
+    returnValue: false,
+    returnValueForMissingStub: false,
+  ) as bool);
+
+  @override
   List<Map<String, dynamic>> get notificationSettings => (super.noSuchMethod(
     Invocation.getter(#notificationSettings),
     returnValue: <Map<String, dynamic>>[],
@@ -76,6 +83,16 @@ class MockPrefsClient extends _i1.Mock implements _i2.PrefsClient {
   _i3.Future<bool> setOtherHapticEnabled({required bool? enabled}) =>
       (super.noSuchMethod(
         Invocation.method(#setOtherHapticEnabled, [], {#enabled: enabled}),
+        returnValue: _i3.Future<bool>.value(false),
+        returnValueForMissingStub: _i3.Future<bool>.value(false),
+      ) as _i3.Future<bool>);
+
+  @override
+  _i3.Future<bool> setPhotoRecoveryDismissed({required bool? dismissed}) =>
+      (super.noSuchMethod(
+        Invocation.method(#setPhotoRecoveryDismissed, [], {
+          #dismissed: dismissed,
+        }),
         returnValue: _i3.Future<bool>.value(false),
         returnValueForMissingStub: _i3.Future<bool>.value(false),
       ) as _i3.Future<bool>);
