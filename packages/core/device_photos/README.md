@@ -41,6 +41,5 @@ if (await devicePhotos.supportsFolder) {
 The folder scan has JVM unit tests:
 
 ```bash
-cd packages/core/device_photos/example/android
-./gradlew :device_photos:testDebugUnitTest
+fvm dart run melos run test:android --no-select
 ```

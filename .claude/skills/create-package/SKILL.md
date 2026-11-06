@@ -35,9 +35,9 @@ fvm flutter create -t plugin --platforms=android --org com.naipaka -a kotlin pac
 
 Then follow the steps below, and also:
 
-- Keep `example/`, because plugin Kotlin tests run from `example/android`. Reduce it to what hosts those tests, with `resolution: workspace`.
+- Keep `example/`, because plugin Kotlin tests run from `example/android`. Set `resolution: workspace` in its `pubspec.yaml`.
 - Add `packages/<directory>/<package_name>/example` to the root `workspace:` section.
-- Put Kotlin tests in `android/src/test/kotlin`. `fvm dart run melos run test:android --no-select` finds them through `example/android`, so CI needs no change.
+- Put Kotlin tests in `android/src/test/kotlin`.
 
 ---
 

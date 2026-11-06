@@ -28,7 +28,7 @@ final command = PhotoRecoveryCommand(
   photoStorage: photoStorage,
 );
 
-final recovered = await command.recoverFromLibrary(
+final recovered = await command.recoverFromDevice(
   onProgress: (completed, total) {},
 );
 ```

@@ -40,9 +40,9 @@ When in doubt, ask: **"Can this widget/code be used as-is in a completely differ
 
 ## Native Code
 
-- Native code goes in a plugin package, not in the app's `MainActivity` or `AppDelegate`.
-- Create the package with `flutter create -t plugin`, as described in the `create-package` skill.
-- Plugin Kotlin tests live in the plugin and run from its `example/android`. `fvm dart run melos run test:android --no-select` runs them for every plugin.
+- Put native code in a plugin package.
+- Create it with the `create-package` skill.
+- Run plugin Kotlin tests with `fvm dart run melos run test:android --no-select`.
 
 ## Package Dependencies
 
