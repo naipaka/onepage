@@ -3,6 +3,7 @@ import 'package:provider_utils/provider_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'db_client_provider.dart';
+import 'photo_storage_provider.dart';
 
 part 'backup_provider.g.dart';
 
@@ -13,5 +14,6 @@ BackupController backupController(Ref ref) {
     dbClient: ref.watch(dbClientProvider),
     dbConnection: ref.watch(dbConnectionProvider),
     packageInfo: ref.watch(packageInfoProvider),
+    photoStorage: ref.watch(photoStorageProvider),
   );
 }

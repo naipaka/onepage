@@ -43,6 +43,12 @@ class _DiaryTextFieldState extends State<DiaryTextField>
   /// UndoHistoryController for undo/redo functionality.
   final _undoController = UndoHistoryController();
 
+  /// The last saved content.
+  ///
+  /// [DiaryTextField.content] stays old until the parent rebuilds, so it can't
+  /// stop the repeated saves from consecutive lifecycle changes.
+  late String _savedContent = widget.content ?? '';
+
   /// An instance of Debounce to delay the processing after input.
   final _debounce = Debounce(delay: const Duration(seconds: 2));
 
@@ -78,11 +84,13 @@ class _DiaryTextFieldState extends State<DiaryTextField>
 
   /// Save diary content.
   void _save() {
-    if (textController.text == widget.content) {
+    final content = textController.text;
+    if (content == _savedContent) {
       // When the content is not changed, do nothing.
       return;
     }
-    widget.save?.call(textController.text);
+    _savedContent = content;
+    widget.save?.call(content);
   }
 
   /// Focus change event handler.

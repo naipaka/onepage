@@ -25,12 +25,26 @@ class PhotoStorage {
   /// Directory that holds the photo files.
   final Directory directory;
 
+  /// Directory that holds the photos that will replace the current ones.
+  ///
+  /// It is next to [directory], so the replacement is only a rename.
+  Directory get stagingDirectory => Directory('${directory.path}.staging');
+
+  Directory get _previous => Directory('${directory.path}.previous');
+
   /// Creates a [PhotoStorage] that uses the application support directory.
+  ///
+  /// Puts the photos back if the app stopped in the middle of
+  /// [replaceWithStaged].
   static Future<PhotoStorage> create() async {
     final supportDirectory = await getApplicationSupportDirectory();
-    return PhotoStorage(
+    final storage = PhotoStorage(
       directory: Directory(p.join(supportDirectory.path, directoryName)),
     );
+    if (!storage.directory.existsSync() && storage._previous.existsSync()) {
+      await storage._previous.rename(storage.directory.path);
+    }
+    return storage;
   }
 
   /// Returns the file for [fileName].
@@ -55,6 +69,40 @@ class PhotoStorage {
     final target = file(fileName);
     if (target.existsSync()) {
       await target.delete();
+    }
+  }
+
+  /// Creates an empty [stagingDirectory].
+  Future<void> resetStaging() async {
+    await _deleteIfExists(stagingDirectory);
+    await stagingDirectory.create(recursive: true);
+  }
+
+  /// Replaces all photos with the photos in [stagingDirectory].
+  ///
+  /// Call [commitReplacement] or [rollbackReplacement] afterwards.
+  Future<void> replaceWithStaged() async {
+    await _deleteIfExists(_previous);
+    if (directory.existsSync()) {
+      await directory.rename(_previous.path);
+    }
+    await stagingDirectory.rename(directory.path);
+  }
+
+  /// Removes the photos replaced by [replaceWithStaged].
+  Future<void> commitReplacement() => _deleteIfExists(_previous);
+
+  /// Puts back the photos replaced by [replaceWithStaged].
+  Future<void> rollbackReplacement() async {
+    await _deleteIfExists(directory);
+    if (_previous.existsSync()) {
+      await _previous.rename(directory.path);
+    }
+  }
+
+  Future<void> _deleteIfExists(Directory target) async {
+    if (target.existsSync()) {
+      await target.delete(recursive: true);
     }
   }
 }

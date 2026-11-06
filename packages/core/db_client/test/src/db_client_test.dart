@@ -75,6 +75,20 @@ void main() {
         ]);
       });
 
+      test('getDiaryImageFileNames skips images without a file', () async {
+        await dbClient
+            .into(dbClient.diaryImages)
+            .insert(
+              DiaryImagesCompanion.insert(
+                diaryId: diary.id,
+                photoId: const Value('photo-id'),
+              ),
+            );
+        await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
+
+        expect(await dbClient.getDiaryImageFileNames(), {'a.jpg'});
+      });
+
       test('watchDiaryImageCount emits the image count', () async {
         await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
 

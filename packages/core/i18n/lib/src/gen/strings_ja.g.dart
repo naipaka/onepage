@@ -96,6 +96,8 @@ class _Translations$backup$ja implements Translations$backup$en {
 	@override String get failedMessage => 'バックアップの作成に失敗しました';
 	@override String get restoreFailedMessage => 'バックアップの復元に失敗しました';
 	@override String get restoreSuccess => '復元が完了しました';
+	@override late final _Translations$backup$progress$ja progress = _Translations$backup$progress$ja._(_root);
+	@override late final _Translations$backup$legacyRestore$ja legacyRestore = _Translations$backup$legacyRestore$ja._(_root);
 	@override late final _Translations$backup$actions$ja actions = _Translations$backup$actions$ja._(_root);
 }
 
@@ -198,6 +200,30 @@ class _Translations$home$deleteImage$ja implements Translations$home$deleteImage
 	@override String get message => 'この画像を削除しますか？';
 }
 
+// Path: backup.progress
+class _Translations$backup$progress$ja implements Translations$backup$progress$en {
+	_Translations$backup$progress$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get creating => 'バックアップを作成しています';
+	@override String get restoring => 'バックアップを復元しています';
+}
+
+// Path: backup.legacyRestore
+class _Translations$backup$legacyRestore$ja implements Translations$backup$legacyRestore$en {
+	_Translations$backup$legacyRestore$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '写真が含まれていません';
+	@override String get message => '古い形式のバックアップです\n復元すると、現在の日記と写真はバックアップの内容に置き換わります';
+	@override String get confirm => '復元する';
+	@override String get cancel => 'キャンセル';
+}
+
 // Path: backup.actions
 class _Translations$backup$actions$ja implements Translations$backup$actions$en {
 	_Translations$backup$actions$ja._(this._root);
@@ -293,6 +319,12 @@ extension on TranslationsJa {
 			'backup.failedMessage' => 'バックアップの作成に失敗しました',
 			'backup.restoreFailedMessage' => 'バックアップの復元に失敗しました',
 			'backup.restoreSuccess' => '復元が完了しました',
+			'backup.progress.creating' => 'バックアップを作成しています',
+			'backup.progress.restoring' => 'バックアップを復元しています',
+			'backup.legacyRestore.title' => '写真が含まれていません',
+			'backup.legacyRestore.message' => '古い形式のバックアップです\n復元すると、現在の日記と写真はバックアップの内容に置き換わります',
+			'backup.legacyRestore.confirm' => '復元する',
+			'backup.legacyRestore.cancel' => 'キャンセル',
 			'backup.actions.create' => 'バックアップを作成',
 			'backup.actions.restore' => 'バックアップを復元',
 			'backup.actions.goToHome' => 'ホームへ戻る',

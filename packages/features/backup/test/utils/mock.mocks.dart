@@ -484,6 +484,13 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       ) as _i6.Future<String?>);
 
   @override
+  _i6.Future<Set<String>> getDiaryImageFileNames() => (super.noSuchMethod(
+    Invocation.method(#getDiaryImageFileNames, []),
+    returnValue: _i6.Future<Set<String>>.value(<String>{}),
+    returnValueForMissingStub: _i6.Future<Set<String>>.value(<String>{}),
+  ) as _i6.Future<Set<String>>);
+
+  @override
   _i6.Stream<int> watchDiaryImageCount() => (super.noSuchMethod(
     Invocation.method(#watchDiaryImageCount, []),
     returnValue: _i6.Stream<int>.empty(),

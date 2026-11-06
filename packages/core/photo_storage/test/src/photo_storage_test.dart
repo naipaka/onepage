@@ -41,6 +41,74 @@ void main() {
     });
   });
 
+  group('create recovery', () {
+    test('puts back photos left by an interrupted replacement', () async {
+      PathProviderPlatform.instance = _FakePathProvider(root.path);
+      final previous = Directory(p.join(root.path, 'photos.previous'))
+        ..createSync();
+      File(p.join(previous.path, 'photo.jpg')).writeAsBytesSync(bytes);
+
+      final created = await PhotoStorage.create();
+
+      expect(created.file('photo.jpg').existsSync(), isTrue);
+      expect(previous.existsSync(), isFalse);
+    });
+  });
+
+  group('replacement', () {
+    late String oldPhoto;
+
+    setUp(() async {
+      oldPhoto = await storage.save(bytes);
+      await storage.resetStaging();
+      File(
+        p.join(storage.stagingDirectory.path, 'new.jpg'),
+      ).writeAsBytesSync(bytes);
+    });
+
+    test('resetStaging removes stale files', () async {
+      await storage.resetStaging();
+
+      expect(storage.stagingDirectory.listSync(), isEmpty);
+    });
+
+    test('commit keeps only the staged photos', () async {
+      await storage.replaceWithStaged();
+      await storage.commitReplacement();
+
+      expect(storage.file('new.jpg').existsSync(), isTrue);
+      expect(storage.file(oldPhoto).existsSync(), isFalse);
+      expect(storage.stagingDirectory.existsSync(), isFalse);
+    });
+
+    test('rollback restores the previous photos', () async {
+      await storage.replaceWithStaged();
+      await storage.rollbackReplacement();
+
+      expect(storage.file(oldPhoto).existsSync(), isTrue);
+      expect(storage.file('new.jpg').existsSync(), isFalse);
+    });
+
+    test('works when there are no current photos', () async {
+      await storage.directory.delete(recursive: true);
+
+      await storage.replaceWithStaged();
+      expect(storage.file('new.jpg').existsSync(), isTrue);
+
+      await storage.rollbackReplacement();
+      expect(storage.directory.existsSync(), isFalse);
+    });
+
+    test('replaces leftovers from an earlier replacement', () async {
+      await storage.replaceWithStaged();
+      await storage.resetStaging();
+
+      await storage.replaceWithStaged();
+
+      expect(storage.directory.listSync(), isEmpty);
+    });
+  });
+
   group('save', () {
     test('writes the bytes and returns a file name', () async {
       final fileName = await storage.save(bytes);

@@ -13,6 +13,9 @@ class DbConnection {
   /// {@macro db_client.Connection}
   new();
 
+  /// The name of the database file.
+  static const databaseFileName = 'onepage.sqlite';
+
   /// The SQLite3 instance used for database operations.
   ///
   /// This is marked as `@visibleForTesting` to allow for testing with a mock
@@ -40,7 +43,7 @@ class DbConnection {
     final oldDbFile = File(oldDbPath);
     if (oldDbFile.existsSync()) {
       final newDbDir = await getApplicationSupportDirectory();
-      final newDbPath = p.join(newDbDir.path, 'onepage.sqlite');
+      final newDbPath = p.join(newDbDir.path, databaseFileName);
       await oldDbFile.rename(newDbPath);
     }
   }
@@ -48,7 +51,7 @@ class DbConnection {
   /// Returns the database file.
   Future<File> getDatabaseFile() async {
     final appDir = await getApplicationSupportDirectory();
-    final dbPath = p.join(appDir.path, 'onepage.sqlite');
+    final dbPath = p.join(appDir.path, databaseFileName);
     return File(dbPath);
   }
 
@@ -62,10 +65,17 @@ class DbConnection {
   Future<File> createValidBackupFile({required String backupFilePath}) async {
     final newDbFileDir = await getTemporaryDirectory();
     final newDbFilePath = p.join(newDbFileDir.path, 'import.sqlite');
+    final newDbFile = File(newDbFilePath);
+    // A restore that stopped midway leaves this file behind. VACUUM INTO fails
+    // when its target exists, so every later restore would fail. Delete the
+    // file first so that the backup can be restored again.
+    if (newDbFile.existsSync()) {
+      await newDbFile.delete();
+    }
     sqlite3Instance.open(backupFilePath)
       ..execute('VACUUM INTO ?', [newDbFilePath])
       ..close();
-    return File(newDbFilePath);
+    return newDbFile;
   }
 
   /// Restores the database from the provided backup file.

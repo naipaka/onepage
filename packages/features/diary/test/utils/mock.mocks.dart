@@ -482,6 +482,13 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       ) as _i6.Future<String?>);
 
   @override
+  _i6.Future<Set<String>> getDiaryImageFileNames() => (super.noSuchMethod(
+    Invocation.method(#getDiaryImageFileNames, []),
+    returnValue: _i6.Future<Set<String>>.value(<String>{}),
+    returnValueForMissingStub: _i6.Future<Set<String>>.value(<String>{}),
+  ) as _i6.Future<Set<String>>);
+
+  @override
   _i6.Stream<int> watchDiaryImageCount() => (super.noSuchMethod(
     Invocation.method(#watchDiaryImageCount, []),
     returnValue: _i6.Stream<int>.empty(),
@@ -1058,6 +1065,16 @@ class MockPhotoStorage extends _i1.Mock implements _i12.PhotoStorage {
   ) as _i7.Directory);
 
   @override
+  _i7.Directory get stagingDirectory => (super.noSuchMethod(
+    Invocation.getter(#stagingDirectory),
+    returnValue: _FakeDirectory_24(this, Invocation.getter(#stagingDirectory)),
+    returnValueForMissingStub: _FakeDirectory_24(
+      this,
+      Invocation.getter(#stagingDirectory),
+    ),
+  ) as _i7.Directory);
+
+  @override
   _i7.File file(String? fileName) => (super.noSuchMethod(
     Invocation.method(#file, [fileName]),
     returnValue: _FakeFile_25(this, Invocation.method(#file, [fileName])),
@@ -1081,6 +1098,34 @@ class MockPhotoStorage extends _i1.Mock implements _i12.PhotoStorage {
   @override
   _i6.Future<void> delete(String? fileName) => (super.noSuchMethod(
     Invocation.method(#delete, [fileName]),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> resetStaging() => (super.noSuchMethod(
+    Invocation.method(#resetStaging, []),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> replaceWithStaged() => (super.noSuchMethod(
+    Invocation.method(#replaceWithStaged, []),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> commitReplacement() => (super.noSuchMethod(
+    Invocation.method(#commitReplacement, []),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> rollbackReplacement() => (super.noSuchMethod(
+    Invocation.method(#rollbackReplacement, []),
     returnValue: _i6.Future<void>.value(),
     returnValueForMissingStub: _i6.Future<void>.value(),
   ) as _i6.Future<void>);

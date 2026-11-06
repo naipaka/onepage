@@ -39,17 +39,14 @@
       "mcp__Framelink_Figma_MCP__get_figma_data"
     ],
     "ask": [
-      "Bash(git checkout:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(git stash:*)",
       "Bash(rm:*)"
     ],
     "deny": [
+      "Bash(git reset --hard:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
       "Bash(sudo:*)",
       "Bash(rm -rf:*)",
-      "Bash(git reset:*)",
-      "Bash(git rebase:*)",
       "Bash(git clean:*)",
       "Bash(curl:*)",
       "Bash(wget:*)",

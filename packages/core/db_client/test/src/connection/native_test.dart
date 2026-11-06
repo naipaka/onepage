@@ -116,6 +116,18 @@ void main() {
         verify(mockDatabase.close()).called(1);
       });
 
+      test('Removes a file left by an earlier attempt', () async {
+        final backupFilePath = p.join(tempDir.path, 'backup.sqlite');
+        final staleFile = File(p.join(tempDir.path, 'import.sqlite'))
+          ..writeAsStringSync('stale');
+
+        when(mockSqlite3.open(backupFilePath)).thenReturn(mockDatabase);
+
+        await connection.createValidBackupFile(backupFilePath: backupFilePath);
+
+        expect(staleFile.existsSync(), isFalse);
+      });
+
       test('Throws an exception when the backup file is invalid', () async {
         // Specify backup file path
         final backupFilePath = p.join(tempDir.path, 'invalid_backup.sqlite');

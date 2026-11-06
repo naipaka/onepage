@@ -36,6 +36,14 @@ backup:
   failedMessage: "Failed to create backup"
   restoreFailedMessage: "Failed to restore backup"
   restoreSuccess: "Restoring your backup was successful"
+  progress:
+    creating: "Creating backup"
+    restoring: "Restoring backup"
+  legacyRestore:
+    title: "Photos are not included"
+    message: "This backup uses an older format.\nRestoring replaces your current diary and photos with its contents."
+    confirm: "Restore"
+    cancel: "Cancel"
   actions:
     create: "Create Backup"
     restore: "Restore Backup"

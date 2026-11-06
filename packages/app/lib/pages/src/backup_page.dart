@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:backup/backup.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -25,6 +28,24 @@ class BackupPage extends ConsumerWidget {
     final t = context.t;
     final controller = ref.watch(backupControllerProvider);
     final haptics = ref.watch(hapticsProvider);
+
+    Future<void> runWithProgress({
+      required String title,
+      required Future<void> Function(BackupProgressCallback onProgress) task,
+    }) async {
+      final progress = ValueNotifier<(int, int)?>(null);
+      final navigator = Navigator.of(context, rootNavigator: true);
+      unawaited(
+        _BackupProgressDialog.show(context, title: title, progress: progress),
+      );
+      try {
+        await task((completed, total) => progress.value = (completed, total));
+      } finally {
+        navigator.pop();
+        progress.dispose();
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(title: Text(t.backup.title)),
       body: SafeArea(
@@ -55,12 +76,12 @@ class BackupPage extends ConsumerWidget {
                     HapticFilledButton(
                       onPressed: () async {
                         try {
-                          ref.showLoading();
-                          // Delay to show loading indicator.
-                          await Future<void>.delayed(
-                            const Duration(milliseconds: 1000),
+                          await runWithProgress(
+                            title: t.backup.progress.creating,
+                            task: (onProgress) => controller.createBackupFile(
+                              onProgress: onProgress,
+                            ),
                           );
-                          await controller.createBackupFile();
                           if (!context.mounted) {
                             return;
                           }
@@ -83,8 +104,6 @@ class BackupPage extends ConsumerWidget {
                             context,
                             title: t.backup.failedMessage,
                           );
-                        } finally {
-                          ref.hideLoading();
                         }
                       },
                       child: Text(t.backup.actions.create),
@@ -103,16 +122,46 @@ class BackupPage extends ConsumerWidget {
                       onPressed: () async {
                         try {
                           ref.showLoading();
-                          final filePath = await controller.restoreBackupFile();
-                          if (filePath == null) {
+                          final backupFile = await controller.pickBackupFile();
+                          if (backupFile == null) {
                             // User canceled the file picker.
                             return;
                           }
 
-                          // DB client is closed to avoid conflicts with
-                          // the current backup process.
-                          await ref.read(dbClientProvider).close();
-                          ref.invalidate(dbClientProvider);
+                          if (backupFile.isLegacy) {
+                            if (!context.mounted) {
+                              return;
+                            }
+                            ref.hideLoading();
+                            final result = await showOkCancelAlertDialog(
+                              context: context,
+                              title: t.backup.legacyRestore.title,
+                              message: t.backup.legacyRestore.message,
+                              okLabel: t.backup.legacyRestore.confirm,
+                              cancelLabel: t.backup.legacyRestore.cancel,
+                            );
+                            if (result != OkCancelResult.ok) {
+                              return;
+                            }
+                          }
+                          ref.hideLoading();
+                          if (!context.mounted) {
+                            return;
+                          }
+
+                          // A paused stream keeps the database from closing.
+                          ref.invalidate(diaryImageCountProvider);
+                          await runWithProgress(
+                            title: t.backup.progress.restoring,
+                            task: (onProgress) => controller.restoreBackupFile(
+                              backupFile,
+                              onProgress: onProgress,
+                            ),
+                          ).whenComplete(
+                            // restoreBackupFile closes the client even when
+                            // it fails.
+                            () => ref.invalidate(dbClientProvider),
+                          );
 
                           if (!context.mounted) {
                             return;
@@ -130,10 +179,12 @@ class BackupPage extends ConsumerWidget {
                               fatal: true,
                             ),
                           );
-                          showErrorToast(
-                            context,
-                            title: t.backup.restoreFailedMessage,
-                          );
+                          if (context.mounted) {
+                            showErrorToast(
+                              context,
+                              title: t.backup.restoreFailedMessage,
+                            );
+                          }
                         } finally {
                           ref.hideLoading();
                         }
@@ -163,6 +214,58 @@ class _Divider extends StatelessWidget {
       child: Divider(
         height: 0,
         color: context.colorScheme.onSurface.withValues(alpha: 0.5),
+      ),
+    );
+  }
+}
+
+class _BackupProgressDialog extends StatelessWidget {
+  const new({required this.title, required this.progress});
+
+  final String title;
+  final ValueListenable<(int, int)?> progress;
+
+  static Future<void> show(
+    BuildContext context, {
+    required String title,
+    required ValueListenable<(int, int)?> progress,
+  }) async {
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) =>
+          _BackupProgressDialog(title: title, progress: progress),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: ValueListenableBuilder(
+            valueListenable: progress,
+            builder: (context, value, _) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TitleMediumText(title, textAlign: TextAlign.center),
+                  const Gap(24),
+                  LinearProgressIndicator(
+                    value: value == null ? null : value.$1 / value.$2,
+                  ),
+                  if (value != null) ...[
+                    const Gap(12),
+                    BodyMediumText('${value.$1} / ${value.$2}'),
+                  ],
+                ],
+              );
+            },
+          ),
+        ),
       ),
     );
   }
