@@ -89,6 +89,48 @@ void main() {
         expect(await dbClient.getDiaryImageFileNames(), {'a.jpg'});
       });
 
+      group('external diary images', () {
+        late int externalId;
+
+        setUp(() async {
+          externalId = await dbClient
+              .into(dbClient.diaryImages)
+              .insert(
+                DiaryImagesCompanion.insert(
+                  diaryId: diary.id,
+                  photoId: const Value('photo-id'),
+                ),
+              );
+          await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
+        });
+
+        test(
+          'getExternalDiaryImages returns images without a file',
+          () async {
+            final images = await dbClient.getExternalDiaryImages();
+
+            expect(images.map((image) => image.id), [externalId]);
+          },
+        );
+
+        test('setDiaryImageFileName removes an image from the list', () async {
+          await dbClient.setDiaryImageFileName(
+            id: externalId,
+            fileName: 'b.jpg',
+          );
+
+          expect(await dbClient.getExternalDiaryImages(), isEmpty);
+          expect(await dbClient.getDiaryImageFileNames(), {'a.jpg', 'b.jpg'});
+        });
+
+        test('deleteExternalDiaryImages keeps stored images', () async {
+          await dbClient.deleteExternalDiaryImages();
+
+          expect(await dbClient.getExternalDiaryImages(), isEmpty);
+          expect(await dbClient.getDiaryImageFileNames(), {'a.jpg'});
+        });
+      });
+
       test('watchDiaryImageCount emits the image count', () async {
         await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
 

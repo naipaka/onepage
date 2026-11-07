@@ -78,6 +78,27 @@ void main() {
       });
     });
 
+    group('photoRecoveryDismissed', () {
+      test('returns false by default', () {
+        when(
+          mockSharedPreferences.getBool('photoRecoveryDismissed'),
+        ).thenReturn(null);
+
+        expect(prefsClient.photoRecoveryDismissed, isFalse);
+      });
+
+      test('stores the value', () async {
+        when(
+          mockSharedPreferences.setBool('photoRecoveryDismissed', true),
+        ).thenAnswer((_) async => true);
+
+        expect(
+          await prefsClient.setPhotoRecoveryDismissed(dismissed: true),
+          isTrue,
+        );
+      });
+    });
+
     group('otherHapticEnabled', () {
       test('returns false when no value is stored', () {
         when(mockSharedPreferences.getBool('otherHaptic')).thenReturn(null);

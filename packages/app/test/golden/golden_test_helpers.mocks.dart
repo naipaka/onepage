@@ -241,6 +241,12 @@ class MockPrefsClient extends _i1.Mock implements _i12.PrefsClient {
   ) as bool);
 
   @override
+  bool get photoRecoveryDismissed => (super.noSuchMethod(
+    Invocation.getter(#photoRecoveryDismissed),
+    returnValue: false,
+  ) as bool);
+
+  @override
   List<Map<String, dynamic>> get notificationSettings => (super.noSuchMethod(
     Invocation.getter(#notificationSettings),
     returnValue: <Map<String, dynamic>>[],
@@ -269,6 +275,15 @@ class MockPrefsClient extends _i1.Mock implements _i12.PrefsClient {
   _i6.Future<bool> setOtherHapticEnabled({required bool? enabled}) =>
       (super.noSuchMethod(
         Invocation.method(#setOtherHapticEnabled, [], {#enabled: enabled}),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+
+  @override
+  _i6.Future<bool> setPhotoRecoveryDismissed({required bool? dismissed}) =>
+      (super.noSuchMethod(
+        Invocation.method(#setPhotoRecoveryDismissed, [], {
+          #dismissed: dismissed,
+        }),
         returnValue: _i6.Future<bool>.value(false),
       ) as _i6.Future<bool>);
 
@@ -531,6 +546,33 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
     Invocation.method(#getDiaryImageFileNames, []),
     returnValue: _i6.Future<Set<String>>.value(<String>{}),
   ) as _i6.Future<Set<String>>);
+
+  @override
+  _i6.Future<List<_i3.DiaryImage>> getExternalDiaryImages() =>
+      (super.noSuchMethod(
+        Invocation.method(#getExternalDiaryImages, []),
+        returnValue: _i6.Future<List<_i3.DiaryImage>>.value(<_i3.DiaryImage>[]),
+      ) as _i6.Future<List<_i3.DiaryImage>>);
+
+  @override
+  _i6.Future<void> deleteExternalDiaryImages() => (super.noSuchMethod(
+    Invocation.method(#deleteExternalDiaryImages, []),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> setDiaryImageFileName({
+    required int? id,
+    required String? fileName,
+  }) => (super.noSuchMethod(
+    Invocation.method(#setDiaryImageFileName, [], {
+      #id: id,
+      #fileName: fileName,
+    }),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
 
   @override
   _i6.Stream<int> watchDiaryImageCount() => (super.noSuchMethod(

@@ -1,195 +1,27 @@
-import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:photo_manager/photo_manager.dart';
-import 'package:photo_manager_image_provider/photo_manager_image_provider.dart';
 
-/// {@template photo_selector.PhotoThumbnail}
-/// A widget that displays a photo thumbnail from a photo ID.
-///
-/// Loads the photo asynchronously using [PhotoManager] and displays it
-/// as a thumbnail. Tapping the thumbnail opens a full-screen viewer
-/// with pinch-zoom capabilities.
-///
-/// If the photo cannot be loaded (e.g., deleted from device), displays
-/// an error icon instead.
-///
-/// ### Parameters
-/// - [photoId] : The photo ID (localIdentifier on iOS, MediaStore ID on
-///   Android).
-/// - [width] : The width of the thumbnail in logical pixels.
-/// - [height] : The height of the thumbnail in logical pixels.
-/// - [onDeleted] : Callback when the delete button is pressed in the viewer.
-///
-/// Unlike [Image], width and height are required to optimize memory usage by
-/// loading appropriately sized thumbnails based on device pixel ratio.
-/// {@endtemplate}
-class PhotoThumbnail extends StatefulWidget {
-  /// {@macro photo_selector.PhotoThumbnail}
-  const new({
-    required this.photoId,
-    required this.width,
-    required this.height,
-    this.onDeleted,
-    this.onInfoShown,
-    super.key,
-  });
-
-  /// The photo ID to display.
-  final String photoId;
-
-  /// The width of the thumbnail in logical pixels.
-  final double width;
-
-  /// The height of the thumbnail in logical pixels.
-  final double height;
-
-  /// Callback when the delete button is pressed in the viewer.
-  final VoidCallback? onDeleted;
-
-  /// Callback when the info button is pressed in the viewer.
-  final VoidCallback? onInfoShown;
-
-  @override
-  State<PhotoThumbnail> createState() => _PhotoThumbnailState();
-}
-
-class _PhotoThumbnailState extends State<PhotoThumbnail> {
-  /// The asset entity loaded from the photo ID.
-  AssetEntity? _asset;
-
-  /// Whether an error occurred while loading the asset.
-  bool _hasError = false;
-
-  /// Unique tag for Hero animation.
-  final _heroTag = UniqueKey();
-
-  @override
-  void initState() {
-    super.initState();
-    unawaited(_loadAsset());
-  }
-
-  /// Loads the asset entity from the photo ID.
-  Future<void> _loadAsset() async {
-    try {
-      final asset = await AssetEntity.fromId(widget.photoId);
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _asset = asset;
-        _hasError = asset == null;
-      });
-    } on Exception {
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _asset = null;
-        _hasError = true;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    final asset = _asset;
-
-    if (_hasError) {
-      return Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Icon(
-            Icons.broken_image_outlined,
-            size: 48,
-            color: colorScheme.onSurface.withValues(alpha: 0.6),
-          ),
-        ),
-      );
-    }
-
-    if (asset == null) {
-      return Container(
-        width: widget.width,
-        height: widget.height,
-        decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: const Center(
-          child: CircularProgressIndicator.adaptive(),
-        ),
-      );
-    }
-
-    final pixelRatio = MediaQuery.devicePixelRatioOf(context);
-    final thumbnailSize = ThumbnailSize(
-      (widget.width * pixelRatio).toInt(),
-      (widget.height * pixelRatio).toInt(),
-    );
-
-    Future<void> showPhotoViewer() async {
-      await Navigator.of(context).push<void>(
-        PageRouteBuilder(
-          pageBuilder: (_, _, _) {
-            return _PhotoViewer(
-              heroTag: _heroTag,
-              image: AssetEntityImage(asset),
-              onDeleted: widget.onDeleted,
-              onInfoShown: widget.onInfoShown,
-            );
-          },
-          transitionsBuilder: (_, animation, _, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-        ),
-      );
-    }
-
-    return GestureDetector(
-      onTap: showPhotoViewer,
-      child: Hero(
-        tag: _heroTag,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: AssetEntityImage(
-            asset,
-            isOriginal: false,
-            thumbnailSize: thumbnailSize,
-            fit: BoxFit.cover,
-            width: widget.width,
-            height: widget.height,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-/// {@template photo_client.PhotoFileThumbnail}
+/// {@template photo_client.PhotoThumbnail}
 /// A widget that displays a thumbnail of a photo file.
 ///
 /// Tapping the thumbnail opens a full-screen viewer with zoom and optional
 /// delete functionality.
 ///
+/// Without a [file], it shows a broken photo, and tapping it calls
+/// [onMissingTap].
+///
 /// ### Parameters
-/// - [file] : The photo file to display.
+/// - [file] : The photo file to display, or null if there is none.
 /// - [width] : The width of the thumbnail in logical pixels.
 /// - [height] : The height of the thumbnail in logical pixels.
 /// - [onDeleted] : Called when the delete button is pressed.
 /// - [onInfoShown] : Called when the info button is pressed.
+/// - [onMissingTap] : Called when the thumbnail is tapped without a [file].
 /// {@endtemplate}
-class PhotoFileThumbnail extends StatelessWidget {
-  /// {@macro photo_client.PhotoFileThumbnail}
+class PhotoThumbnail extends StatelessWidget {
+  /// {@macro photo_client.PhotoThumbnail}
   const new({
     super.key,
     required this.file,
@@ -197,10 +29,11 @@ class PhotoFileThumbnail extends StatelessWidget {
     required this.height,
     this.onDeleted,
     this.onInfoShown,
+    this.onMissingTap,
   });
 
-  /// The photo file to display.
-  final File file;
+  /// The photo file to display, or null if there is none.
+  final File? file;
 
   /// The width of the thumbnail in logical pixels.
   final double width;
@@ -214,8 +47,22 @@ class PhotoFileThumbnail extends StatelessWidget {
   /// Callback when the info button is pressed.
   final VoidCallback? onInfoShown;
 
+  /// Callback when the thumbnail is tapped without a [file].
+  final VoidCallback? onMissingTap;
+
   @override
   Widget build(BuildContext context) {
+    final file = this.file;
+    if (file == null) {
+      return GestureDetector(
+        onTap: onMissingTap,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: _BrokenPhoto(width: width, height: height),
+        ),
+      );
+    }
+
     final pixelRatio = MediaQuery.devicePixelRatioOf(context);
     final cacheSize = (max(width, height) * pixelRatio * 2).toInt();
     final heroTag = file.path;

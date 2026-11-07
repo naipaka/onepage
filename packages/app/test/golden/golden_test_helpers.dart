@@ -1,3 +1,5 @@
+import 'dart:io';
+
 // Test helper files do not need to specify provider dependencies
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
@@ -17,6 +19,7 @@ import 'package:mockito/mockito.dart';
 import 'package:notification_client/notification_client.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:photo_storage/photo_storage.dart';
 import 'package:prefs_client/prefs_client.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
@@ -56,6 +59,7 @@ abstract final class GoldenTestHelpers {
     when(mockPrefsClient.textInputHapticEnabled).thenReturn(true);
     when(mockPrefsClient.otherHapticEnabled).thenReturn(true);
     when(mockPrefsClient.notificationSettings).thenReturn([]);
+    when(mockPrefsClient.photoRecoveryDismissed).thenReturn(false);
 
     // Mock DbClient methods
     when(
@@ -64,10 +68,16 @@ abstract final class GoldenTestHelpers {
         to: anyNamed('to'),
       ),
     ).thenAnswer((_) async => <Diary>[]);
+    when(
+      mockDbClient.getExternalDiaryImages(),
+    ).thenAnswer((_) async => <DiaryImage>[]);
 
     final overrides = [
       prefsClientProvider.overrideWithValue(mockPrefsClient),
       dbClientProvider.overrideWithValue(mockDbClient),
+      photoStorageProvider.overrideWithValue(
+        PhotoStorage(directory: Directory.systemTemp),
+      ),
       backupControllerProvider.overrideWithValue(mockBackupController),
       pdfExporterProvider.overrideWithValue(mockPdfExporter),
       csvExporterProvider.overrideWithValue(mockCsvExporter),

@@ -329,24 +329,43 @@ class _DiaryItem extends ConsumerWidget {
           ),
           if (images.firstOrNull case final image?) ...[
             const Gap(8),
-            if (image.fileName case final fileName?)
-              PhotoFileThumbnail(
-                file: ref.watch(photoFileProvider(fileName)),
-                width: 64,
-                height: 64,
-                onDeleted: deleteImage,
-                onInfoShown: showPhotoNotice,
-              )
-            else if (image.photoId case final photoId?)
-              PhotoThumbnail(
-                photoId: photoId,
-                width: 64,
-                height: 64,
-                onDeleted: deleteImage,
-                onInfoShown: showPhotoNotice,
-              ),
+            PhotoThumbnail(
+              file: switch (image.fileName) {
+                final fileName? => ref.watch(photoFileProvider(fileName)),
+                null => null,
+              },
+              width: 64,
+              height: 64,
+              onDeleted: deleteImage,
+              onInfoShown: showPhotoNotice,
+              onMissingTap: () {
+                PhotoRecoveryRouteData(imageId: image.id).go(context);
+              },
+            ),
           ],
         ],
+      ),
+    );
+  }
+}
+
+class _PhotoRecoveryTile extends ConsumerWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final images = ref.watch(externalDiaryImagesProvider).value;
+    if (images == null || images.isEmpty) {
+      return const SizedBox.shrink();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: HapticNavigationListTile(
+        leading: const Icon(Icons.photo_library_outlined),
+        title: Text(context.t.photoRecovery.title),
+        onTap: () {
+          const PhotoRecoveryRouteData().go(context);
+        },
       ),
     );
   }
@@ -405,6 +424,7 @@ class _Drawer extends StatelessWidget {
               const BackupRouteData().go(context);
             },
           ),
+          const _PhotoRecoveryTile(),
           const Gap(8),
           HapticNavigationListTile(
             leading: const Icon(Icons.picture_as_pdf_outlined),

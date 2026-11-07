@@ -27,6 +27,34 @@ home:
   deleteImage:
     title: "画像を削除"
     message: "この画像を削除しますか？"
+photoRecovery:
+  title: "写真の復旧"
+  banner: "復旧が必要な写真があります"
+  remaining: "残りの写真: $count 枚"
+  progress: "写真を復旧しています"
+  folder:
+    message: "写真が保存されているフォルダを選んでください（DCIM や Pictures など）\n必要な写真だけをコピーし、元の写真はそのまま残ります"
+    action: "フォルダを選ぶ"
+  settings:
+    message: "設定ですべての写真へのアクセスを許可してから、もう一度お試しください"
+    action: "設定を開く"
+    retry: "もう一度試す"
+  remind: "復旧する"
+  missing: "元の写真がこの端末に見つかりませんでした"
+  deletePhoto: "この写真を削除"
+  deleteConfirm:
+    title: "写真の削除"
+    message: "この写真を日記から削除しますか？"
+  deleteUnrecovered:
+    action: "表示されない写真を日記から削除"
+    title: "表示されない写真を削除しますか？"
+    message: "アルバムから消した写真や、機種変更で移していない写真は表示できません\n表示されていない $count 枚の写真を日記から削除します"
+  dismiss:
+    action: "残りの写真を復旧しない"
+    title: "写真の復旧をやめますか？"
+    message: "復旧のお知らせが表示されなくなります\nメニューからはいつでも復旧できます"
+  recovered: "$count 枚の写真を復旧しました"
+  failed: "写真を復旧できませんでした"
 backup:
   title: "Backup"
   description: "機種変更でも安心バックアップ"

@@ -38,6 +38,12 @@ When in doubt, ask: **"Can this widget/code be used as-is in a completely differ
 
 **Important**: Use responsibility-based criteria, not usage-based criteria. Even if a widget is currently used in only one place, if it's domain-independent and reusable, it belongs in `core/widgets/`.
 
+## Native Code
+
+- Put native code in a plugin package.
+- Create it with the `create-package` skill.
+- Run plugin Kotlin tests with `fvm dart run melos run test:android --no-select`.
+
 ## Package Dependencies
 
 - **core/widgets/**: Must NEVER depend on i18n package

@@ -1,74 +1,156 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:photo_client/photo_client.dart';
 
-final _png = Uint8List.fromList([
-  0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D, //
-  0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01, //
-  0x08, 0x06, 0x00, 0x00, 0x00, 0x1F, 0x15, 0xC4, 0x89, 0x00, 0x00, 0x00, //
-  0x0D, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9C, 0x63, 0x60, 0x00, 0x02, 0x00, //
-  0x00, 0x05, 0x00, 0x01, 0xE9, 0xFA, 0xDC, 0xD8, 0x00, 0x00, 0x00, 0x00, //
-  0x49, 0x45, 0x4E, 0x44, 0xAE, 0x42, 0x60, 0x82, //
-]);
-
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  const channel = MethodChannel('com.fluttercandies/photo_manager');
-  final messenger =
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
-
-  late Directory directory;
-
-  setUp(() {
-    directory = Directory.systemTemp.createTempSync('photo_thumbnail_test');
-    final file = File('${directory.path}/photo.png')..writeAsBytesSync(_png);
-    messenger.setMockMethodCallHandler(channel, (call) async {
-      if (call.method == 'getFullFile') {
-        return file.path;
-      }
-      if (call.method == 'fetchEntityProperties') {
-        return <String, dynamic>{
-          'id': 'photo-id',
-          'type': 1,
-          'width': 100,
-          'height': 100,
-          'duration': 0,
-          'favorite': false,
-          'title': 'photo.jpg',
-          'modifiedDt': 0,
-          'createDt': 0,
-        };
-      }
-      return _png;
-    });
-  });
-
-  tearDown(() {
-    messenger.setMockMethodCallHandler(channel, null);
-    directory.deleteSync(recursive: true);
-  });
-
-  testWidgets('opens the viewer for a device photo', (tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        home: Scaffold(
-          body: PhotoThumbnail(photoId: 'photo-id', width: 64, height: 64),
+  Widget build({VoidCallback? onDeleted, VoidCallback? onInfoShown}) {
+    return MaterialApp(
+      home: Scaffold(
+        body: PhotoThumbnail(
+          file: File('missing.jpg'),
+          width: 64,
+          height: 64,
+          onDeleted: onDeleted,
+          onInfoShown: onInfoShown,
         ),
       ),
     );
+  }
+
+  testWidgets('reports taps without a file', (tester) async {
+    var tapped = false;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PhotoThumbnail(
+          file: null,
+          width: 64,
+          height: 64,
+          onMissingTap: () => tapped = true,
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(PhotoThumbnail));
+
+    expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
+    expect(tapped, isTrue);
+  });
+
+  testWidgets('shows a placeholder when the file cannot be read', (
+    tester,
+  ) async {
+    await tester.pumpWidget(build());
     await tester.runAsync(() async {
       await Future<void>.delayed(const Duration(milliseconds: 50));
     });
     await tester.pump();
 
+    expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
+  });
+
+  testWidgets('decodes up to twice the display size on the long edge', (
+    tester,
+  ) async {
+    await tester.pumpWidget(build());
+
+    final image = tester.widget<Image>(find.byType(Image).first);
+    final resized = image.image as ResizeImage;
+
+    expect(resized.width, 384);
+    expect(resized.height, 384);
+    expect(resized.policy, ResizeImagePolicy.fit);
+  });
+
+  testWidgets('shows a placeholder in the viewer when the file is missing', (
+    tester,
+  ) async {
+    await tester.pumpWidget(build());
+
     await tester.tap(find.byType(PhotoThumbnail));
-    await tester.pump();
-    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    final viewerImage = find.byWidgetPredicate(
+      (widget) => widget is Image && widget.image is FileImage,
+    );
+    final image = tester.widget<Image>(viewerImage);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        key: UniqueKey(),
+        home: Builder(
+          builder: (context) {
+            return image.errorBuilder!(context, Exception(), null);
+          },
+        ),
+      ),
+    );
+
+    expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
+  });
+
+  Future<void> openViewer(WidgetTester tester) async {
+    await tester.pumpWidget(build());
+    await tester.tap(find.byType(PhotoThumbnail));
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('closes the viewer with the close button', (tester) async {
+    await openViewer(tester);
+
+    await tester.tap(find.byIcon(Icons.close));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InteractiveViewer), findsNothing);
+  });
+
+  testWidgets('closes the viewer after a long drag', (tester) async {
+    await openViewer(tester);
+
+    await tester.drag(find.byType(InteractiveViewer), const Offset(0, 400));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(InteractiveViewer), findsNothing);
+  });
+
+  testWidgets('keeps the viewer after a short drag', (tester) async {
+    await openViewer(tester);
+
+    await tester.drag(find.byType(InteractiveViewer), const Offset(0, 40));
+    await tester.pumpAndSettle();
 
     expect(find.byType(InteractiveViewer), findsOneWidget);
+  });
+
+  testWidgets('updates the zoom state when an interaction ends', (
+    tester,
+  ) async {
+    await openViewer(tester);
+
+    tester
+        .widget<InteractiveViewer>(find.byType(InteractiveViewer))
+        .onInteractionEnd!(ScaleEndDetails());
+    await tester.pump();
+
+    expect(find.byType(InteractiveViewer), findsOneWidget);
+  });
+
+  testWidgets('opens the viewer with its actions', (tester) async {
+    var deleted = false;
+    var infoShown = false;
+    await tester.pumpWidget(
+      build(
+        onDeleted: () => deleted = true,
+        onInfoShown: () => infoShown = true,
+      ),
+    );
+
+    await tester.tap(find.byType(PhotoThumbnail));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.info_outline));
+    await tester.tap(find.byIcon(Icons.delete));
+
+    expect(infoShown, isTrue);
+    expect(deleted, isTrue);
   });
 }

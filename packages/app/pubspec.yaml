@@ -19,6 +19,8 @@ dependencies:
     path: ../core/configurator/
   db_client:
     path: ../core/db_client/
+  device_photos:
+    path: ../core/device_photos/
   diary:
     path: ../features/diary/
   exporter:
@@ -43,6 +45,8 @@ dependencies:
     path: ../core/notification_client/
   photo_client:
     path: ../core/photo_client/
+  photo_recovery:
+    path: ../features/photo_recovery/
   photo_storage:
     path: ../core/photo_storage/
   prefs_client:

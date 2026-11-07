@@ -158,6 +158,60 @@ final class DiaryImageCountProvider
 
 String _$diaryImageCountHash() => r'8c192998efc25cc71524afa6d5b7e815afccf01a';
 
+/// Provides the diary images whose photo data is outside the app.
+///
+/// This is not a stream, because a paused stream keeps the database from
+/// closing during a restore.
+
+@ProviderFor(externalDiaryImages)
+final externalDiaryImagesProvider = ExternalDiaryImagesProvider._();
+
+/// Provides the diary images whose photo data is outside the app.
+///
+/// This is not a stream, because a paused stream keeps the database from
+/// closing during a restore.
+
+final class ExternalDiaryImagesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<DiaryImage>>,
+          List<DiaryImage>,
+          FutureOr<List<DiaryImage>>
+        >
+    with $FutureModifier<List<DiaryImage>>, $FutureProvider<List<DiaryImage>> {
+  /// Provides the diary images whose photo data is outside the app.
+  ///
+  /// This is not a stream, because a paused stream keeps the database from
+  /// closing during a restore.
+  ExternalDiaryImagesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'externalDiaryImagesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$externalDiaryImagesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<DiaryImage>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<DiaryImage>> create(Ref ref) {
+    return externalDiaryImages(ref);
+  }
+}
+
+String _$externalDiaryImagesHash() =>
+    r'fe7dbb8b6e112b6ecac80e336af056f4df308ee2';
+
 /// Provides a list of diaries within the specified date range.
 
 @ProviderFor(diaries)
@@ -279,7 +333,7 @@ final class CachedDiariesProvider
   CachedDiaries create() => CachedDiaries();
 }
 
-String _$cachedDiariesHash() => r'3944eeb1f94aa13723199a6dd2fd65cda366ea10';
+String _$cachedDiariesHash() => r'6aa1b2a73763e0b1c28f8c609014d79bac89b4d6';
 
 /// Provides a list of diaries with dates within the specified date range.
 

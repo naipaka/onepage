@@ -78,4 +78,15 @@ void main() {
       verifyNever(photoStorage.delete(any));
     });
   });
+
+  group('deleteExternalDiaryImages', () {
+    test('deletes the images without touching photo files', () async {
+      when(dbClient.deleteExternalDiaryImages()).thenAnswer((_) async {});
+
+      await command.deleteExternalDiaryImages();
+
+      verify(dbClient.deleteExternalDiaryImages()).called(1);
+      verifyNever(photoStorage.delete(any));
+    });
+  });
 }

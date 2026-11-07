@@ -26,4 +26,7 @@ enum PrefsKey {
 
   /// Whether the diary image notice dialog has been shown.
   diaryImageNoticeShown,
+
+  /// Whether the user chose not to recover the remaining photos.
+  photoRecoveryDismissed,
 }
