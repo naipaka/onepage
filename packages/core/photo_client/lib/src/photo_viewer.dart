@@ -3,54 +3,25 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-/// {@template photo_client.PhotoPlaceholder}
-/// A placeholder for a photo that is not stored in the app.
-/// {@endtemplate}
-class PhotoPlaceholder extends StatelessWidget {
-  /// {@macro photo_client.PhotoPlaceholder}
-  const new({
-    super.key,
-    required this.width,
-    required this.height,
-    required this.onTap,
-  });
-
-  /// The width of the placeholder in logical pixels.
-  final double width;
-
-  /// The height of the placeholder in logical pixels.
-  final double height;
-
-  /// Called when the placeholder is tapped.
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: _BrokenPhoto(width: width, height: height),
-      ),
-    );
-  }
-}
-
-/// {@template photo_client.PhotoFileThumbnail}
+/// {@template photo_client.PhotoThumbnail}
 /// A widget that displays a thumbnail of a photo file.
 ///
 /// Tapping the thumbnail opens a full-screen viewer with zoom and optional
 /// delete functionality.
 ///
+/// Without a [file], it shows a broken photo, and tapping it calls
+/// [onMissingTap].
+///
 /// ### Parameters
-/// - [file] : The photo file to display.
+/// - [file] : The photo file to display, or null if there is none.
 /// - [width] : The width of the thumbnail in logical pixels.
 /// - [height] : The height of the thumbnail in logical pixels.
 /// - [onDeleted] : Called when the delete button is pressed.
 /// - [onInfoShown] : Called when the info button is pressed.
+/// - [onMissingTap] : Called when the thumbnail is tapped without a [file].
 /// {@endtemplate}
-class PhotoFileThumbnail extends StatelessWidget {
-  /// {@macro photo_client.PhotoFileThumbnail}
+class PhotoThumbnail extends StatelessWidget {
+  /// {@macro photo_client.PhotoThumbnail}
   const new({
     super.key,
     required this.file,
@@ -58,10 +29,11 @@ class PhotoFileThumbnail extends StatelessWidget {
     required this.height,
     this.onDeleted,
     this.onInfoShown,
+    this.onMissingTap,
   });
 
-  /// The photo file to display.
-  final File file;
+  /// The photo file to display, or null if there is none.
+  final File? file;
 
   /// The width of the thumbnail in logical pixels.
   final double width;
@@ -75,8 +47,22 @@ class PhotoFileThumbnail extends StatelessWidget {
   /// Callback when the info button is pressed.
   final VoidCallback? onInfoShown;
 
+  /// Callback when the thumbnail is tapped without a [file].
+  final VoidCallback? onMissingTap;
+
   @override
   Widget build(BuildContext context) {
+    final file = this.file;
+    if (file == null) {
+      return GestureDetector(
+        onTap: onMissingTap,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: _BrokenPhoto(width: width, height: height),
+        ),
+      );
+    }
+
     final pixelRatio = MediaQuery.devicePixelRatioOf(context);
     final cacheSize = (max(width, height) * pixelRatio * 2).toInt();
     final heroTag = file.path;

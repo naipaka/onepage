@@ -148,7 +148,7 @@ void main() {
       stubExternal([image]);
       await pumpHome(tester);
 
-      await tester.tap(find.byType(PhotoPlaceholder));
+      await tester.tap(find.byType(PhotoThumbnail));
       await tester.pumpAndSettle();
 
       expect(find.text('Delete This Photo'), findsOneWidget);

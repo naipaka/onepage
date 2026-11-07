@@ -329,24 +329,19 @@ class _DiaryItem extends ConsumerWidget {
           ),
           if (images.firstOrNull case final image?) ...[
             const Gap(8),
-            if (image.fileName case final fileName?)
-              PhotoFileThumbnail(
-                file: ref.watch(photoFileProvider(fileName)),
-                width: 64,
-                height: 64,
-                onDeleted: deleteImage,
-                onInfoShown: showPhotoNotice,
-              )
-            else
-              PhotoPlaceholder(
-                width: 64,
-                height: 64,
-                onTap: () async {
-                  await PhotoRecoveryRouteData(imageId: image.id).push<void>(
-                    context,
-                  );
-                },
-              ),
+            PhotoThumbnail(
+              file: switch (image.fileName) {
+                final fileName? => ref.watch(photoFileProvider(fileName)),
+                null => null,
+              },
+              width: 64,
+              height: 64,
+              onDeleted: deleteImage,
+              onInfoShown: showPhotoNotice,
+              onMissingTap: () {
+                PhotoRecoveryRouteData(imageId: image.id).go(context);
+              },
+            ),
           ],
         ],
       ),
@@ -368,9 +363,8 @@ class _PhotoRecoveryTile extends ConsumerWidget {
       child: HapticNavigationListTile(
         leading: const Icon(Icons.photo_library_outlined),
         title: Text(context.t.photoRecovery.title),
-        onTap: () async {
-          Scaffold.of(context).closeDrawer();
-          await const PhotoRecoveryRouteData().push<void>(context);
+        onTap: () {
+          const PhotoRecoveryRouteData().go(context);
         },
       ),
     );

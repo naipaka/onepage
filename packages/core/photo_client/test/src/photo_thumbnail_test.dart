@@ -8,7 +8,7 @@ void main() {
   Widget build({VoidCallback? onDeleted, VoidCallback? onInfoShown}) {
     return MaterialApp(
       home: Scaffold(
-        body: PhotoFileThumbnail(
+        body: PhotoThumbnail(
           file: File('missing.jpg'),
           width: 64,
           height: 64,
@@ -19,20 +19,22 @@ void main() {
     );
   }
 
-  testWidgets('PhotoPlaceholder reports taps', (tester) async {
+  testWidgets('reports taps without a file', (tester) async {
     var tapped = false;
     await tester.pumpWidget(
       MaterialApp(
-        home: PhotoPlaceholder(
+        home: PhotoThumbnail(
+          file: null,
           width: 64,
           height: 64,
-          onTap: () => tapped = true,
+          onMissingTap: () => tapped = true,
         ),
       ),
     );
 
-    await tester.tap(find.byType(PhotoPlaceholder));
+    await tester.tap(find.byType(PhotoThumbnail));
 
+    expect(find.byIcon(Icons.broken_image_outlined), findsOneWidget);
     expect(tapped, isTrue);
   });
 
@@ -66,7 +68,7 @@ void main() {
   ) async {
     await tester.pumpWidget(build());
 
-    await tester.tap(find.byType(PhotoFileThumbnail));
+    await tester.tap(find.byType(PhotoThumbnail));
     await tester.pumpAndSettle();
     final viewerImage = find.byWidgetPredicate(
       (widget) => widget is Image && widget.image is FileImage,
@@ -89,7 +91,7 @@ void main() {
 
   Future<void> openViewer(WidgetTester tester) async {
     await tester.pumpWidget(build());
-    await tester.tap(find.byType(PhotoFileThumbnail));
+    await tester.tap(find.byType(PhotoThumbnail));
     await tester.pumpAndSettle();
   }
 
@@ -143,7 +145,7 @@ void main() {
       ),
     );
 
-    await tester.tap(find.byType(PhotoFileThumbnail));
+    await tester.tap(find.byType(PhotoThumbnail));
     await tester.pumpAndSettle();
     await tester.tap(find.byIcon(Icons.info_outline));
     await tester.tap(find.byIcon(Icons.delete));

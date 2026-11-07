@@ -45,8 +45,7 @@ class AutomaticPhotoRecovery extends HookConsumerWidget {
         message: t.photoRecovery.banner,
         actionLabel: t.photoRecovery.remind,
         onAction: () {
-          final router = ref.read(routerProvider);
-          unawaited(router.push(const PhotoRecoveryRouteData().location));
+          ref.read(routerProvider).go(const PhotoRecoveryRouteData().location);
         },
       );
     }
