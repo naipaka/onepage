@@ -13,6 +13,7 @@ class _FakePlugin extends Fake
     with MockPlatformInterfaceMixin
     implements PhotoManagerPlugin {
   PermissionState permission = PermissionState.authorized;
+  PermissionState? answer;
   int permissionRequests = 0;
   int settingsOpened = 0;
   File? file;
@@ -23,7 +24,7 @@ class _FakePlugin extends Fake
     PermissionRequestOption requestOption,
   ) async {
     permissionRequests++;
-    return permission;
+    return answer ?? permission;
   }
 
   @override
@@ -77,6 +78,7 @@ void main() {
     late List<MethodCall> calls;
     var sdk = 34;
     Object? channelResult;
+    var rationales = <bool>[];
 
     setUp(() {
       plugin = _FakePlugin();
@@ -88,7 +90,11 @@ void main() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(_channel, (call) async {
             calls.add(call);
-            return call.method == 'sdkInt' ? sdk : channelResult;
+            return switch (call.method) {
+              'sdkInt' => sdk,
+              'shouldShowRationale' => rationales.removeAt(0),
+              _ => channelResult,
+            };
           });
     });
 
@@ -142,15 +148,14 @@ void main() {
       });
     });
 
-    group('requestAccess', () {
-      test('is denied without asking on Android 13 and later', () async {
+    group('access', () {
+      test('is denied on Android 13 and later', () async {
         sdk = 33;
 
-        expect(await devicePhotos.requestAccess(), DevicePhotoAccess.denied);
-        expect(plugin.permissionRequests, 0);
+        expect(await devicePhotos.access, DevicePhotoAccess.denied);
       });
 
-      test('maps the permission state', () async {
+      test('maps the permission state without asking', () async {
         sdk = 32;
         final expected = {
           PermissionState.authorized: DevicePhotoAccess.full,
@@ -162,8 +167,115 @@ void main() {
         for (final MapEntry(:key, :value) in expected.entries) {
           plugin.permission = key;
 
-          expect(await devicePhotos.requestAccess(), value);
+          expect(await devicePhotos.access, value);
         }
+        expect(plugin.permissionRequests, 0);
+      });
+    });
+
+    group('requestAccess', () {
+      test('is unavailable on Android 13 and later', () async {
+        sdk = 33;
+
+        expect(
+          await devicePhotos.requestAccess(),
+          DevicePhotoAccessRequest.unavailable,
+        );
+        expect(plugin.permissionRequests, 0);
+      });
+
+      test('does not ask with full access', () async {
+        sdk = 32;
+
+        expect(
+          await devicePhotos.requestAccess(),
+          DevicePhotoAccessRequest.allowed,
+        );
+        expect(plugin.permissionRequests, 0);
+      });
+
+      group('on iOS', () {
+        setUp(() {
+          debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+        });
+
+        test('asks when it has not asked yet', () async {
+          plugin
+            ..permission = PermissionState.notDetermined
+            ..answer = PermissionState.limited;
+
+          expect(
+            await devicePhotos.requestAccess(),
+            DevicePhotoAccessRequest.allowed,
+          );
+          expect(plugin.permissionRequests, 1);
+        });
+
+        test('reports a declined request', () async {
+          plugin
+            ..permission = PermissionState.notDetermined
+            ..answer = PermissionState.denied;
+
+          expect(
+            await devicePhotos.requestAccess(),
+            DevicePhotoAccessRequest.declined,
+          );
+        });
+
+        test('is unavailable after the user answered', () async {
+          for (final state in [
+            PermissionState.denied,
+            PermissionState.limited,
+          ]) {
+            plugin.permission = state;
+
+            expect(
+              await devicePhotos.requestAccess(),
+              DevicePhotoAccessRequest.unavailable,
+            );
+          }
+          expect(plugin.permissionRequests, 0);
+        });
+      });
+
+      group('on Android 12 and earlier', () {
+        setUp(() {
+          sdk = 32;
+          plugin.permission = PermissionState.denied;
+        });
+
+        test('reports an allowed request', () async {
+          rationales = [false];
+          plugin.answer = PermissionState.authorized;
+
+          expect(
+            await devicePhotos.requestAccess(),
+            DevicePhotoAccessRequest.allowed,
+          );
+        });
+
+        test('reports a declined request', () async {
+          for (final shown in [
+            [false, true],
+            [true, false],
+          ]) {
+            rationales = shown;
+
+            expect(
+              await devicePhotos.requestAccess(),
+              DevicePhotoAccessRequest.declined,
+            );
+          }
+        });
+
+        test('is unavailable when no dialog appears', () async {
+          rationales = [false, false];
+
+          expect(
+            await devicePhotos.requestAccess(),
+            DevicePhotoAccessRequest.unavailable,
+          );
+        });
       });
     });
 

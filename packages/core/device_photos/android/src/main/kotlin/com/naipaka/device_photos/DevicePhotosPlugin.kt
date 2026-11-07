@@ -1,5 +1,6 @@
 package com.naipaka.device_photos
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -63,6 +64,11 @@ class DevicePhotosPlugin :
         when (call.method) {
             "sdkInt" -> result.success(Build.VERSION.SDK_INT)
             "pickFolder" -> pickFolder(result)
+            "shouldShowRationale" -> result.success(
+                binding?.activity?.shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                ) ?: false,
+            )
             "findInFolder" -> runInBackground(result) {
                 val folder = Uri.parse(call.argument<String>("folder"))
                 val ids = call.argument<List<String>>("ids").orEmpty().toSet()

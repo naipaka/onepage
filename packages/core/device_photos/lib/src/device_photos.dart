@@ -28,6 +28,18 @@ enum DevicePhotoAccessOption {
   none,
 }
 
+/// What happened when the app asked for access to the photo library.
+enum DevicePhotoAccessRequest {
+  /// The app can read photos.
+  allowed,
+
+  /// The user declined in the system dialog.
+  declined,
+
+  /// The system did not ask, so the user has to allow access in Settings.
+  unavailable,
+}
+
 /// {@template device_photos.DevicePhotos}
 /// Reads photos saved on the device by their stored photo IDs.
 /// {@endtemplate}
@@ -71,13 +83,13 @@ class DevicePhotos {
         : DevicePhotoAccessOption.openSettings;
   }
 
-  /// Requests access to the photo library.
-  Future<DevicePhotoAccess> requestAccess() async {
+  /// The access the app has to the photo library, without asking the user.
+  Future<DevicePhotoAccess> get access async {
     final sdk = await _androidSdk;
     if (sdk != null && sdk >= _firstMediaPermissionSdk) {
       return DevicePhotoAccess.denied;
     }
-    final state = await PhotoManager.requestPermissionExtend(
+    final state = await PhotoManager.getPermissionState(
       requestOption: _permissionOption,
     );
     return switch (state) {
@@ -85,6 +97,42 @@ class DevicePhotos {
       PermissionState.limited => DevicePhotoAccess.limited,
       _ => DevicePhotoAccess.denied,
     };
+  }
+
+  /// Asks the user for access to all photos when the system can still ask.
+  Future<DevicePhotoAccessRequest> requestAccess() async {
+    final sdk = await _androidSdk;
+    if (sdk != null && sdk >= _firstMediaPermissionSdk) {
+      return DevicePhotoAccessRequest.unavailable;
+    }
+    final before = await PhotoManager.getPermissionState(
+      requestOption: _permissionOption,
+    );
+    if (before == PermissionState.authorized) {
+      return DevicePhotoAccessRequest.allowed;
+    }
+    // iOS asks only once, and never for all photos after limited access.
+    if (sdk == null && before != PermissionState.notDetermined) {
+      return DevicePhotoAccessRequest.unavailable;
+    }
+    final rationaleBefore = sdk != null && await _shouldShowRationale;
+    final after = await PhotoManager.requestPermissionExtend(
+      requestOption: _permissionOption,
+    );
+    if (after.hasAccess) {
+      return DevicePhotoAccessRequest.allowed;
+    }
+    // Android shows no rationale before or after a request only when the
+    // permission is denied for good, in which case no dialog appeared.
+    if (sdk != null && !rationaleBefore && !await _shouldShowRationale) {
+      return DevicePhotoAccessRequest.unavailable;
+    }
+    return DevicePhotoAccessRequest.declined;
+  }
+
+  Future<bool> get _shouldShowRationale async {
+    final shown = await _channel.invokeMethod<bool>('shouldShowRationale');
+    return shown ?? false;
   }
 
   /// Returns the original file of the photo [id], or null if it can't be read.
