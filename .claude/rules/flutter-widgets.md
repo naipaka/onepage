@@ -17,6 +17,11 @@ paths:
 - **ref.read**: Use in event handlers/onPressed for one-time reads
 - For local state management, prefer `HookWidget` with `useState` over `StatefulWidget`
 
+## Navigation
+
+- Move between routes with go_router's `go`, or `replace` to swap the current route.
+- Use `Navigator.push` only for a temporary page that returns a value, such as a picker.
+
 ## Widget Development
 
 - **Class Widgets ONLY**: Functional widgets are strictly prohibited
