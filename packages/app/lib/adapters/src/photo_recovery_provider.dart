@@ -1,4 +1,3 @@
-import 'package:db_client/db_client.dart';
 import 'package:device_photos/device_photos.dart';
 import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
@@ -16,15 +15,6 @@ typedef PhotoRecoveryStatus = ({int completed, int total});
 /// Provides the photos saved on the device.
 @riverpod
 DevicePhotos devicePhotos(Ref ref) => const DevicePhotos();
-
-/// Provides the diary images that are not stored in the app.
-///
-/// This is not a stream, because a paused stream keeps the database from
-/// closing during a restore.
-@riverpod
-Future<List<DiaryImage>> unmigratedDiaryImages(Ref ref) {
-  return ref.watch(dbClientProvider).getUnmigratedDiaryImages();
-}
 
 /// A provider that creates a [PhotoRecoveryCommand] instance.
 ///
@@ -50,6 +40,8 @@ Future<DevicePhotoAccessOption> devicePhotoAccessOption(Ref ref) {
 class PhotoRecovery extends _$PhotoRecovery {
   PhotoRecoveryCommand get _command => ref.read(photoRecoveryCommandProvider);
 
+  DevicePhotos get _devicePhotos => ref.read(devicePhotosProvider);
+
   @override
   PhotoRecoveryStatus? build() => null;
 
@@ -71,7 +63,7 @@ class PhotoRecovery extends _$PhotoRecovery {
     if (state != null) {
       return null;
     }
-    final folder = await ref.read(devicePhotosProvider).pickFolder();
+    final folder = await _devicePhotos.pickFolder();
     if (folder == null) {
       return null;
     }
@@ -96,7 +88,7 @@ class PhotoRecovery extends _$PhotoRecovery {
       state = null;
       ref
         ..invalidate(devicePhotoAccessOptionProvider)
-        ..invalidate(unmigratedDiaryImagesProvider);
+        ..invalidate(externalDiaryImagesProvider);
     }
   }
 }

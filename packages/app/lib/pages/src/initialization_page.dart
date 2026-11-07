@@ -69,7 +69,7 @@ class _InitializedPage extends ConsumerWidget {
 
     return Stack(
       children: [
-        if (child case final Widget child) child,
+        if (child case final Widget child) AutomaticPhotoRecovery(child: child),
         if (isLoading)
           // Display loading indicator.
           ColoredBox(

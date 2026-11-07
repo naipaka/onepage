@@ -39,15 +39,20 @@ photoRecovery:
     message: "Allow access to all photos in Settings, then come back and try again."
     action: "Open Settings"
     retry: "Try Again"
-  missing: "The original photos could not be found on this device. You can delete a photo after opening it from your diary."
+  remind: "Recover"
+  missing: "The original photos could not be found on this device."
   deletePhoto: "Delete This Photo"
   deleteConfirm:
     title: "Delete Photo"
     message: "Delete this photo from your diary?"
+  deleteUnrecovered:
+    action: "Delete Photos That Are Not Shown"
+    title: "Delete photos that are not shown?"
+    message: "Photos you deleted from your library, or did not move to a new device, cannot be shown. $count photos that are not shown will be deleted from your diaries."
   dismiss:
     action: "Do Not Recover the Remaining Photos"
     title: "Stop recovering photos?"
-    message: "The reminder on the home screen goes away. You can still recover photos from the menu."
+    message: "You will no longer see reminders to recover photos. You can still recover photos from the menu."
   recovered: "Photos recovered: $count"
   failed: "Could not recover photos"
 backup:

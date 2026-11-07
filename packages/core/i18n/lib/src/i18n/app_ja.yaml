@@ -39,15 +39,20 @@ photoRecovery:
     message: "設定ですべての写真へのアクセスを許可してから、もう一度お試しください"
     action: "設定を開く"
     retry: "もう一度試す"
-  missing: "元の写真がこの端末に見つかりませんでした\n日記から写真を開くと削除できます"
+  remind: "復旧する"
+  missing: "元の写真がこの端末に見つかりませんでした"
   deletePhoto: "この写真を削除"
   deleteConfirm:
     title: "写真の削除"
     message: "この写真を日記から削除しますか？"
+  deleteUnrecovered:
+    action: "表示されない写真を日記から削除"
+    title: "表示されない写真を削除しますか？"
+    message: "アルバムから消した写真や、機種変更で移していない写真は表示できません\n表示されていない $count 枚の写真を日記から削除します"
   dismiss:
     action: "残りの写真を復旧しない"
     title: "写真の復旧をやめますか？"
-    message: "ホーム画面の案内が消えます\nメニューからはいつでも復旧できます"
+    message: "復旧のお知らせが表示されなくなります\nメニューからはいつでも復旧できます"
   recovered: "$count 枚の写真を復旧しました"
   failed: "写真を復旧できませんでした"
 backup:

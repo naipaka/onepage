@@ -69,7 +69,7 @@ abstract final class GoldenTestHelpers {
       ),
     ).thenAnswer((_) async => <Diary>[]);
     when(
-      mockDbClient.getUnmigratedDiaryImages(),
+      mockDbClient.getExternalDiaryImages(),
     ).thenAnswer((_) async => <DiaryImage>[]);
 
     final overrides = [

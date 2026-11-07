@@ -119,7 +119,7 @@ void main() {
       LocaleSettings.setLocaleRawSync('en');
       await tester.binding.setSurfaceSize(const Size(800, 1400));
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      when(dbClient.getUnmigratedDiaryImages()).thenAnswer((_) async => images);
+      when(dbClient.getExternalDiaryImages()).thenAnswer((_) async => images);
 
       await tester.pumpWidget(
         ProviderScope(
@@ -300,6 +300,38 @@ void main() {
 
       verifyNever(dbClient.deleteDiaryImage(id: anyNamed('id')));
       expect(find.text('Delete This Photo'), findsOneWidget);
+    });
+
+    testWidgets('deletes the photos that are not shown', (tester) async {
+      when(
+        dbClient.getDiaries(from: anyNamed('from'), to: anyNamed('to')),
+      ).thenAnswer((_) async => []);
+      when(dbClient.deleteExternalDiaryImages()).thenAnswer((_) async {});
+      await pumpPage(tester);
+      tester.container().listen(cachedDiariesProvider, (_, _) {});
+      await tester.container().read(cachedDiariesProvider.future);
+
+      await tester.tap(find.text('Delete Photos That Are Not Shown'));
+      await tester.pumpAndSettle();
+      expect(
+        find.textContaining('1 photos that are not shown'),
+        findsOneWidget,
+      );
+      await tester.tap(find.text('OK'));
+      await tester.pumpAndSettle();
+
+      verify(dbClient.deleteExternalDiaryImages()).called(1);
+    });
+
+    testWidgets('keeps the photos when deletion is canceled', (tester) async {
+      await pumpPage(tester);
+
+      await tester.tap(find.text('Delete Photos That Are Not Shown'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Cancel'));
+      await tester.pumpAndSettle();
+
+      verifyNever(dbClient.deleteExternalDiaryImages());
     });
 
     testWidgets('route opens the page for an image', (tester) async {

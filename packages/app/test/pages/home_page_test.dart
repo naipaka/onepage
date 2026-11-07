@@ -1,7 +1,6 @@
 // Test files do not need to specify provider dependencies
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
-import 'dart:async';
 import 'dart:io';
 
 import 'package:clock/clock.dart';
@@ -22,7 +21,6 @@ import 'package:theme/theme.dart';
 
 import '../golden/golden_test_helpers.mocks.dart';
 
-const _banner = 'Some photos need to be recovered';
 const _title = 'Recover Photos';
 
 class _FakeLibrary extends Fake implements DevicePhotos {
@@ -35,13 +33,8 @@ class _FakeLibrary extends Fake implements DevicePhotos {
 }
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
-  int deviceRuns = 0;
-  Completer<void>? gate;
-
   @override
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
-    deviceRuns++;
-    await gate?.future;
     return 0;
   }
 }
@@ -140,9 +133,9 @@ void main() {
       }
     }
 
-    void stubUnmigrated(List<DiaryImage> images) {
+    void stubExternal(List<DiaryImage> images) {
       when(
-        dbClient.getUnmigratedDiaryImages(),
+        dbClient.getExternalDiaryImages(),
       ).thenAnswer((_) async => images);
     }
 
@@ -151,75 +144,8 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('banner opens the recovery page', (tester) async {
-      stubUnmigrated([image]);
-      await pumpHome(tester);
-
-      await tester.tap(find.text(_banner));
-      await tester.pumpAndSettle();
-
-      expect(find.text(_title), findsOneWidget);
-      expect(find.text('Delete This Photo'), findsNothing);
-    });
-
-    testWidgets('hides the banner after the user declines', (tester) async {
-      dismissed = true;
-      stubUnmigrated([image]);
-      await pumpHome(tester);
-
-      expect(find.text(_banner), findsNothing);
-    });
-
-    testWidgets('recovers photos when the page opens', (tester) async {
-      stubUnmigrated([image]);
-      await pumpHome(tester);
-
-      expect(command.deviceRuns, 1);
-    });
-
-    testWidgets('recovers photos again for a restored database', (
-      tester,
-    ) async {
-      stubUnmigrated([image]);
-      await pumpHome(tester);
-
-      dbClient = stubDiaries(MockDbClient());
-      stubUnmigrated([image]);
-      tester.container().invalidate(dbClientProvider);
-      await tester.pump();
-      await tester.pump();
-
-      expect(command.deviceRuns, 2);
-    });
-
-    testWidgets('hides the banner when nothing can be done', (tester) async {
-      stubUnmigrated([image]);
-      await pumpHome(tester, option: DevicePhotoAccessOption.none);
-
-      expect(find.text(_banner), findsNothing);
-    });
-
-    testWidgets('shows the banner while photos are recovered', (tester) async {
-      command.gate = Completer();
-      stubUnmigrated([image]);
-      await pumpHome(tester, option: DevicePhotoAccessOption.none);
-
-      expect(find.text(_banner), findsOneWidget);
-
-      command.gate!.complete();
-      await tester.pump();
-      await tester.pump();
-    });
-
-    testWidgets('hides the banner without unmigrated photos', (tester) async {
-      stubUnmigrated([]);
-      await pumpHome(tester);
-
-      expect(find.text(_banner), findsNothing);
-    });
-
     testWidgets('placeholder opens the page for its photo', (tester) async {
-      stubUnmigrated([image]);
+      stubExternal([image]);
       await pumpHome(tester);
 
       await tester.tap(find.byType(PhotoPlaceholder));
@@ -229,7 +155,7 @@ void main() {
     });
 
     testWidgets('drawer opens the recovery page', (tester) async {
-      stubUnmigrated([image]);
+      stubExternal([image]);
       await pumpHome(tester);
 
       await openDrawer(tester);
@@ -240,10 +166,10 @@ void main() {
       expect(find.text('Photos left to recover: 1'), findsOneWidget);
     });
 
-    testWidgets('drawer hides the entry without unmigrated photos', (
+    testWidgets('drawer hides the entry without external photos', (
       tester,
     ) async {
-      stubUnmigrated([]);
+      stubExternal([]);
       await pumpHome(tester);
 
       await openDrawer(tester);

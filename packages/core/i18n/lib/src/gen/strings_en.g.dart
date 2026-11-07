@@ -137,13 +137,17 @@ class Translations$photoRecovery$en {
 	late final Translations$photoRecovery$folder$en folder = Translations$photoRecovery$folder$en._(_root);
 	late final Translations$photoRecovery$settings$en settings = Translations$photoRecovery$settings$en._(_root);
 
-	/// en: 'The original photos could not be found on this device. You can delete a photo after opening it from your diary.'
-	String get missing => 'The original photos could not be found on this device. You can delete a photo after opening it from your diary.';
+	/// en: 'Recover'
+	String get remind => 'Recover';
+
+	/// en: 'The original photos could not be found on this device.'
+	String get missing => 'The original photos could not be found on this device.';
 
 	/// en: 'Delete This Photo'
 	String get deletePhoto => 'Delete This Photo';
 
 	late final Translations$photoRecovery$deleteConfirm$en deleteConfirm = Translations$photoRecovery$deleteConfirm$en._(_root);
+	late final Translations$photoRecovery$deleteUnrecovered$en deleteUnrecovered = Translations$photoRecovery$deleteUnrecovered$en._(_root);
 	late final Translations$photoRecovery$dismiss$en dismiss = Translations$photoRecovery$dismiss$en._(_root);
 
 	/// en: 'Photos recovered: $count'
@@ -403,6 +407,24 @@ class Translations$photoRecovery$deleteConfirm$en {
 	String get message => 'Delete this photo from your diary?';
 }
 
+// Path: photoRecovery.deleteUnrecovered
+class Translations$photoRecovery$deleteUnrecovered$en {
+	Translations$photoRecovery$deleteUnrecovered$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Delete Photos That Are Not Shown'
+	String get action => 'Delete Photos That Are Not Shown';
+
+	/// en: 'Delete photos that are not shown?'
+	String get title => 'Delete photos that are not shown?';
+
+	/// en: 'Photos you deleted from your library, or did not move to a new device, cannot be shown. $count photos that are not shown will be deleted from your diaries.'
+	String message({required Object count}) => 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photos that are not shown will be deleted from your diaries.';
+}
+
 // Path: photoRecovery.dismiss
 class Translations$photoRecovery$dismiss$en {
 	Translations$photoRecovery$dismiss$en._(this._root);
@@ -417,8 +439,8 @@ class Translations$photoRecovery$dismiss$en {
 	/// en: 'Stop recovering photos?'
 	String get title => 'Stop recovering photos?';
 
-	/// en: 'The reminder on the home screen goes away. You can still recover photos from the menu.'
-	String get message => 'The reminder on the home screen goes away. You can still recover photos from the menu.';
+	/// en: 'You will no longer see reminders to recover photos. You can still recover photos from the menu.'
+	String get message => 'You will no longer see reminders to recover photos. You can still recover photos from the menu.';
 }
 
 // Path: backup.progress
@@ -579,13 +601,17 @@ extension on Translations {
 			'photoRecovery.settings.message' => 'Allow access to all photos in Settings, then come back and try again.',
 			'photoRecovery.settings.action' => 'Open Settings',
 			'photoRecovery.settings.retry' => 'Try Again',
-			'photoRecovery.missing' => 'The original photos could not be found on this device. You can delete a photo after opening it from your diary.',
+			'photoRecovery.remind' => 'Recover',
+			'photoRecovery.missing' => 'The original photos could not be found on this device.',
 			'photoRecovery.deletePhoto' => 'Delete This Photo',
 			'photoRecovery.deleteConfirm.title' => 'Delete Photo',
 			'photoRecovery.deleteConfirm.message' => 'Delete this photo from your diary?',
+			'photoRecovery.deleteUnrecovered.action' => 'Delete Photos That Are Not Shown',
+			'photoRecovery.deleteUnrecovered.title' => 'Delete photos that are not shown?',
+			'photoRecovery.deleteUnrecovered.message' => ({required Object count}) => 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photos that are not shown will be deleted from your diaries.',
 			'photoRecovery.dismiss.action' => 'Do Not Recover the Remaining Photos',
 			'photoRecovery.dismiss.title' => 'Stop recovering photos?',
-			'photoRecovery.dismiss.message' => 'The reminder on the home screen goes away. You can still recover photos from the menu.',
+			'photoRecovery.dismiss.message' => 'You will no longer see reminders to recover photos. You can still recover photos from the menu.',
 			'photoRecovery.recovered' => ({required Object count}) => 'Photos recovered: ${count}',
 			'photoRecovery.failed' => 'Could not recover photos',
 			'backup.title' => 'Backup',

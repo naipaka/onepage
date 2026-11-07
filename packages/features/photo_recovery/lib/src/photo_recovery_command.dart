@@ -40,7 +40,7 @@ class PhotoRecoveryCommand {
   ///
   /// Returns the number of recovered photos.
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
-    final images = await dbClient.getUnmigratedDiaryImages();
+    final images = await dbClient.getExternalDiaryImages();
     if (images.isEmpty) {
       return 0;
     }
@@ -68,7 +68,7 @@ class PhotoRecoveryCommand {
     String folder, {
     PhotoRecoveryProgress? onProgress,
   }) async {
-    final images = await dbClient.getUnmigratedDiaryImages();
+    final images = await dbClient.getExternalDiaryImages();
     final documents = await devicePhotos.findInFolder(
       folder: folder,
       ids: [for (final image in images) image.photoId!],
@@ -108,7 +108,8 @@ class PhotoRecoveryCommand {
           recovered++;
         }
       } on Exception {
-        // One unreadable photo must not stop the others. It stays unmigrated.
+        // One unreadable photo must not stop the others. It keeps its photo
+        // data outside the app.
       }
       onProgress?.call(index + 1, images.length);
     }

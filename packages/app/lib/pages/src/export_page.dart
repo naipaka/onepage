@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:clock/clock.dart';
-import 'package:db_client/db_client.dart';
+import 'package:diary/diary.dart';
 import 'package:exporter/exporter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,7 @@ class ExportPage extends HookConsumerWidget {
     final pdfExporter = ref.watch(pdfExporterProvider);
     final csvExporter = ref.watch(csvExporterProvider);
     final markdownExporter = ref.watch(markdownExporterProvider);
-    final dbClient = ref.watch(dbClientProvider);
+    final diaryQuery = ref.watch(diaryQueryProvider);
     final haptics = ref.watch(hapticsProvider);
 
     final selectedFormat = useState(const ExportFormat.pdf());
@@ -52,7 +52,7 @@ class ExportPage extends HookConsumerWidget {
           context: context,
           selectedYear: selectedYear.value,
           selectedMonth: selectedMonth.value,
-          dbClient: dbClient,
+          diaryQuery: diaryQuery,
           pdfExporter: pdfExporter,
           csvExporter: csvExporter,
           markdownExporter: markdownExporter,
@@ -185,7 +185,7 @@ class ExportPage extends HookConsumerWidget {
     required BuildContext context,
     required int selectedYear,
     required int selectedMonth,
-    required DbClient dbClient,
+    required DiaryQuery diaryQuery,
     required PdfExporter pdfExporter,
     required CsvExporter csvExporter,
     required MarkdownExporter markdownExporter,
@@ -199,7 +199,7 @@ class ExportPage extends HookConsumerWidget {
         context: context,
         selectedYear: selectedYear,
         selectedMonth: selectedMonth,
-        dbClient: dbClient,
+        diaryQuery: diaryQuery,
         pdfExporter: pdfExporter,
         csvExporter: csvExporter,
         markdownExporter: markdownExporter,
@@ -215,7 +215,7 @@ class ExportPage extends HookConsumerWidget {
     required BuildContext context,
     required int selectedYear,
     required int selectedMonth,
-    required DbClient dbClient,
+    required DiaryQuery diaryQuery,
     required PdfExporter pdfExporter,
     required CsvExporter csvExporter,
     required MarkdownExporter markdownExporter,
@@ -238,7 +238,7 @@ class ExportPage extends HookConsumerWidget {
         selectedMonth + 1,
       ).subtract(const Duration(days: 1));
 
-      final diaries = await dbClient.getDiaries(
+      final diaries = await diaryQuery.getDiaries(
         from: startDate,
         to: endDate,
       );

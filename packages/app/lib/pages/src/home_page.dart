@@ -4,7 +4,6 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:db_client/db_client.dart';
-import 'package:device_photos/device_photos.dart';
 import 'package:diary/diary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -41,20 +40,6 @@ class HomePage extends HookConsumerWidget {
     final haptic = ref.watch(hapticsProvider);
     final inAppReview = ref.watch(inAppReviewerProvider);
     final tracker = ref.watch(trackerProvider);
-    final dbClient = ref.watch(dbClientProvider);
-
-    // Runs for each database, so that restored photos are recovered too.
-    useEffect(() {
-      // Riverpod does not allow changing a provider during a build.
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (context.mounted) {
-          unawaited(
-            ref.read(photoRecoveryProvider.notifier).recoverFromDevice(),
-          );
-        }
-      });
-      return null;
-    }, [dbClient]);
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
@@ -159,74 +144,66 @@ class HomePage extends HookConsumerWidget {
         onDismiss: checkInAppReview,
         child: SafeArea(
           bottom: false,
-          child: Column(
-            children: [
-              const _PhotoRecoveryBanner(),
-              Expanded(
-                child: Consumer(
-                  builder: (context, ref, child) {
-                    final asyncDiaries = ref.watch(cachedDiariesProvider);
-                    final notifier = ref.watch(cachedDiariesProvider.notifier);
-                    return asyncDiaries.when(
-                      loading: () => centerLoadingIndicator,
-                      error: (error, _) => Center(
-                        child: Column(
-                          children: [
-                            Icon(Icons.error, color: colorScheme.error),
-                            Text(error.toString()),
-                          ],
-                        ),
-                      ),
-                      data: (diariesWithDates) {
-                        final diaries = diariesWithDates.diaries;
-                        final dates = diariesWithDates.dates;
-                        // Wrapped with [TextFieldTapRegion] to prevent keyboard
-                        // hiding when tapping text fields during scroll.
-                        // By wrapping with [TextFieldTapRegion],
-                        // the TextField's onTapOutside event will not fire.
-                        return TextFieldTapRegion(
-                          child: VerticalScrollCalendar(
-                            key: K.diaryCalendar,
-                            controller: scrollCalendarController,
-                            dates: dates,
-                            loadMoreOlder: notifier.loadMoreOlder,
-                            onVisibleDateChanged: (date) {
-                              visibleDateState.value = date;
-                            },
-                            loadingIndicator: centerLoadingIndicator,
-                            separatorBuilder: (_, date) {
-                              if (date.day != 1) {
-                                return const Gap(32);
-                              }
-                              return const Padding(
-                                padding: EdgeInsets.all(32),
-                                child: DashedDivider(
-                                  dashedHeight: 2,
-                                  dashedWidth: 2,
-                                  dashedSpace: 16,
-                                ),
-                              );
-                            },
-                            dateItemBuilder: (_, date) {
-                              final diary = diaries.firstWhereOrNull(
-                                (e) => DateUtils.isSameDay(e.entry.date, date),
-                              );
-
-                              return _DiaryItem(
-                                scrollCalendarController:
-                                    scrollCalendarController,
-                                date: date,
-                                diary: diary,
-                              );
-                            },
+          child: Consumer(
+            builder: (context, ref, child) {
+              final asyncDiaries = ref.watch(cachedDiariesProvider);
+              final notifier = ref.watch(cachedDiariesProvider.notifier);
+              return asyncDiaries.when(
+                loading: () => centerLoadingIndicator,
+                error: (error, _) => Center(
+                  child: Column(
+                    children: [
+                      Icon(Icons.error, color: colorScheme.error),
+                      Text(error.toString()),
+                    ],
+                  ),
+                ),
+                data: (diariesWithDates) {
+                  final diaries = diariesWithDates.diaries;
+                  final dates = diariesWithDates.dates;
+                  // Wrapped with [TextFieldTapRegion] to prevent keyboard
+                  // hiding when tapping text fields during scroll.
+                  // By wrapping with [TextFieldTapRegion],
+                  // the TextField's onTapOutside event will not fire.
+                  return TextFieldTapRegion(
+                    child: VerticalScrollCalendar(
+                      key: K.diaryCalendar,
+                      controller: scrollCalendarController,
+                      dates: dates,
+                      loadMoreOlder: notifier.loadMoreOlder,
+                      onVisibleDateChanged: (date) {
+                        visibleDateState.value = date;
+                      },
+                      loadingIndicator: centerLoadingIndicator,
+                      separatorBuilder: (_, date) {
+                        if (date.day != 1) {
+                          return const Gap(32);
+                        }
+                        return const Padding(
+                          padding: EdgeInsets.all(32),
+                          child: DashedDivider(
+                            dashedHeight: 2,
+                            dashedWidth: 2,
+                            dashedSpace: 16,
                           ),
                         );
                       },
-                    );
-                  },
-                ),
-              ),
-            ],
+                      dateItemBuilder: (_, date) {
+                        final diary = diaries.firstWhereOrNull(
+                          (e) => DateUtils.isSameDay(e.entry.date, date),
+                        );
+
+                        return _DiaryItem(
+                          scrollCalendarController: scrollCalendarController,
+                          date: date,
+                          diary: diary,
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ),
       ),
@@ -382,7 +359,7 @@ class _PhotoRecoveryTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final images = ref.watch(unmigratedDiaryImagesProvider).value;
+    final images = ref.watch(externalDiaryImagesProvider).value;
     if (images == null || images.isEmpty) {
       return const SizedBox.shrink();
     }
@@ -393,36 +370,6 @@ class _PhotoRecoveryTile extends ConsumerWidget {
         title: Text(context.t.photoRecovery.title),
         onTap: () async {
           Scaffold.of(context).closeDrawer();
-          await const PhotoRecoveryRouteData().push<void>(context);
-        },
-      ),
-    );
-  }
-}
-
-class _PhotoRecoveryBanner extends ConsumerWidget {
-  const new();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final images = ref.watch(unmigratedDiaryImagesProvider).value;
-    final dismissed = ref.watch(photoRecoveryDismissedProvider);
-    if (images == null || images.isEmpty || dismissed) {
-      return const SizedBox.shrink();
-    }
-    final recovering = ref.watch(photoRecoveryProvider) != null;
-    final option = ref.watch(devicePhotoAccessOptionProvider).value;
-    if (!recovering && option == DevicePhotoAccessOption.none) {
-      return const SizedBox.shrink();
-    }
-
-    return Material(
-      color: context.colorScheme.secondaryContainer,
-      child: ListTile(
-        leading: const Icon(Icons.photo_library_outlined),
-        title: Text(context.t.photoRecovery.banner),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () async {
           await const PhotoRecoveryRouteData().push<void>(context);
         },
       ),

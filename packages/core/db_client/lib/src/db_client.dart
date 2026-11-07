@@ -222,11 +222,23 @@ class DbClient extends _$DbClient {
     return rows.map((row) => row.read(diaryImages.fileName)!).toSet();
   }
 
-  /// Returns the diary images that only have a device photo ID.
-  Future<List<DiaryImage>> getUnmigratedDiaryImages() {
+  /// Returns the diary images whose photo data is outside the app.
+  ///
+  /// These images only refer to a photo in the device's photo library by its
+  /// [DiaryImage.photoId], and have no [DiaryImage.fileName].
+  Future<List<DiaryImage>> getExternalDiaryImages() {
     final query = select(diaryImages)
       ..where((tbl) => tbl.fileName.isNull() & tbl.photoId.isNotNull());
     return query.get();
+  }
+
+  /// Deletes the diary images whose photo data is outside the app.
+  ///
+  /// The photos in the device's photo library are not touched.
+  Future<void> deleteExternalDiaryImages() async {
+    final query = delete(diaryImages)
+      ..where((tbl) => tbl.fileName.isNull() & tbl.photoId.isNotNull());
+    await query.go();
   }
 
   /// Stores [fileName] as the photo file of the diary image [id].

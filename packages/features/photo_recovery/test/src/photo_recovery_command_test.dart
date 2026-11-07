@@ -45,7 +45,7 @@ void main() {
       directory = Directory.systemTemp.createTempSync('photo_recovery_test');
       addTearDown(() => directory.deleteSync(recursive: true));
 
-      when(dbClient.getUnmigratedDiaryImages()).thenAnswer(
+      when(dbClient.getExternalDiaryImages()).thenAnswer(
         (_) async => [image(1, 'a'), image(2, 'b')],
       );
       when(
@@ -57,7 +57,7 @@ void main() {
 
     group('recoverFromDevice', () {
       test('does not ask for access without photos to recover', () async {
-        when(dbClient.getUnmigratedDiaryImages()).thenAnswer((_) async => []);
+        when(dbClient.getExternalDiaryImages()).thenAnswer((_) async => []);
 
         expect(await command.recoverFromDevice(), 0);
         verifyNever(devicePhotos.requestAccess());

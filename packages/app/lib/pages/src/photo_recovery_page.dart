@@ -28,7 +28,8 @@ class PhotoRecoveryPage extends ConsumerWidget {
     final status = ref.watch(photoRecoveryProvider);
     final notifier = ref.read(photoRecoveryProvider.notifier);
     final option = ref.watch(devicePhotoAccessOptionProvider).value;
-    final images = ref.watch(unmigratedDiaryImagesProvider).value ?? [];
+    final devicePhotos = ref.watch(devicePhotosProvider);
+    final images = ref.watch(externalDiaryImagesProvider).value ?? [];
     final dismissed = ref.watch(photoRecoveryDismissedProvider);
 
     Future<void> recoverFromFolder() async {
@@ -42,7 +43,8 @@ class PhotoRecoveryPage extends ConsumerWidget {
           );
         }
       } on Object catch (e, stackTrace) {
-        unawaited(ref.read(trackerProvider).recordError(e, stackTrace));
+        final tracker = ref.read(trackerProvider);
+        unawaited(tracker.recordError(e, stackTrace));
         if (context.mounted) {
           showErrorToast(context, title: t.photoRecovery.failed);
         }
@@ -56,7 +58,8 @@ class PhotoRecoveryPage extends ConsumerWidget {
         message: t.photoRecovery.dismiss.message,
       );
       if (result == OkCancelResult.ok) {
-        await ref.read(photoRecoveryDismissedProvider.notifier).dismiss();
+        final dismissal = ref.read(photoRecoveryDismissedProvider.notifier);
+        await dismissal.dismiss();
       }
     }
 
@@ -69,8 +72,28 @@ class PhotoRecoveryPage extends ConsumerWidget {
       if (result != OkCancelResult.ok) {
         return;
       }
-      await ref.read(cachedDiariesProvider.notifier).deleteImage(imageId: id);
-      ref.invalidate(unmigratedDiaryImagesProvider);
+      final diaries = ref.read(cachedDiariesProvider.notifier);
+      await diaries.deleteImage(imageId: id);
+      ref.invalidate(externalDiaryImagesProvider);
+      if (context.mounted) {
+        Navigator.pop(context);
+      }
+    }
+
+    Future<void> deleteUnrecovered() async {
+      final result = await showOkCancelAlertDialog(
+        context: context,
+        title: t.photoRecovery.deleteUnrecovered.title,
+        message: t.photoRecovery.deleteUnrecovered.message(
+          count: images.length,
+        ),
+      );
+      if (result != OkCancelResult.ok) {
+        return;
+      }
+      final diaries = ref.read(cachedDiariesProvider.notifier);
+      await diaries.deleteExternalImages();
+      ref.invalidate(externalDiaryImagesProvider);
       if (context.mounted) {
         Navigator.pop(context);
       }
@@ -112,7 +135,7 @@ class PhotoRecoveryPage extends ConsumerWidget {
                   BodyLargeText(t.photoRecovery.settings.message),
                   const Gap(24),
                   HapticFilledButton(
-                    onPressed: ref.read(devicePhotosProvider).openSettings,
+                    onPressed: devicePhotos.openSettings,
                     child: Text(t.photoRecovery.settings.action),
                   ),
                   const Gap(12),
@@ -126,6 +149,13 @@ class PhotoRecoveryPage extends ConsumerWidget {
                 ],
                 null => [centerLoadingIndicator],
               },
+            if (status == null && images.isNotEmpty && option != null) ...[
+              const Gap(12),
+              TextButton(
+                onPressed: deleteUnrecovered,
+                child: Text(t.photoRecovery.deleteUnrecovered.action),
+              ),
+            ],
             if (status == null && imageId != null) ...[
               const Gap(24),
               OutlinedButton(

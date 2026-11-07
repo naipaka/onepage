@@ -89,11 +89,11 @@ void main() {
         expect(await dbClient.getDiaryImageFileNames(), {'a.jpg'});
       });
 
-      group('unmigrated diary images', () {
-        late int unmigratedId;
+      group('external diary images', () {
+        late int externalId;
 
         setUp(() async {
-          unmigratedId = await dbClient
+          externalId = await dbClient
               .into(dbClient.diaryImages)
               .insert(
                 DiaryImagesCompanion.insert(
@@ -105,22 +105,29 @@ void main() {
         });
 
         test(
-          'getUnmigratedDiaryImages returns images without a file',
+          'getExternalDiaryImages returns images without a file',
           () async {
-            final images = await dbClient.getUnmigratedDiaryImages();
+            final images = await dbClient.getExternalDiaryImages();
 
-            expect(images.map((image) => image.id), [unmigratedId]);
+            expect(images.map((image) => image.id), [externalId]);
           },
         );
 
         test('setDiaryImageFileName removes an image from the list', () async {
           await dbClient.setDiaryImageFileName(
-            id: unmigratedId,
+            id: externalId,
             fileName: 'b.jpg',
           );
 
-          expect(await dbClient.getUnmigratedDiaryImages(), isEmpty);
+          expect(await dbClient.getExternalDiaryImages(), isEmpty);
           expect(await dbClient.getDiaryImageFileNames(), {'a.jpg', 'b.jpg'});
+        });
+
+        test('deleteExternalDiaryImages keeps stored images', () async {
+          await dbClient.deleteExternalDiaryImages();
+
+          expect(await dbClient.getExternalDiaryImages(), isEmpty);
+          expect(await dbClient.getDiaryImageFileNames(), {'a.jpg'});
         });
       });
 

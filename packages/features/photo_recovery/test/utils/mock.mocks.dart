@@ -490,14 +490,21 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) as _i6.Future<Set<String>>);
 
   @override
-  _i6.Future<List<_i3.DiaryImage>> getUnmigratedDiaryImages() =>
+  _i6.Future<List<_i3.DiaryImage>> getExternalDiaryImages() =>
       (super.noSuchMethod(
-        Invocation.method(#getUnmigratedDiaryImages, []),
+        Invocation.method(#getExternalDiaryImages, []),
         returnValue: _i6.Future<List<_i3.DiaryImage>>.value(<_i3.DiaryImage>[]),
         returnValueForMissingStub: _i6.Future<List<_i3.DiaryImage>>.value(
           <_i3.DiaryImage>[],
         ),
       ) as _i6.Future<List<_i3.DiaryImage>>);
+
+  @override
+  _i6.Future<void> deleteExternalDiaryImages() => (super.noSuchMethod(
+    Invocation.method(#deleteExternalDiaryImages, []),
+    returnValue: _i6.Future<void>.value(),
+    returnValueForMissingStub: _i6.Future<void>.value(),
+  ) as _i6.Future<void>);
 
   @override
   _i6.Future<void> setDiaryImageFileName({

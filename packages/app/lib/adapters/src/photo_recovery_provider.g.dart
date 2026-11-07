@@ -56,60 +56,6 @@ final class DevicePhotosProvider
 
 String _$devicePhotosHash() => r'e4eb7918d5463fc54d33f3072f598cb01832fb27';
 
-/// Provides the diary images that are not stored in the app.
-///
-/// This is not a stream, because a paused stream keeps the database from
-/// closing during a restore.
-
-@ProviderFor(unmigratedDiaryImages)
-final unmigratedDiaryImagesProvider = UnmigratedDiaryImagesProvider._();
-
-/// Provides the diary images that are not stored in the app.
-///
-/// This is not a stream, because a paused stream keeps the database from
-/// closing during a restore.
-
-final class UnmigratedDiaryImagesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<DiaryImage>>,
-          List<DiaryImage>,
-          FutureOr<List<DiaryImage>>
-        >
-    with $FutureModifier<List<DiaryImage>>, $FutureProvider<List<DiaryImage>> {
-  /// Provides the diary images that are not stored in the app.
-  ///
-  /// This is not a stream, because a paused stream keeps the database from
-  /// closing during a restore.
-  UnmigratedDiaryImagesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'unmigratedDiaryImagesProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$unmigratedDiaryImagesHash();
-
-  @$internal
-  @override
-  $FutureProviderElement<List<DiaryImage>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<List<DiaryImage>> create(Ref ref) {
-    return unmigratedDiaryImages(ref);
-  }
-}
-
-String _$unmigratedDiaryImagesHash() =>
-    r'685b7ff86443097e4355db7918e0459ba5f5c2c1';
-
 /// A provider that creates a [PhotoRecoveryCommand] instance.
 ///
 /// {@macro photo_recovery.PhotoRecoveryCommand}
@@ -252,7 +198,7 @@ final class PhotoRecoveryProvider
   }
 }
 
-String _$photoRecoveryHash() => r'8dd1586d0487049262a1c97e23908b0ee148b6dd';
+String _$photoRecoveryHash() => r'62e16fd1116b4129b8a84da0b371fe9f8872392c';
 
 /// Recovers photos. The state is the progress of the running recovery.
 
