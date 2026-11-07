@@ -16,6 +16,18 @@ enum DevicePhotoAccess {
   denied,
 }
 
+/// How the app can get access to more photos.
+enum DevicePhotoAccessOption {
+  /// The user selects a folder that holds the photos.
+  selectFolder,
+
+  /// The user allows access in Settings.
+  openSettings,
+
+  /// The app already has all the access it can get.
+  none,
+}
+
 /// {@template device_photos.DevicePhotos}
 /// Reads photos saved on the device by their stored photo IDs.
 /// {@endtemplate}
@@ -24,6 +36,13 @@ class DevicePhotos {
   const new();
 
   static const _channel = MethodChannel('com.naipaka.device_photos');
+
+  static const _permissionOption = PermissionRequestOption(
+    androidPermission: AndroidPermission(
+      type: RequestType.image,
+      mediaLocation: false,
+    ),
+  );
 
   /// First Android version where `MediaStore.getMediaUri` is available.
   static const _firstFolderSdk = 29;
@@ -38,10 +57,18 @@ class DevicePhotos {
     return _channel.invokeMethod<int>('sdkInt');
   }
 
-  /// Whether the user can recover photos by selecting a folder.
-  Future<bool> get supportsFolder async {
+  /// How the app can get access to more photos, without asking the user.
+  Future<DevicePhotoAccessOption> get accessOption async {
     final sdk = await _androidSdk;
-    return sdk != null && sdk >= _firstFolderSdk;
+    if (sdk != null && sdk >= _firstFolderSdk) {
+      return DevicePhotoAccessOption.selectFolder;
+    }
+    final state = await PhotoManager.getPermissionState(
+      requestOption: _permissionOption,
+    );
+    return state == PermissionState.authorized
+        ? DevicePhotoAccessOption.none
+        : DevicePhotoAccessOption.openSettings;
   }
 
   /// Requests access to the photo library.
@@ -51,12 +78,7 @@ class DevicePhotos {
       return DevicePhotoAccess.denied;
     }
     final state = await PhotoManager.requestPermissionExtend(
-      requestOption: const PermissionRequestOption(
-        androidPermission: AndroidPermission(
-          type: RequestType.image,
-          mediaLocation: false,
-        ),
-      ),
+      requestOption: _permissionOption,
     );
     return switch (state) {
       PermissionState.authorized => DevicePhotoAccess.full,

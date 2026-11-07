@@ -4,6 +4,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
 import 'package:db_client/db_client.dart';
+import 'package:device_photos/device_photos.dart';
 import 'package:diary/diary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -40,6 +41,20 @@ class HomePage extends HookConsumerWidget {
     final haptic = ref.watch(hapticsProvider);
     final inAppReview = ref.watch(inAppReviewerProvider);
     final tracker = ref.watch(trackerProvider);
+    final dbClient = ref.watch(dbClientProvider);
+
+    // Runs for each database, so that restored photos are recovered too.
+    useEffect(() {
+      // Riverpod does not allow changing a provider during a build.
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted) {
+          unawaited(
+            ref.read(photoRecoveryProvider.notifier).recoverFromDevice(),
+          );
+        }
+      });
+      return null;
+    }, [dbClient]);
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
@@ -150,16 +165,6 @@ class HomePage extends HookConsumerWidget {
               Expanded(
                 child: Consumer(
                   builder: (context, ref, child) {
-                    // Unmigrated photos are imported as soon as they are found.
-                    ref.listen(unmigratedDiaryImagesProvider, (_, images) {
-                      if (images.value?.isNotEmpty ?? false) {
-                        unawaited(
-                          ref
-                              .read(photoRecoveryProvider.notifier)
-                              .importFromDevice(),
-                        );
-                      }
-                    });
                     final asyncDiaries = ref.watch(cachedDiariesProvider);
                     final notifier = ref.watch(cachedDiariesProvider.notifier);
                     return asyncDiaries.when(
@@ -401,14 +406,13 @@ class _PhotoRecoveryBanner extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final images = ref.watch(unmigratedDiaryImagesProvider).value;
-    final recovery = ref.watch(photoRecoveryProvider);
-    final dismissed = ref.watch(prefsClientProvider).photoRecoveryDismissed;
-    final hidden =
-        images == null ||
-        images.isEmpty ||
-        dismissed ||
-        recovery.action == PhotoRecoveryAction.none;
-    if (hidden) {
+    final dismissed = ref.watch(photoRecoveryDismissedProvider);
+    if (images == null || images.isEmpty || dismissed) {
+      return const SizedBox.shrink();
+    }
+    final recovering = ref.watch(photoRecoveryProvider) != null;
+    final option = ref.watch(devicePhotoAccessOptionProvider).value;
+    if (!recovering && option == DevicePhotoAccessOption.none) {
       return const SizedBox.shrink();
     }
 

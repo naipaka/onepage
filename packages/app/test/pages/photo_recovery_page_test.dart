@@ -23,18 +23,14 @@ import 'package:theme/theme.dart';
 import '../golden/golden_test_helpers.mocks.dart';
 
 class _FakeLibrary extends Fake implements DevicePhotos {
-  new({required this.access, required this.folderSupported});
+  new(this.option);
 
-  final DevicePhotoAccess access;
-  final bool folderSupported;
+  final DevicePhotoAccessOption option;
   String? folder = 'folder';
   int settingsOpened = 0;
 
   @override
-  Future<DevicePhotoAccess> requestAccess() async => access;
-
-  @override
-  Future<bool> get supportsFolder async => folderSupported;
+  Future<DevicePhotoAccessOption> get accessOption async => option;
 
   @override
   Future<String?> pickFolder() async => folder;
@@ -116,8 +112,7 @@ void main() {
 
     Future<void> pumpPage(
       WidgetTester tester, {
-      DevicePhotoAccess access = DevicePhotoAccess.denied,
-      bool folderSupported = true,
+      DevicePhotoAccessOption option = DevicePhotoAccessOption.selectFolder,
       _FakeLibrary? library,
       int? imageId,
     }) async {
@@ -131,11 +126,7 @@ void main() {
           overrides: [
             dbClientProvider.overrideWithValue(dbClient),
             devicePhotosProvider.overrideWithValue(
-              library ??
-                  _FakeLibrary(
-                    access: access,
-                    folderSupported: folderSupported,
-                  ),
+              library ?? _FakeLibrary(option),
             ),
             photoRecoveryCommandProvider.overrideWithValue(command),
             prefsClientProvider.overrideWithValue(prefsClient),
@@ -156,10 +147,6 @@ void main() {
         ),
       );
       await tester.pump();
-      await tester
-          .container()
-          .read(photoRecoveryProvider.notifier)
-          .importFromDevice();
       await tester.pump();
       await tester.pump();
     }
@@ -184,28 +171,8 @@ void main() {
       expect(find.text('Do Not Recover the Remaining Photos'), findsOneWidget);
     });
 
-    testWidgets('does not import from a denied library', (tester) async {
-      await pumpPage(tester);
-
-      expect(command.deviceRuns, 0);
-    });
-
-    testWidgets('imports from an allowed library once', (tester) async {
-      await pumpPage(tester, access: DevicePhotoAccess.limited);
-
-      await tester
-          .container()
-          .read(photoRecoveryProvider.notifier)
-          .importFromDevice();
-
-      expect(command.deviceRuns, 1);
-    });
-
     testWidgets('guides to Settings without folder selection', (tester) async {
-      final library = _FakeLibrary(
-        access: DevicePhotoAccess.limited,
-        folderSupported: false,
-      );
+      final library = _FakeLibrary(DevicePhotoAccessOption.openSettings);
       await pumpPage(tester, library: library);
 
       await tester.tap(find.text('Open Settings'));
@@ -213,15 +180,11 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(library.settingsOpened, 1);
-      expect(command.deviceRuns, 2);
+      expect(command.deviceRuns, 1);
     });
 
     testWidgets('reports missing originals with full access', (tester) async {
-      await pumpPage(
-        tester,
-        access: DevicePhotoAccess.full,
-        folderSupported: false,
-      );
+      await pumpPage(tester, option: DevicePhotoAccessOption.none);
 
       expect(find.textContaining('could not be found'), findsOneWidget);
       expect(find.text('Do Not Recover the Remaining Photos'), findsNothing);
@@ -235,10 +198,10 @@ void main() {
       final recovered = await tester
           .container()
           .read(photoRecoveryProvider.notifier)
-          .importFromFolder();
+          .recoverFromFolder();
 
       expect(recovered, 2);
-      expect(tester.container().read(photoRecoveryProvider).isRunning, isFalse);
+      expect(tester.container().read(photoRecoveryProvider), isNull);
     });
 
     testWidgets('shows the recovered count from the button', (tester) async {
@@ -267,6 +230,20 @@ void main() {
       command.gate!.complete();
       await showToast(tester);
       await dismissToast(tester);
+    });
+
+    testWidgets('does not start a second recovery', (tester) async {
+      command.gate = Completer();
+      await pumpPage(tester);
+      final notifier = tester.container().read(photoRecoveryProvider.notifier);
+
+      final running = notifier.recoverFromFolder();
+      await tester.pump();
+      await notifier.recoverFromDevice();
+
+      expect(command.deviceRuns, 0);
+      command.gate!.complete();
+      await running;
     });
 
     testWidgets('shows an error when recovery fails', (tester) async {
@@ -338,16 +315,14 @@ void main() {
     testWidgets('does nothing when folder selection is canceled', (
       tester,
     ) async {
-      final library = _FakeLibrary(
-        access: DevicePhotoAccess.denied,
-        folderSupported: true,
-      )..folder = null;
+      final library = _FakeLibrary(DevicePhotoAccessOption.selectFolder)
+        ..folder = null;
       await pumpPage(tester, library: library);
 
       final recovered = await tester
           .container()
           .read(photoRecoveryProvider.notifier)
-          .importFromFolder();
+          .recoverFromFolder();
 
       expect(recovered, isNull);
     });

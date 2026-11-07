@@ -1065,11 +1065,17 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
 /// See the documentation for Mockito's code generation for more information.
 class MockDevicePhotos extends _i1.Mock implements _i10.DevicePhotos {
   @override
-  _i6.Future<bool> get supportsFolder => (super.noSuchMethod(
-    Invocation.getter(#supportsFolder),
-    returnValue: _i6.Future<bool>.value(false),
-    returnValueForMissingStub: _i6.Future<bool>.value(false),
-  ) as _i6.Future<bool>);
+  _i6.Future<_i10.DevicePhotoAccessOption> get accessOption =>
+      (super.noSuchMethod(
+        Invocation.getter(#accessOption),
+        returnValue: _i6.Future<_i10.DevicePhotoAccessOption>.value(
+          _i10.DevicePhotoAccessOption.selectFolder,
+        ),
+        returnValueForMissingStub:
+            _i6.Future<_i10.DevicePhotoAccessOption>.value(
+              _i10.DevicePhotoAccessOption.selectFolder,
+            ),
+      ) as _i6.Future<_i10.DevicePhotoAccessOption>);
 
   @override
   _i6.Future<_i10.DevicePhotoAccess> requestAccess() => (super.noSuchMethod(

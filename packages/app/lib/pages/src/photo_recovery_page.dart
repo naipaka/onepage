@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:device_photos/device_photos.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,15 +25,15 @@ class PhotoRecoveryPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
-    final recovery = ref.watch(photoRecoveryProvider);
+    final status = ref.watch(photoRecoveryProvider);
     final notifier = ref.read(photoRecoveryProvider.notifier);
+    final option = ref.watch(devicePhotoAccessOptionProvider).value;
     final images = ref.watch(unmigratedDiaryImagesProvider).value ?? [];
-    final dismissed = ref.watch(prefsClientProvider).photoRecoveryDismissed;
-    final progress = recovery.progress;
+    final dismissed = ref.watch(photoRecoveryDismissedProvider);
 
     Future<void> recoverFromFolder() async {
       try {
-        final recovered = await notifier.importFromFolder();
+        final recovered = await notifier.recoverFromFolder();
         if (recovered != null && context.mounted) {
           showSuccessToast(
             context,
@@ -55,7 +56,7 @@ class PhotoRecoveryPage extends ConsumerWidget {
         message: t.photoRecovery.dismiss.message,
       );
       if (result == OkCancelResult.ok) {
-        await notifier.dismiss();
+        await ref.read(photoRecoveryDismissedProvider.notifier).dismiss();
       }
     }
 
@@ -86,18 +87,20 @@ class PhotoRecoveryPage extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const Gap(24),
-            if (progress != null) ...[
+            if (status != null) ...[
               BodyLargeText(
                 t.photoRecovery.progress,
                 textAlign: TextAlign.center,
               ),
               const Gap(16),
               LinearProgressIndicator(
-                value: progress.$2 == 0 ? null : progress.$1 / progress.$2,
+                value: status.total == 0
+                    ? null
+                    : status.completed / status.total,
               ),
             ] else if (images.isNotEmpty)
-              ...switch (recovery.action) {
-                PhotoRecoveryAction.pickFolder => [
+              ...switch (option) {
+                DevicePhotoAccessOption.selectFolder => [
                   BodyLargeText(t.photoRecovery.folder.message),
                   const Gap(24),
                   HapticFilledButton(
@@ -105,7 +108,7 @@ class PhotoRecoveryPage extends ConsumerWidget {
                     child: Text(t.photoRecovery.folder.action),
                   ),
                 ],
-                PhotoRecoveryAction.openSettings => [
+                DevicePhotoAccessOption.openSettings => [
                   BodyLargeText(t.photoRecovery.settings.message),
                   const Gap(24),
                   HapticFilledButton(
@@ -114,26 +117,26 @@ class PhotoRecoveryPage extends ConsumerWidget {
                   ),
                   const Gap(12),
                   TextButton(
-                    onPressed: () => notifier.importFromDevice(retry: true),
+                    onPressed: notifier.recoverFromDevice,
                     child: Text(t.photoRecovery.settings.retry),
                   ),
                 ],
-                PhotoRecoveryAction.none => [
+                DevicePhotoAccessOption.none => [
                   BodyLargeText(t.photoRecovery.missing),
                 ],
-                PhotoRecoveryAction.unknown => [centerLoadingIndicator],
+                null => [centerLoadingIndicator],
               },
-            if (progress == null && imageId != null) ...[
+            if (status == null && imageId != null) ...[
               const Gap(24),
               OutlinedButton(
                 onPressed: () => deletePhoto(imageId!),
                 child: Text(t.photoRecovery.deletePhoto),
               ),
             ],
-            if (progress == null &&
+            if (status == null &&
                 images.isNotEmpty &&
                 !dismissed &&
-                recovery.action != PhotoRecoveryAction.none) ...[
+                option != DevicePhotoAccessOption.none) ...[
               const Gap(24),
               TextButton(
                 onPressed: dismiss,

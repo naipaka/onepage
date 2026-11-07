@@ -5,6 +5,7 @@ Reads photos saved on the device by the photo IDs stored in the database.
 ## Features
 
 - Requests access to the photo library
+- Tells how the app can get access to more photos
 - Reads the original file of a stored photo ID
 - On Android 10 and later, lets the user select a folder and matches its files to stored photo IDs
 
@@ -26,7 +27,7 @@ const devicePhotos = DevicePhotos();
 final access = await devicePhotos.requestAccess();
 final file = await devicePhotos.read(photoId);
 
-if (await devicePhotos.supportsFolder) {
+if (await devicePhotos.accessOption == DevicePhotoAccessOption.selectFolder) {
   final folder = await devicePhotos.pickFolder();
   final documents = await devicePhotos.findInFolder(
     folder: folder!,

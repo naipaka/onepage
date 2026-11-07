@@ -1,6 +1,7 @@
 // Test files do not need to specify provider dependencies
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:clock/clock.dart';
@@ -25,23 +26,22 @@ const _banner = 'Some photos need to be recovered';
 const _title = 'Recover Photos';
 
 class _FakeLibrary extends Fake implements DevicePhotos {
-  new(this.access);
+  new(this.option);
 
-  final DevicePhotoAccess access;
-
-  @override
-  Future<DevicePhotoAccess> requestAccess() async => access;
+  final DevicePhotoAccessOption option;
 
   @override
-  Future<bool> get supportsFolder async => true;
+  Future<DevicePhotoAccessOption> get accessOption async => option;
 }
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
   int deviceRuns = 0;
+  Completer<void>? gate;
 
   @override
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
     deviceRuns++;
+    await gate?.future;
     return 0;
   }
 }
@@ -53,6 +53,7 @@ void main() {
     late MockHaptics haptics;
     late _FakeCommand command;
     late DiaryImage image;
+    late MockDbClient Function(MockDbClient client) stubDiaries;
     var dismissed = false;
 
     setUp(() {
@@ -78,16 +79,20 @@ void main() {
         updatedAt: now,
       );
 
-      when(
-        dbClient.getDiaries(from: anyNamed('from'), to: anyNamed('to')),
-      ).thenAnswer(
-        (_) async => [
-          Diary(entry: entry, images: [image]),
-        ],
-      );
-      when(
-        dbClient.watchDiaryImageCount(),
-      ).thenAnswer((_) => const Stream.empty());
+      stubDiaries = (client) {
+        when(
+          client.getDiaries(from: anyNamed('from'), to: anyNamed('to')),
+        ).thenAnswer(
+          (_) async => [
+            Diary(entry: entry, images: [image]),
+          ],
+        );
+        when(
+          client.watchDiaryImageCount(),
+        ).thenAnswer((_) => const Stream.empty());
+        return client;
+      };
+      stubDiaries(dbClient);
       when(prefsClient.textInputHapticEnabled).thenReturn(false);
       when(prefsClient.otherHapticEnabled).thenReturn(false);
       when(prefsClient.photoRecoveryDismissed).thenAnswer((_) => dismissed);
@@ -95,7 +100,7 @@ void main() {
 
     Future<void> pumpHome(
       WidgetTester tester, {
-      DevicePhotoAccess access = DevicePhotoAccess.denied,
+      DevicePhotoAccessOption option = DevicePhotoAccessOption.selectFolder,
     }) async {
       LocaleSettings.setLocaleRawSync('en');
       await tester.binding.setSurfaceSize(const Size(800, 1400));
@@ -106,14 +111,14 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            dbClientProvider.overrideWithValue(dbClient),
+            dbClientProvider.overrideWith((ref) => dbClient),
             prefsClientProvider.overrideWithValue(prefsClient),
             hapticsProvider.overrideWithValue(haptics),
             trackerProvider.overrideWithValue(MockTracker()),
             inAppReviewerProvider.overrideWith(
               (ref) async => MockInAppReviewer(),
             ),
-            devicePhotosProvider.overrideWithValue(_FakeLibrary(access)),
+            devicePhotosProvider.overrideWithValue(_FakeLibrary(option)),
             photoRecoveryCommandProvider.overrideWithValue(command),
             photoStorageProvider.overrideWithValue(
               PhotoStorage(directory: Directory.systemTemp),
@@ -165,18 +170,51 @@ void main() {
       expect(find.text(_banner), findsNothing);
     });
 
-    testWidgets('imports photos when the library is readable', (tester) async {
+    testWidgets('recovers photos when the page opens', (tester) async {
       stubUnmigrated([image]);
-      await pumpHome(tester, access: DevicePhotoAccess.full);
+      await pumpHome(tester);
 
       expect(command.deviceRuns, 1);
     });
 
-    testWidgets('does not import without unmigrated photos', (tester) async {
-      stubUnmigrated([]);
-      await pumpHome(tester, access: DevicePhotoAccess.full);
+    testWidgets('recovers photos again for a restored database', (
+      tester,
+    ) async {
+      stubUnmigrated([image]);
+      await pumpHome(tester);
 
-      expect(command.deviceRuns, 0);
+      dbClient = stubDiaries(MockDbClient());
+      stubUnmigrated([image]);
+      tester.container().invalidate(dbClientProvider);
+      await tester.pump();
+      await tester.pump();
+
+      expect(command.deviceRuns, 2);
+    });
+
+    testWidgets('hides the banner when nothing can be done', (tester) async {
+      stubUnmigrated([image]);
+      await pumpHome(tester, option: DevicePhotoAccessOption.none);
+
+      expect(find.text(_banner), findsNothing);
+    });
+
+    testWidgets('shows the banner while photos are recovered', (tester) async {
+      command.gate = Completer();
+      stubUnmigrated([image]);
+      await pumpHome(tester, option: DevicePhotoAccessOption.none);
+
+      expect(find.text(_banner), findsOneWidget);
+
+      command.gate!.complete();
+      await tester.pump();
+      await tester.pump();
+    });
+
+    testWidgets('hides the banner without unmigrated photos', (tester) async {
+      stubUnmigrated([]);
+      await pumpHome(tester);
+
       expect(find.text(_banner), findsNothing);
     });
 

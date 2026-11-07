@@ -36,9 +36,18 @@ class PhotoRecoveryCommand {
 
   /// Recovers the photos that the device can read.
   ///
+  /// Asks for photo access only when there are photos to recover.
+  ///
   /// Returns the number of recovered photos.
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
     final images = await dbClient.getUnmigratedDiaryImages();
+    if (images.isEmpty) {
+      return 0;
+    }
+    final access = await devicePhotos.requestAccess();
+    if (access == DevicePhotoAccess.denied) {
+      return 0;
+    }
     return _recover(
       images,
       onProgress: onProgress,

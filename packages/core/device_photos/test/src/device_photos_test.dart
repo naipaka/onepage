@@ -27,6 +27,11 @@ class _FakePlugin extends Fake
   }
 
   @override
+  Future<PermissionState> getPermissionState(
+    PermissionRequestOption requestOption,
+  ) async => permission;
+
+  @override
   Future<void> openSetting() async => settingsOpened++;
 
   @override
@@ -93,23 +98,46 @@ void main() {
           .setMockMethodCallHandler(_channel, null);
     });
 
-    group('supportsFolder', () {
-      test('is true on Android 10 and later', () async {
+    group('accessOption', () {
+      test('is folder selection on Android 10 and later', () async {
         sdk = 29;
 
-        expect(await devicePhotos.supportsFolder, isTrue);
+        expect(
+          await devicePhotos.accessOption,
+          DevicePhotoAccessOption.selectFolder,
+        );
       });
 
-      test('is false before Android 10', () async {
+      test('is nothing with full access before Android 10', () async {
         sdk = 28;
 
-        expect(await devicePhotos.supportsFolder, isFalse);
+        expect(await devicePhotos.accessOption, DevicePhotoAccessOption.none);
       });
 
-      test('is false on iOS', () async {
+      test('is Settings without full access', () async {
+        sdk = 28;
+        for (final state in [PermissionState.limited, PermissionState.denied]) {
+          plugin.permission = state;
+
+          expect(
+            await devicePhotos.accessOption,
+            DevicePhotoAccessOption.openSettings,
+          );
+        }
+      });
+
+      test('does not ask the user', () async {
+        sdk = 28;
+
+        await devicePhotos.accessOption;
+
+        expect(plugin.permissionRequests, 0);
+      });
+
+      test('reads the permission on iOS', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-        expect(await devicePhotos.supportsFolder, isFalse);
+        expect(await devicePhotos.accessOption, DevicePhotoAccessOption.none);
         expect(calls, isEmpty);
       });
     });

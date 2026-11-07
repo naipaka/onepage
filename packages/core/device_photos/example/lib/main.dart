@@ -14,9 +14,9 @@ class _ExampleApp extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: FutureBuilder(
-            future: const DevicePhotos().supportsFolder,
+            future: const DevicePhotos().accessOption,
             builder: (_, snapshot) {
-              return Text('Supports folders: ${snapshot.data}');
+              return Text('Access option: ${snapshot.data}');
             },
           ),
         ),

@@ -112,14 +112,14 @@ String _$unmigratedDiaryImagesHash() =>
 
 /// A provider that creates a [PhotoRecoveryCommand] instance.
 ///
-/// {@macro diary.PhotoRecoveryCommand}
+/// {@macro photo_recovery.PhotoRecoveryCommand}
 
 @ProviderFor(photoRecoveryCommand)
 final photoRecoveryCommandProvider = PhotoRecoveryCommandProvider._();
 
 /// A provider that creates a [PhotoRecoveryCommand] instance.
 ///
-/// {@macro diary.PhotoRecoveryCommand}
+/// {@macro photo_recovery.PhotoRecoveryCommand}
 
 final class PhotoRecoveryCommandProvider
     extends
@@ -131,7 +131,7 @@ final class PhotoRecoveryCommandProvider
     with $Provider<PhotoRecoveryCommand> {
   /// A provider that creates a [PhotoRecoveryCommand] instance.
   ///
-  /// {@macro diary.PhotoRecoveryCommand}
+  /// {@macro photo_recovery.PhotoRecoveryCommand}
   PhotoRecoveryCommandProvider._()
     : super(
         from: null,
@@ -169,15 +169,62 @@ final class PhotoRecoveryCommandProvider
 String _$photoRecoveryCommandHash() =>
     r'99437920db21bd1c0700a575db342349d04e95a4';
 
-/// Recovers photos and reports the progress.
+/// Provides how the app can get access to more photos.
+
+@ProviderFor(devicePhotoAccessOption)
+final devicePhotoAccessOptionProvider = DevicePhotoAccessOptionProvider._();
+
+/// Provides how the app can get access to more photos.
+
+final class DevicePhotoAccessOptionProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<DevicePhotoAccessOption>,
+          DevicePhotoAccessOption,
+          FutureOr<DevicePhotoAccessOption>
+        >
+    with
+        $FutureModifier<DevicePhotoAccessOption>,
+        $FutureProvider<DevicePhotoAccessOption> {
+  /// Provides how the app can get access to more photos.
+  DevicePhotoAccessOptionProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'devicePhotoAccessOptionProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$devicePhotoAccessOptionHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<DevicePhotoAccessOption> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<DevicePhotoAccessOption> create(Ref ref) {
+    return devicePhotoAccessOption(ref);
+  }
+}
+
+String _$devicePhotoAccessOptionHash() =>
+    r'6c279c5894ae5cba4b92acfbf05bb318acef7f3b';
+
+/// Recovers photos. The state is the progress of the running recovery.
 
 @ProviderFor(PhotoRecovery)
 final photoRecoveryProvider = PhotoRecoveryProvider._();
 
-/// Recovers photos and reports the progress.
+/// Recovers photos. The state is the progress of the running recovery.
 final class PhotoRecoveryProvider
-    extends $NotifierProvider<PhotoRecovery, PhotoRecoveryState> {
-  /// Recovers photos and reports the progress.
+    extends $NotifierProvider<PhotoRecovery, PhotoRecoveryStatus?> {
+  /// Recovers photos. The state is the progress of the running recovery.
   PhotoRecoveryProvider._()
     : super(
         from: null,
@@ -197,29 +244,29 @@ final class PhotoRecoveryProvider
   PhotoRecovery create() => PhotoRecovery();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(PhotoRecoveryState value) {
+  Override overrideWithValue(PhotoRecoveryStatus? value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<PhotoRecoveryState>(value),
+      providerOverride: $SyncValueProvider<PhotoRecoveryStatus?>(value),
     );
   }
 }
 
-String _$photoRecoveryHash() => r'a333e549c49676d3e100b2dd21781b3119e3791e';
+String _$photoRecoveryHash() => r'8dd1586d0487049262a1c97e23908b0ee148b6dd';
 
-/// Recovers photos and reports the progress.
+/// Recovers photos. The state is the progress of the running recovery.
 
-abstract class _$PhotoRecovery extends $Notifier<PhotoRecoveryState> {
-  PhotoRecoveryState build();
+abstract class _$PhotoRecovery extends $Notifier<PhotoRecoveryStatus?> {
+  PhotoRecoveryStatus? build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<PhotoRecoveryState, PhotoRecoveryState>;
+    final ref = this.ref as $Ref<PhotoRecoveryStatus?, PhotoRecoveryStatus?>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<PhotoRecoveryState, PhotoRecoveryState>,
-              PhotoRecoveryState,
+              AnyNotifier<PhotoRecoveryStatus?, PhotoRecoveryStatus?>,
+              PhotoRecoveryStatus?,
               Object?,
               Object?
             >;

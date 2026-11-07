@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
+import 'package:device_photos/device_photos.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path/path.dart' as p;
@@ -47,11 +48,30 @@ void main() {
       when(dbClient.getUnmigratedDiaryImages()).thenAnswer(
         (_) async => [image(1, 'a'), image(2, 'b')],
       );
+      when(
+        devicePhotos.requestAccess(),
+      ).thenAnswer((_) async => DevicePhotoAccess.full);
       when(photoEncoder.encode(any)).thenAnswer((_) async => Uint8List(1));
       when(photoStorage.save(any)).thenAnswer((_) async => 'stored.jpg');
     });
 
     group('recoverFromDevice', () {
+      test('does not ask for access without photos to recover', () async {
+        when(dbClient.getUnmigratedDiaryImages()).thenAnswer((_) async => []);
+
+        expect(await command.recoverFromDevice(), 0);
+        verifyNever(devicePhotos.requestAccess());
+      });
+
+      test('reads nothing without access', () async {
+        when(
+          devicePhotos.requestAccess(),
+        ).thenAnswer((_) async => DevicePhotoAccess.denied);
+
+        expect(await command.recoverFromDevice(), 0);
+        verifyNever(devicePhotos.read(any));
+      });
+
       test('stores the photos the library can read', () async {
         when(devicePhotos.read('a')).thenAnswer((_) async => File('a.jpg'));
         when(devicePhotos.read('b')).thenAnswer((_) async => null);
