@@ -10,6 +10,8 @@ import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
+import '../../gen/assets.gen.dart';
+import '../../router/router.dart';
 import '../../widgets/widgets.dart';
 
 /// {@template photo_recovery_page}
@@ -26,15 +28,39 @@ class PhotoRecoveryPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final t = context.t;
     final status = ref.watch(photoRecoveryProvider);
-    final notifier = ref.read(photoRecoveryProvider.notifier);
+    final recovery = ref.read(photoRecoveryProvider.notifier);
     final option = ref.watch(devicePhotoAccessOptionProvider).value;
     final devicePhotos = ref.watch(devicePhotosProvider);
     final images = ref.watch(externalDiaryImagesProvider).value ?? [];
     final dismissed = ref.watch(photoRecoveryDismissedProvider);
 
+    Future<void> showSettingsDialog() async {
+      final result = await showOkCancelAlertDialog(
+        context: context,
+        title: t.photoRecovery.settings.title,
+        message: t.photoRecovery.settings.message,
+        okLabel: t.photoRecovery.settings.action,
+      );
+      if (result == OkCancelResult.ok) {
+        await devicePhotos.openSettings();
+      }
+    }
+
+    Future<void> recoverFromDevice() async {
+      final request = await devicePhotos.requestAccess();
+      switch (request) {
+        case DevicePhotoAccessRequest.allowed:
+          await recovery.recoverFromDevice();
+        case DevicePhotoAccessRequest.unavailable:
+          await showSettingsDialog();
+        case DevicePhotoAccessRequest.declined:
+          return;
+      }
+    }
+
     Future<void> recoverFromFolder() async {
       try {
-        final recovered = await notifier.recoverFromFolder();
+        final recovered = await recovery.recoverFromFolder();
         if (recovered != null && context.mounted) {
           showSuccessToast(
             context,
@@ -103,79 +129,159 @@ class PhotoRecoveryPage extends ConsumerWidget {
       appBar: AppBar(title: Text(t.photoRecovery.title)),
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
           children: [
-            TitleMediumText(
-              t.photoRecovery.remaining(count: images.length),
-              textAlign: TextAlign.center,
+            Center(
+              child: Assets.images.restoredBackup.image(
+                width: 140,
+                height: 140,
+              ),
             ),
-            const Gap(24),
+            const Gap(12),
             if (status != null) ...[
-              BodyLargeText(
+              TitleLargeText(
                 t.photoRecovery.progress,
                 textAlign: TextAlign.center,
+                fontWeight: FontWeight.bold,
               ),
-              const Gap(16),
+              const Gap(24),
               LinearProgressIndicator(
                 value: status.total == 0
                     ? null
                     : status.completed / status.total,
               ),
-            ] else if (images.isNotEmpty)
+              const Gap(8),
+              BodySmallText(
+                t.photoRecovery.progressCount(
+                  completed: status.completed,
+                  total: status.total,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ] else if (images.isEmpty) ...[
+              TitleLargeText(
+                t.photoRecovery.done.title,
+                textAlign: TextAlign.center,
+                fontWeight: FontWeight.bold,
+              ),
+              const Gap(12),
+              BodyMediumText(
+                t.photoRecovery.done.message,
+                textAlign: TextAlign.center,
+              ),
+              const Gap(32),
+              HapticFilledButton(
+                onPressed: () => const HomeRouteData().go(context),
+                child: Text(t.photoRecovery.done.action),
+              ),
+            ] else
               ...switch (option) {
-                DevicePhotoAccessOption.selectFolder => [
-                  BodyLargeText(t.photoRecovery.folder.message),
-                  const Gap(24),
-                  HapticFilledButton(
-                    onPressed: recoverFromFolder,
-                    child: Text(t.photoRecovery.folder.action),
+                null => [centerLoadingIndicator],
+                DevicePhotoAccessOption.none => [
+                  TitleLargeText(
+                    t.photoRecovery.notFound(count: images.length),
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
-                DevicePhotoAccessOption.openSettings => [
-                  BodyLargeText(t.photoRecovery.settings.message),
-                  const Gap(24),
-                  HapticFilledButton(
-                    onPressed: devicePhotos.openSettings,
-                    child: Text(t.photoRecovery.settings.action),
+                  const Gap(20),
+                  _Point(
+                    icon: Icons.smartphone_outlined,
+                    text: t.photoRecovery.savedInApp,
                   ),
                   const Gap(12),
-                  TextButton(
-                    onPressed: notifier.recoverFromDevice,
-                    child: Text(t.photoRecovery.settings.retry),
+                  _Point(
+                    icon: Icons.hide_image_outlined,
+                    text: t.photoRecovery.deletedFromDevice,
+                  ),
+                  const Gap(32),
+                  OutlinedButton(
+                    onPressed: deleteUnrecovered,
+                    child: Text(t.photoRecovery.deleteUnrecovered.action),
                   ),
                 ],
-                DevicePhotoAccessOption.none => [
-                  BodyLargeText(t.photoRecovery.missing),
+                DevicePhotoAccessOption.selectFolder ||
+                DevicePhotoAccessOption.openSettings => [
+                  TitleLargeText(
+                    t.photoRecovery.notShown(count: images.length),
+                    textAlign: TextAlign.center,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  const Gap(20),
+                  _Point(
+                    icon: Icons.smartphone_outlined,
+                    text: t.photoRecovery.savedInApp,
+                  ),
+                  const Gap(12),
+                  _Point(
+                    icon: Icons.photo_outlined,
+                    text: t.photoRecovery.shownAfterRecovery,
+                  ),
+                  const Gap(32),
+                  if (option == DevicePhotoAccessOption.selectFolder) ...[
+                    BodySmallText(
+                      t.photoRecovery.folder.message,
+                      textAlign: TextAlign.center,
+                    ),
+                    const Gap(8),
+                    HapticFilledButton(
+                      onPressed: recoverFromFolder,
+                      child: Text(t.photoRecovery.folder.action),
+                    ),
+                  ] else
+                    HapticFilledButton(
+                      onPressed: recoverFromDevice,
+                      child: Text(t.photoRecovery.action),
+                    ),
+                  const Gap(24),
+                  const Divider(height: 1),
+                  const Gap(12),
+                  TextButton(
+                    onPressed: deleteUnrecovered,
+                    child: Text(t.photoRecovery.deleteUnrecovered.action),
+                  ),
+                  if (!dismissed)
+                    TextButton(
+                      onPressed: dismiss,
+                      child: Text(t.photoRecovery.dismiss.action),
+                    ),
                 ],
-                null => [centerLoadingIndicator],
               },
-            if (status == null && images.isNotEmpty && option != null) ...[
+            if (status == null && imageId != null) ...[
               const Gap(12),
               TextButton(
-                onPressed: deleteUnrecovered,
-                child: Text(t.photoRecovery.deleteUnrecovered.action),
-              ),
-            ],
-            if (status == null && imageId != null) ...[
-              const Gap(24),
-              OutlinedButton(
                 onPressed: () => deletePhoto(imageId!),
                 child: Text(t.photoRecovery.deletePhoto),
-              ),
-            ],
-            if (status == null &&
-                images.isNotEmpty &&
-                !dismissed &&
-                option != DevicePhotoAccessOption.none) ...[
-              const Gap(24),
-              TextButton(
-                onPressed: dismiss,
-                child: Text(t.photoRecovery.dismiss.action),
               ),
             ],
           ],
         ),
       ),
+    );
+  }
+}
+
+/// {@template photo_recovery_page._Point}
+/// A short fact about the recovery, shown with an icon.
+/// {@endtemplate}
+class _Point extends StatelessWidget {
+  /// {@macro photo_recovery_page._Point}
+  const new({required this.icon, required this.text});
+
+  /// The icon shown before the text.
+  final IconData icon;
+
+  /// The fact to show.
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 22, color: context.colorScheme.secondary),
+        const Gap(12),
+        Expanded(child: BodyMediumText(text)),
+      ],
     );
   }
 }

@@ -163,7 +163,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Delete This Photo'), findsNothing);
-      expect(find.text('Photos left to recover: 1'), findsOneWidget);
+      expect(find.text('1 photo is not shown yet'), findsOneWidget);
     });
 
     testWidgets('drawer hides the entry without external photos', (

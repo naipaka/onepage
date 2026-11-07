@@ -1085,8 +1085,8 @@ class MockDevicePhotos extends _i1.Mock implements _i10.DevicePhotos {
       ) as _i6.Future<_i10.DevicePhotoAccessOption>);
 
   @override
-  _i6.Future<_i10.DevicePhotoAccess> requestAccess() => (super.noSuchMethod(
-    Invocation.method(#requestAccess, []),
+  _i6.Future<_i10.DevicePhotoAccess> get access => (super.noSuchMethod(
+    Invocation.getter(#access),
     returnValue: _i6.Future<_i10.DevicePhotoAccess>.value(
       _i10.DevicePhotoAccess.full,
     ),
@@ -1094,6 +1094,19 @@ class MockDevicePhotos extends _i1.Mock implements _i10.DevicePhotos {
       _i10.DevicePhotoAccess.full,
     ),
   ) as _i6.Future<_i10.DevicePhotoAccess>);
+
+  @override
+  _i6.Future<_i10.DevicePhotoAccessRequest> requestAccess() =>
+      (super.noSuchMethod(
+        Invocation.method(#requestAccess, []),
+        returnValue: _i6.Future<_i10.DevicePhotoAccessRequest>.value(
+          _i10.DevicePhotoAccessRequest.allowed,
+        ),
+        returnValueForMissingStub:
+            _i6.Future<_i10.DevicePhotoAccessRequest>.value(
+              _i10.DevicePhotoAccessRequest.allowed,
+            ),
+      ) as _i6.Future<_i10.DevicePhotoAccessRequest>);
 
   @override
   _i6.Future<_i7.File?> read(String? id) => (super.noSuchMethod(

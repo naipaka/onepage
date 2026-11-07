@@ -49,7 +49,7 @@ void main() {
         (_) async => [image(1, 'a'), image(2, 'b')],
       );
       when(
-        devicePhotos.requestAccess(),
+        devicePhotos.access,
       ).thenAnswer((_) async => DevicePhotoAccess.full);
       when(photoEncoder.encode(any)).thenAnswer((_) async => Uint8List(1));
       when(photoStorage.save(any)).thenAnswer((_) async => 'stored.jpg');
@@ -60,16 +60,24 @@ void main() {
         when(dbClient.getExternalDiaryImages()).thenAnswer((_) async => []);
 
         expect(await command.recoverFromDevice(), 0);
-        verifyNever(devicePhotos.requestAccess());
+        verifyNever(devicePhotos.access);
       });
 
       test('reads nothing without access', () async {
         when(
-          devicePhotos.requestAccess(),
+          devicePhotos.access,
         ).thenAnswer((_) async => DevicePhotoAccess.denied);
 
         expect(await command.recoverFromDevice(), 0);
         verifyNever(devicePhotos.read(any));
+      });
+
+      test('never asks the user for access', () async {
+        when(devicePhotos.read(any)).thenAnswer((_) async => null);
+
+        await command.recoverFromDevice();
+
+        verifyNever(devicePhotos.requestAccess());
       });
 
       test('stores the photos the library can read', () async {

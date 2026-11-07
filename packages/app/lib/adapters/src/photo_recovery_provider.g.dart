@@ -198,7 +198,7 @@ final class PhotoRecoveryProvider
   }
 }
 
-String _$photoRecoveryHash() => r'62e16fd1116b4129b8a84da0b371fe9f8872392c';
+String _$photoRecoveryHash() => r'f097ceb7da9c415ece92603dd334532fdb12e7a2';
 
 /// Recovers photos. The state is the progress of the running recovery.
 

@@ -128,20 +128,43 @@ class Translations$photoRecovery$en {
 	/// en: 'Some photos need to be recovered'
 	String get banner => 'Some photos need to be recovered';
 
-	/// en: 'Photos left to recover: $count'
-	String remaining({required Object count}) => 'Photos left to recover: ${count}';
+	/// en: '(one) {$count photo is not shown yet} (other) {$count photos are not shown yet}'
+	String notShown({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: '${count} photo is not shown yet',
+		other: '${count} photos are not shown yet',
+	);
+
+	/// en: '(one) {$count photo cannot be found on this device} (other) {$count photos cannot be found on this device}'
+	String notFound({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: '${count} photo cannot be found on this device',
+		other: '${count} photos cannot be found on this device',
+	);
+
+	/// en: 'Photos are now saved in the app'
+	String get savedInApp => 'Photos are now saved in the app';
+
+	/// en: 'Your earlier photos will show again once recovered'
+	String get shownAfterRecovery => 'Your earlier photos will show again once recovered';
+
+	/// en: 'Photos deleted from this device cannot be recovered'
+	String get deletedFromDevice => 'Photos deleted from this device cannot be recovered';
+
+	/// en: 'Recover'
+	String get action => 'Recover';
 
 	/// en: 'Recovering photos'
 	String get progress => 'Recovering photos';
+
+	late final Translations$photoRecovery$done$en done = Translations$photoRecovery$done$en._(_root);
+
+	/// en: '$completed / $total'
+	String progressCount({required Object completed, required Object total}) => '${completed} / ${total}';
 
 	late final Translations$photoRecovery$folder$en folder = Translations$photoRecovery$folder$en._(_root);
 	late final Translations$photoRecovery$settings$en settings = Translations$photoRecovery$settings$en._(_root);
 
 	/// en: 'Recover'
 	String get remind => 'Recover';
-
-	/// en: 'The original photos could not be found on this device.'
-	String get missing => 'The original photos could not be found on this device.';
 
 	/// en: 'Delete This Photo'
 	String get deletePhoto => 'Delete This Photo';
@@ -359,6 +382,24 @@ class Translations$home$deleteImage$en {
 	String get message => 'Are you sure you want to delete this image?';
 }
 
+// Path: photoRecovery.done
+class Translations$photoRecovery$done$en {
+	Translations$photoRecovery$done$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'All photos have been recovered'
+	String get title => 'All photos have been recovered';
+
+	/// en: 'Your earlier photos now show in your diary'
+	String get message => 'Your earlier photos now show in your diary';
+
+	/// en: 'Back to Diary'
+	String get action => 'Back to Diary';
+}
+
 // Path: photoRecovery.folder
 class Translations$photoRecovery$folder$en {
 	Translations$photoRecovery$folder$en._(this._root);
@@ -367,11 +408,11 @@ class Translations$photoRecovery$folder$en {
 
 	// Translations
 
-	/// en: 'Select the folder that holds your photos, such as DCIM or Pictures. The app copies the photos it needs and leaves the originals as they are.'
-	String get message => 'Select the folder that holds your photos, such as DCIM or Pictures. The app copies the photos it needs and leaves the originals as they are.';
+	/// en: 'Select a folder with your photos, such as DCIM or Pictures'
+	String get message => 'Select a folder with your photos, such as DCIM or Pictures';
 
-	/// en: 'Select Folder'
-	String get action => 'Select Folder';
+	/// en: 'Select Folder and Recover'
+	String get action => 'Select Folder and Recover';
 }
 
 // Path: photoRecovery.settings
@@ -382,14 +423,14 @@ class Translations$photoRecovery$settings$en {
 
 	// Translations
 
-	/// en: 'Allow access to all photos in Settings, then come back and try again.'
-	String get message => 'Allow access to all photos in Settings, then come back and try again.';
+	/// en: 'Allow photo access in Settings'
+	String get title => 'Allow photo access in Settings';
+
+	/// en: 'After you allow access, you can recover your earlier photos'
+	String get message => 'After you allow access, you can recover your earlier photos';
 
 	/// en: 'Open Settings'
 	String get action => 'Open Settings';
-
-	/// en: 'Try Again'
-	String get retry => 'Try Again';
 }
 
 // Path: photoRecovery.deleteConfirm
@@ -421,8 +462,11 @@ class Translations$photoRecovery$deleteUnrecovered$en {
 	/// en: 'Delete photos that are not shown?'
 	String get title => 'Delete photos that are not shown?';
 
-	/// en: 'Photos you deleted from your library, or did not move to a new device, cannot be shown. $count photos that are not shown will be deleted from your diaries.'
-	String message({required Object count}) => 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photos that are not shown will be deleted from your diaries.';
+	/// en: '(one) {Photos you deleted from your library, or did not move to a new device, cannot be shown. $count photo that is not shown will be deleted from your diaries.} (other) {Photos you deleted from your library, or did not move to a new device, cannot be shown. $count photos that are not shown will be deleted from your diaries.}'
+	String message({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photo that is not shown will be deleted from your diaries.',
+		other: 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photos that are not shown will be deleted from your diaries.',
+	);
 }
 
 // Path: photoRecovery.dismiss
@@ -594,21 +638,29 @@ extension on Translations {
 			'home.deleteImage.message' => 'Are you sure you want to delete this image?',
 			'photoRecovery.title' => 'Recover Photos',
 			'photoRecovery.banner' => 'Some photos need to be recovered',
-			'photoRecovery.remaining' => ({required Object count}) => 'Photos left to recover: ${count}',
+			'photoRecovery.notShown' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} photo is not shown yet', other: '${count} photos are not shown yet', ), 
+			'photoRecovery.notFound' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} photo cannot be found on this device', other: '${count} photos cannot be found on this device', ), 
+			'photoRecovery.savedInApp' => 'Photos are now saved in the app',
+			'photoRecovery.shownAfterRecovery' => 'Your earlier photos will show again once recovered',
+			'photoRecovery.deletedFromDevice' => 'Photos deleted from this device cannot be recovered',
+			'photoRecovery.action' => 'Recover',
 			'photoRecovery.progress' => 'Recovering photos',
-			'photoRecovery.folder.message' => 'Select the folder that holds your photos, such as DCIM or Pictures. The app copies the photos it needs and leaves the originals as they are.',
-			'photoRecovery.folder.action' => 'Select Folder',
-			'photoRecovery.settings.message' => 'Allow access to all photos in Settings, then come back and try again.',
+			'photoRecovery.done.title' => 'All photos have been recovered',
+			'photoRecovery.done.message' => 'Your earlier photos now show in your diary',
+			'photoRecovery.done.action' => 'Back to Diary',
+			'photoRecovery.progressCount' => ({required Object completed, required Object total}) => '${completed} / ${total}',
+			'photoRecovery.folder.message' => 'Select a folder with your photos, such as DCIM or Pictures',
+			'photoRecovery.folder.action' => 'Select Folder and Recover',
+			'photoRecovery.settings.title' => 'Allow photo access in Settings',
+			'photoRecovery.settings.message' => 'After you allow access, you can recover your earlier photos',
 			'photoRecovery.settings.action' => 'Open Settings',
-			'photoRecovery.settings.retry' => 'Try Again',
 			'photoRecovery.remind' => 'Recover',
-			'photoRecovery.missing' => 'The original photos could not be found on this device.',
 			'photoRecovery.deletePhoto' => 'Delete This Photo',
 			'photoRecovery.deleteConfirm.title' => 'Delete Photo',
 			'photoRecovery.deleteConfirm.message' => 'Delete this photo from your diary?',
 			'photoRecovery.deleteUnrecovered.action' => 'Delete Photos That Are Not Shown',
 			'photoRecovery.deleteUnrecovered.title' => 'Delete photos that are not shown?',
-			'photoRecovery.deleteUnrecovered.message' => ({required Object count}) => 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photos that are not shown will be deleted from your diaries.',
+			'photoRecovery.deleteUnrecovered.message' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photo that is not shown will be deleted from your diaries.', other: 'Photos you deleted from your library, or did not move to a new device, cannot be shown. ${count} photos that are not shown will be deleted from your diaries.', ), 
 			'photoRecovery.dismiss.action' => 'Do Not Recover the Remaining Photos',
 			'photoRecovery.dismiss.title' => 'Stop recovering photos?',
 			'photoRecovery.dismiss.message' => 'You will no longer see reminders to recover photos. You can still recover photos from the menu.',

@@ -36,7 +36,7 @@ class PhotoRecoveryCommand {
 
   /// Recovers the photos that the device can read.
   ///
-  /// Asks for photo access only when there are photos to recover.
+  /// Reads with the access the app already has, without asking the user.
   ///
   /// Returns the number of recovered photos.
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
@@ -44,7 +44,7 @@ class PhotoRecoveryCommand {
     if (images.isEmpty) {
       return 0;
     }
-    final access = await devicePhotos.requestAccess();
+    final access = await devicePhotos.access;
     if (access == DevicePhotoAccess.denied) {
       return 0;
     }

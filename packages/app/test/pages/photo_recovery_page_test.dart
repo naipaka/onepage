@@ -28,6 +28,8 @@ class _FakeLibrary extends Fake implements DevicePhotos {
   final DevicePhotoAccessOption option;
   String? folder = 'folder';
   int settingsOpened = 0;
+  int accessRequests = 0;
+  DevicePhotoAccessRequest request = DevicePhotoAccessRequest.allowed;
 
   @override
   Future<DevicePhotoAccessOption> get accessOption async => option;
@@ -37,6 +39,12 @@ class _FakeLibrary extends Fake implements DevicePhotos {
 
   @override
   Future<void> openSettings() async => settingsOpened++;
+
+  @override
+  Future<DevicePhotoAccessRequest> requestAccess() async {
+    accessRequests++;
+    return request;
+  }
 }
 
 // GoRouterState has no public constructor for tests.
@@ -166,27 +174,58 @@ void main() {
     testWidgets('offers folder selection when it is supported', (tester) async {
       await pumpPage(tester);
 
-      expect(find.text('Photos left to recover: 1'), findsOneWidget);
-      expect(find.text('Select Folder'), findsOneWidget);
+      expect(find.text('1 photo is not shown yet'), findsOneWidget);
+      expect(find.text('Select Folder and Recover'), findsOneWidget);
       expect(find.text('Do Not Recover the Remaining Photos'), findsOneWidget);
     });
 
-    testWidgets('guides to Settings without folder selection', (tester) async {
+    testWidgets('recovers after the user allows access', (tester) async {
       final library = _FakeLibrary(DevicePhotoAccessOption.openSettings);
       await pumpPage(tester, library: library);
 
+      await tester.tap(find.text('Recover'));
+      await tester.pumpAndSettle();
+
+      expect(library.accessRequests, 1);
+      expect(command.deviceRuns, 1);
+    });
+
+    testWidgets('does nothing when the user declines', (tester) async {
+      final library = _FakeLibrary(DevicePhotoAccessOption.openSettings)
+        ..request = DevicePhotoAccessRequest.declined;
+      await pumpPage(tester, library: library);
+
+      await tester.tap(find.text('Recover'));
+      await tester.pumpAndSettle();
+
+      expect(command.deviceRuns, 0);
+      expect(find.text('Allow photo access in Settings'), findsNothing);
+    });
+
+    testWidgets('guides to Settings when the system cannot ask', (
+      tester,
+    ) async {
+      final library = _FakeLibrary(DevicePhotoAccessOption.openSettings)
+        ..request = DevicePhotoAccessRequest.unavailable;
+      await pumpPage(tester, library: library);
+
+      await tester.tap(find.text('Recover'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Open Settings'));
-      await tester.tap(find.text('Try Again'));
       await tester.pumpAndSettle();
 
       expect(library.settingsOpened, 1);
-      expect(command.deviceRuns, 1);
+      expect(command.deviceRuns, 0);
     });
 
     testWidgets('reports missing originals with full access', (tester) async {
       await pumpPage(tester, option: DevicePhotoAccessOption.none);
 
-      expect(find.textContaining('could not be found'), findsOneWidget);
+      expect(
+        find.text('1 photo cannot be found on this device'),
+        findsOneWidget,
+      );
+      expect(find.text('Delete Photos That Are Not Shown'), findsOneWidget);
       expect(find.text('Do Not Recover the Remaining Photos'), findsNothing);
     });
 
@@ -207,7 +246,7 @@ void main() {
     testWidgets('shows the recovered count from the button', (tester) async {
       await pumpPage(tester);
 
-      await tester.tap(find.text('Select Folder'));
+      await tester.tap(find.text('Select Folder and Recover'));
       await tester.pump();
       await tester.pump();
       await showToast(tester);
@@ -220,11 +259,12 @@ void main() {
       command.gate = Completer();
       await pumpPage(tester);
 
-      await tester.tap(find.text('Select Folder'));
+      await tester.tap(find.text('Select Folder and Recover'));
       await tester.pump();
       await tester.pump();
 
       expect(find.text('Recovering photos'), findsOneWidget);
+      expect(find.text('1 / 2'), findsOneWidget);
       expect(find.byType(LinearProgressIndicator), findsOneWidget);
 
       command.gate!.complete();
@@ -250,11 +290,11 @@ void main() {
       command.folderError = Exception('failed');
       await pumpPage(tester);
 
-      await tester.tap(find.text('Select Folder'));
+      await tester.tap(find.text('Select Folder and Recover'));
       await showToast(tester);
 
       expect(find.text('Could not recover photos'), findsOneWidget);
-      expect(find.text('Select Folder'), findsOneWidget);
+      expect(find.text('Select Folder and Recover'), findsOneWidget);
       verify(tracker.recordError(any, any)).called(1);
       await dismissToast(tester);
     });
@@ -314,7 +354,7 @@ void main() {
       await tester.tap(find.text('Delete Photos That Are Not Shown'));
       await tester.pumpAndSettle();
       expect(
-        find.textContaining('1 photos that are not shown'),
+        find.textContaining('1 photo that is not shown'),
         findsOneWidget,
       );
       await tester.tap(find.text('OK'));
@@ -332,6 +372,15 @@ void main() {
       await tester.pumpAndSettle();
 
       verifyNever(dbClient.deleteExternalDiaryImages());
+    });
+
+    testWidgets('shows that every photo is recovered', (tester) async {
+      images = [];
+      await pumpPage(tester);
+
+      expect(find.text('All photos have been recovered'), findsOneWidget);
+      expect(find.text('Back to Diary'), findsOneWidget);
+      expect(find.text('Recover'), findsNothing);
     });
 
     testWidgets('route opens the page for an image', (tester) async {
