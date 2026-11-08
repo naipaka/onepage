@@ -31,7 +31,9 @@ class AutomaticPhotoRecovery extends HookConsumerWidget {
       final diaryQuery = ref.read(diaryQueryProvider);
       final images = await diaryQuery.getExternalDiaryImages();
       final devicePhotos = ref.read(devicePhotosProvider);
-      final option = await devicePhotos.accessOption;
+      final option = await devicePhotos.accessOption([
+        for (final image in images) image.photoId!,
+      ]);
       final dismissed = ref.read(photoRecoveryDismissedProvider);
       if (images.isEmpty ||
           dismissed ||

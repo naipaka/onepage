@@ -18,6 +18,9 @@ enum DevicePhotoAccess {
 
 /// How the app can get access to more photos.
 enum DevicePhotoAccessOption {
+  /// The user allows access to the photos in a system dialog.
+  requestPhotos,
+
   /// The user selects a folder that holds the photos.
   selectFolder,
 
@@ -59,6 +62,9 @@ class DevicePhotos {
   /// First Android version where `MediaStore.getMediaUri` is available.
   static const _firstFolderSdk = 29;
 
+  /// First Android version where `MediaStore.createWriteRequest` is available.
+  static const _firstRequestSdk = 30;
+
   /// First Android version that needs the media permissions the app removed.
   static const _firstMediaPermissionSdk = 33;
 
@@ -69,9 +75,19 @@ class DevicePhotos {
     return _channel.invokeMethod<int>('sdkInt');
   }
 
-  /// How the app can get access to more photos, without asking the user.
-  Future<DevicePhotoAccessOption> get accessOption async {
+  /// How the app can get access to more of the photos [ids], without asking
+  /// the user.
+  Future<DevicePhotoAccessOption> accessOption(List<String> ids) async {
     final sdk = await _androidSdk;
+    if (sdk != null && sdk >= _firstRequestSdk) {
+      final available = await _channel.invokeListMethod<String>(
+        'availablePhotos',
+        {'ids': ids},
+      );
+      return (available ?? []).isEmpty
+          ? DevicePhotoAccessOption.none
+          : DevicePhotoAccessOption.requestPhotos;
+    }
     if (sdk != null && sdk >= _firstFolderSdk) {
       return DevicePhotoAccessOption.selectFolder;
     }
@@ -149,6 +165,17 @@ class DevicePhotos {
 
   /// Opens the settings page of the app.
   Future<void> openSettings() => PhotoManager.openSetting();
+
+  /// Asks the user to allow access to the photos [ids] that are on the
+  /// device.
+  ///
+  /// Returns the allowed photos as documents keyed by photo ID, or null if the
+  /// user declines.
+  Future<Map<String, String>?> requestPhotos(List<String> ids) {
+    return _channel.invokeMapMethod<String, String>('requestPhotos', {
+      'ids': ids,
+    });
+  }
 
   /// Lets the user select a folder and returns it, or null if they cancel.
   Future<String?> pickFolder() => _channel.invokeMethod<String>('pickFolder');

@@ -115,12 +115,12 @@ final class PhotoRecoveryCommandProvider
 String _$photoRecoveryCommandHash() =>
     r'99437920db21bd1c0700a575db342349d04e95a4';
 
-/// Provides how the app can get access to more photos.
+/// Provides how the app can get access to more of the photos to recover.
 
 @ProviderFor(devicePhotoAccessOption)
 final devicePhotoAccessOptionProvider = DevicePhotoAccessOptionProvider._();
 
-/// Provides how the app can get access to more photos.
+/// Provides how the app can get access to more of the photos to recover.
 
 final class DevicePhotoAccessOptionProvider
     extends
@@ -132,7 +132,7 @@ final class DevicePhotoAccessOptionProvider
     with
         $FutureModifier<DevicePhotoAccessOption>,
         $FutureProvider<DevicePhotoAccessOption> {
-  /// Provides how the app can get access to more photos.
+  /// Provides how the app can get access to more of the photos to recover.
   DevicePhotoAccessOptionProvider._()
     : super(
         from: null,
@@ -160,7 +160,7 @@ final class DevicePhotoAccessOptionProvider
 }
 
 String _$devicePhotoAccessOptionHash() =>
-    r'6c279c5894ae5cba4b92acfbf05bb318acef7f3b';
+    r'720196f78f3185076bbd2a35678d73eb8f7298b5';
 
 /// Recovers photos. The state is the progress of the running recovery.
 
@@ -198,7 +198,7 @@ final class PhotoRecoveryProvider
   }
 }
 
-String _$photoRecoveryHash() => r'f097ceb7da9c415ece92603dd334532fdb12e7a2';
+String _$photoRecoveryHash() => r'9cf6add5dc5b98028394066bea558e7445b33798';
 
 /// Recovers photos. The state is the progress of the running recovery.
 

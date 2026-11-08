@@ -105,11 +105,41 @@ void main() {
     });
 
     group('accessOption', () {
-      test('is folder selection on Android 10 and later', () async {
+      test(
+        'is a request on Android 11 and later with photos on the device',
+        () async {
+          channelResult = ['a'];
+
+          expect(
+            await devicePhotos.accessOption(['a', 'b']),
+            DevicePhotoAccessOption.requestPhotos,
+          );
+          expect(calls.last.method, 'availablePhotos');
+          expect(calls.last.arguments, {
+            'ids': ['a', 'b'],
+          });
+        },
+      );
+
+      test(
+        'is nothing on Android 11 and later without photos on the device',
+        () async {
+          for (final available in [<String>[], null]) {
+            channelResult = available;
+
+            expect(
+              await devicePhotos.accessOption(['a']),
+              DevicePhotoAccessOption.none,
+            );
+          }
+        },
+      );
+
+      test('is folder selection on Android 10', () async {
         sdk = 29;
 
         expect(
-          await devicePhotos.accessOption,
+          await devicePhotos.accessOption(['a']),
           DevicePhotoAccessOption.selectFolder,
         );
       });
@@ -117,7 +147,10 @@ void main() {
       test('is nothing with full access before Android 10', () async {
         sdk = 28;
 
-        expect(await devicePhotos.accessOption, DevicePhotoAccessOption.none);
+        expect(
+          await devicePhotos.accessOption(['a']),
+          DevicePhotoAccessOption.none,
+        );
       });
 
       test('is Settings without full access', () async {
@@ -126,7 +159,7 @@ void main() {
           plugin.permission = state;
 
           expect(
-            await devicePhotos.accessOption,
+            await devicePhotos.accessOption(['a']),
             DevicePhotoAccessOption.openSettings,
           );
         }
@@ -135,7 +168,7 @@ void main() {
       test('does not ask the user', () async {
         sdk = 28;
 
-        await devicePhotos.accessOption;
+        await devicePhotos.accessOption(['a']);
 
         expect(plugin.permissionRequests, 0);
       });
@@ -143,7 +176,10 @@ void main() {
       test('reads the permission on iOS', () async {
         debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
 
-        expect(await devicePhotos.accessOption, DevicePhotoAccessOption.none);
+        expect(
+          await devicePhotos.accessOption(['a']),
+          DevicePhotoAccessOption.none,
+        );
         expect(calls, isEmpty);
       });
     });
@@ -301,6 +337,24 @@ void main() {
       await devicePhotos.openSettings();
 
       expect(plugin.settingsOpened, 1);
+    });
+
+    group('requestPhotos', () {
+      test('returns the allowed photos', () async {
+        channelResult = {'a': 'content://media/1'};
+
+        expect(await devicePhotos.requestPhotos(['a']), {
+          'a': 'content://media/1',
+        });
+        expect(calls.last.method, 'requestPhotos');
+        expect(calls.last.arguments, {
+          'ids': ['a'],
+        });
+      });
+
+      test('returns null when the user declines', () async {
+        expect(await devicePhotos.requestPhotos(['a']), isNull);
+      });
     });
 
     test('pickFolder returns the selected folder', () async {

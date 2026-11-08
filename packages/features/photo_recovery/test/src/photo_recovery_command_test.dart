@@ -176,6 +176,21 @@ void main() {
         expect(copy.existsSync(), isFalse);
       });
 
+      test('recoverDocuments stores the given documents', () async {
+        final recovered = await command.recoverDocuments({'b': 'document'});
+
+        expect(recovered, 1);
+        verify(
+          dbClient.setDiaryImageFileName(id: 2, fileName: 'stored.jpg'),
+        ).called(1);
+        verifyNever(
+          devicePhotos.findInFolder(
+            folder: anyNamed('folder'),
+            ids: anyNamed('ids'),
+          ),
+        );
+      });
+
       test('deletes the temporary copy when storing fails', () async {
         when(photoEncoder.encode(any)).thenAnswer((_) async {
           throw Exception('failed');

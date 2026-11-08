@@ -75,6 +75,17 @@ class PhotoRecoveryCommand {
       folder: folder,
       ids: [for (final image in images) image.photoId!],
     );
+    return recoverDocuments(documents, onProgress: onProgress);
+  }
+
+  /// Recovers the photos in [documents], which are keyed by photo ID.
+  ///
+  /// Returns the number of recovered photos.
+  Future<int> recoverDocuments(
+    Map<String, String> documents, {
+    PhotoRecoveryProgress? onProgress,
+  }) async {
+    final images = await dbClient.getExternalDiaryImages();
     return _recover(
       images,
       onProgress: onProgress,

@@ -1072,19 +1072,6 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
 /// See the documentation for Mockito's code generation for more information.
 class MockDevicePhotos extends _i1.Mock implements _i10.DevicePhotos {
   @override
-  _i6.Future<_i10.DevicePhotoAccessOption> get accessOption =>
-      (super.noSuchMethod(
-        Invocation.getter(#accessOption),
-        returnValue: _i6.Future<_i10.DevicePhotoAccessOption>.value(
-          _i10.DevicePhotoAccessOption.selectFolder,
-        ),
-        returnValueForMissingStub:
-            _i6.Future<_i10.DevicePhotoAccessOption>.value(
-              _i10.DevicePhotoAccessOption.selectFolder,
-            ),
-      ) as _i6.Future<_i10.DevicePhotoAccessOption>);
-
-  @override
   _i6.Future<_i10.DevicePhotoAccess> get access => (super.noSuchMethod(
     Invocation.getter(#access),
     returnValue: _i6.Future<_i10.DevicePhotoAccess>.value(
@@ -1094,6 +1081,19 @@ class MockDevicePhotos extends _i1.Mock implements _i10.DevicePhotos {
       _i10.DevicePhotoAccess.full,
     ),
   ) as _i6.Future<_i10.DevicePhotoAccess>);
+
+  @override
+  _i6.Future<_i10.DevicePhotoAccessOption> accessOption(List<String>? ids) =>
+      (super.noSuchMethod(
+        Invocation.method(#accessOption, [ids]),
+        returnValue: _i6.Future<_i10.DevicePhotoAccessOption>.value(
+          _i10.DevicePhotoAccessOption.requestPhotos,
+        ),
+        returnValueForMissingStub:
+            _i6.Future<_i10.DevicePhotoAccessOption>.value(
+              _i10.DevicePhotoAccessOption.requestPhotos,
+            ),
+      ) as _i6.Future<_i10.DevicePhotoAccessOption>);
 
   @override
   _i6.Future<_i10.DevicePhotoAccessRequest> requestAccess() =>
@@ -1121,6 +1121,14 @@ class MockDevicePhotos extends _i1.Mock implements _i10.DevicePhotos {
     returnValue: _i6.Future<void>.value(),
     returnValueForMissingStub: _i6.Future<void>.value(),
   ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<Map<String, String>?> requestPhotos(List<String>? ids) =>
+      (super.noSuchMethod(
+        Invocation.method(#requestPhotos, [ids]),
+        returnValue: _i6.Future<Map<String, String>?>.value(),
+        returnValueForMissingStub: _i6.Future<Map<String, String>?>.value(),
+      ) as _i6.Future<Map<String, String>?>);
 
   @override
   _i6.Future<String?> pickFolder() => (super.noSuchMethod(

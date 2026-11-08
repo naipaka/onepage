@@ -58,9 +58,9 @@ class PhotoRecoveryPage extends ConsumerWidget {
       }
     }
 
-    Future<void> recoverFromFolder() async {
+    Future<void> recoverSelected(Future<int?> Function() recover) async {
       try {
-        final recovered = await recovery.recoverFromFolder();
+        final recovered = await recover();
         if (recovered != null && context.mounted) {
           showSuccessToast(
             context,
@@ -199,6 +199,7 @@ class PhotoRecoveryPage extends ConsumerWidget {
                     child: Text(t.photoRecovery.deleteUnrecovered.action),
                   ),
                 ],
+                DevicePhotoAccessOption.requestPhotos ||
                 DevicePhotoAccessOption.selectFolder ||
                 DevicePhotoAccessOption.openSettings => [
                   TitleLargeText(
@@ -217,21 +218,33 @@ class PhotoRecoveryPage extends ConsumerWidget {
                     text: t.photoRecovery.shownAfterRecovery,
                   ),
                   const Gap(32),
-                  if (option == DevicePhotoAccessOption.selectFolder) ...[
-                    BodySmallText(
-                      t.photoRecovery.folder.message,
-                      textAlign: TextAlign.center,
-                    ),
-                    const Gap(8),
-                    HapticFilledButton(
-                      onPressed: recoverFromFolder,
-                      child: Text(t.photoRecovery.folder.action),
-                    ),
-                  ] else
-                    HapticFilledButton(
-                      onPressed: recoverFromDevice,
-                      child: Text(t.photoRecovery.action),
-                    ),
+                  ...switch (option) {
+                    DevicePhotoAccessOption.selectFolder => [
+                      BodySmallText(
+                        t.photoRecovery.folder.message,
+                        textAlign: TextAlign.center,
+                      ),
+                      const Gap(8),
+                      HapticFilledButton(
+                        onPressed: () =>
+                            recoverSelected(recovery.recoverFromFolder),
+                        child: Text(t.photoRecovery.folder.action),
+                      ),
+                    ],
+                    DevicePhotoAccessOption.requestPhotos => [
+                      HapticFilledButton(
+                        onPressed: () =>
+                            recoverSelected(recovery.recoverRequested),
+                        child: Text(t.photoRecovery.action),
+                      ),
+                    ],
+                    _ => [
+                      HapticFilledButton(
+                        onPressed: recoverFromDevice,
+                        child: Text(t.photoRecovery.action),
+                      ),
+                    ],
+                  },
                   const Gap(24),
                   const Divider(height: 1),
                   const Gap(12),
