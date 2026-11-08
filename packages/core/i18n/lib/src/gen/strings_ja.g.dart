@@ -104,7 +104,6 @@ class _Translations$photoRecovery$ja implements Translations$photoRecovery$en {
 	@override String get progress => '写真を復旧しています';
 	@override late final _Translations$photoRecovery$done$ja done = _Translations$photoRecovery$done$ja._(_root);
 	@override String progressCount({required Object completed, required Object total}) => '${completed} / ${total} 枚';
-	@override late final _Translations$photoRecovery$folder$ja folder = _Translations$photoRecovery$folder$ja._(_root);
 	@override late final _Translations$photoRecovery$settings$ja settings = _Translations$photoRecovery$settings$ja._(_root);
 	@override String get remind => '復旧する';
 	@override String get deletePhoto => 'この写真を削除';
@@ -244,17 +243,6 @@ class _Translations$photoRecovery$done$ja implements Translations$photoRecovery$
 	@override String get title => 'すべての写真を復旧しました';
 	@override String get message => 'これまでの写真が日記に表示されるようになりました';
 	@override String get action => '日記に戻る';
-}
-
-// Path: photoRecovery.folder
-class _Translations$photoRecovery$folder$ja implements Translations$photoRecovery$folder$en {
-	_Translations$photoRecovery$folder$ja._(this._root);
-
-	final TranslationsJa _root; // ignore: unused_field
-
-	// Translations
-	@override String get message => 'DCIM や Pictures など写真が入っているフォルダを選んでください';
-	@override String get action => 'フォルダを選んで復旧する';
 }
 
 // Path: photoRecovery.settings
@@ -430,8 +418,6 @@ extension on TranslationsJa {
 			'photoRecovery.done.message' => 'これまでの写真が日記に表示されるようになりました',
 			'photoRecovery.done.action' => '日記に戻る',
 			'photoRecovery.progressCount' => ({required Object completed, required Object total}) => '${completed} / ${total} 枚',
-			'photoRecovery.folder.message' => 'DCIM や Pictures など写真が入っているフォルダを選んでください',
-			'photoRecovery.folder.action' => 'フォルダを選んで復旧する',
 			'photoRecovery.settings.title' => '設定で写真へのアクセスを許可してください',
 			'photoRecovery.settings.message' => '許可するとこれまでの写真を復旧できます',
 			'photoRecovery.settings.action' => '設定を開く',

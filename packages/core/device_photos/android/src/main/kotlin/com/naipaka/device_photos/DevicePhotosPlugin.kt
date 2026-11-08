@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.provider.DocumentsContract
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -22,7 +21,7 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-/** Gives Dart access to folders and photos the user allows. */
+/** Gives Dart access to the photos the user allows. */
 class DevicePhotosPlugin :
     FlutterPlugin,
     ActivityAware,
@@ -33,7 +32,6 @@ class DevicePhotosPlugin :
     private lateinit var executor: ExecutorService
     private val mainHandler = Handler(Looper.getMainLooper())
     private var binding: ActivityPluginBinding? = null
-    private var pendingFolderResult: MethodChannel.Result? = null
     private var pendingPhotosResult: MethodChannel.Result? = null
     private var requestedPhotos: Map<String, Uri> = emptyMap()
 
@@ -67,17 +65,11 @@ class DevicePhotosPlugin :
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         when (call.method) {
             "sdkInt" -> result.success(Build.VERSION.SDK_INT)
-            "pickFolder" -> pickFolder(result)
             "shouldShowRationale" -> result.success(
                 binding?.activity?.shouldShowRequestPermissionRationale(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                 ) ?: false,
             )
-            "findInFolder" -> runInBackground(result) {
-                val folder = Uri.parse(call.argument<String>("folder"))
-                val ids = call.argument<List<String>>("ids").orEmpty().toSet()
-                findInFolder(folder, ids)
-            }
             "copyDocument" -> runInBackground(result) {
                 copyDocument(Uri.parse(call.argument<String>("document")))
             }
@@ -98,19 +90,6 @@ class DevicePhotosPlugin :
                 mainHandler.post { result.error(ERROR_CODE, e.message, null) }
             }
         }
-    }
-
-    private fun pickFolder(result: MethodChannel.Result) {
-        val activity = binding?.activity
-        if (activity == null) {
-            result.error(ERROR_CODE, "No activity is attached.", null)
-            return
-        }
-        pendingFolderResult = result
-        activity.startActivityForResult(
-            Intent(Intent.ACTION_OPEN_DOCUMENT_TREE),
-            PICK_FOLDER_REQUEST,
-        )
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -156,11 +135,6 @@ class DevicePhotosPlugin :
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?): Boolean {
         when (requestCode) {
-            PICK_FOLDER_REQUEST -> {
-                val folder = if (resultCode == Activity.RESULT_OK) data?.data else null
-                pendingFolderResult?.success(folder?.toString())
-                pendingFolderResult = null
-            }
             REQUEST_PHOTOS_REQUEST -> {
                 val photos = if (resultCode == Activity.RESULT_OK) {
                     requestedPhotos.mapValues { (_, uri) -> uri.toString() }
@@ -176,14 +150,6 @@ class DevicePhotosPlugin :
         return true
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun findInFolder(folder: Uri, ids: Set<String>): Map<String, String> {
-        val tree = ContentResolverDocumentTree(context, folder)
-        val rootId = DocumentsContract.getTreeDocumentId(folder)
-        return FolderScanner(tree).find(rootId, ids)
-            .mapValues { (_, documentId) -> tree.documentUri(documentId).toString() }
-    }
-
     private fun copyDocument(document: Uri): String {
         val copy = File.createTempFile("device_photo", null, context.cacheDir)
         context.contentResolver.openInputStream(document)!!.use { input ->
@@ -195,7 +161,6 @@ class DevicePhotosPlugin :
     private companion object {
         const val CHANNEL = "com.naipaka.device_photos"
         const val ERROR_CODE = "device_photos"
-        const val PICK_FOLDER_REQUEST = 0x5052
         const val REQUEST_PHOTOS_REQUEST = 0x5053
     }
 }

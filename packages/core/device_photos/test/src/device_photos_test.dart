@@ -106,7 +106,7 @@ void main() {
 
     group('accessOption', () {
       test(
-        'is a request on Android 11 and later with photos on the device',
+        'is a request on Android 13 and later with photos on the device',
         () async {
           channelResult = ['a'];
 
@@ -122,7 +122,7 @@ void main() {
       );
 
       test(
-        'is nothing on Android 11 and later without photos on the device',
+        'is nothing on Android 13 and later without photos on the device',
         () async {
           for (final available in [<String>[], null]) {
             channelResult = available;
@@ -135,17 +135,8 @@ void main() {
         },
       );
 
-      test('is folder selection on Android 10', () async {
-        sdk = 29;
-
-        expect(
-          await devicePhotos.accessOption(['a']),
-          DevicePhotoAccessOption.selectFolder,
-        );
-      });
-
-      test('is nothing with full access before Android 10', () async {
-        sdk = 28;
+      test('is nothing with full access on Android 12 and earlier', () async {
+        sdk = 32;
 
         expect(
           await devicePhotos.accessOption(['a']),
@@ -154,7 +145,7 @@ void main() {
       });
 
       test('is Settings without full access', () async {
-        sdk = 28;
+        sdk = 32;
         for (final state in [PermissionState.limited, PermissionState.denied]) {
           plugin.permission = state;
 
@@ -166,7 +157,7 @@ void main() {
       });
 
       test('does not ask the user', () async {
-        sdk = 28;
+        sdk = 32;
 
         await devicePhotos.accessOption(['a']);
 
@@ -354,38 +345,6 @@ void main() {
 
       test('returns null when the user declines', () async {
         expect(await devicePhotos.requestPhotos(['a']), isNull);
-      });
-    });
-
-    test('pickFolder returns the selected folder', () async {
-      channelResult = 'content://folder';
-
-      expect(await devicePhotos.pickFolder(), 'content://folder');
-    });
-
-    group('findInFolder', () {
-      test('returns the matching documents', () async {
-        channelResult = {'1': 'content://document'};
-
-        final found = await devicePhotos.findInFolder(
-          folder: 'content://folder',
-          ids: ['1'],
-        );
-
-        expect(found, {'1': 'content://document'});
-        expect(calls.single.arguments, {
-          'folder': 'content://folder',
-          'ids': ['1'],
-        });
-      });
-
-      test('returns nothing when the platform returns null', () async {
-        final found = await devicePhotos.findInFolder(
-          folder: 'folder',
-          ids: [],
-        );
-
-        expect(found, isEmpty);
       });
     });
 

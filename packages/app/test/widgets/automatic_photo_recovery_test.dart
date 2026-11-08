@@ -98,7 +98,7 @@ void main() {
 
     Future<void> pumpApp(
       WidgetTester tester, {
-      DevicePhotoAccessOption option = DevicePhotoAccessOption.selectFolder,
+      DevicePhotoAccessOption option = DevicePhotoAccessOption.requestPhotos,
     }) async {
       LocaleSettings.setLocaleRawSync('en');
       await tester.binding.setSurfaceSize(const Size(800, 1400));

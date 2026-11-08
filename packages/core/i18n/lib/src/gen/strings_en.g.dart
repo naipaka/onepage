@@ -160,7 +160,6 @@ class Translations$photoRecovery$en {
 	/// en: '$completed / $total'
 	String progressCount({required Object completed, required Object total}) => '${completed} / ${total}';
 
-	late final Translations$photoRecovery$folder$en folder = Translations$photoRecovery$folder$en._(_root);
 	late final Translations$photoRecovery$settings$en settings = Translations$photoRecovery$settings$en._(_root);
 
 	/// en: 'Recover'
@@ -400,21 +399,6 @@ class Translations$photoRecovery$done$en {
 	String get action => 'Back to Diary';
 }
 
-// Path: photoRecovery.folder
-class Translations$photoRecovery$folder$en {
-	Translations$photoRecovery$folder$en._(this._root);
-
-	final Translations _root; // ignore: unused_field
-
-	// Translations
-
-	/// en: 'Select a folder with your photos, such as DCIM or Pictures'
-	String get message => 'Select a folder with your photos, such as DCIM or Pictures';
-
-	/// en: 'Select Folder and Recover'
-	String get action => 'Select Folder and Recover';
-}
-
 // Path: photoRecovery.settings
 class Translations$photoRecovery$settings$en {
 	Translations$photoRecovery$settings$en._(this._root);
@@ -649,8 +633,6 @@ extension on Translations {
 			'photoRecovery.done.message' => 'Your earlier photos now show in your diary',
 			'photoRecovery.done.action' => 'Back to Diary',
 			'photoRecovery.progressCount' => ({required Object completed, required Object total}) => '${completed} / ${total}',
-			'photoRecovery.folder.message' => 'Select a folder with your photos, such as DCIM or Pictures',
-			'photoRecovery.folder.action' => 'Select Folder and Recover',
 			'photoRecovery.settings.title' => 'Allow photo access in Settings',
 			'photoRecovery.settings.message' => 'After you allow access, you can recover your earlier photos',
 			'photoRecovery.settings.action' => 'Open Settings',

@@ -1131,25 +1131,6 @@ class MockDevicePhotos extends _i1.Mock implements _i10.DevicePhotos {
       ) as _i6.Future<Map<String, String>?>);
 
   @override
-  _i6.Future<String?> pickFolder() => (super.noSuchMethod(
-    Invocation.method(#pickFolder, []),
-    returnValue: _i6.Future<String?>.value(),
-    returnValueForMissingStub: _i6.Future<String?>.value(),
-  ) as _i6.Future<String?>);
-
-  @override
-  _i6.Future<Map<String, String>> findInFolder({
-    required String? folder,
-    required List<String>? ids,
-  }) => (super.noSuchMethod(
-    Invocation.method(#findInFolder, [], {#folder: folder, #ids: ids}),
-    returnValue: _i6.Future<Map<String, String>>.value(<String, String>{}),
-    returnValueForMissingStub: _i6.Future<Map<String, String>>.value(
-      <String, String>{},
-    ),
-  ) as _i6.Future<Map<String, String>>);
-
-  @override
   _i6.Future<_i7.File> copyDocument(String? document) => (super.noSuchMethod(
     Invocation.method(#copyDocument, [document]),
     returnValue: _i6.Future<_i7.File>.value(

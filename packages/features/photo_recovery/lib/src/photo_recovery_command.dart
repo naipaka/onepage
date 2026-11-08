@@ -63,21 +63,6 @@ class PhotoRecoveryCommand {
     );
   }
 
-  /// Recovers the photos found in [folder].
-  ///
-  /// Returns the number of recovered photos.
-  Future<int> recoverFromFolder(
-    String folder, {
-    PhotoRecoveryProgress? onProgress,
-  }) async {
-    final images = await dbClient.getExternalDiaryImages();
-    final documents = await devicePhotos.findInFolder(
-      folder: folder,
-      ids: [for (final image in images) image.photoId!],
-    );
-    return recoverDocuments(documents, onProgress: onProgress);
-  }
-
   /// Recovers the photos in [documents], which are keyed by photo ID.
   ///
   /// Returns the number of recovered photos.

@@ -5,7 +5,6 @@ Copies photos saved on the device into app storage.
 ## Features
 
 - Recovers the photos the device photo library can read
-- Recovers the photos found in a folder the user selects
 - Recovers the photos the user allows in a system dialog
 - Commits each photo on its own, so a stopped recovery continues with the photos that remain
 
