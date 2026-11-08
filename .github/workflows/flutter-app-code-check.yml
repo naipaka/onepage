@@ -84,13 +84,13 @@ jobs:
       fail-fast: false
       matrix:
         rep: [1, 2]
-        name: [ubuntu-vg-c1, ubuntu-vg-c2, ubuntu-ft-c1, ubuntu-ft-c4, macos-app-vg, macos-app-ft, macos-all-ft-c3]
+        name: [ubuntu-vg-c1, ubuntu-vg-c2, ubuntu-ft-c1, ubuntu-ft-c4, macos-app-vg]
         include:
-          - { name: ubuntu-vg-c1, os: ubuntu-latest, warm: false, run: "melos exec -c 1 --fail-fast --flutter --dir-exists=test --ignore=onepage -- very_good test --coverage" }
-          - { name: ubuntu-vg-c2, os: ubuntu-latest, warm: true, run: "melos exec -c 2 --fail-fast --flutter --dir-exists=test --ignore=onepage -- very_good test --coverage" }
-          - { name: ubuntu-ft-c1, os: ubuntu-latest, warm: false, run: "melos exec -c 1 --fail-fast --flutter --dir-exists=test --ignore=onepage -- flutter test --coverage" }
-          - { name: ubuntu-ft-c4, os: ubuntu-latest, warm: false, run: "melos exec -c 4 --fail-fast --flutter --dir-exists=test --ignore=onepage -- flutter test --coverage" }
-          - { name: macos-app-vg, os: macos-latest, warm: false, run: "melos exec --scope=onepage -- very_good test --coverage" }
+          - { name: ubuntu-vg-c1, os: ubuntu-latest, warm: false, run: "melos exec -c 1 --fail-fast --flutter --dir-exists=test --ignore=onepage --ignore=device_photos -- very_good test --coverage" }
+          - { name: ubuntu-vg-c2, os: ubuntu-latest, warm: true, run: "melos exec -c 2 --fail-fast --flutter --dir-exists=test --ignore=onepage --ignore=device_photos -- very_good test --coverage" }
+          - { name: ubuntu-ft-c1, os: ubuntu-latest, warm: false, run: "melos exec -c 1 --fail-fast --flutter --dir-exists=test --ignore=onepage --ignore=device_photos -- flutter test --coverage" }
+          - { name: ubuntu-ft-c4, os: ubuntu-latest, warm: false, run: "melos exec -c 4 --fail-fast --flutter --dir-exists=test --ignore=onepage --ignore=device_photos -- flutter test --coverage" }
+          - { name: macos-app-vg, os: macos-latest, warm: false, run: "melos exec --scope=onepage --scope=device_photos -- very_good test --coverage" }
           - { name: macos-app-ft, os: macos-latest, warm: false, run: "melos exec --scope=onepage -- flutter test --coverage" }
           - { name: macos-all-ft-c3, os: macos-latest, warm: false, run: "melos exec -c 3 --fail-fast --flutter --dir-exists=test -- flutter test --coverage" }
     steps:
