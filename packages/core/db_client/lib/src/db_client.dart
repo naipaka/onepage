@@ -225,11 +225,18 @@ class DbClient extends _$DbClient {
   /// Returns the diary images whose photo data is outside the app.
   ///
   /// These images only refer to a photo in the device's photo library by its
-  /// [DiaryImage.photoId], and have no [DiaryImage.fileName].
+  /// [DiaryImage.photoId], and have no [DiaryImage.fileName]. Images of newer
+  /// diaries come first.
   Future<List<DiaryImage>> getExternalDiaryImages() {
-    final query = select(diaryImages)
-      ..where((tbl) => tbl.fileName.isNull() & tbl.photoId.isNotNull());
-    return query.get();
+    final query =
+        select(diaryImages).join([
+            innerJoin(diaries, diaries.id.equalsExp(diaryImages.diaryId)),
+          ])
+          ..where(
+            diaryImages.fileName.isNull() & diaryImages.photoId.isNotNull(),
+          )
+          ..orderBy([OrderingTerm.desc(diaries.date)]);
+    return query.map((row) => row.readTable(diaryImages)).get();
   }
 
   /// Deletes the diary images whose photo data is outside the app.

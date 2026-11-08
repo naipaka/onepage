@@ -341,6 +341,9 @@ class _DiaryItem extends ConsumerWidget {
               onMissingTap: () {
                 PhotoRecoveryRouteData(imageId: image.id).go(context);
               },
+              loading: ref.watch(
+                photoRecoveryProvider.select((status) => status != null),
+              ),
             ),
           ],
         ],

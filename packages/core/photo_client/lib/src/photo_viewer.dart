@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 /// delete functionality.
 ///
 /// Without a [file], it shows a broken photo, and tapping it calls
-/// [onMissingTap].
+/// [onMissingTap]. While [loading], it shows a progress indicator instead and
+/// ignores taps.
 ///
 /// ### Parameters
 /// - [file] : The photo file to display, or null if there is none.
@@ -19,6 +20,7 @@ import 'package:flutter/material.dart';
 /// - [onDeleted] : Called when the delete button is pressed.
 /// - [onInfoShown] : Called when the info button is pressed.
 /// - [onMissingTap] : Called when the thumbnail is tapped without a [file].
+/// - [loading] : Whether the file is being prepared.
 /// {@endtemplate}
 class PhotoThumbnail extends StatelessWidget {
   /// {@macro photo_client.PhotoThumbnail}
@@ -30,6 +32,7 @@ class PhotoThumbnail extends StatelessWidget {
     this.onDeleted,
     this.onInfoShown,
     this.onMissingTap,
+    this.loading = false,
   });
 
   /// The photo file to display, or null if there is none.
@@ -50,15 +53,20 @@ class PhotoThumbnail extends StatelessWidget {
   /// Callback when the thumbnail is tapped without a [file].
   final VoidCallback? onMissingTap;
 
+  /// Whether the file is being prepared.
+  final bool loading;
+
   @override
   Widget build(BuildContext context) {
     final file = this.file;
     if (file == null) {
       return GestureDetector(
-        onTap: onMissingTap,
+        onTap: loading ? null : onMissingTap,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: _BrokenPhoto(width: width, height: height),
+          child: loading
+              ? _LoadingPhoto(width: width, height: height)
+              : _BrokenPhoto(width: width, height: height),
         ),
       );
     }
@@ -107,6 +115,37 @@ class PhotoThumbnail extends StatelessWidget {
             errorBuilder: (_, _, _) {
               return _BrokenPhoto(width: width, height: height);
             },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// {@template photo_client._LoadingPhoto}
+/// A placeholder shown while a photo file is being prepared.
+/// {@endtemplate}
+class _LoadingPhoto extends StatelessWidget {
+  /// {@macro photo_client._LoadingPhoto}
+  const new({required this.width, required this.height});
+
+  /// The width of the placeholder in logical pixels.
+  final double width;
+
+  /// The height of the placeholder in logical pixels.
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: Theme.of(context).colorScheme.surfaceContainerHighest,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: const Center(
+          child: SizedBox.square(
+            dimension: 24,
+            child: CircularProgressIndicator(strokeWidth: 2),
           ),
         ),
       ),

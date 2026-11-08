@@ -11,7 +11,7 @@ typedef PhotoRecoveryProgress = void Function(int completed, int total);
 /// Copies photos saved on the device into app storage.
 ///
 /// Each photo is committed on its own, so a stopped recovery continues with
-/// the photos that remain.
+/// the photos that remain. Up to three photos are recovered at a time.
 /// {@endtemplate}
 class PhotoRecoveryCommand {
   /// {@macro photo_recovery.PhotoRecoveryCommand}
@@ -33,6 +33,8 @@ class PhotoRecoveryCommand {
 
   /// Storage for photo files.
   final PhotoStorage photoStorage;
+
+  static const _concurrency = 3;
 
   /// Recovers the photos that the device can read.
   ///
@@ -108,22 +110,32 @@ class PhotoRecoveryCommand {
     required PhotoRecoveryProgress? onProgress,
   }) async {
     var recovered = 0;
-    for (final (index, image) in images.indexed) {
-      try {
-        final fileName = await recover(image.photoId!);
-        if (fileName != null) {
-          await dbClient.setDiaryImageFileName(
-            id: image.id,
-            fileName: fileName,
-          );
-          recovered++;
+    var completed = 0;
+    final queue = images.iterator;
+    Future<void> recoverQueued() async {
+      while (queue.moveNext()) {
+        final image = queue.current;
+        try {
+          final fileName = await recover(image.photoId!);
+          if (fileName != null) {
+            await dbClient.setDiaryImageFileName(
+              id: image.id,
+              fileName: fileName,
+            );
+            recovered++;
+          }
+        } on Exception {
+          // One unreadable photo must not stop the others. It keeps its photo
+          // data outside the app.
         }
-      } on Exception {
-        // One unreadable photo must not stop the others. It keeps its photo
-        // data outside the app.
+        completed++;
+        onProgress?.call(completed, images.length);
       }
-      onProgress?.call(index + 1, images.length);
     }
+
+    await Future.wait([
+      for (var i = 0; i < _concurrency; i++) recoverQueued(),
+    ]);
     return recovered;
   }
 
