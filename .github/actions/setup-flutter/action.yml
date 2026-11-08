@@ -1,0 +1,21 @@
+name: Setup Flutter
+description: Sets up the Flutter version pinned by FVM, Melos, and the workspace dependencies.
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Flutter with FVM
+      uses: kuhnroyal/flutter-fvm-config-action/setup@v3
+
+    - name: Prepare Melos
+      shell: bash
+      run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
+
+    - name: Install Melos
+      uses: bluefireteam/melos-action@v3
+      with:
+        run-bootstrap: false
+
+    - name: Install Dependencies
+      shell: bash
+      run: dart pub get --enforce-lockfile

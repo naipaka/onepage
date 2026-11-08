@@ -30,6 +30,8 @@ jobs:
         with:
           filters: |
             flutter:
+              - '.github/actions/**'
+              - '.github/workflows/flutter-app-code-check.yml'
               - '**/android/**'
               - '**/assets/**'
               - '**/dart_defines/**'
@@ -52,20 +54,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Setup Flutter with FVM
-        id: setup-flutter
-        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
-
-      - name: Prepare Melos
-        run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
-
-      - name: Install Melos
-        uses: bluefireteam/melos-action@v3
-        with:
-          run-bootstrap: false
-
-      - name: Install Dependencies
-        run: dart pub get --enforce-lockfile
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
 
       - name: Analyze packages
         run: flutter analyze
@@ -77,43 +67,44 @@ jobs:
   test:
     needs: check
     if: needs.check.outputs.flutter == 'true'
-    name: ${{ matrix.name }}
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: test
-            os: ubuntu-latest
-            script: test:ci
-          - name: test-macos
-            os: macos-latest
-            script: test:ci:macos
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Setup Flutter with FVM
-        id: setup-flutter
-        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
-
-      - name: Prepare Melos
-        run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
-
-      - name: Install Melos
-        uses: bluefireteam/melos-action@v3
-        with:
-          run-bootstrap: false
-
-      - name: Install Dependencies
-        run: dart pub get --enforce-lockfile
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
 
       - name: Install Very Good CLI
         run: dart pub global activate very_good_cli
 
       - name: Run package tests
-        run: melos run ${{ matrix.script }} --no-select
+        run: melos run test:ci --no-select
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage/lcov.info
+
+  test-macos:
+    needs: check
+    if: needs.check.outputs.flutter == 'true'
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
+
+      - name: Install Very Good CLI
+        run: dart pub global activate very_good_cli
+
+      - name: Run package tests
+        run: melos run test:ci:macos --no-select
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
@@ -136,20 +127,8 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - name: Setup Flutter with FVM
-        id: setup-flutter
-        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
-
-      - name: Prepare Melos
-        run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
-
-      - name: Install Melos
-        uses: bluefireteam/melos-action@v3
-        with:
-          run-bootstrap: false
-
-      - name: Install Dependencies
-        run: dart pub get --enforce-lockfile
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
 
       - name: Run Android unit tests
         run: melos run test:android --no-select
