@@ -29,7 +29,8 @@ class _FakeLibrary extends Fake implements DevicePhotos {
   final DevicePhotoAccessOption option;
 
   @override
-  Future<DevicePhotoAccessOption> get accessOption async => option;
+  Future<DevicePhotoAccessOption> accessOption(List<String> ids) async =>
+      option;
 }
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {

@@ -29,10 +29,13 @@ PhotoRecoveryCommand photoRecoveryCommand(Ref ref) {
   );
 }
 
-/// Provides how the app can get access to more photos.
+/// Provides how the app can get access to more of the photos to recover.
 @riverpod
-Future<DevicePhotoAccessOption> devicePhotoAccessOption(Ref ref) {
-  return ref.watch(devicePhotosProvider).accessOption;
+Future<DevicePhotoAccessOption> devicePhotoAccessOption(Ref ref) async {
+  final images = await ref.watch(externalDiaryImagesProvider.future);
+  return ref.watch(devicePhotosProvider).accessOption([
+    for (final image in images) image.photoId!,
+  ]);
 }
 
 /// Recovers photos. The state is the progress of the running recovery.
@@ -70,6 +73,27 @@ class PhotoRecovery extends _$PhotoRecovery {
     state = (completed: 0, total: 0);
     return _waitForRecovery(
       _command.recoverFromFolder(folder, onProgress: _updateProgress),
+    );
+  }
+
+  /// Asks the user to allow access to the photos to recover and recovers the
+  /// allowed ones.
+  ///
+  /// Returns the number of recovered photos, or null if the user declines.
+  Future<int?> recoverRequested() async {
+    if (state != null) {
+      return null;
+    }
+    final images = await ref.read(externalDiaryImagesProvider.future);
+    final documents = await _devicePhotos.requestPhotos([
+      for (final image in images) image.photoId!,
+    ]);
+    if (documents == null) {
+      return null;
+    }
+    state = (completed: 0, total: 0);
+    return _waitForRecovery(
+      _command.recoverDocuments(documents, onProgress: _updateProgress),
     );
   }
 

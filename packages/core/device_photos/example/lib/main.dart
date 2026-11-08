@@ -14,7 +14,7 @@ class _ExampleApp extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: FutureBuilder(
-            future: const DevicePhotos().accessOption,
+            future: const DevicePhotos().accessOption([]),
             builder: (_, snapshot) {
               return Text('Access option: ${snapshot.data}');
             },

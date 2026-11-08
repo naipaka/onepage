@@ -30,12 +30,21 @@ class _FakeLibrary extends Fake implements DevicePhotos {
   int settingsOpened = 0;
   int accessRequests = 0;
   DevicePhotoAccessRequest request = DevicePhotoAccessRequest.allowed;
+  Map<String, String>? allowedPhotos = {'a': 'content://media/1'};
+  List<String>? requestedIds;
 
   @override
-  Future<DevicePhotoAccessOption> get accessOption async => option;
+  Future<DevicePhotoAccessOption> accessOption(List<String> ids) async =>
+      option;
 
   @override
   Future<String?> pickFolder() async => folder;
+
+  @override
+  Future<Map<String, String>?> requestPhotos(List<String> ids) async {
+    requestedIds = ids;
+    return allowedPhotos;
+  }
 
   @override
   Future<void> openSettings() async => settingsOpened++;
@@ -55,12 +64,23 @@ class _FakeCommand extends Fake implements PhotoRecoveryCommand {
   int deviceRuns = 0;
   Exception? folderError;
   Completer<void>? gate;
+  Map<String, String>? recoveredDocuments;
 
   @override
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
     deviceRuns++;
     onProgress?.call(1, 1);
     return 0;
+  }
+
+  @override
+  Future<int> recoverDocuments(
+    Map<String, String> documents, {
+    PhotoRecoveryProgress? onProgress,
+  }) async {
+    recoveredDocuments = documents;
+    onProgress?.call(documents.length, documents.length);
+    return documents.length;
   }
 
   @override
@@ -177,6 +197,35 @@ void main() {
       expect(find.text('1 photo is not shown yet'), findsOneWidget);
       expect(find.text('Select Folder and Recover'), findsOneWidget);
       expect(find.text('Do Not Recover the Remaining Photos'), findsOneWidget);
+    });
+
+    testWidgets('recovers the photos the user allows', (tester) async {
+      final library = _FakeLibrary(DevicePhotoAccessOption.requestPhotos);
+      await pumpPage(tester, library: library);
+
+      await tester.tap(find.text('Recover'));
+      await tester.pump();
+      await tester.pump();
+      await showToast(tester);
+
+      expect(library.requestedIds, ['a']);
+      expect(command.recoveredDocuments, {'a': 'content://media/1'});
+      expect(find.text('Photos recovered: 1'), findsOneWidget);
+      await dismissToast(tester);
+    });
+
+    testWidgets('does nothing when the user declines the photos', (
+      tester,
+    ) async {
+      final library = _FakeLibrary(DevicePhotoAccessOption.requestPhotos)
+        ..allowedPhotos = null;
+      await pumpPage(tester, library: library);
+
+      await tester.tap(find.text('Recover'));
+      await tester.pumpAndSettle();
+
+      expect(library.requestedIds, ['a']);
+      expect(command.recoveredDocuments, isNull);
     });
 
     testWidgets('recovers after the user allows access', (tester) async {
