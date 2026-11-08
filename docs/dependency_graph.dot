@@ -10,6 +10,8 @@ digraph packages {
   haptics [shape="box"; color="#26343c"];
   i18n [shape="box"; color="#d7afc5"];
   in_app_reviewer [shape="box"; color="#1253da"];
+  native_image_compressor [shape="box"; color="#d71507"];
+  native_image_compressor_example [shape="box"; color="#c031ef"];
   notification_client [shape="box"; color="#4d6b02"];
   onepage [shape="box"; color="#08802d"];
   photo_client [shape="box"; color="#e227a9"];
@@ -32,6 +34,7 @@ digraph packages {
   exporter -> db_client [style="filled"; color="#c4fbfc"];
   haptics -> prefs_client [style="filled"; color="#080f51"];
   in_app_reviewer -> prefs_client [style="filled"; color="#080f51"];
+  native_image_compressor_example -> native_image_compressor [style="filled"; color="#d71507"];
   notification_client -> prefs_client [style="filled"; color="#080f51"];
   onepage -> backup [style="filled"; color="#022013"];
   onepage -> configurator [style="filled"; color="#205f06"];
@@ -57,6 +60,7 @@ digraph packages {
   photo_recovery -> db_client [style="filled"; color="#c4fbfc"];
   photo_recovery -> device_photos [style="filled"; color="#bebfed"];
   photo_recovery -> photo_storage [style="filled"; color="#c6f715"];
+  photo_storage -> native_image_compressor [style="filled"; color="#d71507"];
   provider_utils -> utils [style="filled"; color="#f548cf"];
   update_requester -> configurator [style="filled"; color="#205f06"];
   widgets -> utils [style="filled"; color="#f548cf"];
@@ -79,6 +83,7 @@ digraph packages {
     db_client;
     device_photos;
     i18n;
+    native_image_compressor;
     notification_client;
     photo_client;
     photo_storage;
@@ -93,6 +98,11 @@ digraph packages {
     label="packages/core/device_photos";
     color="#99fd55";
     device_photos_example;
+  }
+  subgraph "cluster packages/core/native_image_compressor" {
+    label="packages/core/native_image_compressor";
+    color="#9fe999";
+    native_image_compressor_example;
   }
   subgraph "cluster packages" {
     label="packages";
