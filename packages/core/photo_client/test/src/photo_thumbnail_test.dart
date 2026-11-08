@@ -38,6 +38,29 @@ void main() {
     expect(tapped, isTrue);
   });
 
+  testWidgets('shows progress and ignores taps while loading', (
+    tester,
+  ) async {
+    var tapped = false;
+    await tester.pumpWidget(
+      MaterialApp(
+        home: PhotoThumbnail(
+          file: null,
+          width: 64,
+          height: 64,
+          onMissingTap: () => tapped = true,
+          loading: true,
+        ),
+      ),
+    );
+
+    await tester.tap(find.byType(PhotoThumbnail));
+
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byIcon(Icons.broken_image_outlined), findsNothing);
+    expect(tapped, isFalse);
+  });
+
   testWidgets('shows a placeholder when the file cannot be read', (
     tester,
   ) async {
