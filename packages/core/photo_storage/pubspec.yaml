@@ -11,7 +11,8 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_image_compress: ^2.4.0
+  native_image_compressor:
+    path: ../native_image_compressor
   path: ^1.9.1
   path_provider: ^2.1.6
   uuid: ^4.5.1
@@ -19,7 +20,6 @@ dependencies:
 dev_dependencies:
   altive_lints: ^4.1.0
   build_runner: ^2.16.1
-  flutter_image_compress_common: ^1.1.1
   flutter_test:
     sdk: flutter
   mockito: ^5.8.1

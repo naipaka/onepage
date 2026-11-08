@@ -1,93 +1,72 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:flutter/services.dart';
-import 'package:flutter_image_compress_common/flutter_image_compress_common.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:native_image_compressor/native_image_compressor.dart';
 import 'package:photo_storage/photo_storage.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const channel = MethodChannel('flutter_image_compress');
+  const channel = MethodChannel('com.naipaka.native_image_compressor');
   final messenger =
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
   final encoded = Uint8List.fromList([0xFF, 0xD8]);
-  late List<Object?> arguments;
-
-  late Directory directory;
-
-  Future<String> imageOf(int width, int height) async {
-    final recorder = ui.PictureRecorder();
-    ui.Canvas(recorder);
-    final image = await recorder.endRecording().toImage(width, height);
-    final data = await image.toByteData(format: ui.ImageByteFormat.png);
-    image.dispose();
-    final file = File('${directory.path}/photo.png')
-      ..writeAsBytesSync(data!.buffer.asUint8List());
-    return file.path;
-  }
+  late Map<Object?, Object?> arguments;
+  late List<int> size;
+  PlatformException? error;
 
   setUp(() {
-    directory = Directory.systemTemp.createTempSync('photo_encoder_test');
-    FlutterImageCompressCommon.registerWith();
+    size = [4032, 3024];
+    error = null;
     messenger.setMockMethodCallHandler(channel, (call) async {
-      if (call.method == 'compressWithFile') {
-        arguments = call.arguments as List<Object?>;
-        return encoded;
+      if (error case final error?) {
+        throw error;
       }
-      return null;
+      if (call.method == 'size') {
+        return size;
+      }
+      arguments = call.arguments as Map<Object?, Object?>;
+      return encoded;
     });
   });
 
   tearDown(() {
     messenger.setMockMethodCallHandler(channel, null);
-    directory.deleteSync(recursive: true);
   });
 
   group('encode', () {
-    test('fails when the photo cannot be compressed', () async {
-      messenger.setMockMethodCallHandler(channel, (call) async => null);
-      final path = await imageOf(100, 50);
-
-      await expectLater(const PhotoEncoder().encode(path), throwsA(anything));
-    });
-
-    test('returns the compressed bytes at the configured quality', () async {
-      final result = await const PhotoEncoder().encode(await imageOf(100, 50));
+    test('returns a JPEG at the configured quality', () async {
+      final result = await const PhotoEncoder().encode('photo.heic');
 
       expect(result, encoded);
-      expect(arguments[3], PhotoEncoder.quality);
+      expect(arguments['path'], 'photo.heic');
+      expect(arguments['format'], 'jpeg');
+      expect(arguments['quality'], PhotoEncoder.quality);
+    });
+
+    test('limits the number of pixels', () async {
+      await const PhotoEncoder().encode('photo.heic');
+
+      final width = arguments['width']! as int;
+      final height = arguments['height']! as int;
+      expect(width * height, lessThanOrEqualTo(PhotoEncoder.maxPixels));
+      expect((width, height), (2309, 1732));
     });
 
     test('keeps small photos at their size', () async {
-      await const PhotoEncoder().encode(await imageOf(100, 50));
+      size = [1179, 2556];
 
-      expect(arguments.sublist(1, 3), [100, 50]);
+      await const PhotoEncoder().encode('screenshot.png');
+
+      expect((arguments['width'], arguments['height']), (1179, 2556));
     });
 
-    test('limits the long edge of a landscape photo', () async {
-      await const PhotoEncoder().encode(await imageOf(4096, 1024));
+    test('fails when the photo cannot be read', () async {
+      error = PlatformException(code: 'code', message: 'Cannot read');
 
-      expect(arguments.sublist(1, 3), [2048, 512]);
-    });
-
-    test('limits the long edge of a portrait photo', () async {
-      await const PhotoEncoder().encode(await imageOf(1024, 4096));
-
-      expect(arguments.sublist(1, 3), [512, 2048]);
-    });
-
-    test('keeps at least one pixel on the short edge', () async {
-      await const PhotoEncoder().encode(await imageOf(8192, 1));
-
-      expect(arguments.sublist(1, 3), [2048, 1]);
-    });
-
-    test('decodes large photos at a reduced size', () async {
-      await const PhotoEncoder().encode(await imageOf(6400, 100));
-
-      expect(arguments[8], 4);
+      await expectLater(
+        const PhotoEncoder().encode('broken.jpg'),
+        throwsA(isA<ImageCompressException>()),
+      );
     });
   });
 }
