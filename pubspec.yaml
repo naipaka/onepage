@@ -202,11 +202,15 @@ melos:
     test:android:
       # `\$` keeps the calling shell from expanding the name before melos sets it
       # for each package.
-      exec: >-
+      run: >-
         cd example &&
         flutter build apk --debug --config-only &&
         cd android &&
         ./gradlew :\$MELOS_PACKAGE_NAME:testDebugUnitTest
+      # Every plugin compiles Flutter's Gradle plugin into the same Kotlin
+      # caches in the Flutter SDK, which fail when two builds open them at once.
+      exec:
+        concurrency: 1
       description: Run the Android unit tests of each plugin.
       packageFilters:
         dirExists: example/android
