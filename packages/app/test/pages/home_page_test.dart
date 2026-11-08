@@ -1,6 +1,7 @@
 // Test files do not need to specify provider dependencies
 // ignore_for_file: scoped_providers_should_specify_dependencies
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:clock/clock.dart';
@@ -33,9 +34,11 @@ class _FakeLibrary extends Fake implements DevicePhotos {
 }
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
+  Future<int> recovery = Future.value(0);
+
   @override
-  Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
-    return 0;
+  Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) {
+    return recovery;
   }
 }
 
@@ -152,6 +155,42 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Delete This Photo'), findsOneWidget);
+    });
+
+    testWidgets('placeholder shows progress while recovering', (
+      tester,
+    ) async {
+      stubExternal([image]);
+      final recovery = Completer<int>();
+      command.recovery = recovery.future;
+      await pumpHome(tester);
+      final thumbnail = find.byType(PhotoThumbnail);
+      final container = ProviderScope.containerOf(tester.element(thumbnail));
+
+      unawaited(
+        container.read(photoRecoveryProvider.notifier).recoverFromDevice(),
+      );
+      await tester.pump();
+
+      expect(
+        find.descendant(
+          of: thumbnail,
+          matching: find.byType(CircularProgressIndicator),
+        ),
+        findsOneWidget,
+      );
+
+      recovery.complete(0);
+      await tester.pump();
+      await tester.pump();
+
+      expect(
+        find.descendant(
+          of: thumbnail,
+          matching: find.byIcon(Icons.broken_image_outlined),
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('drawer opens the recovery page', (tester) async {

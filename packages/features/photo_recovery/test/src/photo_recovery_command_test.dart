@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -107,6 +108,32 @@ void main() {
         expect(await command.recoverFromDevice(), 0);
         verify(devicePhotos.read('a')).called(1);
         verify(devicePhotos.read('b')).called(1);
+      });
+
+      test('recovers up to three photos at a time', () async {
+        when(dbClient.getExternalDiaryImages()).thenAnswer(
+          (_) async => [for (var i = 1; i <= 5; i++) image(i, '$i')],
+        );
+        final reads = <String, Completer<File?>>{};
+        when(devicePhotos.read(any)).thenAnswer((invocation) {
+          final id = invocation.positionalArguments.first as String;
+          return (reads[id] = Completer<File?>()).future;
+        });
+
+        final recovery = command.recoverFromDevice();
+        await pumpEventQueue();
+        expect(reads.keys, ['1', '2', '3']);
+
+        reads['2']!.complete(null);
+        await pumpEventQueue();
+        expect(reads.keys, ['1', '2', '3', '4']);
+
+        for (final read in reads.values.where((read) => !read.isCompleted)) {
+          read.complete(null);
+        }
+        await pumpEventQueue();
+        reads['5']!.complete(null);
+        expect(await recovery, 0);
       });
 
       test('reports progress for each photo', () async {

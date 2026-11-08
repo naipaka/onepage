@@ -113,6 +113,28 @@ void main() {
           },
         );
 
+        test(
+          'getExternalDiaryImages returns images of newer diaries first',
+          () async {
+            final newer = await dbClient.insertDiary(
+              content: 'Newer',
+              date: DateTime(2025),
+            );
+            final newerId = await dbClient
+                .into(dbClient.diaryImages)
+                .insert(
+                  DiaryImagesCompanion.insert(
+                    diaryId: newer.id,
+                    photoId: const Value('newer-photo-id'),
+                  ),
+                );
+
+            final images = await dbClient.getExternalDiaryImages();
+
+            expect(images.map((image) => image.id), [newerId, externalId]);
+          },
+        );
+
         test('setDiaryImageFileName removes an image from the list', () async {
           await dbClient.setDiaryImageFileName(
             id: externalId,
