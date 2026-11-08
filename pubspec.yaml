@@ -37,6 +37,8 @@ dependency_overrides:
       ref: 3d5da4c853bae03c5559ca24039c9cdccfd44014
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   melos: ^7.4.1
 
 melos:

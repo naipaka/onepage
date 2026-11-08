@@ -79,6 +79,10 @@ jobs:
     if: needs.check.outputs.flutter == 'true'
     runs-on: macos-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        concurrency: [2, 3, 4, 6]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -101,8 +105,11 @@ jobs:
       - name: Install Very Good CLI
         run: dart pub global activate very_good_cli
 
+      - name: Warm up very_good test
+        run: very_good test
+
       - name: Run package tests
-        run: melos run test:ci --no-select
+        run: melos exec -c ${{ matrix.concurrency }} --fail-fast --flutter --dir-exists=test -- very_good test --coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
