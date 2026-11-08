@@ -10,6 +10,8 @@ workspace:
   - packages/core/device_photos
   - packages/core/device_photos/example
   - packages/core/i18n
+  - packages/core/native_image_compressor
+  - packages/core/native_image_compressor/example
   - packages/core/notification_client
   - packages/core/photo_client
   - packages/core/photo_storage
