@@ -3,6 +3,8 @@ digraph packages {
   backup [shape="box"; color="#022013"];
   configurator [shape="box"; color="#205f06"];
   db_client [shape="box"; color="#c4fbfc"];
+  device_photos [shape="box"; color="#bebfed"];
+  device_photos_example [shape="box"; color="#b5f5c9"];
   diary [shape="box"; color="#2c56bd"];
   exporter [shape="box"; color="#3e99a6"];
   haptics [shape="box"; color="#26343c"];
@@ -11,6 +13,7 @@ digraph packages {
   notification_client [shape="box"; color="#4d6b02"];
   onepage [shape="box"; color="#08802d"];
   photo_client [shape="box"; color="#e227a9"];
+  photo_recovery [shape="box"; color="#e2078b"];
   photo_storage [shape="box"; color="#c6f715"];
   prefs_client [shape="box"; color="#080f51"];
   provider_utils [shape="box"; color="#f445c4"];
@@ -22,6 +25,7 @@ digraph packages {
   widgets [shape="box"; color="#3ed5a4"];
   backup -> db_client [style="filled"; color="#c4fbfc"];
   backup -> photo_storage [style="filled"; color="#c6f715"];
+  device_photos_example -> device_photos [style="filled"; color="#bebfed"];
   diary -> db_client [style="filled"; color="#c4fbfc"];
   diary -> photo_storage [style="filled"; color="#c6f715"];
   diary -> utils [style="filled"; color="#f548cf"];
@@ -32,6 +36,7 @@ digraph packages {
   onepage -> backup [style="filled"; color="#022013"];
   onepage -> configurator [style="filled"; color="#205f06"];
   onepage -> db_client [style="filled"; color="#c4fbfc"];
+  onepage -> device_photos [style="filled"; color="#bebfed"];
   onepage -> diary [style="filled"; color="#2c56bd"];
   onepage -> exporter [style="filled"; color="#3e99a6"];
   onepage -> haptics [style="filled"; color="#26343c"];
@@ -39,6 +44,7 @@ digraph packages {
   onepage -> in_app_reviewer [style="filled"; color="#1253da"];
   onepage -> notification_client [style="filled"; color="#4d6b02"];
   onepage -> photo_client [style="filled"; color="#e227a9"];
+  onepage -> photo_recovery [style="filled"; color="#e2078b"];
   onepage -> photo_storage [style="filled"; color="#c6f715"];
   onepage -> prefs_client [style="filled"; color="#080f51"];
   onepage -> provider_utils [style="filled"; color="#f445c4"];
@@ -48,6 +54,9 @@ digraph packages {
   onepage -> update_requester [style="filled"; color="#a2aa60"];
   onepage -> utils [style="filled"; color="#f548cf"];
   onepage -> widgets [style="filled"; color="#3ed5a4"];
+  photo_recovery -> db_client [style="filled"; color="#c4fbfc"];
+  photo_recovery -> device_photos [style="filled"; color="#bebfed"];
+  photo_recovery -> photo_storage [style="filled"; color="#c6f715"];
   provider_utils -> utils [style="filled"; color="#f548cf"];
   update_requester -> configurator [style="filled"; color="#205f06"];
   widgets -> utils [style="filled"; color="#f548cf"];
@@ -59,6 +68,7 @@ digraph packages {
     exporter;
     haptics;
     in_app_reviewer;
+    photo_recovery;
     scroll_calendar;
     update_requester;
   }
@@ -67,6 +77,7 @@ digraph packages {
     color="#7bbd47";
     configurator;
     db_client;
+    device_photos;
     i18n;
     notification_client;
     photo_client;
@@ -77,6 +88,11 @@ digraph packages {
     tracker;
     utils;
     widgets;
+  }
+  subgraph "cluster packages/core/device_photos" {
+    label="packages/core/device_photos";
+    color="#99fd55";
+    device_photos_example;
   }
   subgraph "cluster packages" {
     label="packages";
