@@ -42,6 +42,7 @@ class TranslationsJa with BaseTranslations<AppLocale, Translations> implements T
 	@override String get organization => 'NPK Studio';
 	@override late final _Translations$updateRequest$ja updateRequest = _Translations$updateRequest$ja._(_root);
 	@override late final _Translations$home$ja home = _Translations$home$ja._(_root);
+	@override late final _Translations$photoRecovery$ja photoRecovery = _Translations$photoRecovery$ja._(_root);
 	@override late final _Translations$backup$ja backup = _Translations$backup$ja._(_root);
 	@override late final _Translations$settings$ja settings = _Translations$settings$ja._(_root);
 	@override late final _Translations$search$ja search = _Translations$search$ja._(_root);
@@ -79,6 +80,39 @@ class _Translations$home$ja implements Translations$home$en {
 	@override String get datePickerConfirm => '決定';
 	@override late final _Translations$home$photoSelector$ja photoSelector = _Translations$home$photoSelector$ja._(_root);
 	@override late final _Translations$home$deleteImage$ja deleteImage = _Translations$home$deleteImage$ja._(_root);
+}
+
+// Path: photoRecovery
+class _Translations$photoRecovery$ja implements Translations$photoRecovery$en {
+	_Translations$photoRecovery$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '写真の復旧';
+	@override String get banner => '復旧が必要な写真があります';
+	@override String notShown({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ja'))(count,
+		other: '${count} 枚の写真がまだ表示されていません',
+	);
+	@override String notFound({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ja'))(count,
+		other: '${count} 枚の写真が端末に見つかりません',
+	);
+	@override String get savedInApp => '写真はアプリ内に保存するようになりました';
+	@override String get shownAfterRecovery => '復旧するとこれまでの写真が表示されるようになります';
+	@override String get deletedFromDevice => '端末から削除された写真は復旧できません';
+	@override String get action => '写真を復旧する';
+	@override String get progress => '写真を復旧しています';
+	@override late final _Translations$photoRecovery$done$ja done = _Translations$photoRecovery$done$ja._(_root);
+	@override String progressCount({required Object completed, required Object total}) => '${completed} / ${total} 枚';
+	@override late final _Translations$photoRecovery$folder$ja folder = _Translations$photoRecovery$folder$ja._(_root);
+	@override late final _Translations$photoRecovery$settings$ja settings = _Translations$photoRecovery$settings$ja._(_root);
+	@override String get remind => '復旧する';
+	@override String get deletePhoto => 'この写真を削除';
+	@override late final _Translations$photoRecovery$deleteConfirm$ja deleteConfirm = _Translations$photoRecovery$deleteConfirm$ja._(_root);
+	@override late final _Translations$photoRecovery$deleteUnrecovered$ja deleteUnrecovered = _Translations$photoRecovery$deleteUnrecovered$ja._(_root);
+	@override late final _Translations$photoRecovery$dismiss$ja dismiss = _Translations$photoRecovery$dismiss$ja._(_root);
+	@override String recovered({required Object count}) => '${count} 枚の写真を復旧しました';
+	@override String get failed => '写真を復旧できませんでした';
 }
 
 // Path: backup
@@ -200,6 +234,78 @@ class _Translations$home$deleteImage$ja implements Translations$home$deleteImage
 	@override String get message => 'この画像を削除しますか？';
 }
 
+// Path: photoRecovery.done
+class _Translations$photoRecovery$done$ja implements Translations$photoRecovery$done$en {
+	_Translations$photoRecovery$done$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'すべての写真を復旧しました';
+	@override String get message => 'これまでの写真が日記に表示されるようになりました';
+	@override String get action => '日記に戻る';
+}
+
+// Path: photoRecovery.folder
+class _Translations$photoRecovery$folder$ja implements Translations$photoRecovery$folder$en {
+	_Translations$photoRecovery$folder$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get message => 'DCIM や Pictures など写真が入っているフォルダを選んでください';
+	@override String get action => 'フォルダを選んで復旧する';
+}
+
+// Path: photoRecovery.settings
+class _Translations$photoRecovery$settings$ja implements Translations$photoRecovery$settings$en {
+	_Translations$photoRecovery$settings$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '設定で写真へのアクセスを許可してください';
+	@override String get message => '許可するとこれまでの写真を復旧できます';
+	@override String get action => '設定を開く';
+}
+
+// Path: photoRecovery.deleteConfirm
+class _Translations$photoRecovery$deleteConfirm$ja implements Translations$photoRecovery$deleteConfirm$en {
+	_Translations$photoRecovery$deleteConfirm$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '写真の削除';
+	@override String get message => 'この写真を日記から削除しますか？';
+}
+
+// Path: photoRecovery.deleteUnrecovered
+class _Translations$photoRecovery$deleteUnrecovered$ja implements Translations$photoRecovery$deleteUnrecovered$en {
+	_Translations$photoRecovery$deleteUnrecovered$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get action => '表示されない写真を日記から削除';
+	@override String get title => '表示されない写真を削除しますか？';
+	@override String message({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ja'))(count,
+		other: 'アルバムから消した写真や、機種変更で移していない写真は表示できません\n表示されていない ${count} 枚の写真を日記から削除します',
+	);
+}
+
+// Path: photoRecovery.dismiss
+class _Translations$photoRecovery$dismiss$ja implements Translations$photoRecovery$dismiss$en {
+	_Translations$photoRecovery$dismiss$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get action => '残りの写真を復旧しない';
+	@override String get title => '写真の復旧をやめますか？';
+	@override String get message => '復旧のお知らせが表示されなくなります\nメニューからはいつでも復旧できます';
+}
+
 // Path: backup.progress
 class _Translations$backup$progress$ja implements Translations$backup$progress$en {
 	_Translations$backup$progress$ja._(this._root);
@@ -311,6 +417,36 @@ extension on TranslationsJa {
 			'home.photoSelector.error.description' => 'もう一度お試しください',
 			'home.deleteImage.title' => '画像を削除',
 			'home.deleteImage.message' => 'この画像を削除しますか？',
+			'photoRecovery.title' => '写真の復旧',
+			'photoRecovery.banner' => '復旧が必要な写真があります',
+			'photoRecovery.notShown' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ja'))(count, other: '${count} 枚の写真がまだ表示されていません', ), 
+			'photoRecovery.notFound' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ja'))(count, other: '${count} 枚の写真が端末に見つかりません', ), 
+			'photoRecovery.savedInApp' => '写真はアプリ内に保存するようになりました',
+			'photoRecovery.shownAfterRecovery' => '復旧するとこれまでの写真が表示されるようになります',
+			'photoRecovery.deletedFromDevice' => '端末から削除された写真は復旧できません',
+			'photoRecovery.action' => '写真を復旧する',
+			'photoRecovery.progress' => '写真を復旧しています',
+			'photoRecovery.done.title' => 'すべての写真を復旧しました',
+			'photoRecovery.done.message' => 'これまでの写真が日記に表示されるようになりました',
+			'photoRecovery.done.action' => '日記に戻る',
+			'photoRecovery.progressCount' => ({required Object completed, required Object total}) => '${completed} / ${total} 枚',
+			'photoRecovery.folder.message' => 'DCIM や Pictures など写真が入っているフォルダを選んでください',
+			'photoRecovery.folder.action' => 'フォルダを選んで復旧する',
+			'photoRecovery.settings.title' => '設定で写真へのアクセスを許可してください',
+			'photoRecovery.settings.message' => '許可するとこれまでの写真を復旧できます',
+			'photoRecovery.settings.action' => '設定を開く',
+			'photoRecovery.remind' => '復旧する',
+			'photoRecovery.deletePhoto' => 'この写真を削除',
+			'photoRecovery.deleteConfirm.title' => '写真の削除',
+			'photoRecovery.deleteConfirm.message' => 'この写真を日記から削除しますか？',
+			'photoRecovery.deleteUnrecovered.action' => '表示されない写真を日記から削除',
+			'photoRecovery.deleteUnrecovered.title' => '表示されない写真を削除しますか？',
+			'photoRecovery.deleteUnrecovered.message' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ja'))(count, other: 'アルバムから消した写真や、機種変更で移していない写真は表示できません\n表示されていない ${count} 枚の写真を日記から削除します', ), 
+			'photoRecovery.dismiss.action' => '残りの写真を復旧しない',
+			'photoRecovery.dismiss.title' => '写真の復旧をやめますか？',
+			'photoRecovery.dismiss.message' => '復旧のお知らせが表示されなくなります\nメニューからはいつでも復旧できます',
+			'photoRecovery.recovered' => ({required Object count}) => '${count} 枚の写真を復旧しました',
+			'photoRecovery.failed' => '写真を復旧できませんでした',
 			'backup.title' => 'Backup',
 			'backup.description' => '機種変更でも安心バックアップ',
 			'backup.explanation' => 'バックアップファイルが作成できます\n好きなところに保存してください\n（iCloud、Google Drive など）',

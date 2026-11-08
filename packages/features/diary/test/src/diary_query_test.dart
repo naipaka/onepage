@@ -180,5 +180,32 @@ void main() {
         ).called(1);
       },
     );
+
+    test('getExternalDiaryImages returns the images outside the app', () async {
+      final mockDbClient = MockDbClient();
+      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
+      final image = DiaryImage(
+        id: 1,
+        diaryId: 1,
+        photoId: 'photo',
+        createdAt: DateTime(2024),
+        updatedAt: DateTime(2024),
+      );
+      when(
+        mockDbClient.getExternalDiaryImages(),
+      ).thenAnswer((_) async => [image]);
+
+      expect(await diaryQuery.getExternalDiaryImages(), [image]);
+    });
+
+    test('diaryImageCount emits the image count', () async {
+      final mockDbClient = MockDbClient();
+      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
+      when(
+        mockDbClient.watchDiaryImageCount(),
+      ).thenAnswer((_) => Stream.value(3));
+
+      expect(await diaryQuery.diaryImageCount().first, 3);
+    });
   });
 }

@@ -8,6 +8,7 @@ export 'src/haptics_provider.dart';
 export 'src/in_app_review_provider.dart';
 export 'src/initialization_provider.dart';
 export 'src/notification_client_provider.dart';
+export 'src/photo_recovery_provider.dart';
 export 'src/photo_storage_provider.dart';
 export 'src/prefs_client_provider.dart';
 export 'src/tracker_provider.dart';

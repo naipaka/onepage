@@ -56,6 +56,16 @@ class PrefsClient {
   Future<bool> setOtherHapticEnabled({required bool enabled}) =>
       _prefs.setBool(PrefsKey.otherHaptic.name, enabled);
 
+  /// Gets whether the user chose not to recover the remaining photos.
+  ///
+  /// Returns `false` by default if no value has been set.
+  bool get photoRecoveryDismissed =>
+      _prefs.getBool(PrefsKey.photoRecoveryDismissed.name) ?? false;
+
+  /// Sets whether the user chose not to recover the remaining photos.
+  Future<bool> setPhotoRecoveryDismissed({required bool dismissed}) =>
+      _prefs.setBool(PrefsKey.photoRecoveryDismissed.name, dismissed);
+
   /// Gets notification settings as a JSON list.
   ///
   /// Returns an empty list if no value has been saved or if decoding fails.

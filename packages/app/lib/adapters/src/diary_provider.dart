@@ -38,6 +38,16 @@ Stream<int> diaryImageCount(Ref ref) {
   return query.diaryImageCount();
 }
 
+/// Provides the diary images whose photo data is outside the app.
+///
+/// This is not a stream, because a paused stream keeps the database from
+/// closing during a restore.
+@riverpod
+Future<List<DiaryImage>> externalDiaryImages(Ref ref) {
+  final query = ref.watch(diaryQueryProvider);
+  return query.getExternalDiaryImages();
+}
+
 /// Provides a list of diaries within the specified date range.
 @riverpod
 Future<List<Diary>> diaries(
@@ -183,6 +193,20 @@ class CachedDiaries extends _$CachedDiaries {
     final updatedDiaries = current.diaries.map((diary) {
       return diary.copyWith(
         images: diary.images.where((img) => img.id != imageId).toList(),
+      );
+    }).toList();
+    state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
+  }
+
+  /// Delete the images whose photo data is outside the app.
+  Future<void> deleteExternalImages() async {
+    await _imageCommand.deleteExternalDiaryImages();
+    final current = state.requireValue;
+    final updatedDiaries = current.diaries.map((diary) {
+      return diary.copyWith(
+        images: diary.images
+            .where((img) => img.fileName != null || img.photoId == null)
+            .toList(),
       );
     }).toList();
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));

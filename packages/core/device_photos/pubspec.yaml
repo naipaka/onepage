@@ -1,0 +1,28 @@
+name: device_photos
+description: A plugin that reads photos saved on the device by their stored IDs.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.13.2
+  flutter: '>=3.3.0'
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+  photo_manager: ^3.12.0
+
+dev_dependencies:
+  altive_lints: ^4.1.0
+  flutter_test:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.naipaka.device_photos
+        pluginClass: DevicePhotosPlugin

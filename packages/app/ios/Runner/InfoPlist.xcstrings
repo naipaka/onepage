@@ -7,13 +7,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To select photos and add them to your diary"
+            "value" : "Used to show photos from your library in your diary."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "写真を選択して日記に追加するために、写真ライブラリへのアクセスが必要です"
+            "value" : "写真ライブラリの写真を日記に表示するために使います"
           }
         }
       }

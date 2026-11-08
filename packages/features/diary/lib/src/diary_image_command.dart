@@ -53,4 +53,11 @@ class DiaryImageCommand {
       await photoStorage.delete(fileName);
     }
   }
+
+  /// Deletes the diary images whose photo data is outside the app.
+  ///
+  /// They have no photo files to delete.
+  Future<void> deleteExternalDiaryImages() {
+    return dbClient.deleteExternalDiaryImages();
+  }
 }

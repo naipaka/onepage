@@ -5,4 +5,5 @@ export 'src/haptic_feedback_page.dart';
 export 'src/home_page.dart';
 export 'src/initialization_page.dart';
 export 'src/notifications_page.dart';
+export 'src/photo_recovery_page.dart';
 export 'src/settings_page.dart';

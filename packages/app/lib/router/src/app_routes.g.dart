@@ -26,6 +26,11 @@ RouteBase get $homeRouteData => GoRouteData.$route(
       factory: $BackupRouteData._fromState,
     ),
     GoRouteData.$route(
+      path: 'photo-recovery',
+      hasOverriddenOnExit: false,
+      factory: $PhotoRecoveryRouteData._fromState,
+    ),
+    GoRouteData.$route(
       path: 'export',
       hasOverriddenOnExit: false,
       factory: $ExportRouteData._fromState,
@@ -97,6 +102,40 @@ mixin $BackupRouteData on GoRouteData {
 
   @override
   String get location => GoRouteData.$location('/backup');
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $PhotoRecoveryRouteData on GoRouteData {
+  static PhotoRecoveryRouteData _fromState(GoRouterState state) =>
+      PhotoRecoveryRouteData(
+        imageId: _$convertMapValue(
+          'image-id',
+          state.uri.queryParameters,
+          int.tryParse,
+        ),
+      );
+
+  PhotoRecoveryRouteData get _self => this as PhotoRecoveryRouteData;
+
+  @override
+  String get location => GoRouteData.$location(
+    '/photo-recovery',
+    queryParams: {
+      if (_self.imageId != null) 'image-id': _self.imageId!.toString(),
+    },
+  );
 
   @override
   void go(BuildContext context) => context.go(location);
@@ -194,4 +233,13 @@ mixin $LicenseRouteData on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+T? _$convertMapValue<T>(
+  String key,
+  Map<String, String> map,
+  T? Function(String) converter,
+) {
+  final value = map[key];
+  return value == null ? null : converter(value);
 }

@@ -19,6 +19,8 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^4.1.0
+  flutter_test:
+    sdk: flutter
 
 flutter:
   uses-material-design: true

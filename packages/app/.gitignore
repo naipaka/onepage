@@ -164,7 +164,7 @@ coverage/
 .fvm/
 
 # Golden test failure artifacts
-test/golden/**/failures/
+test/**/failures/
 
 # Patrol generated
 patrol_test/test_bundle.dart

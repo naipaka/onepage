@@ -63,6 +63,23 @@ class OtherHapticEnabled extends _$OtherHapticEnabled {
   }
 }
 
+/// Provider for whether the user declined to recover the remaining photos.
+@riverpod
+class PhotoRecoveryDismissed extends _$PhotoRecoveryDismissed {
+  @override
+  bool build() {
+    final prefsClient = ref.watch(prefsClientProvider);
+    return prefsClient.photoRecoveryDismissed;
+  }
+
+  /// Stops reminding the user about the remaining photos.
+  Future<void> dismiss() async {
+    state = true;
+    final prefsClient = ref.read(prefsClientProvider);
+    await prefsClient.setPhotoRecoveryDismissed(dismissed: true);
+  }
+}
+
 /// {@template onepage.NotificationSettingsNotifier}
 /// Notifier for managing notification settings.
 /// {@endtemplate}

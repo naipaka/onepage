@@ -211,6 +211,65 @@ abstract class _$OtherHapticEnabled extends $Notifier<bool> {
   }
 }
 
+/// Provider for whether the user declined to recover the remaining photos.
+
+@ProviderFor(PhotoRecoveryDismissed)
+final photoRecoveryDismissedProvider = PhotoRecoveryDismissedProvider._();
+
+/// Provider for whether the user declined to recover the remaining photos.
+final class PhotoRecoveryDismissedProvider
+    extends $NotifierProvider<PhotoRecoveryDismissed, bool> {
+  /// Provider for whether the user declined to recover the remaining photos.
+  PhotoRecoveryDismissedProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'photoRecoveryDismissedProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$photoRecoveryDismissedHash();
+
+  @$internal
+  @override
+  PhotoRecoveryDismissed create() => PhotoRecoveryDismissed();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$photoRecoveryDismissedHash() =>
+    r'8d3f1788c56c94d2e46ebe959e3322c2b7331135';
+
+/// Provider for whether the user declined to recover the remaining photos.
+
+abstract class _$PhotoRecoveryDismissed extends $Notifier<bool> {
+  bool build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<bool, bool>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<bool, bool>,
+              bool,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
 /// {@template onepage.NotificationSettingsNotifier}
 /// Notifier for managing notification settings.
 /// {@endtemplate}
