@@ -77,8 +77,19 @@ jobs:
   test:
     needs: check
     if: needs.check.outputs.flutter == 'true'
-    runs-on: macos-latest
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: test
+            os: ubuntu-latest
+            script: test:ci
+          - name: test-macos
+            os: macos-latest
+            script: test:ci:macos
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
@@ -102,7 +113,7 @@ jobs:
         run: dart pub global activate very_good_cli
 
       - name: Run package tests
-        run: melos run test:ci --no-select
+        run: melos run ${{ matrix.script }} --no-select
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7

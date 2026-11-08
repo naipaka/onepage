@@ -170,15 +170,32 @@ melos:
       packageFilters:
         dirExists: test
 
+    # `very_good test` fails when several packages compile its test optimizer
+    # at once (very_good_cli issue 947), so the CI scripts run one package at a
+    # time.
     test:ci:
       run: very_good test --coverage
       exec:
         concurrency: 1
         failFast: true
-      description: Run flutter test for CI (including golden tests on macOS).
+      description: Run the tests of the packages that run on any OS for CI.
       packageFilters:
         flutter: true
         dirExists: test
+        ignore:
+          - device_photos
+          - onepage
+
+    test:ci:macos:
+      run: very_good test --coverage
+      exec:
+        concurrency: 1
+        failFast: true
+      description: Run the tests that need macOS for CI (golden tests and photo_manager).
+      packageFilters:
+        scope:
+          - device_photos
+          - onepage
 
     test:android:
       # `\$` keeps the calling shell from expanding the name before melos sets it
