@@ -55,6 +55,7 @@ Heavy verification including tests. Run standard first, then add:
 ```bash
 # All packages
 fvm dart run melos run test:ci --no-select
+fvm dart run melos run test:ci:macos --no-select
 
 # Or, for a specific package only
 fvm dart run melos exec --scope=<package_name> -- flutter test
@@ -91,4 +92,4 @@ Do NOT declare the task complete until **all** of the following are true for the
 
 - `fvm dart analyze` → `No issues found!`
 - `fvm dart run melos run format:ci --no-select` → clean (standard / full)
-- `fvm dart run melos run test:ci --no-select` → all tests pass (full only)
+- `fvm dart run melos run test:ci --no-select` and `fvm dart run melos run test:ci:macos --no-select` → all tests pass (full only)
