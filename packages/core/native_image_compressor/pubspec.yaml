@@ -1,0 +1,28 @@
+name: native_image_compressor
+description: A plugin that compresses image files with the platform's own image codecs.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.13.2
+  flutter: '>=3.3.0'
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  altive_lints: ^4.1.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.naipaka.native_image_compressor
+        pluginClass: NativeImageCompressorPlugin
+      ios:
+        pluginClass: NativeImageCompressorPlugin

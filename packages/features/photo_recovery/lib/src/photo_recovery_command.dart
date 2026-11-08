@@ -11,7 +11,7 @@ typedef PhotoRecoveryProgress = void Function(int completed, int total);
 /// Copies photos saved on the device into app storage.
 ///
 /// Each photo is committed on its own, so a stopped recovery continues with
-/// the photos that remain. Up to three photos are recovered at a time.
+/// the photos that remain. Up to six photos are recovered at a time.
 /// {@endtemplate}
 class PhotoRecoveryCommand {
   /// {@macro photo_recovery.PhotoRecoveryCommand}
@@ -34,7 +34,7 @@ class PhotoRecoveryCommand {
   /// Storage for photo files.
   final PhotoStorage photoStorage;
 
-  static const _concurrency = 3;
+  static const _concurrency = 6;
 
   /// Recovers the photos that the device can read.
   ///

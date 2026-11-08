@@ -110,9 +110,9 @@ void main() {
         verify(devicePhotos.read('b')).called(1);
       });
 
-      test('recovers up to three photos at a time', () async {
+      test('recovers up to six photos at a time', () async {
         when(dbClient.getExternalDiaryImages()).thenAnswer(
-          (_) async => [for (var i = 1; i <= 5; i++) image(i, '$i')],
+          (_) async => [for (var i = 1; i <= 8; i++) image(i, '$i')],
         );
         final reads = <String, Completer<File?>>{};
         when(devicePhotos.read(any)).thenAnswer((invocation) {
@@ -122,17 +122,17 @@ void main() {
 
         final recovery = command.recoverFromDevice();
         await pumpEventQueue();
-        expect(reads.keys, ['1', '2', '3']);
+        expect(reads.keys, ['1', '2', '3', '4', '5', '6']);
 
         reads['2']!.complete(null);
         await pumpEventQueue();
-        expect(reads.keys, ['1', '2', '3', '4']);
+        expect(reads.keys, ['1', '2', '3', '4', '5', '6', '7']);
 
         for (final read in reads.values.where((read) => !read.isCompleted)) {
           read.complete(null);
         }
         await pumpEventQueue();
-        reads['5']!.complete(null);
+        reads['8']!.complete(null);
         expect(await recovery, 0);
       });
 
