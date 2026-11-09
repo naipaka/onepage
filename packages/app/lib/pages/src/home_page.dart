@@ -988,8 +988,39 @@ class _ImageSelectionActionButton extends ConsumerWidget {
         }
 
         Future<void> selectImage() async {
+          // The system picker does not hand focus back to the diary field.
+          // On iOS 27 the picker takes the first responder, which closes the
+          // field's input while UIKit shows the keyboard again when the
+          // picker closes, so the keyboard stays without the toolbar. On
+          // Android the keyboard closes and nothing shows it again. Closing
+          // the input before the picker and focusing the field after it
+          // brings back the keyboard and the toolbar together.
+          final focusedField = scope.focusedChild;
+          focusedField?.unfocus();
+
+          // A canceled Android picker returns while the app is still
+          // inactive, and Android ignores a request to show the keyboard
+          // until the app's window has focus again.
+          Future<void> focusFieldWhenResumed() async {
+            if (focusedField == null) {
+              return;
+            }
+            if (WidgetsBinding.instance.lifecycleState !=
+                AppLifecycleState.resumed) {
+              final resumed = Completer<void>();
+              final listener = AppLifecycleListener(
+                onResume: resumed.complete,
+              );
+              await resumed.future;
+              listener.dispose();
+            }
+            focusedField.requestFocus();
+          }
+
           try {
-            final photo = await pickPhoto();
+            final photo = await pickPhoto().whenComplete(
+              focusFieldWhenResumed,
+            );
             if (photo == null) {
               return;
             }
