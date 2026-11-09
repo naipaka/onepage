@@ -4,7 +4,6 @@ digraph packages {
   configurator [shape="box"; color="#205f06"];
   db_client [shape="box"; color="#c4fbfc"];
   device_photos [shape="box"; color="#bebfed"];
-  device_photos_example [shape="box"; color="#b5f5c9"];
   diary [shape="box"; color="#2c56bd"];
   exporter [shape="box"; color="#3e99a6"];
   haptics [shape="box"; color="#26343c"];
@@ -27,7 +26,6 @@ digraph packages {
   widgets [shape="box"; color="#3ed5a4"];
   backup -> db_client [style="filled"; color="#c4fbfc"];
   backup -> photo_storage [style="filled"; color="#c6f715"];
-  device_photos_example -> device_photos [style="filled"; color="#bebfed"];
   diary -> db_client [style="filled"; color="#c4fbfc"];
   diary -> photo_storage [style="filled"; color="#c6f715"];
   diary -> utils [style="filled"; color="#f548cf"];
@@ -93,11 +91,6 @@ digraph packages {
     tracker;
     utils;
     widgets;
-  }
-  subgraph "cluster packages/core/device_photos" {
-    label="packages/core/device_photos";
-    color="#99fd55";
-    device_photos_example;
   }
   subgraph "cluster packages/core/native_image_compressor" {
     label="packages/core/native_image_compressor";
