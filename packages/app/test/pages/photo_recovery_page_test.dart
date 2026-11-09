@@ -26,7 +26,6 @@ class _FakeLibrary extends Fake implements DevicePhotos {
   new(this.option);
 
   final DevicePhotoAccessOption option;
-  String? folder = 'folder';
   int settingsOpened = 0;
   int accessRequests = 0;
   DevicePhotoAccessRequest request = DevicePhotoAccessRequest.allowed;
@@ -36,9 +35,6 @@ class _FakeLibrary extends Fake implements DevicePhotos {
   @override
   Future<DevicePhotoAccessOption> accessOption(List<String> ids) async =>
       option;
-
-  @override
-  Future<String?> pickFolder() async => folder;
 
   @override
   Future<Map<String, String>?> requestPhotos(List<String> ids) async {
@@ -62,7 +58,7 @@ class _FakeRouterState extends Fake implements GoRouterState;
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
   int deviceRuns = 0;
-  Exception? folderError;
+  Exception? error;
   Completer<void>? gate;
   Map<String, String>? recoveredDocuments;
 
@@ -79,21 +75,12 @@ class _FakeCommand extends Fake implements PhotoRecoveryCommand {
     PhotoRecoveryProgress? onProgress,
   }) async {
     recoveredDocuments = documents;
-    onProgress?.call(documents.length, documents.length);
-    return documents.length;
-  }
-
-  @override
-  Future<int> recoverFromFolder(
-    String folder, {
-    PhotoRecoveryProgress? onProgress,
-  }) async {
     onProgress?.call(1, 2);
     await gate?.future;
-    if (folderError case final error?) {
+    if (error case final error?) {
       throw error;
     }
-    return 2;
+    return documents.length;
   }
 }
 
@@ -140,7 +127,7 @@ void main() {
 
     Future<void> pumpPage(
       WidgetTester tester, {
-      DevicePhotoAccessOption option = DevicePhotoAccessOption.selectFolder,
+      DevicePhotoAccessOption option = DevicePhotoAccessOption.requestPhotos,
       _FakeLibrary? library,
       int? imageId,
     }) async {
@@ -191,11 +178,11 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('offers folder selection when it is supported', (tester) async {
+    testWidgets('offers recovery for photos not shown yet', (tester) async {
       await pumpPage(tester);
 
       expect(find.text('1 photo is not shown yet'), findsOneWidget);
-      expect(find.text('Select Folder and Recover'), findsOneWidget);
+      expect(find.text('Recover'), findsOneWidget);
       expect(find.text('Do Not Recover the Remaining Photos'), findsOneWidget);
     });
 
@@ -278,7 +265,7 @@ void main() {
       expect(find.text('Do Not Recover the Remaining Photos'), findsNothing);
     });
 
-    testWidgets('returns the recovered count after folder selection', (
+    testWidgets('returns the recovered count of the allowed photos', (
       tester,
     ) async {
       await pumpPage(tester);
@@ -286,29 +273,17 @@ void main() {
       final recovered = await tester
           .container()
           .read(photoRecoveryProvider.notifier)
-          .recoverFromFolder();
+          .recoverRequested();
 
-      expect(recovered, 2);
+      expect(recovered, 1);
       expect(tester.container().read(photoRecoveryProvider), isNull);
-    });
-
-    testWidgets('shows the recovered count from the button', (tester) async {
-      await pumpPage(tester);
-
-      await tester.tap(find.text('Select Folder and Recover'));
-      await tester.pump();
-      await tester.pump();
-      await showToast(tester);
-
-      expect(find.text('Photos recovered: 2'), findsOneWidget);
-      await dismissToast(tester);
     });
 
     testWidgets('shows progress while recovering', (tester) async {
       command.gate = Completer();
       await pumpPage(tester);
 
-      await tester.tap(find.text('Select Folder and Recover'));
+      await tester.tap(find.text('Recover'));
       await tester.pump();
       await tester.pump();
 
@@ -326,7 +301,7 @@ void main() {
       await pumpPage(tester);
       final notifier = tester.container().read(photoRecoveryProvider.notifier);
 
-      final running = notifier.recoverFromFolder();
+      final running = notifier.recoverRequested();
       await tester.pump();
       await notifier.recoverFromDevice();
 
@@ -336,14 +311,14 @@ void main() {
     });
 
     testWidgets('shows an error when recovery fails', (tester) async {
-      command.folderError = Exception('failed');
+      command.error = Exception('failed');
       await pumpPage(tester);
 
-      await tester.tap(find.text('Select Folder and Recover'));
+      await tester.tap(find.text('Recover'));
       await showToast(tester);
 
       expect(find.text('Could not recover photos'), findsOneWidget);
-      expect(find.text('Select Folder and Recover'), findsOneWidget);
+      expect(find.text('Recover'), findsOneWidget);
       verify(tracker.recordError(any, any)).called(1);
       await dismissToast(tester);
     });
@@ -440,21 +415,6 @@ void main() {
       ).build(tester.element(find.byType(Scaffold).first), _FakeRouterState());
 
       expect((page as PhotoRecoveryPage).imageId, 1);
-    });
-
-    testWidgets('does nothing when folder selection is canceled', (
-      tester,
-    ) async {
-      final library = _FakeLibrary(DevicePhotoAccessOption.selectFolder)
-        ..folder = null;
-      await pumpPage(tester, library: library);
-
-      final recovered = await tester
-          .container()
-          .read(photoRecoveryProvider.notifier)
-          .recoverFromFolder();
-
-      expect(recovered, isNull);
     });
 
     testWidgets('dismisses the reminder', (tester) async {

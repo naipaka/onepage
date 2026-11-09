@@ -44,9 +44,6 @@ photoRecovery:
     message: "これまでの写真が日記に表示されるようになりました"
     action: "日記に戻る"
   progressCount: "$completed / $total 枚"
-  folder:
-    message: "DCIM や Pictures など写真が入っているフォルダを選んでください"
-    action: "フォルダを選んで復旧する"
   settings:
     title: "設定で写真へのアクセスを許可してください"
     message: "許可するとこれまでの写真を復旧できます"

@@ -21,9 +21,6 @@ enum DevicePhotoAccessOption {
   /// The user allows access to the photos in a system dialog.
   requestPhotos,
 
-  /// The user selects a folder that holds the photos.
-  selectFolder,
-
   /// The user allows access in Settings.
   openSettings,
 
@@ -59,12 +56,6 @@ class DevicePhotos {
     ),
   );
 
-  /// First Android version where `MediaStore.getMediaUri` is available.
-  static const _firstFolderSdk = 29;
-
-  /// First Android version where `MediaStore.createWriteRequest` is available.
-  static const _firstRequestSdk = 30;
-
   /// First Android version that needs the media permissions the app removed.
   static const _firstMediaPermissionSdk = 33;
 
@@ -79,7 +70,7 @@ class DevicePhotos {
   /// the user.
   Future<DevicePhotoAccessOption> accessOption(List<String> ids) async {
     final sdk = await _androidSdk;
-    if (sdk != null && sdk >= _firstRequestSdk) {
+    if (sdk != null && sdk >= _firstMediaPermissionSdk) {
       final available = await _channel.invokeListMethod<String>(
         'availablePhotos',
         {'ids': ids},
@@ -87,9 +78,6 @@ class DevicePhotos {
       return (available ?? []).isEmpty
           ? DevicePhotoAccessOption.none
           : DevicePhotoAccessOption.requestPhotos;
-    }
-    if (sdk != null && sdk >= _firstFolderSdk) {
-      return DevicePhotoAccessOption.selectFolder;
     }
     final state = await PhotoManager.getPermissionState(
       requestOption: _permissionOption,
@@ -175,21 +163,6 @@ class DevicePhotos {
     return _channel.invokeMapMethod<String, String>('requestPhotos', {
       'ids': ids,
     });
-  }
-
-  /// Lets the user select a folder and returns it, or null if they cancel.
-  Future<String?> pickFolder() => _channel.invokeMethod<String>('pickFolder');
-
-  /// Returns the documents in [folder] that match [ids], keyed by photo ID.
-  Future<Map<String, String>> findInFolder({
-    required String folder,
-    required List<String> ids,
-  }) async {
-    final found = await _channel.invokeMapMethod<String, String>(
-      'findInFolder',
-      {'folder': folder, 'ids': ids},
-    );
-    return found ?? {};
   }
 
   /// Returns a temporary copy of [document], which the caller must delete.

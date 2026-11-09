@@ -148,47 +148,29 @@ void main() {
       });
     });
 
-    group('recoverFromFolder', () {
+    group('recoverDocuments', () {
       late File copy;
 
       setUp(() {
         copy = File(p.join(directory.path, 'copy'))..writeAsBytesSync([1]);
         when(
-          devicePhotos.findInFolder(folder: 'folder', ids: ['a', 'b']),
-        ).thenAnswer((_) async => {'a': 'document'});
-        when(
           devicePhotos.copyDocument('document'),
         ).thenAnswer((_) async => copy);
       });
 
-      test('stores the photos found in the folder', () async {
-        final recovered = await command.recoverFromFolder('folder');
-
-        expect(recovered, 1);
-        verify(
-          dbClient.setDiaryImageFileName(id: 1, fileName: 'stored.jpg'),
-        ).called(1);
-      });
-
-      test('deletes the temporary copy', () async {
-        await command.recoverFromFolder('folder');
-
-        expect(copy.existsSync(), isFalse);
-      });
-
-      test('recoverDocuments stores the given documents', () async {
+      test('stores the given documents', () async {
         final recovered = await command.recoverDocuments({'b': 'document'});
 
         expect(recovered, 1);
         verify(
           dbClient.setDiaryImageFileName(id: 2, fileName: 'stored.jpg'),
         ).called(1);
-        verifyNever(
-          devicePhotos.findInFolder(
-            folder: anyNamed('folder'),
-            ids: anyNamed('ids'),
-          ),
-        );
+      });
+
+      test('deletes the temporary copy', () async {
+        await command.recoverDocuments({'a': 'document'});
+
+        expect(copy.existsSync(), isFalse);
       });
 
       test('deletes the temporary copy when storing fails', () async {
@@ -196,7 +178,7 @@ void main() {
           throw Exception('failed');
         });
 
-        expect(await command.recoverFromFolder('folder'), 0);
+        expect(await command.recoverDocuments({'a': 'document'}), 0);
         expect(copy.existsSync(), isFalse);
       });
     });

@@ -59,23 +59,6 @@ class PhotoRecovery extends _$PhotoRecovery {
     );
   }
 
-  /// Lets the user select a folder and recovers the photos in it.
-  ///
-  /// Returns the number of recovered photos, or null if the user cancels.
-  Future<int?> recoverFromFolder() async {
-    if (state != null) {
-      return null;
-    }
-    final folder = await _devicePhotos.pickFolder();
-    if (folder == null) {
-      return null;
-    }
-    state = (completed: 0, total: 0);
-    return _waitForRecovery(
-      _command.recoverFromFolder(folder, onProgress: _updateProgress),
-    );
-  }
-
   /// Asks the user to allow access to the photos to recover and recovers the
   /// allowed ones.
   ///

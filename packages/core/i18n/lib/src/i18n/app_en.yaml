@@ -46,9 +46,6 @@ photoRecovery:
     message: "Your earlier photos now show in your diary"
     action: "Back to Diary"
   progressCount: "$completed / $total"
-  folder:
-    message: "Select a folder with your photos, such as DCIM or Pictures"
-    action: "Select Folder and Recover"
   settings:
     title: "Allow photo access in Settings"
     message: "After you allow access, you can recover your earlier photos"
