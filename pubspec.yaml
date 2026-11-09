@@ -242,14 +242,23 @@ melos:
         concurrency: 1
       description: Build the AppBundle for the production app.
       packageFilters:
-        flutter: true
-        dirExists: [lib, android]
+        scope: onepage
 
     upload:ios:prod:
-      run: flutter build ipa --dart-define-from-file=dart_defines/prod.env --export-options-plist="ios/prod/UploadOptions.plist"
+      # `flutter build ipa` reads build/ios/ipa after the export to report the
+      # IPA size, but an export that uploads to App Store Connect does not
+      # create the directory, so the command fails after a successful upload
+      # (Flutter issue 148277). Remove the mkdir once Flutter handles it.
+      # `flutter build ipa` also exits with success when the upload fails and
+      # only prints "Encountered error while creating the IPA", so the script
+      # fails when the output has that line.
+      run: |
+        set -o pipefail && \
+        mkdir -p build/ios/ipa && \
+        flutter build ipa --dart-define-from-file=dart_defines/prod.env --export-options-plist="ios/prod/UploadOptions.plist" 2>&1 | tee build/ios/upload.log && \
+        ! grep -q "Encountered error while creating the IPA" build/ios/upload.log
       exec:
         concurrency: 1
       description: Upload the IPA for the production app.
       packageFilters:
-        flutter: true
-        dirExists: [lib, ios]
+        scope: onepage
