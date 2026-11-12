@@ -2,16 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:clock/clock.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:diary/diary.dart';
 import 'package:exporter/exporter.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:haptics/haptics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:theme/theme.dart';
@@ -329,39 +329,37 @@ class ExportPage extends HookConsumerWidget {
     return CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
-        unawaited(
-          showCupertinoModalPopup<void>(
-            context: context,
-            builder: (context) => Container(
-              height: 250,
-              color: CupertinoColors.systemBackground.resolveFrom(context),
-              child: CupertinoPicker(
-                backgroundColor: CupertinoColors.systemBackground.resolveFrom(
-                  context,
-                ),
-                itemExtent: 32,
-                scrollController: FixedExtentScrollController(
-                  initialItem: years.indexOf(selectedYear.value),
-                ),
-                onSelectedItemChanged: (index) {
-                  selectedYear.value = years[index];
-
-                  // 年が変更されたとき、選択されている月が無効な場合は調整
-                  final currentYear = clock.now().year;
-                  final currentMonth = clock.now().month;
-                  if (selectedYear.value == currentYear &&
-                      selectedMonth.value > currentMonth) {
-                    selectedMonth.value = currentMonth;
-                  }
-                },
-                children: years
-                    .map(
-                      (year) => Center(
-                        child: Text(year.toString()),
-                      ),
-                    )
-                    .toList(),
+        showCupertinoModalPopup<void>(
+          context: context,
+          builder: (context) => Container(
+            height: 250,
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            child: CupertinoPicker(
+              backgroundColor: CupertinoColors.systemBackground.resolveFrom(
+                context,
               ),
+              itemExtent: 32,
+              scrollController: FixedExtentScrollController(
+                initialItem: years.indexOf(selectedYear.value),
+              ),
+              onSelectedItemChanged: (index) {
+                selectedYear.value = years[index];
+
+                // 年が変更されたとき、選択されている月が無効な場合は調整
+                final currentYear = clock.now().year;
+                final currentMonth = clock.now().month;
+                if (selectedYear.value == currentYear &&
+                    selectedMonth.value > currentMonth) {
+                  selectedMonth.value = currentMonth;
+                }
+              },
+              children: years
+                  .map(
+                    (year) => Center(
+                      child: Text(year.toString()),
+                    ),
+                  )
+                  .toList(),
             ),
           ),
         );
@@ -443,34 +441,32 @@ class ExportPage extends HookConsumerWidget {
     return CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: () {
-        unawaited(
-          showCupertinoModalPopup<void>(
-            context: context,
-            builder: (context) => Container(
-              height: 250,
-              color: CupertinoColors.systemBackground.resolveFrom(context),
-              child: CupertinoPicker(
-                backgroundColor: CupertinoColors.systemBackground.resolveFrom(
-                  context,
-                ),
-                itemExtent: 32,
-                scrollController: FixedExtentScrollController(
-                  initialItem: months
-                      .indexOf(selectedMonth.value)
-                      .clamp(0, months.length - 1),
-                ),
-                onSelectedItemChanged: (index) {
-                  selectedMonth.value = months[index];
-                },
-                children: months.map((month) {
-                  final monthName = DateFormat.MMMM(
-                    Localizations.localeOf(context).languageCode,
-                  ).format(DateTime(2024, month));
-                  return Center(
-                    child: Text(monthName),
-                  );
-                }).toList(),
+        showCupertinoModalPopup<void>(
+          context: context,
+          builder: (context) => Container(
+            height: 250,
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            child: CupertinoPicker(
+              backgroundColor: CupertinoColors.systemBackground.resolveFrom(
+                context,
               ),
+              itemExtent: 32,
+              scrollController: FixedExtentScrollController(
+                initialItem: months
+                    .indexOf(selectedMonth.value)
+                    .clamp(0, months.length - 1),
+              ),
+              onSelectedItemChanged: (index) {
+                selectedMonth.value = months[index];
+              },
+              children: months.map((month) {
+                final monthName = DateFormat.MMMM(
+                  Localizations.localeOf(context).languageCode,
+                ).format(DateTime(2024, month));
+                return Center(
+                  child: Text(monthName),
+                );
+              }).toList(),
             ),
           ),
         );

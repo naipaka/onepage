@@ -1,6 +1,6 @@
 import 'package:clock/clock.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// For Calendar [DateTime] extension methods.
 extension DateTimeExtensionForCalendar on DateTime {

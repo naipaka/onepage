@@ -2,7 +2,7 @@
 // ignore_for_file: altive_lints_plugin/avoid_hardcoded_japanese
 import 'package:clock/clock.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'stub_diaries_state_provider.g.dart';

@@ -1,7 +1,7 @@
 import 'package:clock/clock.dart';
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
 

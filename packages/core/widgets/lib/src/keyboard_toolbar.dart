@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A toolbar widget that appears above the keyboard with action buttons and
 /// dismiss button.

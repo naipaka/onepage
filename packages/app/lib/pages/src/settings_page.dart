@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:i18n/i18n.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:theme/theme.dart';
 
 import '../../router/src/app_routes.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// {@template update_requester.UpdateRequestView}
 /// A view that shows a dialog to request an update.

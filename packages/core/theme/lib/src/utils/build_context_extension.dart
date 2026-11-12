@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// [BuildContext] extension methods for [ColorScheme] and [TextTheme].
 extension BuildContextWithThemeExtension on BuildContext {
