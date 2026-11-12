@@ -130,6 +130,18 @@ class DbClient extends _$DbClient {
         .toList();
   }
 
+  /// Retrieves the diary entry for [date].
+  ///
+  /// Returns `null` when no diary entry has that date. When several have it,
+  /// returns the one inserted first.
+  Future<DiaryEntry?> getDiaryByDate({required DateTime date}) {
+    final query = select(diaries)
+      ..where((tbl) => tbl.date.equals(date))
+      ..orderBy([(tbl) => OrderingTerm.asc(tbl.id)])
+      ..limit(1);
+    return query.getSingleOrNull();
+  }
+
   /// Updates a diary entry in the database.
   ///
   /// This method takes an integer [id] and [content] as parameters.

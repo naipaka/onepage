@@ -19,14 +19,11 @@ class _FakeDiaryQuery implements DiaryQuery {
 }
 
 class _FakeDiaryCommand implements DiaryCommand {
-  int addDiaryCalls = 0;
-
   @override
   Future<DiaryEntry> addDiary({
     required String content,
     required DateTime date,
   }) async {
-    addDiaryCalls++;
     return DiaryEntry(
       id: 1,
       content: content,
@@ -59,18 +56,29 @@ class _FakeDiaryImageCommand implements DiaryImageCommand {
     return 'photo.jpg';
   }
 
+  int addDiaryImageCalls = 0;
+
   @override
-  Future<DiaryImage> addDiaryImage({
-    required int diaryId,
+  Future<({DiaryEntry entry, DiaryImage image})> addDiaryImage({
+    required DateTime date,
     required String fileName,
   }) async {
-    return DiaryImage(
+    addDiaryImageCalls++;
+    final entry = DiaryEntry(
       id: 1,
-      diaryId: diaryId,
+      content: '',
+      date: date,
+      createdAt: clock.now(),
+      updatedAt: clock.now(),
+    );
+    final image = DiaryImage(
+      id: 1,
+      diaryId: entry.id,
       fileName: fileName,
       createdAt: clock.now(),
       updatedAt: clock.now(),
     );
+    return (entry: entry, image: image);
   }
 
   @override
@@ -127,12 +135,12 @@ void main() {
       expect(state.diaries.single.images, hasLength(1));
     });
 
-    test('does not create a diary when the photo cannot be stored', () async {
+    test('does not add the image when the photo cannot be stored', () async {
       imageCommand.failsToStore = true;
 
       await expectLater(addImage(), throwsException);
 
-      expect(diaryCommand.addDiaryCalls, 0);
+      expect(imageCommand.addDiaryImageCalls, 0);
     });
   });
 }

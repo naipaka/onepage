@@ -29,7 +29,8 @@ Every day has its own space on a single page, so you write right where the day i
 
 ## Packages overview
 
-This project is experimentally divided into packages by feature, to see whether package boundaries can keep features independent of each other.
+This project is divided into packages by feature, and package boundaries keep the features independent of each other.
+See [Architecture](./docs/architecture.md) for why the project is structured this way and what it gives us.
 Packages under `packages/features` depend only on packages under `packages/core` and must not depend on each other.
 Except for `provider_utils`, these packages do not use Riverpod; their classes take what they need as constructor arguments.
 The app package wraps them in providers under `packages/app/lib/adapters` and combines features in its pages.
@@ -59,7 +60,7 @@ The dependency graph below is updated automatically: a GitHub Actions workflow o
 | [prefs_client](packages/core/prefs_client) | Type-safe wrapper around SharedPreferences |
 | [provider_utils](packages/core/provider_utils) | Utilities for Riverpod |
 | [theme](packages/core/theme) | `ThemeData` and other appearance settings |
-| [tracker](packages/core/tracker) | Event tracking |
+| [tracker](packages/core/tracker) | Analytics events and crash reporting |
 | [utils](packages/core/utils) | Utility functions |
 | [widgets](packages/core/widgets) | Generic widgets |
 
@@ -68,13 +69,13 @@ The dependency graph below is updated automatically: a GitHub Actions workflow o
 | Package | Description |
 |---|---|
 | [backup](packages/features/backup) | Backup and restore |
-| [diary](packages/features/diary) | The diary feature |
+| [diary](packages/features/diary) | Reading, writing, and searching diary entries, and the diary widgets |
 | [exporter](packages/features/exporter) | Export to CSV, PDF, and Markdown |
 | [haptics](packages/features/haptics) | Haptic feedback that can be turned on and off in settings |
 | [in_app_reviewer](packages/features/in_app_reviewer) | In-app review requests |
 | [photo_recovery](packages/features/photo_recovery) | Recovering photos of diaries saved before they were stored in app storage |
 | [scroll_calendar](packages/features/scroll_calendar) | Scrollable calendar |
-| [update_requester](packages/features/update_requester) | Application updates |
+| [update_requester](packages/features/update_requester) | Asking users to update when Remote Config requires a newer version |
 
 ## How to start development
 
@@ -84,14 +85,14 @@ make
 
 The `make` command installs FVM with Homebrew, installs the Flutter version pinned in `.fvmrc`, activates Melos and the FlutterFire CLI, and runs `dart pub get` for the workspace.
 
-### Firebase Integration
+### Firebase integration
 The app uses Firebase Analytics, Crashlytics, and Remote Config.
 Create your own Firebase projects for development and production.
 The FlutterFire CLI requires the [Firebase CLI](https://firebase.google.com/docs/cli) and `firebase login`.
 
 Run the following commands in `packages/app` and select your project.
 
-#### For Development Environment
+#### Development environment
 ```shell
 flutterfire configure --out=lib/environment/src/firebase_options_dev.dart --platforms=android,ios --ios-bundle-id=com.naipaka.onepage.dev --android-package-name=com.naipaka.onepage.dev
 ```
@@ -100,7 +101,7 @@ Move the generated files:
 - `ios/Runner/GoogleService-Info.plist` and `ios/firebase_app_id_file.json` to `ios/dev/`
 - `android/app/google-services.json` to `android/app/src/dev/`
 
-#### For Production Environment
+#### Production environment
 ```shell
 flutterfire configure --out=lib/environment/src/firebase_options_prod.dart --platforms=android,ios --ios-bundle-id=com.naipaka.onepage --android-package-name=com.naipaka.onepage
 ```
@@ -109,53 +110,53 @@ Move the generated files:
 - `ios/Runner/GoogleService-Info.plist` and `ios/firebase_app_id_file.json` to `ios/prod/`
 - `android/app/google-services.json` to `android/app/src/prod/`
 
-### Environment Variables
+### Environment variables
 In `packages/app/dart_defines`, copy `dev.env.default` to `dev.env` and `prod.env.default` to `prod.env`, then fill in the values.
 
 ## How to create a new package
 
-Create a package under `packages/core` or `packages/features`.
-If the project name and the output directory name of the package are the same,
-`--project-name` can be omitted.
+Create a package under `packages/core` or `packages/features`:
 
 ```shell
-flutter create -t package packages/features/{directory_name} --project-name {project_name}
+fvm flutter create -t package packages/features/{package_name} --project-name {package_name}
 ```
 
-Then register the package in the workspace:
-- Add the package path to `workspace` in the root `pubspec.yaml`.
-- Add `resolution: workspace` to the package's `pubspec.yaml`.
+Then:
+- Replace the generated `LICENSE` with a symbolic link to the root one: `ln -sf ../../../LICENSE packages/features/{package_name}/LICENSE`.
+- Rewrite the generated `README.md` to describe the package, and add the package to the tables above.
+- Add the package path to `workspace` in the root `pubspec.yaml`, and add `resolution: workspace` to the package's `pubspec.yaml`.
+- Copy `dev_dependencies` and `analysis_options.yaml` from an existing package such as `packages/features/haptics`.
+
+In Claude Code, the `create-package` skill runs these steps.
 
 ## How to run tests
 
-To run tests for the project, use the following command:
-
 ```shell
-melos run test
+fvm dart run melos run test
 ```
 
-This command will execute all tests defined in the project, including golden tests.
+It runs every package's tests, including the golden tests.
 
 If you change the UI, update the golden images with the following command:
 
 ```shell
-melos run golden:update
+fvm dart run melos run golden:update
 ```
 
-CI runs the tests, including golden tests, on macOS.
+CI runs the golden tests and the `device_photos` tests on macOS, and the other tests on Ubuntu.
 
 ## How to generate code
 
-To generate code with build_runner, including translations, use the following command:
+build_runner generates the code, including the translations:
 
 ```shell
-melos run gen
+fvm dart run melos run gen
 ```
 
 or, to keep generating code while you edit:
 
 ```shell
-melos run gen:watch
+fvm dart run melos run gen:watch
 ```
 
 Generated files are committed to the repository, so commit them together with your changes.
@@ -166,7 +167,7 @@ The database is defined with Drift in `packages/core/db_client`, and migrations 
 When you change a table:
 
 1. Increase `schemaVersion` in `packages/core/db_client/lib/src/db_client.dart`.
-2. Run `melos run drift:migrations` to save the new schema under `drift_schemas` and generate the migration steps and test helpers.
+2. Run `fvm dart run melos run drift:migrations` to save the new schema under `drift_schemas` and generate the migration steps and test helpers.
 3. Write the migration for the new version in `migration`.
 4. Run the tests in `packages/core/db_client`. `test/drift/onepage/migration_test.dart` checks the migration from every past schema version.
 
