@@ -78,7 +78,7 @@ dev_dependencies:
   flutter_native_splash: ^2.4.7
   flutter_test:
     sdk: flutter
-  go_router_builder: ^4.5.0
+  go_router_builder: ^4.5.3
   meta: ^1.19.0
   mockito: ^5.8.1
   package_info_plus: ^10.2.2
