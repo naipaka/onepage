@@ -11,9 +11,9 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_riverpod: ^3.4.3
+  flutter_riverpod: ^3.5.0
   package_info_plus: ^10.2.2
-  riverpod_annotation: ^4.0.7
+  riverpod_annotation: ^4.0.8
   simple_logger: ^1.10.2
   utils:
     path: ../utils
@@ -24,5 +24,5 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.8.1
-  riverpod_generator: ^4.0.9
-  riverpod_lint: 3.1.9
+  riverpod_generator: ^4.0.10
+  riverpod_lint: 3.2.0

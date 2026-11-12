@@ -1,6 +1,6 @@
 ---
 name: dependabot
-description: Handle one open Dependabot PR from start to merge - read what the bump changes in the package source, check the impact on this app, regenerate code, verify on iOS and Android, update the PR when something needs fixing, and report everything to the user in Japanese. Use when the user asks to handle, check, or update a Dependabot PR.
+description: Handle one open Dependabot PR from start to merge - read what the bump changes in the changelog, package source, and upstream git log, explain every change and the planned responses to the user, then regenerate code, verify the affected flows on a device, update the PR when something needs fixing, and report everything to the user in Japanese. Use when the user asks to handle, check, or update a Dependabot PR.
 argument-hint: "[PR number]"
 ---
 
@@ -12,13 +12,14 @@ Read `references/troubleshooting.md` when anything fails or looks off; it lists 
 
 ## Rules
 
-- **Run every check that applies.** A long check runs in the background; it is never a reason to skip one.
-- **Look things up before asserting them.** Read the package source, upstream docs, or the web for platform facts, error causes, and service status. When something blocks the lookup, say what blocked it and ask.
-- **Fix every problem found in the PR being handled**, including problems that predate it, so the PR is mergeable when you report.
-- **Ask before** changing global tools (`dart pub global activate`, SDKs, system images), deleting anything outside the worktree, or closing a PR.
-- **Keep Dependabot's title and body.** Explain added commits in a PR comment.
+- Run every check that applies. A long check runs in the background; it is never a reason to skip one.
+- Look things up before asserting them. Read the package source, upstream docs, or the web for platform facts, error causes, and service status. When something blocks the lookup, say what blocked it and ask.
+- Explain what changed before any work. Steps 1–3 only read. Agreeing on the PR in step 1 is agreement on which PR to look at; worktrees, fixes, and checks start after the user agrees to the responses explained in step 3.
+- Fix every problem found in the PR being handled, including problems that predate it, so the PR is mergeable when you report.
+- Ask before changing global tools (`dart pub global activate`, SDKs, system images), deleting anything outside the worktree, or closing a PR.
+- Start from a clean state. Worktrees, branches, and uncommitted changes left by an earlier session are never reused: report them to the user and recreate the worktree after the user has them removed.
+- Keep Dependabot's title and body. Explain added commits in a PR comment.
 - Run commands in the background by default, each with a `timeout` sized to the job. Never wait on one in the foreground; the completion notification brings you back.
-- Delegate device operation (simulator, emulator) to a subagent with `model: sonnet`, the exact checks, the device rules below, a time limit, and how to report. Tell it to report partial results when a step hangs.
 - Report only after the PR's CI has finished, with the result of every check.
 
 ## 1. Decide the PR
@@ -44,12 +45,55 @@ gh pr list --author app/dependabot --state open \
 
 Group names do not limit the bump size: a `dependencies-patch` group can contain majors.
 
-## 2. Prepare a worktree
+## 2. Read what changed
+
+For each bumped package, including transitive ones in `pubspec.lock`:
+
+- Read the CHANGELOG entries for every version in between.
+- Diff the package source. Old versions are in the pub cache from `main`; download missing new versions into the cache with `fvm dart pub cache add <pkg> --version <new>`:
+
+  ```bash
+  cd ~/.pub-cache/hosted/pub.dev && diff -ru <pkg>-<old> <pkg>-<new>
+  ```
+
+  Read `lib/`, `pubspec.yaml` (SDK and Flutter constraints), and the native side (`ios/`, `darwin/`, `Package.swift`, `android/`, `build.gradle`).
+
+- Read the upstream git log between the two release tags to find the pull requests behind each change: `gh api repos/<owner>/<repo>/compare/<old-tag>...<new-tag> --jq '.commits[].commit.message'`. The repository is in the package's `pubspec.yaml` (`repository` or `homepage`).
+- For packages with native code, read upstream docs or source as well (`gh api repos/<owner>/<repo>/contents/<path>`).
+
+Then map the changes onto this app:
+
+- Find missed bump locations: `grep -rn '<pkg>' --include=pubspec.yaml .`
+- Find usages: `grep -rn 'package:<pkg>' --include='*.dart' packages`, and the specific APIs that changed.
+- Compare new SDK minimums with `.fvmrc` and `.github/actions/setup-flutter` (CI uses `.fvmrc`).
+- Read the PR's failed CI jobs (`gh run view <run-id> --log-failed`) and find the cause.
+- Decide the device checks from the changes that alter runtime behavior. Each check is an app flow that runs the changed code and that `melos run test` does not cover, such as navigation between real screens. When no change alters runtime behavior in a flow the app uses, there are no device checks. Examples:
+  - `riverpod` fixing how paused subscriptions resume: open a screen over home and go back
+  - `go_router` changing redirects: the navigation that goes through a redirect
+  - `flutter_local_notifications` changing scheduling: scheduling and showing a reminder
+- Check on one platform when the changed code has no platform-specific side, such as a pure Dart package; check both when the change is in native code or differs per platform.
+- Run E2E only when its scenario goes through one of those flows.
+
+## 3. Explain the changes and agree on the responses
+
+Write in Japanese, one section per package:
+
+- **変更内容**: every change between the two versions, whether or not it affects this app: new APIs, deprecations, behavior changes, bug fixes, new lint rules, constraint changes, native changes. Cite the changelog entry or upstream pull request for each.
+- **このアプリへの影響**: the usages each change touches, or why it touches none.
+
+Then list the responses this PR needs, each with what will be changed and why: fixes for failed CI jobs, code changes for deprecations or behavior changes, adopting new lint rules or APIs, missed bump locations. When none is needed, say so.
+
+List the device checks decided in step 2, each with the flow, the platform, and the change it covers.
+
+Wait for the user to agree on the responses before going on to step 4.
+
+## 4. Prepare a worktree
 
 Work in a worktree under the scratchpad directory so the main checkout stays on `main`.
 
 ```bash
 df -h /System/Volumes/Data      # builds need several GB free
+git worktree list               # a worktree already on pr-<N> is left over from an earlier session: report it and stop
 D=<scratchpad>/pr-<N>
 git fetch origin pull/<N>/head:pr-<N>
 git worktree add "$D" pr-<N>
@@ -74,32 +118,9 @@ export MELOS_SDK_PATH="$HOME/fvm/versions/$(jq -r .flutter .fvmrc)"
 fvm dart run melos run <script> --no-select
 ```
 
-## 3. Read what changed
+Then make the responses agreed in step 3.
 
-For each bumped package, including transitive ones in `pubspec.lock`:
-
-- Read the CHANGELOG entries for every version in between.
-- Diff the package source. `pub get` in the worktree downloads the new version; the old one is in the cache from `main`:
-
-  ```bash
-  cd ~/.pub-cache/hosted/pub.dev && diff -ru <pkg>-<old> <pkg>-<new>
-  ```
-
-  Read `lib/`, `pubspec.yaml` (SDK and Flutter constraints), and the native side (`ios/`, `darwin/`, `Package.swift`, `android/`, `build.gradle`).
-
-- For packages with native code, read upstream docs or source as well (`gh api repos/<owner>/<repo>/contents/<path>`).
-
-Then map the changes onto this app:
-
-- Find missed bump locations: `grep -rn '<pkg>' --include=pubspec.yaml .`
-- Find usages: `grep -rn 'package:<pkg>' --include='*.dart' packages`, and the specific APIs that changed.
-- Compare new SDK minimums with `.fvmrc` and `.github/actions/setup-flutter` (CI uses `.fvmrc`).
-- Write down what the package is responsible for in this app. Only that behavior is checked on devices. Examples:
-  - `go_router` / `go_router_builder`: the generated route code and navigation between screens
-  - `flutter_hooks`: the widgets that hold state with hooks
-  - `flutter_local_notifications`: scheduling and showing a reminder
-
-## 4. Regenerate code
+## 5. Regenerate code
 
 ```bash
 fvm dart run melos run gen --no-select
@@ -109,7 +130,7 @@ git status --porcelain
 
 A change limited to the `Built on` timestamp in `strings.g.dart` is noise: restore it with `git checkout --`. Any other diff is part of the PR.
 
-## 5. Verify
+## 6. Verify
 
 Run from the worktree root:
 
@@ -119,14 +140,18 @@ fvm dart run melos run format:ci --no-select
 fvm dart run melos run test --no-select            # every package passes
 ```
 
-Device checks, from `packages/app`:
+Device checks agreed in step 3, from `packages/app`:
 
+- Other projects use simulators and emulators on this machine. Boot your own device, pass its id to every command (`-d <udid>`, `adb -s <id>`), and leave every other device untouched. Commands without a device id (`simctl shutdown all`, `adb kill-server`) are off limits.
 - iOS simulator, debug, on the newest iOS runtime: `fvm flutter run -d <udid> --debug --dart-define-from-file=dart_defines/dev.env`
-- Android emulator: `adb uninstall com.naipaka.onepage.dev` first, then `fvm flutter run`; trust the run only after the install succeeds.
+- Android emulator: `adb -s <id> uninstall com.naipaka.onepage.dev` first, then `fvm flutter run -d <id>`; trust the run only after the install succeeds.
 - The connected iPhone runs release builds only; use it when the user asks or when a change needs a real device.
-- Exercise only the behavior written down in step 3, and watch the console for exceptions and deprecation warnings.
-- E2E: `patrol test -t patrol_test/example_test.dart --device <udid> --dart-define-from-file=dart_defines/dev.env`
-- Release builds:
+- Exercise only the agreed flows, and watch the console for exceptions and deprecation warnings.
+- Each flow takes the shortest path that runs the changed code, and checks only the result after it that the change affects. Skip results another flow already checks.
+- Read the screen with `axe describe-ui`. Take a screenshot only where `describe-ui` cannot read the screen (system pickers, share sheets) or for the final result of each flow, shrunk with `sips -Z 600`.
+- Wait for the screen to settle (keyboard open, picker loaded) before each tap, so no tap has to be redone.
+- E2E, when agreed: `patrol test -t patrol_test/example_test.dart --device <udid> --dart-define-from-file=dart_defines/dev.env`
+- Release builds, only when the PR has a change that behaves differently in release: native code (`ios/`, `android/`, `Package.swift`, `build.gradle`), build settings or SDK constraints, or packages for code generation or compilation:
 
   ```bash
   fvm flutter build ios --release --no-codesign --dart-define-from-file=dart_defines/prod.env
@@ -142,7 +167,7 @@ Device checks, from `packages/app`:
 
 - Shut down every simulator and emulator you booted. Leave devices that were running before you started.
 
-## 6. Update the PR
+## 7. Update the PR
 
 When something needs fixing:
 
@@ -176,18 +201,17 @@ gh pr checks <N>
 
 A check that is still running is not a pass. Fix failures in this run.
 
-## 7. Report to the user
+## 8. Report to the user
 
 Write in Japanese. Start with the conclusion: whether the PR can be merged as is, and what was pushed. Then:
 
-- **変更内容**: what changed in each package, from the changelog and the source diff
-- **このアプリへの影響**: usages, the APIs that changed, missed bump locations
+- **対応したこと**: each response agreed in step 3 and the resulting diff
 - **自動生成**: what was regenerated and the resulting diff
 - **確認したこと**: each check and its result, with screenshot paths
 - **この PR とは関係ないけれど見つけたこと**: problems found on the way, and how they were handled
 - When English text was posted, add a Japanese version of it.
 
-## 8. After the merge
+## 9. After the merge
 
 Wait for the user to say the PR is merged, then confirm it and clean up:
 

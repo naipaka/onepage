@@ -33,7 +33,7 @@ dependencies:
   go_router: ^18.0.1
   haptics:
     path: ../features/haptics/
-  hooks_riverpod: ^3.4.3
+  hooks_riverpod: ^3.5.0
   i18n:
     path: ../core/i18n/
   in_app_reviewer:
@@ -53,7 +53,7 @@ dependencies:
     path: ../core/prefs_client/
   provider_utils:
     path: ../core/provider_utils/
-  riverpod_annotation: ^4.0.7
+  riverpod_annotation: ^4.0.8
   scroll_calendar:
     path: ../features/scroll_calendar/
   share_plus: ^13.3.1
@@ -83,8 +83,8 @@ dev_dependencies:
   mockito: ^5.8.1
   package_info_plus: ^10.2.2
   patrol: ^4.10.0
-  riverpod_generator: ^4.0.9
-  riverpod_lint: 3.1.9
+  riverpod_generator: ^4.0.10
+  riverpod_lint: 3.2.0
 
 flutter:
   uses-material-design: true
