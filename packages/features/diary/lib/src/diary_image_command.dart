@@ -33,15 +33,25 @@ class DiaryImageCommand {
     return photoStorage.save(encoded);
   }
 
-  /// Adds a new diary image entry to the database.
+  /// Adds an image to the diary entry of [date], creating an empty entry
+  /// first when the date has none.
   ///
-  /// - [diaryId] - The ID of the diary entry.
+  /// - [date] - The date of the diary entry.
   /// - [fileName] - The file name returned by [storePhoto].
-  Future<DiaryImage> addDiaryImage({
-    required int diaryId,
+  ///
+  /// Returns the diary entry the image was added to and the added image.
+  Future<({DiaryEntry entry, DiaryImage image})> addDiaryImage({
+    required DateTime date,
     required String fileName,
   }) async {
-    return dbClient.insertDiaryImage(diaryId: diaryId, fileName: fileName);
+    final entry =
+        await dbClient.getDiaryByDate(date: date) ??
+        await dbClient.insertDiary(content: '', date: date);
+    final image = await dbClient.insertDiaryImage(
+      diaryId: entry.id,
+      fileName: fileName,
+    );
+    return (entry: entry, image: image);
   }
 
   /// Deletes a diary image entry from the database and its photo file.
