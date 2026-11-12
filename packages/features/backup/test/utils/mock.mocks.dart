@@ -409,6 +409,14 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
   ) as _i6.Future<List<_i10.Diary>>);
 
   @override
+  _i6.Future<_i3.DiaryEntry?> getDiaryByDate({required DateTime? date}) =>
+      (super.noSuchMethod(
+        Invocation.method(#getDiaryByDate, [], {#date: date}),
+        returnValue: _i6.Future<_i3.DiaryEntry?>.value(),
+        returnValueForMissingStub: _i6.Future<_i3.DiaryEntry?>.value(),
+      ) as _i6.Future<_i3.DiaryEntry?>);
+
+  @override
   _i6.Future<int> updateDiary({required int? id, required String? content}) =>
       (super.noSuchMethod(
         Invocation.method(#updateDiary, [], {#id: id, #content: content}),

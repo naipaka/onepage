@@ -241,6 +241,46 @@ void main() {
       });
     });
 
+    group('getDiaryByDate', () {
+      test('returns the diary entry of the date', () async {
+        await dbClient.insertDiary(
+          content: 'Other',
+          date: DateTime(2024, 1, 2),
+        );
+        final diary = await dbClient.insertDiary(
+          content: 'Diary',
+          date: DateTime(2024),
+        );
+
+        final result = await dbClient.getDiaryByDate(date: DateTime(2024));
+
+        expect(result, diary);
+      });
+
+      test('returns the first diary entry when the date has several', () async {
+        final first = await dbClient.insertDiary(
+          content: 'First',
+          date: DateTime(2024),
+        );
+        await dbClient.insertDiary(content: 'Second', date: DateTime(2024));
+
+        final result = await dbClient.getDiaryByDate(date: DateTime(2024));
+
+        expect(result, first);
+      });
+
+      test('returns null when the date has no diary entry', () async {
+        await dbClient.insertDiary(
+          content: 'Other',
+          date: DateTime(2024, 1, 2),
+        );
+
+        final result = await dbClient.getDiaryByDate(date: DateTime(2024));
+
+        expect(result, isNull);
+      });
+    });
+
     group('updateDiary', () {
       test('should update a diary entry correctly', () async {
         final now = clock.now();

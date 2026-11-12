@@ -35,24 +35,60 @@ void main() {
   });
 
   group('addDiaryImage', () {
-    test('inserts a row for the stored file', () async {
-      final image = DiaryImage(
-        id: 1,
-        diaryId: 2,
-        fileName: 'photo.jpg',
-        createdAt: DateTime(2024),
-        updatedAt: DateTime(2024),
-      );
+    final date = DateTime(2024);
+    final entry = DiaryEntry(
+      id: 2,
+      content: 'Diary',
+      date: date,
+      createdAt: date,
+      updatedAt: date,
+    );
+    final image = DiaryImage(
+      id: 1,
+      diaryId: 2,
+      fileName: 'photo.jpg',
+      createdAt: date,
+      updatedAt: date,
+    );
+
+    setUp(() {
       when(
         dbClient.insertDiaryImage(diaryId: 2, fileName: 'photo.jpg'),
       ).thenAnswer((_) async => image);
+    });
+
+    test('adds the image to the diary entry of the date', () async {
+      when(
+        dbClient.getDiaryByDate(date: date),
+      ).thenAnswer((_) async => entry);
 
       final result = await command.addDiaryImage(
-        diaryId: 2,
+        date: date,
         fileName: 'photo.jpg',
       );
 
-      expect(result, image);
+      expect(result, (entry: entry, image: image));
+      verifyNever(
+        dbClient.insertDiary(content: anyNamed('content'), date: date),
+      );
+    });
+
+    test('creates an empty diary entry when the date has none', () async {
+      when(dbClient.getDiaryByDate(date: date)).thenAnswer((_) async => null);
+      when(
+        dbClient.insertDiary(content: '', date: date),
+      ).thenAnswer((_) async => entry);
+
+      final result = await command.addDiaryImage(
+        date: date,
+        fileName: 'photo.jpg',
+      );
+
+      expect(result, (entry: entry, image: image));
+      verifyInOrder([
+        dbClient.insertDiary(content: '', date: date),
+        dbClient.insertDiaryImage(diaryId: 2, fileName: 'photo.jpg'),
+      ]);
     });
   });
 

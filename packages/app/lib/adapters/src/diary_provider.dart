@@ -134,54 +134,34 @@ class CachedDiaries extends _$CachedDiaries {
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
 
-  /// Add the photo at [path] to a diary entry.
+  /// Add the photo at [path] to the diary entry of [date].
   ///
-  /// If a diary doesn't exist for the specified date,
-  /// creates an empty diary first.
+  /// Adds the entry to the state when the date had none.
   Future<void> addImage({
     required DateTime date,
     required String path,
   }) async {
     final fileName = await _imageCommand.storePhoto(path);
-    final existingDiary = state.requireValue.diaries.where((d) {
-      return d.entry.date == date;
-    }).firstOrNull;
-
-    if (existingDiary == null) {
-      // Cannot use unawaited for optimistic update
-      // because Diary ID is needed for state update.
-      final entry = await _diaryCommand.addDiary(date: date, content: '');
-      final newImage = await _imageCommand.addDiaryImage(
-        diaryId: entry.id,
-        fileName: fileName,
-      );
-
-      final current = state.requireValue;
-      state = AsyncValue.data((
-        diaries: [
-          ...current.diaries,
-          Diary(entry: entry, images: [newImage]),
-        ],
-        dates: current.dates,
-      ));
-      return;
-    }
-
-    final entry = existingDiary.entry;
     // Cannot use unawaited for optimistic update
-    // because DiaryImage is needed for state update.
-    final newImage = await _imageCommand.addDiaryImage(
-      diaryId: entry.id,
+    // because the diary entry and its image are needed for state update.
+    final (:entry, :image) = await _imageCommand.addDiaryImage(
+      date: date,
       fileName: fileName,
     );
 
     final current = state.requireValue;
-    final updatedDiaries = current.diaries.map((d) {
-      if (d.entry.id == entry.id) {
-        return d.copyWith(images: [...d.images, newImage]);
-      }
-      return d;
-    }).toList();
+    final hasDiary = current.diaries.any((d) => d.entry.id == entry.id);
+    final updatedDiaries = hasDiary
+        ? current.diaries.map((d) {
+            if (d.entry.id == entry.id) {
+              return d.copyWith(images: [...d.images, image]);
+            }
+            return d;
+          }).toList()
+        : [
+            ...current.diaries,
+            Diary(entry: entry, images: [image]),
+          ];
 
     state = AsyncValue.data((diaries: updatedDiaries, dates: current.dates));
   }
