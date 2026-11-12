@@ -35,7 +35,7 @@ class _FakeLibrary extends Fake implements DevicePhotos {
 }
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
-  Future<int> recovery = Future.value(0);
+  Future<int> recovery = Future.syncValue(0);
 
   @override
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) {

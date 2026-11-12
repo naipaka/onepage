@@ -39,8 +39,8 @@ class MockFirebaseRemoteConfigPlatform extends Mock
   Future<bool> fetchAndActivate() {
     return super.noSuchMethod(
       Invocation.method(#fetchAndActivate, []),
-      returnValue: Future<bool>.value(true),
-      returnValueForMissingStub: Future<bool>.value(true),
+      returnValue: Future<bool>.syncValue(true),
+      returnValueForMissingStub: Future<bool>.syncValue(true),
     ) as Future<bool>;
   }
 
