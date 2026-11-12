@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:theme/theme.dart';
 
 import 'pages/src/initialization_page.dart';
@@ -24,7 +24,12 @@ class App extends ConsumerWidget {
       supportedLocales: supportedLocales,
       localizationsDelegates: localizationsDelegates,
       builder: (_, child) {
-        return InitializationPage(onInitialized: (_) => child);
+        // adaptive_dialog and toastification still read the theme and
+        // localizations from package:flutter/material.dart.
+        // ignore: deprecated_member_use
+        return MaterialUiCompatibilityBridge(
+          child: InitializationPage(onInitialized: (_) => child),
+        );
       },
     );
   }

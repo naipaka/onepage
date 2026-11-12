@@ -4,10 +4,10 @@
 import 'dart:async';
 
 import 'package:backup/backup.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mockito/mockito.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/pages/pages.dart';
@@ -63,6 +63,12 @@ void main() {
               localizationsDelegates: localizationsDelegates,
               supportedLocales: AppLocaleUtils.supportedLocales,
               locale: const Locale('en'),
+              // adaptive_dialog still reads the localizations from
+              // package:flutter/material.dart.
+              // ignore: deprecated_member_use
+              builder: (_, child) => MaterialUiCompatibilityBridge(
+                child: child!,
+              ),
               home: const BackupPage(),
             ),
           ),

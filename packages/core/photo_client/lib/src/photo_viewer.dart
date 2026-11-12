@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// {@template photo_client.PhotoThumbnail}
 /// A widget that displays a thumbnail of a photo file.

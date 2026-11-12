@@ -1,6 +1,6 @@
 // Allow hardcoding of colors for Theme settings.
 // ignore_for_file: avoid_hardcoded_color
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A [ColorScheme] for dark theme.
 const darkColorScheme = ColorScheme.dark(

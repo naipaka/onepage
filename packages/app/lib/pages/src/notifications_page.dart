@@ -1,8 +1,8 @@
 import 'package:app_settings/app_settings.dart';
-import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:notification_client/notification_client.dart';
 import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';

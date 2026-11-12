@@ -11,8 +11,7 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  flutter_localizations:
-    sdk: flutter
+  material_ui: ^1.11.0
   slang: ^4.19.2
   slang_flutter: ^4.10.0
 

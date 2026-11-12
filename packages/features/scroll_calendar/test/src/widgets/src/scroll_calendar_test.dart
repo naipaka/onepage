@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:clock/clock.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 

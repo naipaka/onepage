@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_riverpod: ^3.5.0
+  material_ui: ^1.11.0
   package_info_plus: ^10.2.2
   riverpod_annotation: ^4.0.8
   simple_logger: ^1.10.2
