@@ -63,12 +63,6 @@ void main() {
               localizationsDelegates: localizationsDelegates,
               supportedLocales: AppLocaleUtils.supportedLocales,
               locale: const Locale('en'),
-              // adaptive_dialog still reads the localizations from
-              // package:flutter/material.dart.
-              // ignore: deprecated_member_use
-              builder: (_, child) => MaterialUiCompatibilityBridge(
-                child: child!,
-              ),
               home: const BackupPage(),
             ),
           ),

@@ -19,8 +19,8 @@ dependencies:
     path: ../../core/photo_storage/
 
 dev_dependencies:
-  altive_lints: ^4.1.0
-  build_runner: ^2.16.1
+  altive_lints: ^4.2.0
+  build_runner: ^2.16.2
   clock: ^1.1.3
   flutter_test:
     sdk: flutter

@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'dart:async' as _i6;
 import 'dart:io' as _i7;
 import 'dart:typed_data' as _i11;
@@ -1054,6 +1055,35 @@ class MockDbClient extends _i1.Mock implements _i3.DbClient {
       this,
       Invocation.method(
         #$writeInsertable,
+        [table, insertable],
+        {#startIndex: startIndex},
+      ),
+    ),
+  ) as _i2.GenerationContext);
+
+  @override
+  _i2.GenerationContext $writeUpdateInsertable(
+    _i2.TableInfo<_i2.Table, dynamic>? table,
+    _i2.Insertable<dynamic>? insertable, {
+    int? startIndex,
+  }) => (super.noSuchMethod(
+    Invocation.method(
+      #$writeUpdateInsertable,
+      [table, insertable],
+      {#startIndex: startIndex},
+    ),
+    returnValue: _FakeGenerationContext_23(
+      this,
+      Invocation.method(
+        #$writeUpdateInsertable,
+        [table, insertable],
+        {#startIndex: startIndex},
+      ),
+    ),
+    returnValueForMissingStub: _FakeGenerationContext_23(
+      this,
+      Invocation.method(
+        #$writeUpdateInsertable,
         [table, insertable],
         {#startIndex: startIndex},
       ),

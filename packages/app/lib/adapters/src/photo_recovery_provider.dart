@@ -13,13 +13,13 @@ part 'photo_recovery_provider.g.dart';
 typedef PhotoRecoveryStatus = ({int completed, int total});
 
 /// Provides the photos saved on the device.
-@riverpod
+@Riverpod(keepAlive: true)
 DevicePhotos devicePhotos(Ref ref) => const DevicePhotos();
 
 /// A provider that creates a [PhotoRecoveryCommand] instance.
 ///
 /// {@macro photo_recovery.PhotoRecoveryCommand}
-@riverpod
+@Riverpod(keepAlive: true)
 PhotoRecoveryCommand photoRecoveryCommand(Ref ref) {
   return PhotoRecoveryCommand(
     dbClient: ref.watch(dbClientProvider),
@@ -67,7 +67,7 @@ class PhotoRecovery extends _$PhotoRecovery {
     if (state != null) {
       return null;
     }
-    final images = await ref.read(externalDiaryImagesProvider.future);
+    final images = await ref.read(diaryQueryProvider).getExternalDiaryImages();
     final documents = await _devicePhotos.requestPhotos([
       for (final image in images) image.photoId!,
     ]);

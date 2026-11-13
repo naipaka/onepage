@@ -15,15 +15,14 @@ dependencies:
   material_ui: ^1.11.0
   package_info_plus: ^10.2.2
   riverpod_annotation: ^4.0.8
-  simple_logger: ^1.10.2
+  simple_logger: ^1.11.0
   utils:
     path: ../utils
 
 dev_dependencies:
-  altive_lints: ^4.1.0
-  build_runner: ^2.16.1
+  altive_lints: ^4.2.0
+  build_runner: ^2.16.2
   flutter_test:
     sdk: flutter
   mockito: ^5.8.1
   riverpod_generator: ^4.0.10
-  riverpod_lint: 3.2.0

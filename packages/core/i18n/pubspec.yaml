@@ -13,14 +13,14 @@ dependencies:
     sdk: flutter
   material_ui: ^1.11.0
   slang: ^4.19.2
-  slang_flutter: ^4.10.0
+  slang_flutter: ^4.19.0
 
 dev_dependencies:
-  altive_lints: ^4.1.0
-  build_runner: ^2.16.1
+  altive_lints: ^4.2.0
+  build_runner: ^2.16.2
   flutter_test:
     sdk: flutter
-  slang_build_runner: ^4.10.0
+  slang_build_runner: ^4.19.0
 
 flutter:
   uses-material-design: true

@@ -1,7 +1,11 @@
+// riverpod_lint treats a ProviderScope as the root only when it is written
+// directly inside runApp or pumpWidget. The one built here is the root for both
+// main and the E2E tests.
+// ignore_for_file: riverpod_lint/scoped_providers_should_specify_dependencies
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
-import 'package:material_ui/material_ui.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:prefs_client/prefs_client.dart';
 import 'package:provider_utils/provider_utils.dart';
@@ -28,7 +32,7 @@ class AppInitializer {
   }
 
   /// Initializes async dependencies and returns the root widget.
-  static Future<Widget> createApp({Tracker? tracker}) async {
+  static Future<ProviderScope> createApp({Tracker? tracker}) async {
     final flavor = Flavor.values.byName(const String.fromEnvironment('flavor'));
 
     final effectiveTracker = tracker ?? Tracker();

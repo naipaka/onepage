@@ -27,7 +27,7 @@ final class DevicePhotosProvider
         argument: null,
         retry: null,
         name: r'devicePhotosProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -54,7 +54,7 @@ final class DevicePhotosProvider
   }
 }
 
-String _$devicePhotosHash() => r'e4eb7918d5463fc54d33f3072f598cb01832fb27';
+String _$devicePhotosHash() => r'c624d0ac9fa85cceeeaf64f1b4a7ede8eeae209e';
 
 /// A provider that creates a [PhotoRecoveryCommand] instance.
 ///
@@ -84,7 +84,7 @@ final class PhotoRecoveryCommandProvider
         argument: null,
         retry: null,
         name: r'photoRecoveryCommandProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -113,7 +113,7 @@ final class PhotoRecoveryCommandProvider
 }
 
 String _$photoRecoveryCommandHash() =>
-    r'99437920db21bd1c0700a575db342349d04e95a4';
+    r'a4de3375449733de8334c909dbfb3f7b08975a5e';
 
 /// Provides how the app can get access to more of the photos to recover.
 
@@ -198,7 +198,7 @@ final class PhotoRecoveryProvider
   }
 }
 
-String _$photoRecoveryHash() => r'ce351a18f93b81e6103e0631d42e33bf4e40bff3';
+String _$photoRecoveryHash() => r'674bb203576eb58a29e86a816f09a69ec5b923a1';
 
 /// Recovers photos. The state is the progress of the running recovery.
 

@@ -24,8 +24,8 @@ class App extends ConsumerWidget {
       supportedLocales: supportedLocales,
       localizationsDelegates: localizationsDelegates,
       builder: (_, child) {
-        // adaptive_dialog and toastification still read the theme and
-        // localizations from package:flutter/material.dart.
+        // toastification still reads the theme from
+        // package:flutter/material.dart.
         // ignore: deprecated_member_use
         return MaterialUiCompatibilityBridge(
           child: InitializationPage(onInitialized: (_) => child),

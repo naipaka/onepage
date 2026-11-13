@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'dart:async' as _i3;
 
 import 'package:in_app_review/in_app_review.dart' as _i4;

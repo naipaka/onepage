@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'dart:async' as _i3;
 
 import 'package:flutter_local_notifications/src/flutter_local_notifications_plugin.dart'
@@ -211,6 +212,13 @@ class MockFlutterLocalNotificationsPlugin extends _i1.Mock
           <_i5.PendingNotificationRequest>[],
         ),
   ) as _i3.Future<List<_i5.PendingNotificationRequest>>);
+
+  @override
+  _i3.Future<bool?> openAppNotificationSettings() => (super.noSuchMethod(
+    Invocation.method(#openAppNotificationSettings, []),
+    returnValue: _i3.Future<bool?>.value(),
+    returnValueForMissingStub: _i3.Future<bool?>.value(),
+  ) as _i3.Future<bool?>);
 
   @override
   _i3.Future<List<_i5.ActiveNotification>> getActiveNotifications() =>
@@ -483,8 +491,22 @@ class MockAndroidFlutterLocalNotificationsPlugin extends _i1.Mock
   ) as _i3.Future<bool?>);
 
   @override
+  _i3.Future<bool?> openAppNotificationSettings() => (super.noSuchMethod(
+    Invocation.method(#openAppNotificationSettings, []),
+    returnValue: _i3.Future<bool?>.value(),
+    returnValueForMissingStub: _i3.Future<bool?>.value(),
+  ) as _i3.Future<bool?>);
+
+  @override
   _i3.Future<bool?> canScheduleExactNotifications() => (super.noSuchMethod(
     Invocation.method(#canScheduleExactNotifications, []),
+    returnValue: _i3.Future<bool?>.value(),
+    returnValueForMissingStub: _i3.Future<bool?>.value(),
+  ) as _i3.Future<bool?>);
+
+  @override
+  _i3.Future<bool?> canPostPromotedNotifications() => (super.noSuchMethod(
+    Invocation.method(#canPostPromotedNotifications, []),
     returnValue: _i3.Future<bool?>.value(),
     returnValueForMissingStub: _i3.Future<bool?>.value(),
   ) as _i3.Future<bool?>);
@@ -593,6 +615,13 @@ class MockIOSFlutterLocalNotificationsPlugin extends _i1.Mock
         returnValueForMissingStub:
             _i3.Future<_i17.NotificationsEnabledOptions?>.value(),
       ) as _i3.Future<_i17.NotificationsEnabledOptions?>);
+
+  @override
+  _i3.Future<bool?> openAppNotificationSettings() => (super.noSuchMethod(
+    Invocation.method(#openAppNotificationSettings, []),
+    returnValue: _i3.Future<bool?>.value(),
+    returnValueForMissingStub: _i3.Future<bool?>.value(),
+  ) as _i3.Future<bool?>);
 
   @override
   _i3.Future<void> zonedSchedule({
