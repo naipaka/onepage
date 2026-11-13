@@ -38,7 +38,7 @@ void main() {
       final container = createContainer(
         overrides: [
           packageInfoInitializingProvider.overrideWith(
-            (ref) => Future.value(mockPackageInfo),
+            (ref) => Future.syncValue(mockPackageInfo),
           ),
         ],
       )..listen(packageInfoInitializingProvider, (_, _) {});

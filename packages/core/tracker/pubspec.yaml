@@ -4,8 +4,8 @@ version: 0.0.1
 resolution: workspace
 
 environment:
-  sdk: ^3.13.2
-  flutter: ">=3.32.6"
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
 
 dependencies:
   firebase_analytics: ^13.0.1

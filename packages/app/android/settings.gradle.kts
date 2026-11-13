@@ -20,14 +20,14 @@ plugins {
     id("dev.flutter.flutter-plugin-loader") version "1.0.0"
     // Check the latest version here: Google Services Gradle Plugin
     // https://mvnrepository.com/artifact/com.android.tools.build/gradle
-    id("com.android.application") version "8.13.2" apply false
+    id("com.android.application") version "9.5.1" apply false
     // Check the latest version here: Kotlin Releases
     // https://kotlinlang.org/docs/releases.html#release-details
-    id("org.jetbrains.kotlin.android") version "2.3.20" apply false
+    id("org.jetbrains.kotlin.android") version "2.4.21" apply false
     // Check the latest version here: Firebase Android SDK Release Notes
     // https://firebase.google.com/support/release-notes/android
-    id("com.google.gms.google-services") version "4.4.4" apply false // For Firebase.
-    id("com.google.firebase.crashlytics") version "3.0.6" apply false // For Crashlytics.
+    id("com.google.gms.google-services") version "4.5.0" apply false // For Firebase.
+    id("com.google.firebase.crashlytics") version "3.0.8" apply false // For Crashlytics.
 }
 
 include(":app")

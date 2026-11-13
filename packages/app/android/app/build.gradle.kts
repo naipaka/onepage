@@ -52,7 +52,8 @@ tasks.register<Copy>("copySources") {
     dependsOn("selectGoogleServicesJson")
 }
 
-tasks.whenTaskAdded {
+tasks.configureEach {
+    if (name == "copySources" || name == "selectGoogleServicesJson") return@configureEach
     if (name == "processDebugGoogleServices" || name == "processReleaseGoogleServices") {
         dependsOn("selectGoogleServicesJson")
     }
@@ -61,9 +62,13 @@ tasks.whenTaskAdded {
 
 android {
     namespace = "com.naipaka.onepage"
-    // flutter_sdk/packages/flutter_tools/gradle/src/main/groovy/flutter.groovy
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
+    compileSdk = 37
+    ndkVersion = flutter.ndkVersion
+
+    buildFeatures {
+        // For the app_name string defined with resValue in defaultConfig.
+        resValues = true
+    }
 
     compileOptions {
         // For Flutter Local Notifications.
@@ -84,7 +89,7 @@ android {
         applicationId = dartDefines["appId"]
         // For Firebase.
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = 37
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled = true // For Firebase.
@@ -142,7 +147,7 @@ dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
 
     // For Patrol: provides the Android Test Orchestrator.
-    androidTestUtil("androidx.test:orchestrator:1.5.1")
+    androidTestUtil("androidx.test:orchestrator:1.6.1")
     
     // Import the Firebase BoM.
     // When using BoM, it is not necessary to specify the version in each Firebase library dependency.
