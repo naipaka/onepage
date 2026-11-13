@@ -52,7 +52,8 @@ tasks.register<Copy>("copySources") {
     dependsOn("selectGoogleServicesJson")
 }
 
-tasks.whenTaskAdded {
+tasks.configureEach {
+    if (name == "copySources" || name == "selectGoogleServicesJson") return@configureEach
     if (name == "processDebugGoogleServices" || name == "processReleaseGoogleServices") {
         dependsOn("selectGoogleServicesJson")
     }
