@@ -110,35 +110,23 @@ class PrefsClient {
 
 ### Provider Architecture Patterns
 
-Synchronous vs Asynchronous providers based on initialization needs
+Initialize async dependencies once at startup, and read them synchronously everywhere else:
 
 ```dart
-// ❌ BAD - Unnecessary async providers causing UI complexity
+/// Initializes the shared preferences client once at startup.
 @Riverpod(keepAlive: true)
-Future<PrefsClient> prefsClient(Ref ref) => PrefsClient.initialize();
+Future<PrefsClient> prefsClientInitializing(Ref ref) => PrefsClient.initialize();
 
-// UI becomes complex with AsyncValue handling
-prefsClientAsync.when(
-  loading: () => CircularProgressIndicator(),
-  error: (error, stack) => ErrorWidget(),
-  data: (prefsClient) => ActualContent(),
-);
-
-// ✅ GOOD - Synchronous providers with main.dart initialization
+/// After initialization, use this, which can be obtained synchronously.
 @Riverpod(keepAlive: true)
 PrefsClient prefsClient(Ref ref) {
-  throw UnimplementedError('Must be overridden in main.dart');
+  return ref.watch(prefsClientInitializingProvider).requireValue;
 }
-
-// main.dart handles initialization with parallel execution
-final (_, prefsClient) = await (
-  LocaleSettings.useDeviceLocale(),
-  PrefsClient.initialize(),
-).wait;
-
-// UI becomes simple
-final prefsClient = ref.watch(prefsClientProvider);
 ```
+
+- Await each `xxxInitializing` provider in `initializationProvider`. `InitializationPage` shows loading and retry until it completes, so screens read `xxxProvider` synchronously.
+- Create dependencies that need no async setup, such as `Flavor` and `Tracker`, directly in their providers.
+- `main` runs only what must happen before `runApp` (Firebase and the slang locale) and calls `runApp(ProviderScope(child: ...))` without overrides. The E2E tests do the same setup and pump the same root.
 
 ## Package Architecture Patterns
 

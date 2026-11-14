@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mockito/annotations.dart';
@@ -40,19 +42,32 @@ void main() {
       container.dispose();
     });
 
-    test('prefsClientProvider throws UnimplementedError by default', () {
-      final container = ProviderContainer();
-      expect(
-        () => container.read(prefsClientProvider),
-        throwsA(
-          predicate(
-            (e) =>
-                e.toString().contains('UnimplementedError') ||
-                (e is Error && e.toString().contains('UnimplementedError')),
+    test('prefsClientProvider is not available before initialization', () {
+      final container = ProviderContainer(
+        overrides: [
+          prefsClientInitializingProvider.overrideWith(
+            (ref) => Completer<PrefsClient>().future,
           ),
-        ),
+        ],
       );
-      container.dispose();
+      addTearDown(container.dispose);
+
+      expect(() => container.read(prefsClientProvider), throwsA(anything));
+    });
+
+    test('prefsClientProvider provides the initialized client', () async {
+      final container = ProviderContainer(
+        overrides: [
+          prefsClientInitializingProvider.overrideWith(
+            (ref) async => mockPrefsClient,
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      await container.read(prefsClientInitializingProvider.future);
+
+      expect(container.read(prefsClientProvider), mockPrefsClient);
     });
 
     test('textInputHapticEnabledProvider returns initial state', () {

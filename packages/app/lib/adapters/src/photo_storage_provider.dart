@@ -5,16 +5,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'photo_storage_provider.g.dart';
 
+/// Creates the photo file storage once at startup.
+@Riverpod(keepAlive: true)
+Future<PhotoStorage> photoStorageInitializing(Ref ref) => PhotoStorage.create();
+
 /// Provider for the photo file storage.
 ///
-/// This provider must be overridden in main.dart with an initialized instance.
-/// By default, it throws UnimplementedError to ensure proper initialization.
+/// After initialization, use this, which can be obtained synchronously.
 @Riverpod(keepAlive: true)
 PhotoStorage photoStorage(Ref ref) {
-  throw UnimplementedError(
-    'PhotoStorage provider must be overridden with an initialized instance '
-    'in main.dart',
-  );
+  return ref.watch(photoStorageInitializingProvider).requireValue;
 }
 
 /// Provider for the file of a stored photo.

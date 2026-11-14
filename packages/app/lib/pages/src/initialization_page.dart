@@ -40,6 +40,8 @@ class InitializationPage extends ConsumerWidget {
         error,
         onRetry: () {
           ref
+            ..invalidate(prefsClientInitializingProvider)
+            ..invalidate(photoStorageInitializingProvider)
             ..invalidate(packageInfoInitializingProvider)
             ..invalidate(configuratorInitializingProvider)
             ..invalidate(notificationClientInitializingProvider)

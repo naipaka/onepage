@@ -54,4 +54,4 @@ final class TrackerProvider
   }
 }
 
-String _$trackerHash() => r'8b77cc11d593f46376606aaa14800a713c90d7c9';
+String _$trackerHash() => r'9a23aa3a53f7dda228fc6141571564e8a7e3d231';
