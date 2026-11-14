@@ -43,8 +43,6 @@ Future<DevicePhotoAccessOption> devicePhotoAccessOption(Ref ref) async {
 class PhotoRecovery extends _$PhotoRecovery {
   PhotoRecoveryCommand get _command => ref.read(photoRecoveryCommandProvider);
 
-  DevicePhotos get _devicePhotos => ref.read(devicePhotosProvider);
-
   @override
   PhotoRecoveryStatus? build() => null;
 
@@ -67,16 +65,8 @@ class PhotoRecovery extends _$PhotoRecovery {
     if (state != null) {
       return null;
     }
-    final images = await ref.read(diaryQueryProvider).getExternalDiaryImages();
-    final documents = await _devicePhotos.requestPhotos([
-      for (final image in images) image.photoId!,
-    ]);
-    if (documents == null) {
-      return null;
-    }
-    state = (completed: 0, total: 0);
     return _waitForRecovery(
-      _command.recoverDocuments(documents, onProgress: _updateProgress),
+      _command.recoverRequested(onProgress: _updateProgress),
     );
   }
 
@@ -84,10 +74,10 @@ class PhotoRecovery extends _$PhotoRecovery {
     state = (completed: completed, total: total);
   }
 
-  Future<int> _waitForRecovery(Future<int> recovery) async {
+  Future<T> _waitForRecovery<T extends int?>(Future<T> recovery) async {
     try {
       final recovered = await recovery;
-      if (recovered > 0) {
+      if (recovered != null && recovered > 0) {
         ref.invalidate(diariesProvider);
       }
       return recovered;
