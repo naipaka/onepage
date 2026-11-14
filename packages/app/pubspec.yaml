@@ -42,8 +42,8 @@ dependencies:
   # Because flutter depends on intl 0.20.2.
   # https://github.com/flutter/flutter/blob/stable/packages/flutter/pubspec.yaml#L42
   intl: ^0.20.3
-  # adaptive_dialog allows macos_ui 2.0.0, which uses
-  # IgnorePointer.ignoringSemantics, removed in Flutter 3.50.
+  # FIXME: Remove once adaptive_dialog stops allowing macos_ui 2.0.0, which
+  # uses IgnorePointer.ignoringSemantics, removed in Flutter 3.50.
   macos_ui: ^2.2.2
   material_ui: ^1.11.0
   notification_client:
