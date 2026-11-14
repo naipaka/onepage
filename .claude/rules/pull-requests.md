@@ -17,10 +17,10 @@
 All PR bodies must include these sections:
 
 ```
-## 🙌 What's Done
-## ✍️ What's Not Done
-## 📝 Additional Notes
-## 🖼️ Image Differences
+## What's Done
+## What's Not Done
+## Additional Notes
+## Image Differences
 ## Pre-launch Checklist
 ```
 
@@ -33,3 +33,13 @@ All PR bodies must include these sections:
 ## Attribution
 
 - Never add "Generated with Claude Code" or any AI attribution to PR bodies
+
+## After a PR Is Merged
+
+When the user says a PR was merged, clean up before starting anything else:
+
+1. Leave the worktree session.
+2. Run `git checkout main` in the main checkout.
+3. Run `git pull --rebase origin main`.
+4. Run `gh poi` to delete the local branches whose PRs are merged.
+5. Remove the merged PR's worktree if it is still there, and check with `git worktree list`.

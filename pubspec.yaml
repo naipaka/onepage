@@ -30,7 +30,7 @@ workspace:
   - packages/features/update_requester
 
 dev_dependencies:
-  melos: ^7.8.1
+  melos: ^8.10.1
 
 melos:
   repository: https://github.com/naipaka/onepage
@@ -51,22 +51,26 @@ melos:
       releaseUrl: true
 
   scripts:
-    # Issue on file exclusion feature: https://github.com/dart-lang/dart_style/issues/864
+    # format:ci, gen, and gen:watch run once from the workspace root. They are
+    # melos scripts so that they run with the Flutter SDK in sdkPath, which
+    # MELOS_SDK_PATH replaces on CI.
     format:ci:
-      # `exec:` runs this inside each package, so `find .` lists that package's
-      # own files.
-      #
-      # `-exec ... {} +` is what makes `exec:` safe here: it passes all matches
-      # to one `dart format` call, runs nothing when there are no matches (a
-      # bare `dart format` with no paths reads stdin and blocks), and returns
-      # non-zero when that call does. Shell variables are avoided on purpose:
-      # melos interpolates `$name` in scripts before the shell sees them.
-      exec: |
-        find . -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
+      # `dart format` cannot exclude files (dart_style issue 864), so `find`
+      # lists the files without the generated ones. `-exec ... {} +` passes the
+      # matches to as few `dart format` calls as possible and fails when one of
+      # them does. Shell variables are avoided: melos interpolates `$name` in
+      # scripts before the shell sees them.
+      run: |
+        find packages -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
       description: Check formatting without writing.
-      packageFilters:
-        flutter: true
-        dirExists: [lib, test]
+
+    gen:
+      run: dart run build_runner build --workspace
+      description: Run generate code.
+
+    gen:watch:
+      run: dart run build_runner watch --workspace
+      description: Watch and run generate code.
 
     fix:
       exec: |
@@ -75,29 +79,9 @@ melos:
       packageFilters:
         dirExists: lib
 
-    gen:
-      run: dart run build_runner build --delete-conflicting-outputs
-      exec:
-        concurrency: 1
-        orderDependents: true
-      description: Run generate code.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "build_runner"
-
-    gen:watch:
-      run: dart run build_runner watch --delete-conflicting-outputs
-      exec:
-        concurrency: 99
-        orderDependents: true
-      description: Watch and run generate code.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "build_runner"
-
     slang:
-      run: dart run slang
       exec:
+        command: dart run slang
         concurrency: 1
       description: Run generate translation code.
       packageFilters:
@@ -105,8 +89,8 @@ melos:
         dependsOn: slang
 
     slang:watch:
-      run: dart run slang watch
       exec:
+        command: dart run slang watch
         concurrency: 1
       description: Run generate translation code.
       packageFilters:
@@ -114,8 +98,8 @@ melos:
         dependsOn: slang
 
     drift:migrations:
-      run: dart run drift_dev make-migrations
       exec:
+        command: dart run drift_dev make-migrations
         concurrency: 1
       description: Run drift migration.
       packageFilters:
@@ -123,20 +107,20 @@ melos:
         dependsOn: "drift_dev"
 
     test:
-      run: flutter test
       exec:
+        command: flutter test
         failFast: true
       description: Run flutter test.
       packageFilters:
         dirExists: test
 
     test:cov:
-      run: |
-        flutter test --coverage
-        lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/new_lcov.info --ignore-errors unused
-        genhtml coverage/new_lcov.info -o coverage/html
-        open coverage/html/index.html
       exec:
+        command: |
+          flutter test --coverage
+          lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/new_lcov.info --ignore-errors unused
+          genhtml coverage/new_lcov.info -o coverage/html
+          open coverage/html/index.html
         failFast: true
       description: Run flutter test with coverage.
       packageFilters:
@@ -146,8 +130,8 @@ melos:
     # at once (very_good_cli issue 947), so the CI scripts run one package at a
     # time.
     test:ci:
-      run: very_good test --coverage
       exec:
+        command: very_good test --coverage
         concurrency: 1
         failFast: true
       description: Run the tests of the packages that run on any OS for CI.
@@ -159,8 +143,8 @@ melos:
           - onepage
 
     test:ci:macos:
-      run: very_good test --coverage
       exec:
+        command: very_good test --coverage
         concurrency: 1
         failFast: true
       description: Run the tests that need macOS for CI (golden tests and photo_manager).
@@ -170,16 +154,16 @@ melos:
           - onepage
 
     test:android:
-      # `\$` keeps the calling shell from expanding the name before melos sets it
-      # for each package.
-      run: >-
-        cd example &&
-        flutter build apk --debug --config-only &&
-        cd android &&
-        ./gradlew :\$MELOS_PACKAGE_NAME:testDebugUnitTest
       # Every plugin compiles Flutter's Gradle plugin into the same Kotlin
       # caches in the Flutter SDK, which fail when two builds open them at once.
       exec:
+        # `\$` keeps the calling shell from expanding the name before melos sets
+        # it for each package.
+        command: >-
+          cd example &&
+          flutter build apk --debug --config-only &&
+          cd android &&
+          ./gradlew :\$MELOS_PACKAGE_NAME:testDebugUnitTest
         concurrency: 1
       description: Run the Android unit tests of each plugin.
       packageFilters:
@@ -206,10 +190,10 @@ melos:
         dependsOn: "firebase_core"
 
     build:android:prod:
-      run: |
-        flutter build appbundle --dart-define-from-file=dart_defines/prod.env && \
-        sh create_native_debug_symbol.sh
       exec:
+        command: |
+          flutter build appbundle --dart-define-from-file=dart_defines/prod.env && \
+          sh create_native_debug_symbol.sh
         concurrency: 1
       description: Build the AppBundle for the production app.
       packageFilters:
@@ -223,12 +207,12 @@ melos:
       # `flutter build ipa` also exits with success when the upload fails and
       # only prints "Encountered error while creating the IPA", so the script
       # fails when the output has that line.
-      run: |
-        set -o pipefail && \
-        mkdir -p build/ios/ipa && \
-        flutter build ipa --dart-define-from-file=dart_defines/prod.env --export-options-plist="ios/prod/UploadOptions.plist" 2>&1 | tee build/ios/upload.log && \
-        ! grep -q "Encountered error while creating the IPA" build/ios/upload.log
       exec:
+        command: |
+          set -o pipefail && \
+          mkdir -p build/ios/ipa && \
+          flutter build ipa --dart-define-from-file=dart_defines/prod.env --export-options-plist="ios/prod/UploadOptions.plist" 2>&1 | tee build/ios/upload.log && \
+          ! grep -q "Encountered error while creating the IPA" build/ios/upload.log
         concurrency: 1
       description: Upload the IPA for the production app.
       packageFilters:

@@ -1,16 +1,16 @@
-## 🙌 What's Done
+## What's Done
 <!-- What has been accomplished in this Pull Request? -->
 - closes 
 
-## ✍️ What's Not Done
+## What's Not Done
 <!-- What is not included in this Pull Request? If none, write "None". -->
 - 
 
-## 📝 Additional Notes
+## Additional Notes
 <!-- Additional information for reviewers, such as concerns or implementation notes. -->
 - 
 
-## 🖼️ Image Differences
+## Image Differences
 <!-- Attach before and after screenshots or videos if there are UI changes. -->
 
 | Before    | After     |
