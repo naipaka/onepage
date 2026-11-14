@@ -26,14 +26,11 @@ class $AssetsImagesGen {
 }
 
 abstract final class Assets {
-  static const AssetGenImage adaptiveIcon = AssetGenImage(
-    'assets/adaptive-icon.png',
-  );
   static const AssetGenImage icon = AssetGenImage('assets/icon.png');
   static const $AssetsImagesGen images = $AssetsImagesGen();
 
   /// List of all assets
-  static List<AssetGenImage> get values => [adaptiveIcon, icon];
+  static List<AssetGenImage> get values => [icon];
 }
 
 class AssetGenImage {

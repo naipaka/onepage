@@ -53,4 +53,4 @@ final class FlavorProvider extends $FunctionalProvider<Flavor, Flavor, Flavor>
   }
 }
 
-String _$flavorHash() => r'a9b60c2a79c378c7a0f7153bb0d3f62af19c2449';
+String _$flavorHash() => r'e97b11ae2dae752706d58e1fbf64f75d12b6dd8d';

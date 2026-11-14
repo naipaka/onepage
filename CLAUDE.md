@@ -11,8 +11,8 @@ One Page is a Flutter diary app with a unique "one page only" concept. It uses a
 ## Development Setup
 
 ```bash
-make            # Initial setup (installs FVM, Melos, and required tools)
-make worktree   # Worktree setup
+make                     # Initial setup (installs FVM, Melos, and required tools)
+wtp add -b <new-branch>  # Create a worktree; .wtp.yml copies the untracked config files
 ```
 
 Use FVM for Flutter version management:

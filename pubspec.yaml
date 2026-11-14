@@ -95,27 +95,6 @@ melos:
         dirExists: lib
         dependsOn: "build_runner"
 
-    gen:icons:
-      exec: dart run flutter_launcher_icons
-      description: Generate launcher icons.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "flutter_launcher_icons"
-
-    gen:splash:
-      exec: dart run flutter_native_splash:create
-      description: Generate splash screen.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "flutter_native_splash"
-
-    gen:splash:remove:
-      exec: dart run flutter_native_splash:remove
-      description: Remove splash screen.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "flutter_native_splash"
-
     slang:
       run: dart run slang
       exec:

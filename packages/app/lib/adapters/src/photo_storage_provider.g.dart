@@ -57,21 +57,24 @@ String _$photoStorageInitializingHash() =>
 
 /// Provider for the photo file storage.
 ///
-/// After initialization, use this, which can be obtained synchronously.
+/// Throws until [photoStorageInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 
 @ProviderFor(photoStorage)
 final photoStorageProvider = PhotoStorageProvider._();
 
 /// Provider for the photo file storage.
 ///
-/// After initialization, use this, which can be obtained synchronously.
+/// Throws until [photoStorageInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 
 final class PhotoStorageProvider
     extends $FunctionalProvider<PhotoStorage, PhotoStorage, PhotoStorage>
     with $Provider<PhotoStorage> {
   /// Provider for the photo file storage.
   ///
-  /// After initialization, use this, which can be obtained synchronously.
+  /// Throws until [photoStorageInitializingProvider] completes, which
+  /// `initializationProvider` waits for before the app shows any page.
   PhotoStorageProvider._()
     : super(
         from: null,
