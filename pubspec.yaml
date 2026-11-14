@@ -51,22 +51,18 @@ melos:
       releaseUrl: true
 
   scripts:
-    # `dart format` cannot exclude files (dart_style issue 864), so `find` lists
-    # the files without the generated ones.
+    # format:ci, gen, and gen:watch run once from the workspace root. They are
+    # melos scripts so that they run with the Flutter SDK in sdkPath, which
+    # MELOS_SDK_PATH replaces on CI.
     format:ci:
-      # `-exec ... {} +` passes the matches to as few `dart format` calls as
-      # possible and fails when one of them does. Shell variables are avoided:
-      # melos interpolates `$name` in scripts before the shell sees them.
+      # `dart format` cannot exclude files (dart_style issue 864), so `find`
+      # lists the files without the generated ones. `-exec ... {} +` passes the
+      # matches to as few `dart format` calls as possible and fails when one of
+      # them does. Shell variables are avoided: melos interpolates `$name` in
+      # scripts before the shell sees them.
       run: |
         find packages -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
       description: Check formatting without writing.
-
-    fix:
-      exec: |
-        dart fix --apply lib
-      description: Run dart fix.
-      packageFilters:
-        dirExists: lib
 
     gen:
       run: dart run build_runner build --workspace
@@ -75,6 +71,13 @@ melos:
     gen:watch:
       run: dart run build_runner watch --workspace
       description: Watch and run generate code.
+
+    fix:
+      exec: |
+        dart fix --apply lib
+      description: Run dart fix.
+      packageFilters:
+        dirExists: lib
 
     slang:
       exec:
