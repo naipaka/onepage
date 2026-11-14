@@ -11,7 +11,8 @@ Future<PhotoStorage> photoStorageInitializing(Ref ref) => PhotoStorage.create();
 
 /// Provider for the photo file storage.
 ///
-/// After initialization, use this, which can be obtained synchronously.
+/// Throws until [photoStorageInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 @Riverpod(keepAlive: true)
 PhotoStorage photoStorage(Ref ref) {
   return ref.watch(photoStorageInitializingProvider).requireValue;

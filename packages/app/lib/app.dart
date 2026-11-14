@@ -24,8 +24,8 @@ class App extends ConsumerWidget {
       supportedLocales: supportedLocales,
       localizationsDelegates: localizationsDelegates,
       builder: (_, child) {
-        // toastification still reads the theme from
-        // package:flutter/material.dart.
+        // toastification reads the theme from package:flutter/material.dart.
+        // Remove the bridge when the app's own toast replaces toastification.
         // ignore: deprecated_member_use
         return MaterialUiCompatibilityBridge(
           child: InitializationPage(onInitialized: (_) => child),

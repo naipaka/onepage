@@ -11,7 +11,8 @@ Future<PrefsClient> prefsClientInitializing(Ref ref) =>
 
 /// Provider for the shared preferences client.
 ///
-/// After initialization, use this, which can be obtained synchronously.
+/// Throws until [prefsClientInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 @Riverpod(keepAlive: true)
 PrefsClient prefsClient(Ref ref) {
   return ref.watch(prefsClientInitializingProvider).requireValue;
