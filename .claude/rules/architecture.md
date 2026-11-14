@@ -117,7 +117,10 @@ Initialize async dependencies once at startup, and read them synchronously every
 @Riverpod(keepAlive: true)
 Future<PrefsClient> prefsClientInitializing(Ref ref) => PrefsClient.initialize();
 
-/// After initialization, use this, which can be obtained synchronously.
+/// Provider for the shared preferences client.
+///
+/// Throws until [prefsClientInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 @Riverpod(keepAlive: true)
 PrefsClient prefsClient(Ref ref) {
   return ref.watch(prefsClientInitializingProvider).requireValue;
@@ -125,8 +128,9 @@ PrefsClient prefsClient(Ref ref) {
 ```
 
 - Await each `xxxInitializing` provider in `initializationProvider`. `InitializationPage` shows loading and retry until it completes, so screens read `xxxProvider` synchronously.
-- Create dependencies that need no async setup, such as `Flavor` and `Tracker`, directly in their providers.
-- `main` runs only what must happen before `runApp` (Firebase and the slang locale) and calls `runApp(ProviderScope(child: ...))` without overrides. The E2E tests do the same setup and pump the same root.
+- Create dependencies that need no async setup, such as `Flavor`, directly in their providers.
+- When `main` needs the same instance before `runApp`, such as the `Tracker` for the error handlers, create it in `main` and pass it with `overrideWithValue` in the root `ProviderScope` given directly to `runApp`. The provider's own body creates the instance for the E2E tests and widget tests.
+- `main` runs only what must happen before `runApp` (Firebase, the slang locale and the error handlers) and calls `runApp(ProviderScope(...))`. The E2E tests do the same setup and pump the same root, without the error handlers.
 
 ## Package Architecture Patterns
 
