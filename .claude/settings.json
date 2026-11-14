@@ -51,8 +51,6 @@
       "Read(**/.env)",
       "Read(**/.env.*)",
       "Read(**/dart_defines/*.env)",
-      "Read(**/google-services.json)",
-      "Read(**/GoogleService-Info.plist)",
       "Read(**/*.pem)",
       "Read(**/*.p8)",
       "Read(**/*.p12)",
