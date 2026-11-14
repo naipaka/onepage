@@ -17,10 +17,10 @@
 All PR bodies must include these sections:
 
 ```
-## 🙌 What's Done
-## ✍️ What's Not Done
-## 📝 Additional Notes
-## 🖼️ Image Differences
+## What's Done
+## What's Not Done
+## Additional Notes
+## Image Differences
 ## Pre-launch Checklist
 ```
 
