@@ -23,17 +23,20 @@ In this project, we use the FlutterFire CLI to configure Firebase.
 2. Execute the following commands in the command line to configure Firebase. Please create one for each environment.
 
    ```sh
-   $ flutterfire configure --out=lib/environment/src/firebase_options_dev.dart --platforms=android,ios --ios-bundle-id=com.naipaka.onepage.dev --android-package-name=com.naipaka.onepage.dev
+   $ flutterfire configure --platforms=android,ios --ios-bundle-id=com.naipaka.onepage.dev --android-package-name=com.naipaka.onepage.dev --ios-out=ios/dev/GoogleService-Info.plist --android-out=android/app/src/dev/google-services.json
 
-   $ flutterfire configure --out=lib/environment/src/firebase_options_prod.dart --platforms=android,ios --ios-bundle-id=com.naipaka.onepage --android-package-name=com.naipaka.onepage
+   $ flutterfire configure --platforms=android,ios --ios-bundle-id=com.naipaka.onepage --android-package-name=com.naipaka.onepage --ios-out=ios/prod/GoogleService-Info.plist --android-out=android/app/src/prod/google-services.json
    ```
 
 3. Follow the instructions that appear to select your Firebase project and make the necessary configurations.
 
+4. The command also generates `lib/firebase_options.dart`. The app configures Firebase from `GoogleService-Info.plist` and `google-services.json`, so delete it.
+
 ### Configuring Files
 
-After running the `flutterfire configure` command, `GoogleService-Info.plist` and `google-services.json` files will be generated in your project.
-Please place them as follows:
+The app reads the Firebase files of the flavor it is built for.
+After each `flutterfire configure` run, move the `firebase.json` it writes to `ios/<flavor>/firebase.json`; the iOS build uses it to upload Crashlytics symbols to that flavor's project.
+Please place the files as follows:
 
 ```
 .
@@ -46,9 +49,11 @@ Please place them as follows:
 │               └── google-services.json
 └── ios
     ├── dev
+    │   ├── firebase.json
     │   ├── firebase_app_id_file.json
     │   └── GoogleService-Info.plist
     └── prod
+        ├── firebase.json
         ├── firebase_app_id_file.json
         └── GoogleService-Info.plist
 ```
