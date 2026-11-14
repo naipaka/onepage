@@ -57,21 +57,24 @@ String _$prefsClientInitializingHash() =>
 
 /// Provider for the shared preferences client.
 ///
-/// After initialization, use this, which can be obtained synchronously.
+/// Throws until [prefsClientInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 
 @ProviderFor(prefsClient)
 final prefsClientProvider = PrefsClientProvider._();
 
 /// Provider for the shared preferences client.
 ///
-/// After initialization, use this, which can be obtained synchronously.
+/// Throws until [prefsClientInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 
 final class PrefsClientProvider
     extends $FunctionalProvider<PrefsClient, PrefsClient, PrefsClient>
     with $Provider<PrefsClient> {
   /// Provider for the shared preferences client.
   ///
-  /// After initialization, use this, which can be obtained synchronously.
+  /// Throws until [prefsClientInitializingProvider] completes, which
+  /// `initializationProvider` waits for before the app shows any page.
   PrefsClientProvider._()
     : super(
         from: null,
