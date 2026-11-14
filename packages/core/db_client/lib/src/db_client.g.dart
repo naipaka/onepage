@@ -1075,7 +1075,7 @@ class $$DiariesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable(table),
+                  e.readTable<$DiariesTable, DiaryEntry>(table),
                   $$DiariesTableReferences(db, table, e),
                 ),
               )
@@ -1088,10 +1088,11 @@ class $$DiariesTableTableManager
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (diaryImagesRefs)
-                    await $_getPrefetchedData<
+                    await $_getPrefetchedDataByColumns<
                       DiaryEntry,
                       $DiariesTable,
-                      DiaryImage
+                      DiaryImage,
+                      $DiaryImagesTable
                     >(
                       currentTable: table,
                       referencedTable: $$DiariesTableReferences
@@ -1101,8 +1102,8 @@ class $$DiariesTableTableManager
                         table,
                         p0,
                       ).diaryImagesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.diaryId == item.id),
+                      currentColumn: 'id',
+                      referencedColumn: 'diary_id',
                       typedResults: items,
                     ),
                 ];
@@ -1393,7 +1394,7 @@ class $$DiaryImagesTableTableManager
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
-                  e.readTable(table),
+                  e.readTable<$DiaryImagesTable, DiaryImage>(table),
                   $$DiaryImagesTableReferences(db, table, e),
                 ),
               )

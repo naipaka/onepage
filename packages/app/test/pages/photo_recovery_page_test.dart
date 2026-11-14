@@ -29,18 +29,10 @@ class _FakeLibrary extends Fake implements DevicePhotos {
   int settingsOpened = 0;
   int accessRequests = 0;
   DevicePhotoAccessRequest request = DevicePhotoAccessRequest.allowed;
-  Map<String, String>? allowedPhotos = {'a': 'content://media/1'};
-  List<String>? requestedIds;
 
   @override
   Future<DevicePhotoAccessOption> accessOption(List<String> ids) async =>
       option;
-
-  @override
-  Future<Map<String, String>?> requestPhotos(List<String> ids) async {
-    requestedIds = ids;
-    return allowedPhotos;
-  }
 
   @override
   Future<void> openSettings() async => settingsOpened++;
@@ -58,9 +50,10 @@ class _FakeRouterState extends Fake implements GoRouterState;
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
   int deviceRuns = 0;
+  int requestedRuns = 0;
+  int? allowed = 1;
   Exception? error;
   Completer<void>? gate;
-  Map<String, String>? recoveredDocuments;
 
   @override
   Future<int> recoverFromDevice({PhotoRecoveryProgress? onProgress}) async {
@@ -70,17 +63,18 @@ class _FakeCommand extends Fake implements PhotoRecoveryCommand {
   }
 
   @override
-  Future<int> recoverDocuments(
-    Map<String, String> documents, {
-    PhotoRecoveryProgress? onProgress,
-  }) async {
-    recoveredDocuments = documents;
+  Future<int?> recoverRequested({PhotoRecoveryProgress? onProgress}) async {
+    requestedRuns++;
+    final allowed = this.allowed;
+    if (allowed == null) {
+      return null;
+    }
     onProgress?.call(1, 2);
     await gate?.future;
     if (error case final error?) {
       throw error;
     }
-    return documents.length;
+    return allowed;
   }
 }
 
@@ -156,12 +150,6 @@ void main() {
               localizationsDelegates: localizationsDelegates,
               supportedLocales: AppLocaleUtils.supportedLocales,
               locale: const Locale('en'),
-              // adaptive_dialog still reads the localizations from
-              // package:flutter/material.dart.
-              // ignore: deprecated_member_use
-              builder: (_, child) => MaterialUiCompatibilityBridge(
-                child: child!,
-              ),
               home: PhotoRecoveryPage(imageId: imageId),
             ),
           ),
@@ -193,16 +181,14 @@ void main() {
     });
 
     testWidgets('recovers the photos the user allows', (tester) async {
-      final library = _FakeLibrary(DevicePhotoAccessOption.requestPhotos);
-      await pumpPage(tester, library: library);
+      await pumpPage(tester);
 
       await tester.tap(find.text('Recover'));
       await tester.pump();
       await tester.pump();
       await showToast(tester);
 
-      expect(library.requestedIds, ['a']);
-      expect(command.recoveredDocuments, {'a': 'content://media/1'});
+      expect(command.requestedRuns, 1);
       expect(find.text('Photos recovered: 1'), findsOneWidget);
       await dismissToast(tester);
     });
@@ -210,15 +196,15 @@ void main() {
     testWidgets('does nothing when the user declines the photos', (
       tester,
     ) async {
-      final library = _FakeLibrary(DevicePhotoAccessOption.requestPhotos)
-        ..allowedPhotos = null;
-      await pumpPage(tester, library: library);
+      command.allowed = null;
+      await pumpPage(tester);
 
       await tester.tap(find.text('Recover'));
       await tester.pumpAndSettle();
 
-      expect(library.requestedIds, ['a']);
-      expect(command.recoveredDocuments, isNull);
+      expect(command.requestedRuns, 1);
+      expect(find.textContaining('Photos recovered'), findsNothing);
+      expect(tester.container().read(photoRecoveryProvider), isNull);
     });
 
     testWidgets('recovers after the user allows access', (tester) async {

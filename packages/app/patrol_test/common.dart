@@ -1,6 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:i18n/i18n.dart';
 import 'package:meta/meta.dart';
-import 'package:onepage/app_initializer.dart';
+import 'package:onepage/app.dart';
+import 'package:onepage/environment/environment.dart';
 import 'package:onepage/keys.dart';
 import 'package:patrol/patrol.dart';
 
@@ -8,7 +12,7 @@ export 'package:flutter_test/flutter_test.dart';
 export 'package:onepage/keys.dart';
 export 'package:patrol/patrol.dart';
 
-/// Starts the app with the same initialization path as production.
+/// Starts the app with the same setup as `main`.
 ///
 /// Patrol tests mount the root widget with [PatrolIntegrationTester.pumpWidget]
 /// instead of calling `runApp`, as Patrol's setup docs require.
@@ -17,9 +21,13 @@ export 'package:patrol/patrol.dart';
 /// simulator can spend more than 10 seconds before rendering the app shell or
 /// diary data.
 Future<void> createApp(PatrolIntegrationTester $) async {
-  await AppInitializer.initializeFirebase();
-  final app = await AppInitializer.createApp();
-  await $.pumpWidget(app);
+  await Firebase.initializeApp(
+    options: firebaseOptionsWithFlavor(Flavor.current),
+  );
+  await LocaleSettings.useDeviceLocale();
+  await $.pumpWidget(
+    ProviderScope(child: TranslationProvider(child: const App())),
+  );
   await $.waitUntilVisible($(K.homePage), timeout: const Duration(seconds: 30));
   await $.waitUntilVisible(
     $(K.diaryCalendar),

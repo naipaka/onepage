@@ -5,6 +5,4 @@ part 'tracker_provider.g.dart';
 
 /// [Tracker] provider.
 @Riverpod(keepAlive: true)
-Tracker tracker(Ref ref) {
-  throw UnimplementedError();
-}
+Tracker tracker(Ref ref) => Tracker();

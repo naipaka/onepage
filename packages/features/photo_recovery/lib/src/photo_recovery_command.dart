@@ -63,14 +63,21 @@ class PhotoRecoveryCommand {
     );
   }
 
-  /// Recovers the photos in [documents], which are keyed by photo ID.
+  /// Asks the user to allow access to the photos to recover, and recovers the
+  /// allowed ones.
   ///
-  /// Returns the number of recovered photos.
-  Future<int> recoverDocuments(
-    Map<String, String> documents, {
-    PhotoRecoveryProgress? onProgress,
-  }) async {
+  /// Returns the number of recovered photos, or null if the user declines.
+  Future<int?> recoverRequested({PhotoRecoveryProgress? onProgress}) async {
     final images = await dbClient.getExternalDiaryImages();
+    if (images.isEmpty) {
+      return 0;
+    }
+    final documents = await devicePhotos.requestPhotos([
+      for (final image in images) image.photoId!,
+    ]);
+    if (documents == null) {
+      return null;
+    }
     return _recover(
       images,
       onProgress: onProgress,
@@ -96,6 +103,7 @@ class PhotoRecoveryCommand {
   }) async {
     var recovered = 0;
     var completed = 0;
+    onProgress?.call(completed, images.length);
     final queue = images.iterator;
     Future<void> recoverQueued() async {
       while (queue.moveNext()) {

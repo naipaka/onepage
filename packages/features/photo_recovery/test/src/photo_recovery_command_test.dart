@@ -136,7 +136,7 @@ void main() {
         expect(await recovery, 0);
       });
 
-      test('reports progress for each photo', () async {
+      test('reports the start and each photo', () async {
         when(devicePhotos.read(any)).thenAnswer((_) async => null);
         final progress = <(int, int)>[];
 
@@ -144,12 +144,18 @@ void main() {
           onProgress: (completed, total) => progress.add((completed, total)),
         );
 
-        expect(progress, [(1, 2), (2, 2)]);
+        expect(progress, [(0, 2), (1, 2), (2, 2)]);
       });
     });
 
-    group('recoverDocuments', () {
+    group('recoverRequested', () {
       late File copy;
+
+      void allow(Map<String, String>? documents) {
+        when(
+          devicePhotos.requestPhotos(any),
+        ).thenAnswer((_) async => documents);
+      }
 
       setUp(() {
         copy = File(p.join(directory.path, 'copy'))..writeAsBytesSync([1]);
@@ -158,8 +164,38 @@ void main() {
         ).thenAnswer((_) async => copy);
       });
 
-      test('stores the given documents', () async {
-        final recovered = await command.recoverDocuments({'b': 'document'});
+      test('does not ask without photos to recover', () async {
+        when(dbClient.getExternalDiaryImages()).thenAnswer((_) async => []);
+
+        expect(await command.recoverRequested(), 0);
+        verifyNever(devicePhotos.requestPhotos(any));
+      });
+
+      test('asks for the photos to recover', () async {
+        allow({});
+
+        await command.recoverRequested();
+
+        verify(devicePhotos.requestPhotos(['a', 'b'])).called(1);
+      });
+
+      test('returns null when the user declines', () async {
+        allow(null);
+        final progress = <(int, int)>[];
+
+        final recovered = await command.recoverRequested(
+          onProgress: (completed, total) => progress.add((completed, total)),
+        );
+
+        expect(recovered, isNull);
+        expect(progress, isEmpty);
+        verifyNever(devicePhotos.copyDocument(any));
+      });
+
+      test('stores the allowed photos', () async {
+        allow({'b': 'document'});
+
+        final recovered = await command.recoverRequested();
 
         expect(recovered, 1);
         verify(
@@ -168,17 +204,20 @@ void main() {
       });
 
       test('deletes the temporary copy', () async {
-        await command.recoverDocuments({'a': 'document'});
+        allow({'a': 'document'});
+
+        await command.recoverRequested();
 
         expect(copy.existsSync(), isFalse);
       });
 
       test('deletes the temporary copy when storing fails', () async {
+        allow({'a': 'document'});
         when(photoEncoder.encode(any)).thenAnswer((_) async {
           throw Exception('failed');
         });
 
-        expect(await command.recoverDocuments({'a': 'document'}), 0);
+        expect(await command.recoverRequested(), 0);
         expect(copy.existsSync(), isFalse);
       });
     });

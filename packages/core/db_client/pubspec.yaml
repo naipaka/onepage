@@ -10,22 +10,18 @@ resolution: workspace
 
 dependencies:
   clock: ^1.1.3
-  # Held at 2.34.0: 2.34.1 reworked the drift3_preview `GeneratedDatabase` API
-  # (`allSchemaEntities` -> `schema`). drift_dev has since moved on to 2.34.5
-  # and its schema verifier still passes against 2.34.0, so only drift itself
-  # is held until the schema verifier is migrated to the new API.
-  drift: 2.34.0
+  drift: ^2.35.4
   drift_flutter: ^0.3.1
   flutter:
     sdk: flutter
   path: ^1.9.1
   path_provider: ^2.1.6
-  sqlite3: ^3.3.3
+  sqlite3: ^3.9.1
 
 dev_dependencies:
-  altive_lints: ^4.1.0
-  build_runner: ^2.16.1
-  drift_dev: 2.34.5
+  altive_lints: ^4.2.0
+  build_runner: ^2.16.2
+  drift_dev: ^2.35.3
   flutter_test:
     sdk: flutter
   mockito: ^5.8.1

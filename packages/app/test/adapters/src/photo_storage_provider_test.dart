@@ -1,27 +1,40 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hooks_riverpod/misc.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:photo_storage/photo_storage.dart';
 
 void main() {
   group('photoStorageProvider', () {
-    test('throws until it is overridden', () {
-      final container = ProviderContainer();
+    test('is not available before initialization', () {
+      final container = ProviderContainer(
+        overrides: [
+          photoStorageInitializingProvider.overrideWith(
+            (ref) => Completer<PhotoStorage>().future,
+          ),
+        ],
+      );
       addTearDown(container.dispose);
 
-      expect(
-        () => container.read(photoStorageProvider),
-        throwsA(
-          isA<ProviderException>().having(
-            (e) => e.exception,
-            'exception',
-            isA<UnimplementedError>(),
+      expect(() => container.read(photoStorageProvider), throwsA(anything));
+    });
+
+    test('provides the initialized storage', () async {
+      final storage = PhotoStorage(directory: Directory.systemTemp);
+      final container = ProviderContainer(
+        overrides: [
+          photoStorageInitializingProvider.overrideWith(
+            (ref) async => storage,
           ),
-        ),
+        ],
       );
+      addTearDown(container.dispose);
+
+      await container.read(photoStorageInitializingProvider.future);
+
+      expect(container.read(photoStorageProvider), storage);
     });
   });
 

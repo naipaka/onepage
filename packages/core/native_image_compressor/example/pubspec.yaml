@@ -10,9 +10,8 @@ resolution: workspace
 dependencies:
   flutter:
     sdk: flutter
-  material_ui: ^1.11.0
   native_image_compressor:
     path: ../
 
 dev_dependencies:
-  altive_lints: ^4.1.0
+  altive_lints: ^4.2.0

@@ -11,21 +11,15 @@ part of 'flavor_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 /// Provide current Flavor.
-///
-/// Need override in top-level ProviderScope.
 
 @ProviderFor(flavor)
 final flavorProvider = FlavorProvider._();
 
 /// Provide current Flavor.
-///
-/// Need override in top-level ProviderScope.
 
 final class FlavorProvider extends $FunctionalProvider<Flavor, Flavor, Flavor>
     with $Provider<Flavor> {
   /// Provide current Flavor.
-  ///
-  /// Need override in top-level ProviderScope.
   FlavorProvider._()
     : super(
         from: null,
@@ -59,4 +53,4 @@ final class FlavorProvider extends $FunctionalProvider<Flavor, Flavor, Flavor>
   }
 }
 
-String _$flavorHash() => r'034afac5cb627981977cb9398af6b8329eb70c03';
+String _$flavorHash() => r'a9b60c2a79c378c7a0f7153bb0d3f62af19c2449';

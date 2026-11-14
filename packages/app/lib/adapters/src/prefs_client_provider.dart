@@ -4,16 +4,18 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'prefs_client_provider.g.dart';
 
+/// Initializes the shared preferences client once at startup.
+@Riverpod(keepAlive: true)
+Future<PrefsClient> prefsClientInitializing(Ref ref) =>
+    PrefsClient.initialize();
+
 /// Provider for the shared preferences client.
 ///
-/// This provider must be overridden in main.dart with an initialized instance.
-/// By default, it throws UnimplementedError to ensure proper initialization.
+/// Throws until [prefsClientInitializingProvider] completes, which
+/// `initializationProvider` waits for before the app shows any page.
 @Riverpod(keepAlive: true)
 PrefsClient prefsClient(Ref ref) {
-  throw UnimplementedError(
-    'PrefsClient provider must be overridden with an initialized instance '
-    'in main.dart',
-  );
+  return ref.watch(prefsClientInitializingProvider).requireValue;
 }
 
 /// Provider for text input haptic feedback enabled state.

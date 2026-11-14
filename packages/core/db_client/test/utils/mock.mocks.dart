@@ -3,11 +3,13 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'dart:async' as _i8;
 import 'dart:ffi' as _i5;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i4;
+import 'package:sqlite3/src/constants.dart' as _i11;
 import 'package:sqlite3/src/database.dart' as _i7;
 import 'package:sqlite3/src/ffi/api.dart' as _i2;
 import 'package:sqlite3/src/functions.dart' as _i9;
@@ -195,6 +197,13 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
   ) as _i5.Pointer<void>);
 
   @override
+  bool get isInterrupted => (super.noSuchMethod(
+    Invocation.getter(#isInterrupted),
+    returnValue: false,
+    returnValueForMissingStub: false,
+  ) as bool);
+
+  @override
   _i7.DatabaseConfig get config => (super.noSuchMethod(
     Invocation.getter(#config),
     returnValue: _i4.dummyValue<_i7.DatabaseConfig>(
@@ -272,6 +281,12 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
   @override
   set commitFilter(_i9.VoidPredicate? commitFilter) => super.noSuchMethod(
     Invocation.setter(#commitFilter, commitFilter),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  set trace(_i7.SqliteTraceCallback? callback) => super.noSuchMethod(
+    Invocation.setter(#trace, callback),
     returnValueForMissingStub: null,
   );
 
@@ -377,6 +392,18 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
       ) as _i8.Stream<double>);
 
   @override
+  void releaseMemory() => super.noSuchMethod(
+    Invocation.method(#releaseMemory, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void interrupt() => super.noSuchMethod(
+    Invocation.method(#interrupt, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
   int getUpdatedRows() => (super.noSuchMethod(
     Invocation.method(#getUpdatedRows, []),
     returnValue: 0,
@@ -454,6 +481,16 @@ class MockDatabase extends _i1.Mock implements _i2.Database {
     }),
     returnValueForMissingStub: null,
   );
+
+  @override
+  ({int current, int highwater}) status(
+    _i11.StatusParameter? option, {
+    bool? reset = false,
+  }) => (super.noSuchMethod(
+    Invocation.method(#status, [option], {#reset: reset}),
+    returnValue: (current: 0, highwater: 0),
+    returnValueForMissingStub: (current: 0, highwater: 0),
+  ) as ({int current, int highwater}));
 
   @override
   void dispose() => super.noSuchMethod(

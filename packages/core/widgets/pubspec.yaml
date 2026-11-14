@@ -12,14 +12,14 @@ dependencies:
   clock: ^1.1.3
   flutter:
     sdk: flutter
-  intl: ^0.20.2
+  intl: ^0.20.3
   material_ui: ^1.11.0
   toastification: ^3.2.2
   utils:
     path: ../utils
 
 dev_dependencies:
-  altive_lints: ^4.1.0
+  altive_lints: ^4.2.0
   flutter_test:
     sdk: flutter
 

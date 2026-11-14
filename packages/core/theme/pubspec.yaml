@@ -15,7 +15,7 @@ dependencies:
   material_ui: ^1.11.0
 
 dev_dependencies:
-  altive_lints: ^4.1.0
+  altive_lints: ^4.2.0
   flutter_test:
     sdk: flutter
 

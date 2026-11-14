@@ -10,26 +10,68 @@ part of 'prefs_client_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Initializes the shared preferences client once at startup.
+
+@ProviderFor(prefsClientInitializing)
+final prefsClientInitializingProvider = PrefsClientInitializingProvider._();
+
+/// Initializes the shared preferences client once at startup.
+
+final class PrefsClientInitializingProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PrefsClient>,
+          PrefsClient,
+          FutureOr<PrefsClient>
+        >
+    with $FutureModifier<PrefsClient>, $FutureProvider<PrefsClient> {
+  /// Initializes the shared preferences client once at startup.
+  PrefsClientInitializingProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'prefsClientInitializingProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$prefsClientInitializingHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<PrefsClient> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<PrefsClient> create(Ref ref) {
+    return prefsClientInitializing(ref);
+  }
+}
+
+String _$prefsClientInitializingHash() =>
+    r'62febdb5e5ee7ebeddc03cfd6222f84cc7670355';
+
 /// Provider for the shared preferences client.
 ///
-/// This provider must be overridden in main.dart with an initialized instance.
-/// By default, it throws UnimplementedError to ensure proper initialization.
+/// After initialization, use this, which can be obtained synchronously.
 
 @ProviderFor(prefsClient)
 final prefsClientProvider = PrefsClientProvider._();
 
 /// Provider for the shared preferences client.
 ///
-/// This provider must be overridden in main.dart with an initialized instance.
-/// By default, it throws UnimplementedError to ensure proper initialization.
+/// After initialization, use this, which can be obtained synchronously.
 
 final class PrefsClientProvider
     extends $FunctionalProvider<PrefsClient, PrefsClient, PrefsClient>
     with $Provider<PrefsClient> {
   /// Provider for the shared preferences client.
   ///
-  /// This provider must be overridden in main.dart with an initialized instance.
-  /// By default, it throws UnimplementedError to ensure proper initialization.
+  /// After initialization, use this, which can be obtained synchronously.
   PrefsClientProvider._()
     : super(
         from: null,
@@ -63,7 +105,7 @@ final class PrefsClientProvider
   }
 }
 
-String _$prefsClientHash() => r'5f518da0dbf69a64961b70ca08b759d59d98cf09';
+String _$prefsClientHash() => r'51d8c22763c005e56589fdce611f468d09599032';
 
 /// Provider for text input haptic feedback enabled state.
 ///

@@ -10,26 +10,68 @@ part of 'photo_storage_provider.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
+/// Creates the photo file storage once at startup.
+
+@ProviderFor(photoStorageInitializing)
+final photoStorageInitializingProvider = PhotoStorageInitializingProvider._();
+
+/// Creates the photo file storage once at startup.
+
+final class PhotoStorageInitializingProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PhotoStorage>,
+          PhotoStorage,
+          FutureOr<PhotoStorage>
+        >
+    with $FutureModifier<PhotoStorage>, $FutureProvider<PhotoStorage> {
+  /// Creates the photo file storage once at startup.
+  PhotoStorageInitializingProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'photoStorageInitializingProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$photoStorageInitializingHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<PhotoStorage> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<PhotoStorage> create(Ref ref) {
+    return photoStorageInitializing(ref);
+  }
+}
+
+String _$photoStorageInitializingHash() =>
+    r'7d594e620d4ede7fb202b096638b77c958329086';
+
 /// Provider for the photo file storage.
 ///
-/// This provider must be overridden in main.dart with an initialized instance.
-/// By default, it throws UnimplementedError to ensure proper initialization.
+/// After initialization, use this, which can be obtained synchronously.
 
 @ProviderFor(photoStorage)
 final photoStorageProvider = PhotoStorageProvider._();
 
 /// Provider for the photo file storage.
 ///
-/// This provider must be overridden in main.dart with an initialized instance.
-/// By default, it throws UnimplementedError to ensure proper initialization.
+/// After initialization, use this, which can be obtained synchronously.
 
 final class PhotoStorageProvider
     extends $FunctionalProvider<PhotoStorage, PhotoStorage, PhotoStorage>
     with $Provider<PhotoStorage> {
   /// Provider for the photo file storage.
   ///
-  /// This provider must be overridden in main.dart with an initialized instance.
-  /// By default, it throws UnimplementedError to ensure proper initialization.
+  /// After initialization, use this, which can be obtained synchronously.
   PhotoStorageProvider._()
     : super(
         from: null,
@@ -63,7 +105,7 @@ final class PhotoStorageProvider
   }
 }
 
-String _$photoStorageHash() => r'4ce07f72303ff9e1820f34dfc487bd2243d53a4c';
+String _$photoStorageHash() => r'202b47322900b61c74a5d619ff587d41338aa8d9';
 
 /// Provider for the file of a stored photo.
 
