@@ -158,6 +158,7 @@ coverage/
 **/firebase_app_id_file.json
 **/GoogleService-Info.plist
 **/google-services.json
+**/firebase_options_*.dart
 
 # FVM Version Cache
 .fvm/

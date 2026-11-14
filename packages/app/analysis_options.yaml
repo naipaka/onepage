@@ -3,6 +3,7 @@ analyzer:
   exclude:
     - "**/l10n/*.dart"
     - "**/gen/*.dart"
+    - "**/firebase_options_*.dart"
     - "**/*.mocks.dart"
     - "patrol_test/test_bundle.dart"
     - build/**

@@ -10,14 +10,14 @@ import 'package:tracker/tracker.dart';
 import 'package:utils/utils.dart';
 
 import 'app.dart';
+import 'environment/environment.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Passing options would duplicate the [DEFAULT] app that is already
-  // configured natively from the per-flavor GoogleService-Info.plist /
-  // google-services.json.
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: firebaseOptionsWithFlavor(Flavor.current),
+  );
 
   final tracker = Tracker();
   // Logs errors caught by the Flutter framework.

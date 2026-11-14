@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:meta/meta.dart';
 import 'package:onepage/app.dart';
+import 'package:onepage/environment/environment.dart';
 import 'package:onepage/keys.dart';
 import 'package:patrol/patrol.dart';
 
@@ -20,7 +21,9 @@ export 'package:patrol/patrol.dart';
 /// simulator can spend more than 10 seconds before rendering the app shell or
 /// diary data.
 Future<void> createApp(PatrolIntegrationTester $) async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: firebaseOptionsWithFlavor(Flavor.current),
+  );
   await LocaleSettings.useDeviceLocale();
   await $.pumpWidget(
     ProviderScope(child: TranslationProvider(child: const App())),
