@@ -66,7 +66,7 @@ Add or extend test files under `packages/<directory>/<package_name>/test/`.
 
 ### Conventions
 
-- **Mocking**: Use Mockito with `@GenerateMocks` annotation, then run `fvm dart run build_runner build` inside the package to generate mock files.
+- **Mocking**: Use Mockito with `@GenerateMocks` annotation, then run `fvm dart run melos run gen` from the workspace root to generate mock files.
 - **Mock file location**: `test/utils/mock_<subject>.dart`
 - **Platform channels**: Mock using `TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler`
 - **Cleanup**: Always call `tearDown` (or `addTearDown`) to reset mocks and handlers after each test.

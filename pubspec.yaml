@@ -51,22 +51,15 @@ melos:
       releaseUrl: true
 
   scripts:
-    # Issue on file exclusion feature: https://github.com/dart-lang/dart_style/issues/864
+    # `dart format` cannot exclude files (dart_style issue 864), so `find` lists
+    # the files without the generated ones.
     format:ci:
-      # `exec:` runs this inside each package, so `find .` lists that package's
-      # own files.
-      #
-      # `-exec ... {} +` is what makes `exec:` safe here: it passes all matches
-      # to one `dart format` call, runs nothing when there are no matches (a
-      # bare `dart format` with no paths reads stdin and blocks), and returns
-      # non-zero when that call does. Shell variables are avoided on purpose:
+      # `-exec ... {} +` passes the matches to as few `dart format` calls as
+      # possible and fails when one of them does. Shell variables are avoided:
       # melos interpolates `$name` in scripts before the shell sees them.
-      exec: |
-        find . -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
+      run: |
+        find packages -name "*.dart" -not \( -name "*.freezed.dart" -o -name "*.g.dart" -o -name "*.gen.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
       description: Check formatting without writing.
-      packageFilters:
-        flutter: true
-        dirExists: [lib, test]
 
     fix:
       exec: |
@@ -76,24 +69,12 @@ melos:
         dirExists: lib
 
     gen:
-      exec:
-        command: dart run build_runner build --delete-conflicting-outputs
-        concurrency: 1
-        orderDependents: true
+      run: dart run build_runner build --workspace
       description: Run generate code.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "build_runner"
 
     gen:watch:
-      exec:
-        command: dart run build_runner watch --delete-conflicting-outputs
-        concurrency: 99
-        orderDependents: true
+      run: dart run build_runner watch --workspace
       description: Watch and run generate code.
-      packageFilters:
-        dirExists: lib
-        dependsOn: "build_runner"
 
     slang:
       exec:
