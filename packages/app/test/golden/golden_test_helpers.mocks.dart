@@ -1098,6 +1098,12 @@ class MockPdfExporter extends _i1.Mock implements _i15.PdfExporter {
   ) as _i7.PackageInfo);
 
   @override
+  String get noEntryText => (super.noSuchMethod(
+    Invocation.getter(#noEntryText),
+    returnValue: _i13.dummyValue<String>(this, Invocation.getter(#noEntryText)),
+  ) as String);
+
+  @override
   _i6.Future<_i9.File> export({required List<_i16.ExportDiary>? entries}) =>
       (super.noSuchMethod(
         Invocation.method(#export, [], {#entries: entries}),
@@ -1242,6 +1248,20 @@ class MockMarkdownExporter extends _i1.Mock implements _i18.MarkdownExporter {
     Invocation.getter(#packageInfo),
     returnValue: _FakePackageInfo_26(this, Invocation.getter(#packageInfo)),
   ) as _i7.PackageInfo);
+
+  @override
+  String get noEntryText => (super.noSuchMethod(
+    Invocation.getter(#noEntryText),
+    returnValue: _i13.dummyValue<String>(this, Invocation.getter(#noEntryText)),
+  ) as String);
+
+  @override
+  String Function({required Object appName, required Object version})
+  get exportedFromText => (super.noSuchMethod(
+    Invocation.getter(#exportedFromText),
+    returnValue: ({required Object appName, required Object version}) =>
+        _i13.dummyValue<String>(this, Invocation.getter(#exportedFromText)),
+  ) as String Function({required Object appName, required Object version}));
 
   @override
   _i6.Future<_i9.File> export({required List<_i16.ExportDiary>? entries}) =>
