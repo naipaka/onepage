@@ -77,6 +77,14 @@ The dependency graph below is updated automatically: a GitHub Actions workflow o
 | [scroll_calendar](packages/features/scroll_calendar) | Scrollable calendar |
 | [update_requester](packages/features/update_requester) | Asking users to update when Remote Config requires a newer version |
 
+### Tools
+
+Packages under `packages/tools` support development, and no package depends on them.
+
+| Package | Description |
+|---|---|
+| [one_page_lints](packages/tools/one_page_lints) | Analyzer plugin with the project's own lint rules, fixes, and assists |
+
 ## How to start development
 
 ```shell
@@ -121,6 +129,8 @@ Create a package under `packages/core` or `packages/features`:
 fvm flutter create -t package packages/features/{package_name} --project-name {package_name}
 ```
 
+A development tool that does not use Flutter goes under `packages/tools`, created with `fvm dart create -t package packages/tools/{package_name}`.
+
 Then:
 - Replace the generated `LICENSE` with a symbolic link to the root one: `ln -sf ../../../LICENSE packages/features/{package_name}/LICENSE`.
 - Rewrite the generated `README.md` to describe the package, and add the package to the tables above.
@@ -135,7 +145,7 @@ In Claude Code, the `create-package` skill runs these steps.
 fvm dart run melos run test
 ```
 
-It runs every package's tests, including the golden tests.
+It runs every package's tests, including the golden tests. The Flutter packages run with `flutter test` and the Dart packages with `dart test`.
 
 If you change the UI, update the golden images with the following command:
 

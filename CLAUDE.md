@@ -49,6 +49,8 @@ Use FVM for Flutter version management:
   - **diary/**: Core diary functionality
   - **scroll_calendar/**: Calendar widget
   - **update_requester/**: App update management
+- **tools/**: Development tools that no package depends on
+  - **one_page_lints/**: Analyzer plugin with the project's own lint rules, fixes, and assists
 
 Detailed package placement, dependency, and DI rules: `.claude/rules/architecture.md`.
 
@@ -61,7 +63,7 @@ Detailed package placement, dependency, and DI rules: `.claude/rules/architectur
 
 ## Internationalization
 - Slang framework for type-safe translations; English (`app_en.yaml`) and Japanese (`app_ja.yaml`).
-- **NEVER** use hardcoded Japanese text in Dart files (enforced by `avoid_hardcoded_japanese` custom lint).
+- **NEVER** use hardcoded Japanese text in Dart files (enforced by the `avoid_hardcoded_japanese` rule of one_page_lints).
 - **ALWAYS** add strings to both `packages/core/i18n/lib/src/i18n/app_ja.yaml` and `app_en.yaml`.
 - Access via `context.t.section.key`. Run `fvm dart run melos run slang` after updating YAML files.
 
