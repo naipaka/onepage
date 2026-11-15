@@ -332,7 +332,7 @@ class _TimePickerSheetState extends State<_TimePickerSheet> {
             const Gap(16),
             FilledButton(
               onPressed: () => Navigator.of(context).pop(_selectedTime),
-              child: const Text('OK'),
+              child: Text(context.t.notification.timePickerConfirm),
             ),
           ],
         ),

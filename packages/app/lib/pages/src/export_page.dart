@@ -119,18 +119,14 @@ class ExportPage extends HookConsumerWidget {
                         LabelMediumText(t.export.year),
                         const Gap(4),
                         if (Platform.isIOS)
-                          _buildIOSYearPicker(
-                            context,
-                            selectedYear,
-                            selectedMonth,
-                            colorScheme,
+                          _IOSYearPicker(
+                            selectedYear: selectedYear,
+                            selectedMonth: selectedMonth,
                           )
                         else
-                          _buildAndroidYearDropdown(
-                            context,
-                            selectedYear,
-                            selectedMonth,
-                            colorScheme,
+                          _AndroidYearDropdown(
+                            selectedYear: selectedYear,
+                            selectedMonth: selectedMonth,
                           ),
                       ],
                     ),
@@ -143,18 +139,14 @@ class ExportPage extends HookConsumerWidget {
                         LabelMediumText(t.export.month),
                         const Gap(4),
                         if (Platform.isIOS)
-                          _buildIOSMonthPicker(
-                            context,
-                            selectedYear,
-                            selectedMonth,
-                            colorScheme,
+                          _IOSMonthPicker(
+                            selectedYear: selectedYear,
+                            selectedMonth: selectedMonth,
                           )
                         else
-                          _buildAndroidMonthDropdown(
-                            context,
-                            selectedYear,
-                            selectedMonth,
-                            colorScheme,
+                          _AndroidMonthDropdown(
+                            selectedYear: selectedYear,
+                            selectedMonth: selectedMonth,
                           ),
                       ],
                     ),
@@ -316,13 +308,21 @@ class ExportPage extends HookConsumerWidget {
       ref.hideLoading();
     }
   }
+}
 
-  Widget _buildIOSYearPicker(
-    BuildContext context,
-    ValueNotifier<int> selectedYear,
-    ValueNotifier<int> selectedMonth,
-    ColorScheme colorScheme,
-  ) {
+/// The year picker on iOS, which opens a wheel picker.
+class _IOSYearPicker extends StatelessWidget {
+  const new({required this.selectedYear, required this.selectedMonth});
+
+  /// The selected year.
+  final ValueNotifier<int> selectedYear;
+
+  /// The selected month.
+  final ValueNotifier<int> selectedMonth;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
     final currentYear = clock.now().year;
     final years = List.generate(20, (index) => currentYear - index);
 
@@ -383,13 +383,20 @@ class ExportPage extends HookConsumerWidget {
       ),
     );
   }
+}
 
-  Widget _buildAndroidYearDropdown(
-    BuildContext context,
-    ValueNotifier<int> selectedYear,
-    ValueNotifier<int> selectedMonth,
-    ColorScheme colorScheme,
-  ) {
+/// The year dropdown on Android.
+class _AndroidYearDropdown extends StatelessWidget {
+  const new({required this.selectedYear, required this.selectedMonth});
+
+  /// The selected year.
+  final ValueNotifier<int> selectedYear;
+
+  /// The selected month.
+  final ValueNotifier<int> selectedMonth;
+
+  @override
+  Widget build(BuildContext context) {
     final currentYear = clock.now().year;
     final years = List.generate(20, (index) => currentYear - index);
 
@@ -426,13 +433,21 @@ class ExportPage extends HookConsumerWidget {
       },
     );
   }
+}
 
-  Widget _buildIOSMonthPicker(
-    BuildContext context,
-    ValueNotifier<int> selectedYear,
-    ValueNotifier<int> selectedMonth,
-    ColorScheme colorScheme,
-  ) {
+/// The month picker on iOS, which opens a wheel picker.
+class _IOSMonthPicker extends StatelessWidget {
+  const new({required this.selectedYear, required this.selectedMonth});
+
+  /// The selected year.
+  final ValueNotifier<int> selectedYear;
+
+  /// The selected month.
+  final ValueNotifier<int> selectedMonth;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = context.colorScheme;
     final currentYear = clock.now().year;
     final currentMonth = clock.now().month;
     final maxMonth = selectedYear.value == currentYear ? currentMonth : 12;
@@ -494,13 +509,20 @@ class ExportPage extends HookConsumerWidget {
       ),
     );
   }
+}
 
-  Widget _buildAndroidMonthDropdown(
-    BuildContext context,
-    ValueNotifier<int> selectedYear,
-    ValueNotifier<int> selectedMonth,
-    ColorScheme colorScheme,
-  ) {
+/// The month dropdown on Android.
+class _AndroidMonthDropdown extends StatelessWidget {
+  const new({required this.selectedYear, required this.selectedMonth});
+
+  /// The selected year.
+  final ValueNotifier<int> selectedYear;
+
+  /// The selected month.
+  final ValueNotifier<int> selectedMonth;
+
+  @override
+  Widget build(BuildContext context) {
     final currentYear = clock.now().year;
     final currentMonth = clock.now().month;
     final maxMonth = selectedYear.value == currentYear ? currentMonth : 12;

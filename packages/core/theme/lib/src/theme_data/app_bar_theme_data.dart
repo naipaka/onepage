@@ -1,10 +1,10 @@
 import 'package:material_ui/material_ui.dart';
 
-/// A [AppBarTheme] for the app.
-AppBarTheme appBarThemeData({
+/// An [AppBarThemeData] for the app.
+AppBarThemeData appBarThemeData({
   required ColorScheme colorScheme,
 }) {
-  return AppBarTheme(
+  return AppBarThemeData(
     backgroundColor: colorScheme.surface,
     scrolledUnderElevation: 0,
     iconTheme: IconThemeData(color: colorScheme.onSurface),

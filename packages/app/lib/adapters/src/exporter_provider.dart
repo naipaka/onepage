@@ -1,4 +1,5 @@
 import 'package:exporter/exporter.dart';
+import 'package:i18n/i18n.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -9,6 +10,7 @@ part 'exporter_provider.g.dart';
 PdfExporter pdfExporter(Ref ref) {
   return PdfExporter(
     packageInfo: ref.watch(packageInfoProvider),
+    noEntryText: t.export.noEntry,
   );
 }
 
@@ -25,5 +27,7 @@ CsvExporter csvExporter(Ref ref) {
 MarkdownExporter markdownExporter(Ref ref) {
   return MarkdownExporter(
     packageInfo: ref.watch(packageInfoProvider),
+    noEntryText: t.export.noEntry,
+    exportedFromText: t.export.exportedFrom,
   );
 }

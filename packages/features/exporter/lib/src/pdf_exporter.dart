@@ -11,6 +11,7 @@ import 'package:printing/printing.dart';
 
 import 'exporter.dart';
 import 'models/models.dart';
+import 'untranslated_texts.dart';
 
 /// {@template exporter.PdfExporter}
 /// Exports diary entries to PDF format.
@@ -19,10 +20,14 @@ class PdfExporter extends Exporter {
   /// {@macro exporter.PdfExporter}
   const new({
     required this.packageInfo,
+    required this.noEntryText,
   });
 
   /// Package information for metadata.
   final PackageInfo packageInfo;
+
+  /// The text for a day without an entry, in the language of the app.
+  final String noEntryText;
 
   pw.TextStyle _getTextStyle({
     required pw.Font baseFont,
@@ -170,7 +175,7 @@ class PdfExporter extends Exporter {
     return pw.Column(
       children: [
         pw.Text(
-          'One Page Diary',
+          UntranslatedTexts.pdfTitle,
           style: _getTextStyle(
             baseFont: baseBoldFont,
             jpFont: jpBoldFont,
@@ -236,7 +241,7 @@ class PdfExporter extends Exporter {
           ),
           pw.SizedBox(height: 4),
           pw.Text(
-            entry.content.isEmpty ? 'No entry' : entry.content,
+            entry.content.isEmpty ? noEntryText : entry.content,
             style: _getTextStyle(
               baseFont: baseFont,
               jpFont: jpFont,
@@ -293,7 +298,7 @@ class PdfExporter extends Exporter {
               ),
               pw.SizedBox(height: 4),
               pw.Text(
-                entry?.content.isEmpty == false ? entry!.content : 'No entry',
+                entry?.content.isEmpty == false ? entry!.content : noEntryText,
                 style: _getTextStyle(
                   baseFont: baseFont,
                   jpFont: jpFont,

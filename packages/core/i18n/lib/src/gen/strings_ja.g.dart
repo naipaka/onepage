@@ -40,6 +40,7 @@ class TranslationsJa with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override String get title => 'One Page';
 	@override String get organization => 'NPK Studio';
+	@override late final _Translations$initialization$ja initialization = _Translations$initialization$ja._(_root);
 	@override late final _Translations$updateRequest$ja updateRequest = _Translations$updateRequest$ja._(_root);
 	@override late final _Translations$home$ja home = _Translations$home$ja._(_root);
 	@override late final _Translations$photoRecovery$ja photoRecovery = _Translations$photoRecovery$ja._(_root);
@@ -48,6 +49,16 @@ class TranslationsJa with BaseTranslations<AppLocale, Translations> implements T
 	@override late final _Translations$search$ja search = _Translations$search$ja._(_root);
 	@override late final _Translations$notification$ja notification = _Translations$notification$ja._(_root);
 	@override late final _Translations$export$ja export = _Translations$export$ja._(_root);
+}
+
+// Path: initialization
+class _Translations$initialization$ja implements Translations$initialization$en {
+	_Translations$initialization$ja._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get retry => '再試行';
 }
 
 // Path: updateRequest
@@ -171,6 +182,7 @@ class _Translations$notification$ja implements Translations$notification$en {
 
 	// Translations
 	@override String get title => 'Notifications';
+	@override String get timePickerConfirm => '決定';
 	@override String get addTime => '時間を追加';
 	@override String get maxTimesReached => '通知時間は最大3つまでです';
 	@override String get channelName => '日記リマインダー';
@@ -188,6 +200,8 @@ class _Translations$export$ja implements Translations$export$en {
 
 	// Translations
 	@override String get title => 'Export';
+	@override String get noEntry => '記入なし';
+	@override String exportedFrom({required Object appName, required Object version}) => '${appName} v${version} から書き出し';
 	@override String get description => '日記をPDFで出力';
 	@override String get explanation => '月ごとに日記をPDFファイルで\nエクスポートできます';
 	@override String get successMessage => 'エクスポートが完了しました！';
@@ -386,6 +400,7 @@ extension on TranslationsJa {
 		return switch (path) {
 			'title' => 'One Page',
 			'organization' => 'NPK Studio',
+			'initialization.retry' => '再試行',
 			'updateRequest.title' => 'アップデートのお願い',
 			'updateRequest.button.updateNow' => '更新する',
 			'home.title' => 'Home',
@@ -462,6 +477,7 @@ extension on TranslationsJa {
 			'search.placeholder' => '検索結果がここに表示されます',
 			'search.noResults' => '検索結果がありません',
 			'notification.title' => 'Notifications',
+			'notification.timePickerConfirm' => '決定',
 			'notification.addTime' => '時間を追加',
 			'notification.maxTimesReached' => '通知時間は最大3つまでです',
 			'notification.channelName' => '日記リマインダー',
@@ -472,6 +488,8 @@ extension on TranslationsJa {
 			'notification.notificationTitle' => '今日の日記は書きましたか？',
 			'notification.notificationBody' => '1日の出来事や気持ちを書き留めておきましょう',
 			'export.title' => 'Export',
+			'export.noEntry' => '記入なし',
+			'export.exportedFrom' => ({required Object appName, required Object version}) => '${appName} v${version} から書き出し',
 			'export.description' => '日記をPDFで出力',
 			'export.explanation' => '月ごとに日記をPDFファイルで\nエクスポートできます',
 			'export.successMessage' => 'エクスポートが完了しました！',

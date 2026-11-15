@@ -1,0 +1,20 @@
+name: one_page_lints
+description: An analyzer plugin with the custom lint rules, fixes, and assists of One Page.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.14.0
+
+resolution: workspace
+
+dependencies:
+  analysis_server_plugin: ^0.3.26
+  analyzer: ^14.7.0
+  analyzer_plugin: ^0.14.20
+
+dev_dependencies:
+  altive_lints: ^4.2.0
+  analyzer_testing: ^0.4.5
+  test: ^1.32.0
+  test_reflective_loader: ^0.6.0

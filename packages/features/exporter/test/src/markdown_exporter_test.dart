@@ -30,7 +30,11 @@ void main() {
         version: '1.0.0',
         buildNumber: '1',
       );
-      exporter = MarkdownExporter(packageInfo: packageInfo);
+      exporter = MarkdownExporter(
+        packageInfo: packageInfo,
+        noEntryText: 'No entry',
+        exportedFromText: _exportedFrom,
+      );
     });
 
     tearDown(() {
@@ -47,7 +51,11 @@ void main() {
 
     test('constructor requires packageInfo', () {
       expect(
-        () => MarkdownExporter(packageInfo: packageInfo),
+        () => MarkdownExporter(
+          packageInfo: packageInfo,
+          noEntryText: 'No entry',
+          exportedFromText: _exportedFrom,
+        ),
         returnsNormally,
       );
     });
@@ -181,6 +189,8 @@ void main() {
         );
         final specialExporter = MarkdownExporter(
           packageInfo: specialPackageInfo,
+          noEntryText: 'No entry',
+          exportedFromText: _exportedFrom,
         );
 
         final file = await specialExporter.export(entries: []);
@@ -473,6 +483,8 @@ void main() {
         );
         final specialExporter = MarkdownExporter(
           packageInfo: specialPackageInfo,
+          noEntryText: 'No entry',
+          exportedFromText: _exportedFrom,
         );
 
         final file = await specialExporter.export(entries: []);
@@ -492,3 +504,6 @@ void main() {
     });
   });
 }
+
+String _exportedFrom({required Object appName, required Object version}) =>
+    'Exported from $appName v$version';

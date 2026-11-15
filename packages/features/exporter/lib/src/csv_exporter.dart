@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'exporter.dart';
 import 'models/models.dart';
+import 'untranslated_texts.dart';
 
 /// {@template exporter.CsvExporter}
 /// Exports diary entries to CSV format.
@@ -69,7 +70,7 @@ class CsvExporter extends Exporter {
   }
 
   String _generateCsvContent(List<ExportDiary> entries) {
-    final buffer = StringBuffer()..writeln('Date,Content');
+    final buffer = StringBuffer()..writeln(UntranslatedTexts.csvHeader);
 
     final sortedEntries = entries.toList()
       ..sort((a, b) => a.date.compareTo(b.date));
@@ -88,7 +89,7 @@ class CsvExporter extends Exporter {
     int year,
     int month,
   ) {
-    final buffer = StringBuffer()..writeln('Date,Content');
+    final buffer = StringBuffer()..writeln(UntranslatedTexts.csvHeader);
 
     final daysInMonth = DateTime(year, month + 1, 0).day;
     final entryMap = <int, ExportDiary>{};

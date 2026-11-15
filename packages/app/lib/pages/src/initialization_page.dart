@@ -145,7 +145,7 @@ class _ErrorPage extends StatelessWidget {
             const Gap(16),
             HapticFilledButton(
               onPressed: onRetry,
-              child: const Text('Retry'),
+              child: Text(context.t.initialization.retry),
             ),
           ],
         ),

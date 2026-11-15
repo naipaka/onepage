@@ -34,6 +34,7 @@ void main() {
 
       exporter = PdfExporter(
         packageInfo: packageInfo,
+        noEntryText: 'No entry',
       );
     });
 
@@ -328,7 +329,10 @@ void main() {
           buildSignature: 'custom',
         );
 
-        final customExporter = PdfExporter(packageInfo: customPackageInfo);
+        final customExporter = PdfExporter(
+          packageInfo: customPackageInfo,
+          noEntryText: 'No entry',
+        );
         final file = await customExporter.export(entries: <ExportDiary>[]);
 
         expect(file.path, contains('Custom App Name_'));
@@ -788,7 +792,10 @@ void main() {
 
   group('Exporter interface', () {
     test('PdfExporter implements Exporter', () {
-      final testExporter = PdfExporter(packageInfo: packageInfo);
+      final testExporter = PdfExporter(
+        packageInfo: packageInfo,
+        noEntryText: 'No entry',
+      );
       expect(testExporter, isA<Exporter>());
     });
   });
