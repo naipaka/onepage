@@ -42,6 +42,15 @@ hooks:
       from: packages/app/ios/prod/firebase_app_id_file.json
       to: packages/app/ios/prod/firebase_app_id_file.json
     - type: copy
+      from: packages/app/ios/dev/firebase.json
+      to: packages/app/ios/dev/firebase.json
+    - type: copy
+      from: packages/app/ios/prod/firebase.json
+      to: packages/app/ios/prod/firebase.json
+    - type: copy
+      from: packages/app/ios/prod/UploadOptions.plist
+      to: packages/app/ios/prod/UploadOptions.plist
+    - type: copy
       from: packages/app/android/key.properties
       to: packages/app/android/key.properties
 

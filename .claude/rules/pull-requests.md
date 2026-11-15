@@ -2,9 +2,7 @@
 
 ## Before Writing a PR
 
-- **Read the full body of at least 5 non-dependabot PRs** to match format, language, section structure, and conventions
-  - Use `gh pr view <number> --json body --jq '.body'` for each PR individually — never batch with `head` or truncate output
-  - List PRs first, identify non-dependabot ones, then read each body one by one
+- **Template**: Start from `.github/pull_request_template.md` and follow the sections and conventions below
 - **Language**: Always English (code, PR body, commit messages)
 - **Never link to external GitHub repositories** in PR bodies, comments, or commit messages
   - GitHub creates permanent "mentioned this pull request" cross-references that cannot be deleted
@@ -29,6 +27,17 @@ All PR bodies must include these sections:
 - **Image Differences**: Write "None (description of change type, no UI changes)" if no UI changes
 - **Pre-launch Checklist**: Always include `- [x] I have reviewed my own code (e.g., updated tests and documentation)`
 - Do not skip sections regardless of PR size
+- Write the section headings exactly as above, without emoji
+
+## Writing the Sections
+
+- **Related issue**: Put `Part of #123.` or `Closes #123.` on the first line, above the sections
+- **What's Done**: One bullet for each change, starting with a verb in the present tense (Add, Remove, Keep). Put details in nested bullets
+- **Additional Notes**:
+  - Explain each reason under its own `### Why ...` heading
+  - End with `### Verification`, listing each command with its result after `→` (e.g., `fvm dart analyze` → No issues found!)
+  - For checks on a device, name the device, the OS version, and the build (e.g., iOS 27.2 simulator (dev, debug)), then what was checked
+- **Image Differences**: For UI changes, add the Before and After screenshots in the table of the template, or describe the change when a screenshot cannot show it
 
 ## Attribution
 
