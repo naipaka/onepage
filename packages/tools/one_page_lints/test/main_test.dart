@@ -20,7 +20,7 @@ void main() {
       unorderedEquals([
         'avoid_consecutive_sliver_to_box_adapter',
         'avoid_hardcoded_color',
-        'avoid_hardcoded_japanese',
+        'avoid_hardcoded_text',
         'avoid_shrink_wrap_in_list_view',
         'avoid_single_child',
         'prefer_clock_now',

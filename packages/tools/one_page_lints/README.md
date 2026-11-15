@@ -8,16 +8,16 @@ An analyzer plugin with the lint rules, fixes, and assists of One Page.
 |---|---|
 | `avoid_consecutive_sliver_to_box_adapter` | A `SliverToBoxAdapter` that follows another one in a list |
 | `avoid_hardcoded_color` | Colors written in code outside a `ColorScheme`, except `Colors.transparent` |
-| `avoid_hardcoded_japanese` | String literals with Japanese text |
+| `avoid_hardcoded_text` | String literals with text in `lib`, in any language, except values for machines and the documented constants of `UntranslatedTexts` |
 | `avoid_shrink_wrap_in_list_view` | `shrinkWrap` of a `ListView` inside a `ListView`, `Column`, or `Row` |
-| `avoid_single_child` | A widget for many children, such as `Column`, given one child at most |
+| `avoid_single_child` | A widget that lays out a list of children, such as `Column` or `ListView`, given one child at most |
 | `prefer_clock_now` | `DateTime.now()` and `DateTime.timestamp()` |
 | `prefer_dedicated_media_query_methods` | `MediaQuery.of` and `MediaQuery.maybeOf`, and `.width` or `.height` of `MediaQuery.sizeOf` |
 | `prefer_space_between_elements` | No blank line between fields, constructors, and the `build` method |
 | `prefer_to_include_sliver_in_name` | A widget that returns a sliver without "Sliver" in its name |
 | `prefer_widget_class` | A function, a method, or a getter that returns a widget |
 
-`avoid_hardcoded_color`, `avoid_hardcoded_japanese`, and `prefer_widget_class` skip the test directories.
+`avoid_hardcoded_color` and `prefer_widget_class` skip the test directories. `avoid_hardcoded_text` checks only `lib`, and skips generated files and the packages in `packages/tools`.
 
 ## Fix and assists
 
@@ -36,13 +36,13 @@ plugins:
   one_page_lints:
     path: packages/tools/one_page_lints
     diagnostics:
-      avoid_hardcoded_japanese: true
+      avoid_hardcoded_text: true
 ```
 
 To ignore a rule, prefix it with the plugin name:
 
 ```dart
-// ignore: one_page_lints/avoid_hardcoded_japanese
+// ignore: one_page_lints/avoid_hardcoded_text
 ```
 
 ## Tests

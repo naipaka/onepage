@@ -15,7 +15,7 @@ plugins:
     diagnostics:
       avoid_consecutive_sliver_to_box_adapter: true
       avoid_hardcoded_color: true
-      avoid_hardcoded_japanese: true
+      avoid_hardcoded_text: true
       avoid_shrink_wrap_in_list_view: true
       avoid_single_child: true
       prefer_clock_now: true

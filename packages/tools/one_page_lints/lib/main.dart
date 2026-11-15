@@ -7,7 +7,7 @@ import 'src/assists/wrap_with_macro_template_document_comment.dart';
 import 'src/fixes/replace_with_clock_now.dart';
 import 'src/rules/avoid_consecutive_sliver_to_box_adapter.dart';
 import 'src/rules/avoid_hardcoded_color.dart';
-import 'src/rules/avoid_hardcoded_japanese.dart';
+import 'src/rules/avoid_hardcoded_text.dart';
 import 'src/rules/avoid_shrink_wrap_in_list_view.dart';
 import 'src/rules/avoid_single_child.dart';
 import 'src/rules/prefer_clock_now.dart';
@@ -31,7 +31,7 @@ class OnePageLintsPlugin extends Plugin {
     registry
       ..registerLintRule(AvoidConsecutiveSliverToBoxAdapter())
       ..registerLintRule(AvoidHardcodedColor())
-      ..registerLintRule(AvoidHardcodedJapanese())
+      ..registerLintRule(AvoidHardcodedText())
       ..registerLintRule(AvoidShrinkWrapInListView())
       ..registerLintRule(AvoidSingleChild())
       ..registerLintRule(PreferClockNow())
