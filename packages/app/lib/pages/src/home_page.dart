@@ -116,6 +116,7 @@ class HomePage extends HookConsumerWidget {
             icon: const Icon(Icons.search),
           ),
           HapticIconButton(
+            key: K.diaryDatePickerButton,
             onPressed: () async {
               final selectedDate = await _DiaryEntryDatePickerDialog.show(
                 context,
@@ -295,6 +296,7 @@ class _DiaryItem extends ConsumerWidget {
         children: [
           Expanded(
             child: DiaryTextField(
+              key: K.diaryTextField(date),
               content: entry?.content,
               onChanged: (_) {
                 haptic.textInputFeedback();
