@@ -48,6 +48,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	/// en: 'NPK Studio'
 	String get organization => 'NPK Studio';
 
+	late final Translations$initialization$en initialization = Translations$initialization$en._(_root);
 	late final Translations$updateRequest$en updateRequest = Translations$updateRequest$en._(_root);
 	late final Translations$home$en home = Translations$home$en._(_root);
 	late final Translations$photoRecovery$en photoRecovery = Translations$photoRecovery$en._(_root);
@@ -56,6 +57,18 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$search$en search = Translations$search$en._(_root);
 	late final Translations$notification$en notification = Translations$notification$en._(_root);
 	late final Translations$export$en export = Translations$export$en._(_root);
+}
+
+// Path: initialization
+class Translations$initialization$en {
+	Translations$initialization$en._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Retry'
+	String get retry => 'Retry';
 }
 
 // Path: updateRequest
@@ -278,6 +291,9 @@ class Translations$notification$en {
 	/// en: 'Notifications'
 	String get title => 'Notifications';
 
+	/// en: 'OK'
+	String get timePickerConfirm => 'OK';
+
 	/// en: 'Add time'
 	String get addTime => 'Add time';
 
@@ -309,6 +325,12 @@ class Translations$export$en {
 
 	/// en: 'Export'
 	String get title => 'Export';
+
+	/// en: 'No entry'
+	String get noEntry => 'No entry';
+
+	/// en: 'Exported from $appName v$version'
+	String exportedFrom({required Object appName, required Object version}) => 'Exported from ${appName} v${version}';
 
 	/// en: 'Export diary to PDF'
 	String get description => 'Export diary to PDF';
@@ -601,6 +623,7 @@ extension on Translations {
 		return switch (path) {
 			'title' => 'One Page',
 			'organization' => 'NPK Studio',
+			'initialization.retry' => 'Retry',
 			'updateRequest.title' => 'Update Request',
 			'updateRequest.button.updateNow' => 'Update Now',
 			'home.title' => 'Home',
@@ -677,6 +700,7 @@ extension on Translations {
 			'search.placeholder' => 'Search results will appear here',
 			'search.noResults' => 'No search results found',
 			'notification.title' => 'Notifications',
+			'notification.timePickerConfirm' => 'OK',
 			'notification.addTime' => 'Add time',
 			'notification.maxTimesReached' => 'Maximum 3 notification times allowed',
 			'notification.channelName' => 'Diary Reminder',
@@ -687,6 +711,8 @@ extension on Translations {
 			'notification.notificationTitle' => 'Have you written your diary today?',
 			'notification.notificationBody' => 'Take a moment to jot down your thoughts and feelings',
 			'export.title' => 'Export',
+			'export.noEntry' => 'No entry',
+			'export.exportedFrom' => ({required Object appName, required Object version}) => 'Exported from ${appName} v${version}',
 			'export.description' => 'Export diary to PDF',
 			'export.explanation' => 'Export your diary entries as PDF files\norganized by month',
 			'export.successMessage' => 'Export completed successfully!',

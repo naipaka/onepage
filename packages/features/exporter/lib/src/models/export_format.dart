@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../untranslated_texts.dart';
+
 part 'export_format.freezed.dart';
 
 /// {@template exporter.ExportFormat}
@@ -21,9 +23,9 @@ abstract class ExportFormat with _$ExportFormat {
 
   /// Gets the display name for this export format.
   String get displayName => when(
-    pdf: () => 'PDF',
-    csv: () => 'CSV',
-    markdown: () => 'Markdown',
+    pdf: () => UntranslatedTexts.pdfName,
+    csv: () => UntranslatedTexts.csvName,
+    markdown: () => UntranslatedTexts.markdownName,
   );
 
   /// Gets the file extension for this export format.

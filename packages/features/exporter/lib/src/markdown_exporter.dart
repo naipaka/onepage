@@ -16,10 +16,20 @@ class MarkdownExporter extends Exporter {
   /// {@macro exporter.MarkdownExporter}
   const new({
     required this.packageInfo,
+    required this.noEntryText,
+    required this.exportedFromText,
   });
 
   /// Package information for metadata.
   final PackageInfo packageInfo;
+
+  /// The text for a day without an entry, in the language of the app.
+  final String noEntryText;
+
+  /// The line that names the app and the version that exported the file, in
+  /// the language of the app.
+  final String Function({required Object appName, required Object version})
+  exportedFromText;
 
   @override
   Future<File> export({
@@ -78,7 +88,10 @@ class MarkdownExporter extends Exporter {
       ..writeln('# $title')
       ..writeln()
       ..writeln(
-        'Exported from ${packageInfo.appName} v${packageInfo.version}',
+        exportedFromText(
+          appName: packageInfo.appName,
+          version: packageInfo.version,
+        ),
       )
       ..writeln(DateFormat.yMMMd().add_jm().format(clock.now()))
       ..writeln()
@@ -109,7 +122,10 @@ class MarkdownExporter extends Exporter {
       ..writeln('# $title')
       ..writeln()
       ..writeln(
-        'Exported from ${packageInfo.appName} v${packageInfo.version}',
+        exportedFromText(
+          appName: packageInfo.appName,
+          version: packageInfo.version,
+        ),
       )
       ..writeln(DateFormat.yMMMd().add_jm().format(clock.now()))
       ..writeln()
@@ -135,7 +151,7 @@ class MarkdownExporter extends Exporter {
       if (entry != null && entry.content.isNotEmpty) {
         buffer.writeln(entry.content);
       } else {
-        buffer.writeln('No entry');
+        buffer.writeln(noEntryText);
       }
 
       buffer.writeln();
