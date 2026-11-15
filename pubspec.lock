@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
+  analysis_server_plugin:
+    dependency: transitive
+    description:
+      name: analysis_server_plugin
+      sha256: "1ff5b5f6bc3d4091ffbc4da2ca9a5de36b49d590332d94e502d0746e80b3d64e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.26"
   analyzer:
     dependency: transitive
     description:
@@ -49,6 +57,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.4"
+  analyzer_plugin:
+    dependency: transitive
+    description:
+      name: analyzer_plugin
+      sha256: "8929dfe59ae5ea8e012f1238e368875642370beabffd15d4048545544ae44aa8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.14.20"
+  analyzer_testing:
+    dependency: transitive
+    description:
+      name: analyzer_testing
+      sha256: "1ca3ecc54113beaaac4221351b8425cea678c5e662e083cd98dfe692ef8d0744"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.5"
   android_file_picker:
     dependency: transitive
     description:
@@ -1706,6 +1730,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.20"
+  test_reflective_loader:
+    dependency: transitive
+    description:
+      name: test_reflective_loader
+      sha256: "9c4327839510a742171b9d37b37464d0d215ebee4d7701a272db337dbde3e17b"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.6.0"
   time:
     dependency: transitive
     description:

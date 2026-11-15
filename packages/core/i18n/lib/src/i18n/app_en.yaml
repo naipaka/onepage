@@ -1,6 +1,8 @@
 # locale: "en"
 title: "One Page"
 organization: "NPK Studio"
+initialization:
+  retry: "Retry"
 updateRequest:
   title: "Update Request"
   button:
@@ -103,6 +105,7 @@ search:
   noResults: "No search results found"
 notification:
   title: "Notifications"
+  timePickerConfirm: "OK"
   addTime: "Add time"
   maxTimesReached: "Maximum 3 notification times allowed"
   channelName: "Diary Reminder"
@@ -115,6 +118,8 @@ notification:
   notificationBody: "Take a moment to jot down your thoughts and feelings"
 export:
   title: "Export"
+  noEntry: "No entry"
+  exportedFrom: "Exported from $appName v$version"
   description: "Export diary to PDF"
   explanation: "Export your diary entries as PDF files\norganized by month"
   successMessage: "Export completed successfully!"

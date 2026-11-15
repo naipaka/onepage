@@ -1,12 +1,12 @@
 ---
 name: create-package
-description: Create a new package in the One Page monorepo with the required LICENSE symlink, README, and workspace registration. Use when adding a new core or feature package.
-argument-hint: "<core|features> <package_name>"
+description: Create a new package in the One Page monorepo with the required LICENSE symlink, README, and workspace registration. Use when adding a new core, feature, or tools package.
+argument-hint: "<core|features|tools> <package_name>"
 ---
 
 # Create Package
 
-Parse `$ARGUMENTS` as `<directory> <package_name>` where `<directory>` is either `core` or `features`.
+Parse `$ARGUMENTS` as `<directory> <package_name>` where `<directory>` is `core`, `features`, or `tools`.
 
 Follow every step below in order. Do not skip steps or use alternative methods.
 
@@ -33,7 +33,13 @@ For a package with native code, create a plugin instead:
 fvm flutter create -t plugin --platforms=android --org com.naipaka -a kotlin packages/<directory>/<package_name> --project-name <package_name>
 ```
 
-Then follow the steps below, and also:
+A `tools` package is a development tool that does not use Flutter, so create it with the Dart command. Create `packages/tools` first if it does not exist, because `dart create` does not create parent directories:
+
+```bash
+fvm dart create -t package --no-pub packages/tools/<package_name>
+```
+
+For a plugin, follow the steps below, and also:
 
 - Keep `example/`, because plugin Kotlin tests run from `example/android`. Set `resolution: workspace` in its `pubspec.yaml`.
 - Add `packages/<directory>/<package_name>/example` to the root `workspace:` section.
@@ -46,13 +52,8 @@ Then follow the steps below, and also:
 The generated LICENSE file must be replaced with a symlink to the root LICENSE file to keep the project consistent.
 
 ```bash
-# For core packages
-rm packages/core/<package_name>/LICENSE
-ln -s ../../../LICENSE packages/core/<package_name>/LICENSE
-
-# For features packages
-rm packages/features/<package_name>/LICENSE
-ln -s ../../../LICENSE packages/features/<package_name>/LICENSE
+rm -f packages/<directory>/<package_name>/LICENSE
+ln -s ../../../LICENSE packages/<directory>/<package_name>/LICENSE
 ```
 
 ---
@@ -97,7 +98,7 @@ Do NOT leave any flutter-create template text (e.g., "A starting point for a Dar
 
 ## Step 4 — Update the root README.md
 
-Add a new entry for the package in the root `/README.md`. Follow the existing format and maintain alphabetical order within the `core/` or `features/` section. Use a brief, informative description.
+Add a new entry for the package in the root `/README.md`. Follow the existing format and maintain alphabetical order within the `core/`, `features/`, or `tools/` section. Use a brief, informative description.
 
 ---
 
@@ -109,6 +110,7 @@ Add a new entry for the package in the root `/README.md`. Follow the existing fo
 workspace:
   - packages/core/<package_name>   # core packages
   - packages/features/<package_name>  # features packages
+  - packages/tools/<package_name>  # tools packages
 ````
 
 **Package `pubspec.yaml`** (`packages/<directory>/<package_name>/pubspec.yaml`) — add the workspace resolution field:
@@ -121,21 +123,15 @@ resolution: workspace
 
 ## Step 6 — Set standard dev_dependencies
 
-In `packages/<directory>/<package_name>/pubspec.yaml`, replace the generated `dev_dependencies` block with the project-standard set. Match the versions used in existing packages (check `packages/features/haptics/pubspec.yaml` as the reference):
+In `packages/<directory>/<package_name>/pubspec.yaml`, replace the generated `dev_dependencies` block with the one of an existing package, at the same versions: `packages/features/haptics/pubspec.yaml` for a Flutter package, or `packages/tools/one_page_lints/pubspec.yaml` for a tools package. Every package has `altive_lints` in its dev dependencies.
+
+Also replace the generated `analysis_options.yaml` with one that includes the root options, as `packages/features/haptics/analysis_options.yaml` does:
 
 ```yaml
-dev_dependencies:
-  altive_lints: ^2.3.0
-  build_runner: ^2.15.0
-  flutter_test:
-    sdk: flutter
-  mockito: ^5.6.4
-```
-
-Also replace the generated `analysis_options.yaml` content to use `altive_lints`:
-
-```yaml
-include: package:altive_lints/altive_lints.yaml
+analyzer:
+  exclude:
+    - build/**
+include: ../../../analysis_options.yaml
 ```
 
 ---

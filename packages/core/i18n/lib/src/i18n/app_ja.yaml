@@ -1,6 +1,8 @@
 # locale: "ja"
 title: "One Page"
 organization: "NPK Studio"
+initialization:
+  retry: "再試行"
 updateRequest:
   title: "アップデートのお願い"
   button:
@@ -100,6 +102,7 @@ search:
   noResults: "検索結果がありません"
 notification:
   title: "Notifications"
+  timePickerConfirm: "決定"
   addTime: "時間を追加"
   maxTimesReached: "通知時間は最大3つまでです"
   channelName: "日記リマインダー"
@@ -112,6 +115,8 @@ notification:
   notificationBody: "1日の出来事や気持ちを書き留めておきましょう"
 export:
   title: "Export"
+  noEntry: "記入なし"
+  exportedFrom: "$appName v$version から書き出し"
   description: "日記をPDFで出力"
   explanation: "月ごとに日記をPDFファイルで\nエクスポートできます"
   successMessage: "エクスポートが完了しました！"

@@ -212,11 +212,15 @@ resolution: workspace # Required for workspace packages
 
 - **flutter_local_notifications**: Use latest version (19.3.0+)
 - **freezed**: Use latest major version (3.0.6+)
-- **altive_lints**: Use project standard (1.21.0) instead of flutter_lints
 
 ## Lint Configuration Standards
 
-### Required Linting Setup
+- Every package includes the root `analysis_options.yaml`, which includes `package:altive_lints/altive_lints_preset.yaml`. Each package has `altive_lints` in its dev dependencies at the same version.
+- The root `analysis_options.yaml` declares the analyzer plugins under `plugins:`: riverpod_lint for the Riverpod rules, and `one_page_lints` in `packages/tools/one_page_lints` for this project's own rules. The analyzer reads plugins only from the root options file.
+- Add a project rule to `one_page_lints` with tests, and turn it on under `diagnostics:` in the root `analysis_options.yaml`.
+- Ignore a plugin rule with its plugin name, such as `// ignore: one_page_lints/avoid_hardcoded_text`.
 
-- **Use altive_lints**: NOT flutter_lints - this is project standard
-- **Version consistency**: Match lint versions across all packages
+## Tools Packages
+
+- `packages/tools/` holds development tools that no package depends on, such as `one_page_lints`.
+- Create a tools package with `fvm dart create -t package`, since it does not use Flutter.

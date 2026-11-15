@@ -9,7 +9,8 @@ Placement rules for day-to-day work live in [`.claude/rules/architecture.md`](..
 packages/
 ├── app/        Pages, routing, and the adapters that wrap core and features in Riverpod providers
 ├── core/       Foundations shared across the app: clients for platform SDKs, the database, i18n, theme, shared widgets
-└── features/   One package per feature: diary, backup, exporter, photo recovery, and so on
+├── features/   One package per feature: diary, backup, exporter, photo recovery, and so on
+└── tools/      Development tools that no package depends on, such as the analyzer plugin one_page_lints
 ```
 
 - `features` packages depend only on `core` packages.
@@ -54,7 +55,7 @@ Splitting into packages costs extra files and boilerplate. Pub Workspaces resolv
 
 - Code placed in the wrong package or depending in the wrong direction fails to build.
 - The placement rules in `.claude/rules/architecture.md` give agents a test for where new code goes: "Can this widget/code be used as-is in a completely different app (not a diary app)?"
-- Lints from altive_lints catch common mistakes such as hardcoded Japanese text or colors.
+- Lints from one_page_lints catch common mistakes such as hardcoded text or colors.
 
 ## Conventions
 
@@ -79,4 +80,5 @@ Create them with the `create-package` skill.
 
 ### Rules are written down and linted
 
-`.claude/rules/` holds the written rules, and altive_lints enforces the ones that can be checked mechanically.
+`.claude/rules/` holds the written rules, and the linter enforces the ones that can be checked mechanically.
+The core rules come from the altive_lints preset, the Riverpod rules from riverpod_lint, and the rules of this project from one_page_lints in `packages/tools`.
