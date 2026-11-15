@@ -89,11 +89,15 @@ class MediaQueryData {
   MediaQueryData copyWith() => this;
 }
 ''');
-    newFile('${lib.path}/src/widgets/list_view.dart', '''
+    newFile('${lib.path}/src/widgets/extra_widgets.dart', '''
 import 'framework.dart';
 import 'scroll_view.dart';
 
-class ListView extends ScrollView {
+abstract class BoxScrollView extends ScrollView {
+  const BoxScrollView({super.key, super.shrinkWrap});
+}
+
+class ListView extends BoxScrollView {
   const ListView({
     super.key,
     super.shrinkWrap,
@@ -101,24 +105,65 @@ class ListView extends ScrollView {
   });
 }
 
-class SliverMainAxisGroup extends Widget {
-  const SliverMainAxisGroup({
+class GridView extends BoxScrollView {
+  const GridView.count({
     super.key,
-    required List<Widget> slivers,
+    required int crossAxisCount,
+    List<Widget> children = const <Widget>[],
   });
 }
 
-class SliverCrossAxisGroup extends Widget {
-  const SliverCrossAxisGroup({
+class SliverMainAxisGroup extends MultiChildRenderObjectWidget {
+  const SliverMainAxisGroup({super.key, required List<Widget> slivers})
+    : super(children: slivers);
+}
+
+class SliverCrossAxisGroup extends MultiChildRenderObjectWidget {
+  const SliverCrossAxisGroup({super.key, required List<Widget> slivers})
+    : super(children: slivers);
+}
+
+class Viewport extends MultiChildRenderObjectWidget {
+  const Viewport({super.key, List<Widget> slivers = const <Widget>[]})
+    : super(children: slivers);
+}
+
+class ShrinkWrappingViewport extends MultiChildRenderObjectWidget {
+  const ShrinkWrappingViewport({
     super.key,
-    required List<Widget> slivers,
-  });
+    List<Widget> slivers = const <Widget>[],
+  }) : super(children: slivers);
+}
+
+class Semantics extends StatelessWidget {
+  const Semantics({super.key, String? label});
+
+  @override
+  Widget build(BuildContext context) => throw 0;
+}
+
+class IndexedStack extends StatelessWidget {
+  const IndexedStack({super.key, List<Widget> children = const <Widget>[]});
+
+  @override
+  Widget build(BuildContext context) => throw 0;
+}
+
+''');
+    newFile('${lib.path}/services.dart', '''
+export 'src/services/platform_channel.dart';
+''');
+    newFile('${lib.path}/src/services/platform_channel.dart', '''
+class MethodChannel {
+  const MethodChannel(String name);
+
+  Future<T?> invokeMethod<T>(String method, [Object? arguments]) async => null;
 }
 ''');
     _insertAfter(
       lib.getFile('widgets.dart'),
       "export 'src/widgets/scroll_view.dart';",
-      "export 'src/widgets/list_view.dart';",
+      "export 'src/widgets/extra_widgets.dart';",
     );
     return lib;
   }

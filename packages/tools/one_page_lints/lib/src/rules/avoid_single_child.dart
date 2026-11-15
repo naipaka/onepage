@@ -3,13 +3,16 @@ import 'package:analyzer/analysis_rule/rule_context.dart';
 import 'package:analyzer/analysis_rule/rule_visitor_registry.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 
 import '../types.dart';
 
 /// {@template one_page_lints.AvoidSingleChild}
-/// Reports a widget for many children, such as `Column` or `SliverList`, given
-/// a list that always has one child at most.
+/// Reports a widget that lays out a list of children, such as `Column`,
+/// `SliverList`, or `ListView`, given a list that always has one child at
+/// most. The widgets are the subtypes of `MultiChildRenderObjectWidget`,
+/// `SliverMultiBoxAdaptorWidget`, and `BoxScrollView`, except the viewports.
 ///
 /// A `for` element or a spread can add more than one child, so they are
 /// allowed.
@@ -49,21 +52,19 @@ class _Visitor extends SimpleAstVisitor<void> {
 
   final AnalysisRule rule;
 
-  static const _widgets = {
-    'Column',
-    'Row',
-    'Flex',
-    'Wrap',
-    'Stack',
-    'ListView',
-    'SliverList',
-    'SliverMainAxisGroup',
-    'SliverCrossAxisGroup',
-  };
+  /// Whether [type] lays out a list of children: a multi-child render
+  /// object widget, a sliver of many boxes, or a box scroll view. A viewport
+  /// scrolls its slivers like a `CustomScrollView`, so it is left out.
+  static bool _laysOutChildren(DartType? type) =>
+      (isFlutterSubtype(type, 'MultiChildRenderObjectWidget') ||
+          isFlutterSubtype(type, 'SliverMultiBoxAdaptorWidget') ||
+          isFlutterSubtype(type, 'BoxScrollView')) &&
+      !isFlutterSubtype(type, 'Viewport') &&
+      !isFlutterSubtype(type, 'ShrinkWrappingViewport');
 
   @override
   void visitInstanceCreationExpression(InstanceCreationExpression node) {
-    if (!_widgets.any((name) => isFlutterType(node.staticType, name))) {
+    if (!_laysOutChildren(node.staticType)) {
       return;
     }
     for (final argument

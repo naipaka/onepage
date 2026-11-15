@@ -36,6 +36,7 @@ final widgets = [
   const Wrap(children: [Placeholder()]),
   const Stack(children: [Placeholder()]),
   ListView(children: const [Placeholder()]),
+  GridView.count(crossAxisCount: 2, children: const [Placeholder()]),
   SliverList.list(children: const [Placeholder()]),
   const SliverMainAxisGroup(slivers: [Placeholder()]),
   const SliverCrossAxisGroup(slivers: [Placeholder()]),
@@ -47,6 +48,7 @@ final widgets = [
       'Wrap',
       'Stack',
       'ListView',
+      'GridView.count',
       'SliverList.list',
       'SliverMainAxisGroup',
       'SliverCrossAxisGroup',
@@ -161,6 +163,38 @@ Widget column(List<Widget> children) => Column(children: children);
 import 'package:flutter/widgets.dart';
 
 final widget = CustomScrollView(slivers: [Placeholder()]);
+''');
+  }
+
+  Future<void> test_ownSubclass() async {
+    const code = '''
+import 'package:flutter/widgets.dart';
+
+class Section extends Column {
+  const Section({super.key, super.children});
+}
+
+const widget = Section(children: [Placeholder()]);
+''';
+    await assertDiagnostics(code, [lint(code.lastIndexOf('Section'), 7)]);
+  }
+
+  Future<void> test_viewport() async {
+    await assertNoDiagnostics('''
+import 'package:flutter/widgets.dart';
+
+const widgets = [
+  Viewport(slivers: [Placeholder()]),
+  ShrinkWrappingViewport(slivers: [Placeholder()]),
+];
+''');
+  }
+
+  Future<void> test_statelessWidgetWithChildren() async {
+    await assertNoDiagnostics('''
+import 'package:flutter/widgets.dart';
+
+const widget = IndexedStack(children: [Placeholder()]);
 ''');
   }
 }
