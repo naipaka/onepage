@@ -10,6 +10,19 @@ analyzer:
 # Analyzer plugins are honoured only in the workspace root's options file.
 plugins:
   riverpod_lint: ^3.2.0
+  one_page_lints:
+    path: packages/tools/one_page_lints
+    diagnostics:
+      avoid_consecutive_sliver_to_box_adapter: true
+      avoid_hardcoded_color: true
+      avoid_hardcoded_japanese: true
+      avoid_shrink_wrap_in_list_view: true
+      avoid_single_child: true
+      prefer_clock_now: true
+      prefer_dedicated_media_query_methods: true
+      prefer_space_between_elements: true
+      prefer_to_include_sliver_in_name: true
+      prefer_widget_class: true
 
 linter:
   rules:
