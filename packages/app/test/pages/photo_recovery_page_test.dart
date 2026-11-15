@@ -163,12 +163,11 @@ void main() {
     Future<void> showToast(WidgetTester tester) async {
       await tester.pump();
       await tester.pump();
-      await tester.pump(const Duration(milliseconds: 500));
-      await tester.pump(const Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 300));
     }
 
     Future<void> dismissToast(WidgetTester tester) async {
-      await tester.pump(const Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 3));
       await tester.pumpAndSettle();
     }
 

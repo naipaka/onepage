@@ -14,7 +14,7 @@ When deciding whether code belongs in `core/widgets/` or `features/`, use **resp
 Place code here if it meets **ALL** of the following conditions:
 
 1. ✅ **Domain-independent**: Contains no domain knowledge (diary, backup, etc.)
-2. ✅ **Minimal dependencies**: Depends only on Flutter standard libraries + generic packages (toastification, intl, etc.)
+2. ✅ **Minimal dependencies**: Depends only on Flutter standard libraries + generic packages (intl, clock, etc.)
 3. ✅ **Pure UI or UI utilities**: Simple UI components or UI-related utility functions
 
 **Examples**: `DashedDivider`, `Toast`, `TextHistoryActionButton`, `KeyboardToolbar`, `CenterLoadingIndicator`

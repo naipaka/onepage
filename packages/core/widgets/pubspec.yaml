@@ -14,7 +14,6 @@ dependencies:
     sdk: flutter
   intl: ^0.20.3
   material_ui: ^1.11.0
-  toastification: ^3.2.2
   utils:
     path: ../utils
 
