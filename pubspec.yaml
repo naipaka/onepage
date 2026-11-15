@@ -28,6 +28,7 @@ workspace:
   - packages/features/photo_recovery
   - packages/features/scroll_calendar
   - packages/features/update_requester
+  - packages/tools/one_page_lints
 
 dev_dependencies:
   melos: ^8.10.1
@@ -106,15 +107,42 @@ melos:
         dirExists: lib
         dependsOn: "drift_dev"
 
+    # The test scripts run the Flutter packages with `flutter test` and the
+    # Dart packages with `dart test`: the analyzer plugin tests use
+    # dart:mirrors, which `flutter test` does not have.
     test:
+      description: Run the tests of every package.
+      steps:
+        - test:flutter
+        - test:dart
+
+    test:flutter:
       exec:
         command: flutter test
         failFast: true
-      description: Run flutter test.
+      description: Run the tests of the Flutter packages.
+      private: true
       packageFilters:
+        flutter: true
+        dirExists: test
+
+    test:dart:
+      exec:
+        command: dart test
+        failFast: true
+      description: Run the tests of the Dart packages.
+      private: true
+      packageFilters:
+        flutter: false
         dirExists: test
 
     test:cov:
+      description: Run the tests of every package with coverage.
+      steps:
+        - test:cov:flutter
+        - test:cov:dart
+
+    test:cov:flutter:
       exec:
         command: |
           flutter test --coverage
@@ -122,25 +150,58 @@ melos:
           genhtml coverage/new_lcov.info -o coverage/html
           open coverage/html/index.html
         failFast: true
-      description: Run flutter test with coverage.
+      description: Run the tests of the Flutter packages with coverage.
+      private: true
       packageFilters:
+        flutter: true
         dirExists: test
+
+    test:cov:dart:
+      exec:
+        command: |
+          dart test --coverage-path=coverage/lcov.info
+          genhtml coverage/lcov.info -o coverage/html
+          open coverage/html/index.html
+        failFast: true
+      description: Run the tests of the Dart packages with coverage.
+      private: true
+      packageFilters:
+        flutter: false
+        dirExists: test
+
+    test:ci:
+      description: Run the tests of the packages that run on any OS for CI.
+      steps:
+        - test:ci:flutter
+        - test:ci:dart
 
     # `very_good test` fails when several packages compile its test optimizer
     # at once (very_good_cli issue 947), so the CI scripts run one package at a
     # time.
-    test:ci:
+    test:ci:flutter:
       exec:
         command: very_good test --coverage
         concurrency: 1
         failFast: true
-      description: Run the tests of the packages that run on any OS for CI.
+      description: Run the tests of the Flutter packages that run on any OS for CI.
+      private: true
       packageFilters:
         flutter: true
         dirExists: test
         ignore:
           - device_photos
           - onepage
+
+    test:ci:dart:
+      exec:
+        command: very_good dart test --coverage
+        concurrency: 1
+        failFast: true
+      description: Run the tests of the Dart packages for CI.
+      private: true
+      packageFilters:
+        flutter: false
+        dirExists: test
 
     test:ci:macos:
       exec:
