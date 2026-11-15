@@ -8,5 +8,7 @@ const lightColorScheme = ColorScheme.light(
   onSecondary: Color(0xFFEDEDED),
   surface: Color(0xFFEDEDED),
   onSurface: Color(0xFF4F4F4F),
+  surfaceContainerLowest: Color(0xFFFFFFFF),
+  error: Color(0xFFD32F2F),
   scrim: Colors.black54,
 );
