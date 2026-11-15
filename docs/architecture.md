@@ -55,7 +55,7 @@ Splitting into packages costs extra files and boilerplate. Pub Workspaces resolv
 
 - Code placed in the wrong package or depending in the wrong direction fails to build.
 - The placement rules in `.claude/rules/architecture.md` give agents a test for where new code goes: "Can this widget/code be used as-is in a completely different app (not a diary app)?"
-- Lints from altive_lints catch common mistakes such as hardcoded Japanese text or colors.
+- Lints from one_page_lints catch common mistakes such as hardcoded text or colors.
 
 ## Conventions
 

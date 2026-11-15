@@ -55,7 +55,7 @@ Read every changed file and check it against the rules. The minimum checklist is
 - No unnecessary explicit `colorScheme.onSurface` on text widgets (it is the default)
 
 ### Internationalization
-- No hardcoded Japanese strings in Dart source — use `context.t.section.key`
+- No hardcoded text in any language in Dart source — use `context.t.section.key`, or a documented constant of `UntranslatedTexts` for text that stays the same in every language
 
 ### Architecture boundaries
 - `core/widgets/` files must be domain-independent (no diary/backup/etc. knowledge) and must not import the `i18n` package
@@ -93,7 +93,7 @@ X must-fix, Y should-fix, Z nit(s) across N files.
 ```
 
 Severity definitions:
-- **must-fix**: Violates an explicit prohibition in the project rules (e.g., functional widget, hardcoded Japanese, direct `TextStyle` usage).
+- **must-fix**: Violates an explicit prohibition in the project rules (e.g., functional widget, hardcoded text, direct `TextStyle` usage).
 - **should-fix**: Violates a strong convention that affects maintainability or consistency.
 - **nit**: Minor style or readability issue that does not violate an explicit rule.
 

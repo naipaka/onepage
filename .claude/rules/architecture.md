@@ -218,7 +218,7 @@ resolution: workspace # Required for workspace packages
 - Every package includes the root `analysis_options.yaml`, which includes `package:altive_lints/altive_lints_preset.yaml`. Each package has `altive_lints` in its dev dependencies at the same version.
 - The root `analysis_options.yaml` declares the analyzer plugins under `plugins:`: riverpod_lint for the Riverpod rules, and `one_page_lints` in `packages/tools/one_page_lints` for this project's own rules. The analyzer reads plugins only from the root options file.
 - Add a project rule to `one_page_lints` with tests, and turn it on under `diagnostics:` in the root `analysis_options.yaml`.
-- Ignore a plugin rule with its plugin name, such as `// ignore: one_page_lints/avoid_hardcoded_japanese`.
+- Ignore a plugin rule with its plugin name, such as `// ignore: one_page_lints/avoid_hardcoded_text`.
 
 ## Tools Packages
 

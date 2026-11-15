@@ -63,7 +63,8 @@ Detailed package placement, dependency, and DI rules: `.claude/rules/architectur
 
 ## Internationalization
 - Slang framework for type-safe translations; English (`app_en.yaml`) and Japanese (`app_ja.yaml`).
-- **NEVER** use hardcoded Japanese text in Dart files (enforced by the `avoid_hardcoded_japanese` rule of one_page_lints).
+- **NEVER** hardcode text in any language in `lib` (enforced by the `avoid_hardcoded_text` rule of one_page_lints).
+- Text that stays the same in every language goes in a `static const` field of a class named `UntranslatedTexts`, with a doc comment that says why.
 - **ALWAYS** add strings to both `packages/core/i18n/lib/src/i18n/app_ja.yaml` and `app_en.yaml`.
 - Access via `context.t.section.key`. Run `fvm dart run melos run slang` after updating YAML files.
 
