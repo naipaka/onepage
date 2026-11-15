@@ -71,14 +71,13 @@ If the change touches any of the following, run `fvm dart run melos run gen` **b
 
 - Riverpod providers annotated with `@riverpod`
 - Drift database table definitions
-- i18n YAML files (`app_en.yaml` / `app_ja.yaml`)
 - Freezed data classes
 
 ```bash
 fvm dart run melos run gen
 ```
 
-For i18n changes only:
+If the change touches the i18n YAML files (`app_en.yaml` / `app_ja.yaml`), run:
 
 ```bash
 fvm dart run melos run slang

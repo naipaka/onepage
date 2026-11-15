@@ -157,7 +157,7 @@ CI runs the golden tests and the `device_photos` tests on macOS, and the other t
 
 ## How to generate code
 
-build_runner generates the code, including the translations:
+build_runner generates the code for Riverpod, Drift, and the other generators:
 
 ```shell
 fvm dart run melos run gen
@@ -167,6 +167,18 @@ or, to keep generating code while you edit:
 
 ```shell
 fvm dart run melos run gen:watch
+```
+
+slang generates the translations from the YAML files in `packages/core/i18n/lib/src/i18n`:
+
+```shell
+fvm dart run melos run slang
+```
+
+or, to keep generating them while you edit:
+
+```shell
+fvm dart run melos run slang:watch
 ```
 
 Generated files are committed to the repository, so commit them together with your changes.
