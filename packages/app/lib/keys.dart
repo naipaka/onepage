@@ -13,4 +13,11 @@ class Keys {
 
   /// The scrollable diary calendar on the home page.
   static const diaryCalendar = Key('diaryCalendar');
+
+  /// Opens the calendar date picker.
+  static const diaryDatePickerButton = Key('diaryDatePickerButton');
+
+  /// The diary text field for a calendar day.
+  static Key diaryTextField(DateTime date) =>
+      ValueKey(DateTime(date.year, date.month, date.day));
 }
