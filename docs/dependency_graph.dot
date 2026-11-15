@@ -12,6 +12,7 @@ digraph packages {
   native_image_compressor [shape="box"; color="#d71507"];
   native_image_compressor_example [shape="box"; color="#c031ef"];
   notification_client [shape="box"; color="#4d6b02"];
+  one_page_lints [shape="box"; color="#884728"];
   onepage [shape="box"; color="#08802d"];
   photo_client [shape="box"; color="#e227a9"];
   photo_recovery [shape="box"; color="#e2078b"];
@@ -96,6 +97,11 @@ digraph packages {
     label="packages/core/native_image_compressor";
     color="#9fe999";
     native_image_compressor_example;
+  }
+  subgraph "cluster packages/tools" {
+    label="packages/tools";
+    color="#866843";
+    one_page_lints;
   }
   subgraph "cluster packages" {
     label="packages";
