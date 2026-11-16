@@ -48,7 +48,9 @@ class StubDbClient extends DbClient {
           updatedAt: now,
         ),
       );
-      return entries.map((entry) => Diary(entry: entry)).toList();
+      return entries
+          .map((entry) => Diary(entry: entry, images: const []))
+          .toList();
     }
 
     final entries = List.generate(
@@ -61,7 +63,9 @@ class StubDbClient extends DbClient {
         updatedAt: now,
       ),
     );
-    return entries.map((entry) => Diary(entry: entry)).toList();
+    return entries
+        .map((entry) => Diary(entry: entry, images: const []))
+        .toList();
   }
 
   @override
