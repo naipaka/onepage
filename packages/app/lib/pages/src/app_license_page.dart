@@ -5,7 +5,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
 
-import '../../gen/assets.gen.dart';
+import '../../app_asset.dart';
 
 /// {@template onepage.AppLicensePage}
 /// License page to display the app license.
@@ -34,7 +34,8 @@ class AppLicensePage extends ConsumerWidget {
       child: LicensePage(
         applicationName: packageInfo.appName,
         applicationVersion: packageInfo.version,
-        applicationIcon: Assets.icon.image(
+        applicationIcon: Image.asset(
+          AppAsset.icon.path,
           width: 120,
           height: 120,
         ),

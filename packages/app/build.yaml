@@ -21,12 +21,3 @@ targets:
             - lib/**/*provider.dart
         options:
           provider_name_suffix: "Provider" # (default)
-      flutter_gen_runner:
-        options:
-          output: lib/gen/
-          line_length: 80
-          integrations:
-            image: true
-            flutter_svg: true
-            rive: false
-            lottie: false

@@ -10,7 +10,7 @@ import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
-import '../../gen/assets.gen.dart';
+import '../../app_asset.dart';
 import '../../router/router.dart';
 import '../../widgets/widgets.dart';
 
@@ -132,7 +132,8 @@ class PhotoRecoveryPage extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
           children: [
             Center(
-              child: Assets.images.restoredBackup.image(
+              child: Image.asset(
+                AppAsset.restoredBackup.path,
                 width: 140,
                 height: 140,
               ),
