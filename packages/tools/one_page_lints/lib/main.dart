@@ -13,7 +13,9 @@ import 'src/rules/avoid_optional_parameters_in_immutable_classes.dart';
 import 'src/rules/avoid_shrink_wrap_in_list_view.dart';
 import 'src/rules/avoid_single_child.dart';
 import 'src/rules/include_all_fields.dart';
+import 'src/rules/matching_asset_files.dart';
 import 'src/rules/matching_json_keys.dart';
+import 'src/rules/prefer_app_asset.dart';
 import 'src/rules/prefer_clock_now.dart';
 import 'src/rules/prefer_dedicated_media_query_methods.dart';
 import 'src/rules/prefer_enum_over_sealed_class.dart';
@@ -42,7 +44,9 @@ class OnePageLintsPlugin extends Plugin {
       ..registerLintRule(AvoidShrinkWrapInListView())
       ..registerLintRule(AvoidSingleChild())
       ..registerLintRule(IncludeAllFields())
+      ..registerLintRule(MatchingAssetFiles())
       ..registerLintRule(MatchingJsonKeys())
+      ..registerLintRule(PreferAppAsset())
       ..registerLintRule(PreferClockNow())
       ..registerLintRule(PreferDedicatedMediaQueryMethods())
       ..registerLintRule(PreferEnumOverSealedClass())

@@ -149,6 +149,21 @@ class IndexedStack extends StatelessWidget {
   Widget build(BuildContext context) => throw 0;
 }
 
+class Image extends StatelessWidget {
+  const Image({super.key, required Object image});
+
+  Image.asset(String name, {super.key, double? width});
+
+  Image.network(String src, {super.key});
+
+  @override
+  Widget build(BuildContext context) => throw 0;
+}
+
+class AssetImage {
+  const AssetImage(String assetName, {String? package});
+}
+
 ''');
     newFile('${lib.path}/services.dart', '''
 export 'src/services/platform_channel.dart';
