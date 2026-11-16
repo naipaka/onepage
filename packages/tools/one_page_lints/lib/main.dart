@@ -10,8 +10,10 @@ import 'src/rules/avoid_hardcoded_color.dart';
 import 'src/rules/avoid_hardcoded_text.dart';
 import 'src/rules/avoid_shrink_wrap_in_list_view.dart';
 import 'src/rules/avoid_single_child.dart';
+import 'src/rules/matching_json_keys.dart';
 import 'src/rules/prefer_clock_now.dart';
 import 'src/rules/prefer_dedicated_media_query_methods.dart';
+import 'src/rules/prefer_enum_over_sealed_class.dart';
 import 'src/rules/prefer_space_between_elements.dart';
 import 'src/rules/prefer_to_include_sliver_in_name.dart';
 import 'src/rules/prefer_widget_class.dart';
@@ -34,8 +36,10 @@ class OnePageLintsPlugin extends Plugin {
       ..registerLintRule(AvoidHardcodedText())
       ..registerLintRule(AvoidShrinkWrapInListView())
       ..registerLintRule(AvoidSingleChild())
+      ..registerLintRule(MatchingJsonKeys())
       ..registerLintRule(PreferClockNow())
       ..registerLintRule(PreferDedicatedMediaQueryMethods())
+      ..registerLintRule(PreferEnumOverSealedClass())
       ..registerLintRule(PreferSpaceBetweenElements())
       ..registerLintRule(PreferToIncludeSliverInName())
       ..registerLintRule(PreferWidgetClass())

@@ -11,8 +11,10 @@ An analyzer plugin with the lint rules, fixes, and assists of One Page.
 | `avoid_hardcoded_text` | String literals with text in `lib`, in any language, except values for machines and the documented constants of `UntranslatedTexts` |
 | `avoid_shrink_wrap_in_list_view` | `shrinkWrap` of a `ListView` inside a `ListView`, `Column`, or `Row` |
 | `avoid_single_child` | A widget that lays out a list of children, such as `Column` or `ListView`, given one child at most |
+| `matching_json_keys` | A JSON key that only one of `fromJson` and `toJson` uses |
 | `prefer_clock_now` | `DateTime.now()` and `DateTime.timestamp()` |
 | `prefer_dedicated_media_query_methods` | `MediaQuery.of` and `MediaQuery.maybeOf`, and `.width` or `.height` of `MediaQuery.sizeOf` |
+| `prefer_enum_over_sealed_class` | A sealed class whose direct subtypes are all classes with no instance fields, type parameters, subclasses, or other supertypes |
 | `prefer_space_between_elements` | No blank line between fields, constructors, and the `build` method |
 | `prefer_to_include_sliver_in_name` | A widget that returns a sliver without "Sliver" in its name |
 | `prefer_widget_class` | A function, a method, or a getter that returns a widget |
