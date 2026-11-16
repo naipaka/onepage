@@ -12,6 +12,7 @@ void main() {
         };
         final sut = UpdateRequest.fromJson(json);
         expect(sut.version, Version(1, 0, 0));
+        expect(sut.message, 'Update available!');
       });
     });
 
@@ -26,6 +27,41 @@ void main() {
           'version': '1.0.0',
           'message': 'Update available!',
         });
+      });
+    });
+
+    group('equality', () {
+      test('should be equal when version and message are equal', () {
+        final request1 = UpdateRequest(
+          version: Version(1, 0, 0),
+          message: 'Update available!',
+        );
+        final request2 = UpdateRequest(
+          version: Version(1, 0, 0),
+          message: 'Update available!',
+        );
+        final request3 = UpdateRequest(
+          version: Version(2, 0, 0),
+          message: 'Update available!',
+        );
+
+        expect(request1, equals(request1));
+        expect(request1, equals(request2));
+        expect(request1.hashCode, equals(request2.hashCode));
+        expect(request1, isNot(equals(request3)));
+      });
+    });
+
+    group('toString', () {
+      test('should include version and message', () {
+        final updateRequest = UpdateRequest(
+          version: Version(1, 0, 0),
+          message: 'Update available!',
+        );
+        expect(
+          updateRequest.toString(),
+          'UpdateRequest(version: 1.0.0, message: Update available!)',
+        );
       });
     });
   });
