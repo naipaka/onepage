@@ -59,20 +59,6 @@ class _CalendarDatePickerDialogState extends State<CalendarDatePickerDialog> {
     _selectedDate = widget.initialDate;
   }
 
-  @override
-  void didUpdateWidget(CalendarDatePickerDialog oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    // Update state when widget properties change
-    if (widget.firstDate != oldWidget.firstDate ||
-        widget.lastDate != oldWidget.lastDate ||
-        widget.markedDates != oldWidget.markedDates) {
-      setState(() {
-        // Trigger rebuild with new properties
-      });
-    }
-  }
-
   /// Navigate to previous month
   void _previousMonth() {
     setState(() {
