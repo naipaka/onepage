@@ -1,54 +1,34 @@
-import 'package:clock/clock.dart';
-import 'package:db_client/db_client.dart';
 import 'package:diary/src/diary_command.dart';
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../utils/mock.mocks.dart';
+import '../utils/db_client.dart';
 
 void main() {
   group('DiaryCommand', () {
+    final date = DateTime(2024, 1, 10);
+
     test('addDiary adds a new diary entry to the database', () async {
-      final mockDbClient = MockDbClient();
-      final diaryCommand = DiaryCommand(dbClient: mockDbClient);
+      final dbClient = createDbClient();
+      final diaryCommand = DiaryCommand(dbClient: dbClient);
 
-      const content = 'New Diary Entry';
-      final date = DateTime(2024, 1, 10);
-
-      final diaryEntry = DiaryEntry(
-        id: 1,
-        content: content,
+      final entry = await diaryCommand.addDiary(
+        content: 'New Diary Entry',
         date: date,
-        createdAt: clock.now(),
-        updatedAt: clock.now(),
       );
 
-      when(
-        mockDbClient.insertDiary(content: content, date: date),
-      ).thenAnswer((_) async => diaryEntry);
-
-      await diaryCommand.addDiary(content: content, date: date);
-
-      verify(mockDbClient.insertDiary(content: content, date: date)).called(1);
+      expect(entry.content, 'New Diary Entry');
+      expect(await dbClient.getDiaryByDate(date: date), entry);
     });
 
-    test(
-      'updateDiary updates an existing diary entry in the database',
-      () async {
-        final mockDbClient = MockDbClient();
-        final diaryCommand = DiaryCommand(dbClient: mockDbClient);
+    test('updateDiary updates the content of a diary entry', () async {
+      final dbClient = createDbClient();
+      final diaryCommand = DiaryCommand(dbClient: dbClient);
+      final entry = await dbClient.insertDiary(content: 'Before', date: date);
 
-        const id = 1;
-        const content = 'Updated Diary Entry';
+      await diaryCommand.updateDiary(id: entry.id, content: 'After');
 
-        when(
-          mockDbClient.updateDiary(id: id, content: content),
-        ).thenAnswer((_) async => 1);
-
-        await diaryCommand.updateDiary(id: id, content: content);
-
-        verify(mockDbClient.updateDiary(id: id, content: content)).called(1);
-      },
-    );
+      final updated = await dbClient.getDiaryByDate(date: date);
+      expect(updated?.content, 'After');
+    });
   });
 }

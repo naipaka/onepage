@@ -20,9 +20,8 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^4.2.0
-  build_runner: ^2.16.2
-  clock: ^1.1.3
+  drift: ^2.35.4
   flutter_test:
     sdk: flutter
-  mockito: ^5.8.1
+  mocktail: ^1.0.5
   path: ^1.9.1

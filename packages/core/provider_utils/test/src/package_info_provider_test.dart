@@ -1,9 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider_utils/src/package_info_provider.dart';
 
-import '../util/mock.mocks.dart';
 import '../util/mock_package_info.dart';
 import '../util/provider_container.dart';
 
@@ -29,16 +27,17 @@ void main() {
 
   group('packageInfoProvider', () {
     test('packageInfoProvider should return PackageInfo instance', () async {
-      final mockPackageInfo = MockPackageInfo();
-      when(mockPackageInfo.appName).thenReturn('Test App');
-      when(mockPackageInfo.packageName).thenReturn('com.example.test');
-      when(mockPackageInfo.version).thenReturn('1.0.0');
-      when(mockPackageInfo.buildNumber).thenReturn('1');
+      final testPackageInfo = PackageInfo(
+        appName: 'Test App',
+        packageName: 'com.example.test',
+        version: '1.0.0',
+        buildNumber: '1',
+      );
 
       final container = createContainer(
         overrides: [
           packageInfoInitializingProvider.overrideWith(
-            (ref) => Future.syncValue(mockPackageInfo),
+            (ref) => Future.syncValue(testPackageInfo),
           ),
         ],
       )..listen(packageInfoInitializingProvider, (_, _) {});

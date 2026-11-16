@@ -11,15 +11,16 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:mockito/mockito.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/router/router.dart';
 import 'package:onepage/widgets/widgets.dart';
 import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
+import 'package:prefs_client/prefs_client.dart';
 import 'package:theme/theme.dart';
 
-import '../golden/golden_test_helpers.mocks.dart';
+import '../utils/clients.dart';
+import '../utils/mock.dart';
 
 const _message = 'Some photos need to be recovered';
 const _title = 'Recover Photos';
@@ -46,54 +47,29 @@ class _FakeCommand extends Fake implements PhotoRecoveryCommand {
 
 void main() {
   group('AutomaticPhotoRecovery', () {
-    late MockDbClient dbClient;
-    late MockPrefsClient prefsClient;
-    late MockHaptics haptics;
+    late DbClient dbClient;
+    late PrefsClient prefsClient;
     late _FakeCommand command;
-    late DiaryImage image;
-    late MockDbClient Function(MockDbClient client) stubDiaries;
-    var dismissed = false;
 
-    setUp(() {
-      dismissed = false;
-      dbClient = MockDbClient();
-      prefsClient = MockPrefsClient();
-      haptics = MockHaptics();
-      command = _FakeCommand();
+    Future<DbClient> createDbClientWithPhoto() async {
+      final client = createDbClient();
       final now = clock.now();
-      final today = DateTime(now.year, now.month, now.day);
-      image = DiaryImage(
-        id: 1,
-        diaryId: 1,
-        photoId: 'photo',
-        createdAt: now,
-        updatedAt: now,
-      );
-      final entry = DiaryEntry(
-        id: 1,
+      final diary = await client.insertDiary(
         content: 'diary',
-        date: today,
-        createdAt: now,
-        updatedAt: now,
+        date: DateTime(now.year, now.month, now.day),
       );
+      await insertExternalDiaryImage(
+        client,
+        diaryId: diary.id,
+        photoId: 'photo',
+      );
+      return client;
+    }
 
-      stubDiaries = (client) {
-        when(
-          client.getDiaries(from: anyNamed('from'), to: anyNamed('to')),
-        ).thenAnswer(
-          (_) async => [
-            Diary(entry: entry, images: [image]),
-          ],
-        );
-        when(
-          client.watchDiaryImageCount(),
-        ).thenAnswer((_) => const Stream.empty());
-        return client;
-      };
-      stubDiaries(dbClient);
-      when(prefsClient.textInputHapticEnabled).thenReturn(false);
-      when(prefsClient.otherHapticEnabled).thenReturn(false);
-      when(prefsClient.photoRecoveryDismissed).thenAnswer((_) => dismissed);
+    setUp(() async {
+      dbClient = await createDbClientWithPhoto();
+      prefsClient = await createPrefsClient();
+      command = _FakeCommand();
     });
 
     Future<void> pumpApp(
@@ -111,10 +87,11 @@ void main() {
           overrides: [
             dbClientProvider.overrideWith((ref) => dbClient),
             prefsClientProvider.overrideWithValue(prefsClient),
-            hapticsProvider.overrideWithValue(haptics),
-            trackerProvider.overrideWithValue(MockTracker()),
+            trackerProvider.overrideWithValue(
+              createTracker(MockFirebaseCrashlytics()),
+            ),
             inAppReviewerProvider.overrideWith(
-              (ref) async => MockInAppReviewer(),
+              (ref) async => createInAppReviewer(prefsClient),
             ),
             devicePhotosProvider.overrideWithValue(_FakeLibrary(option)),
             photoRecoveryCommandProvider.overrideWithValue(command),
@@ -140,14 +117,7 @@ void main() {
       }
     }
 
-    void stubExternal(List<DiaryImage> images) {
-      when(
-        dbClient.getExternalDiaryImages(),
-      ).thenAnswer((_) async => images);
-    }
-
     testWidgets('recovers photos when the app opens', (tester) async {
-      stubExternal([image]);
       await pumpApp(tester);
 
       expect(command.deviceRuns, 1);
@@ -156,11 +126,9 @@ void main() {
     testWidgets('recovers photos again for a restored database', (
       tester,
     ) async {
-      stubExternal([image]);
       await pumpApp(tester);
 
-      dbClient = stubDiaries(MockDbClient());
-      stubExternal([image]);
+      dbClient = await createDbClientWithPhoto();
       tester.container().invalidate(dbClientProvider);
       await tester.pump();
       await tester.pump();
@@ -169,7 +137,6 @@ void main() {
     });
 
     testWidgets('reminds about the remaining photos', (tester) async {
-      stubExternal([image]);
       await pumpApp(tester);
 
       expect(find.text(_message), findsOneWidget);
@@ -181,22 +148,20 @@ void main() {
     });
 
     testWidgets('does not remind after the user declines', (tester) async {
-      dismissed = true;
-      stubExternal([image]);
+      prefsClient = await createPrefsClient({'photoRecoveryDismissed': true});
       await pumpApp(tester);
 
       expect(find.text(_message), findsNothing);
     });
 
     testWidgets('does not remind when nothing can be done', (tester) async {
-      stubExternal([image]);
       await pumpApp(tester, option: DevicePhotoAccessOption.none);
 
       expect(find.text(_message), findsNothing);
     });
 
     testWidgets('does not remind without external photos', (tester) async {
-      stubExternal([]);
+      await dbClient.deleteExternalDiaryImages();
       await pumpApp(tester);
 
       expect(find.text(_message), findsNothing);

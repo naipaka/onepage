@@ -8,37 +8,59 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/pages/pages.dart';
+import 'package:prefs_client/prefs_client.dart';
 import 'package:theme/theme.dart';
 
-import '../golden/golden_test_helpers.mocks.dart';
+import '../utils/clients.dart';
+import '../utils/mock.dart';
+
+class _FakeBackupController extends Fake implements BackupController {
+  Future<void> Function(BackupProgressCallback onProgress)? create;
+  Future<void> Function(BackupProgressCallback onProgress)? restore;
+  Future<BackupFile?> Function() pick = () async => null;
+  final restored = <BackupFile>[];
+
+  @override
+  Future<void> createBackupFile({BackupProgressCallback? onProgress}) {
+    return create!(onProgress!);
+  }
+
+  @override
+  Future<BackupFile?> pickBackupFile() => pick();
+
+  @override
+  Future<void> restoreBackupFile(
+    BackupFile backupFile, {
+    BackupProgressCallback? onProgress,
+  }) {
+    restored.add(backupFile);
+    return restore!(onProgress!);
+  }
+}
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(StackTrace.empty);
+  });
+
   group('BackupPage', () {
-    late MockBackupController controller;
-    late MockTracker tracker;
-    late MockPrefsClient prefsClient;
+    late _FakeBackupController controller;
+    late MockFirebaseCrashlytics crashlytics;
+    late PrefsClient prefsClient;
 
-    setUp(() {
-      controller = MockBackupController();
-      tracker = MockTracker();
-      prefsClient = MockPrefsClient();
-
-      when(prefsClient.otherHapticEnabled).thenReturn(false);
-      when(prefsClient.textInputHapticEnabled).thenReturn(false);
-      when(
-        tracker.recordError(any, any, fatal: anyNamed('fatal')),
-      ).thenAnswer((_) async {});
+    setUp(() async {
+      controller = _FakeBackupController();
+      crashlytics = MockFirebaseCrashlytics();
+      prefsClient = await createPrefsClient();
     });
 
-    MockDbClient createDbClient() {
-      final client = MockDbClient();
-      when(client.watchDiaryImageCount()).thenAnswer(
-        (_) => const Stream.empty(),
-      );
-      return client;
+    void verifyFatalErrorRecorded() {
+      verify(
+        () => crashlytics.recordError(any<Object?>(), any(), fatal: true),
+      ).called(1);
     }
 
     Future<void> pumpPage(WidgetTester tester) async {
@@ -54,7 +76,7 @@ void main() {
           overrides: [
             backupControllerProvider.overrideWithValue(controller),
             dbClientProvider.overrideWith((_) => createDbClient()),
-            trackerProvider.overrideWithValue(tracker),
+            trackerProvider.overrideWithValue(createTracker(crashlytics)),
             prefsClientProvider.overrideWithValue(prefsClient),
           ],
           child: TranslationProvider(
@@ -81,29 +103,16 @@ void main() {
     }
 
     void stubCreate(Future<void> Function(BackupProgressCallback) answer) {
-      when(
-        controller.createBackupFile(onProgress: anyNamed('onProgress')),
-      ).thenAnswer((invocation) {
-        return answer(
-          invocation.namedArguments[#onProgress] as BackupProgressCallback,
-        );
-      });
+      controller.create = answer;
     }
 
     void stubRestore(Future<void> Function(BackupProgressCallback) answer) {
-      when(
-        controller.restoreBackupFile(any, onProgress: anyNamed('onProgress')),
-      ).thenAnswer((invocation) {
-        return answer(
-          invocation.namedArguments[#onProgress] as BackupProgressCallback,
-        );
-      });
+      controller.restore = answer;
     }
 
     void stubPick({required bool isLegacy}) {
-      when(controller.pickBackupFile()).thenAnswer(
-        (_) async => BackupFile(path: 'a.backup', isLegacy: isLegacy),
-      );
+      controller.pick = () async =>
+          BackupFile(path: 'a.backup', isLegacy: isLegacy);
     }
 
     group('create', () {
@@ -141,26 +150,23 @@ void main() {
 
         expect(find.text('Creating backup'), findsNothing);
         expect(find.text('Failed to create backup'), findsOneWidget);
-        verify(tracker.recordError(any, any, fatal: true)).called(1);
+        verifyFatalErrorRecorded();
         await dismissToast(tester);
       });
     });
 
     group('restore', () {
       testWidgets('does nothing when the picker is canceled', (tester) async {
-        when(controller.pickBackupFile()).thenAnswer((_) async => null);
         await pumpPage(tester);
 
         await tester.tap(find.text('Restore Backup'));
         await tester.pump();
 
-        verifyNever(
-          controller.restoreBackupFile(any, onProgress: anyNamed('onProgress')),
-        );
+        expect(controller.restored, isEmpty);
       });
 
       testWidgets('shows an error when picking a file fails', (tester) async {
-        when(controller.pickBackupFile()).thenThrow(Exception('failed'));
+        controller.pick = () async => throw Exception('failed');
         await pumpPage(tester);
         final client = tester.container().read(dbClientProvider);
 
@@ -169,11 +175,8 @@ void main() {
 
         expect(find.text('Failed to restore backup'), findsOneWidget);
         expect(tester.container().read(dbClientProvider), same(client));
-        verifyNever(client.close());
-        verifyNever(
-          controller.restoreBackupFile(any, onProgress: anyNamed('onProgress')),
-        );
-        verify(tracker.recordError(any, any, fatal: true)).called(1);
+        expect(controller.restored, isEmpty);
+        verifyFatalErrorRecorded();
         await dismissToast(tester);
       });
 
@@ -214,9 +217,7 @@ void main() {
         await tester.tap(find.text('Cancel'));
         await tester.pumpAndSettle();
 
-        verifyNever(
-          controller.restoreBackupFile(any, onProgress: anyNamed('onProgress')),
-        );
+        expect(controller.restored, isEmpty);
       });
 
       testWidgets('restores a legacy backup after confirmation', (
@@ -254,7 +255,7 @@ void main() {
           tester.container().read(dbClientProvider),
           isNot(same(client)),
         );
-        verify(tracker.recordError(any, any, fatal: true)).called(1);
+        verifyFatalErrorRecorded();
         await dismissToast(tester);
       });
     });

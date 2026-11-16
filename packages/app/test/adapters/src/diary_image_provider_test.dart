@@ -6,12 +6,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:photo_storage/photo_storage.dart';
 
-import '../../golden/golden_test_helpers.mocks.dart';
+import '../../utils/clients.dart';
 
 void main() {
   group('diaryImageCommandProvider', () {
     test('creates a command with the database and photo storage', () {
-      final dbClient = MockDbClient();
+      final dbClient = createDbClient();
       final photoStorage = PhotoStorage(directory: Directory.systemTemp);
       final container = ProviderContainer(
         overrides: [

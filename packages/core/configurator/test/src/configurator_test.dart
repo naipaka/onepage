@@ -7,19 +7,28 @@ import 'package:firebase_core_platform_interface/test.dart';
 import 'package:firebase_remote_config_platform_interface/firebase_remote_config_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meta/meta.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 
-import '../utils/firebase_remote_config.mock.dart';
-import '../utils/mock.mocks.dart';
+import '../utils/mock.dart';
+import '../utils/test_firebase_remote_config_platform.dart';
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(
+      RemoteConfigSettings(
+        fetchTimeout: Duration.zero,
+        minimumFetchInterval: Duration.zero,
+      ),
+    );
+  });
+
   group('constructor', () {
     test('Can create an instance', () async {
       TestWidgetsFlutterBinding.ensureInitialized();
       setupFirebaseCoreMocks();
       await Firebase.initializeApp();
-      final mockPlatform = MockFirebaseRemoteConfigPlatform();
-      FirebaseRemoteConfigPlatform.instance = mockPlatform;
+      FirebaseRemoteConfigPlatform.instance =
+          TestFirebaseRemoteConfigPlatform();
 
       final target = Configurator();
       expect(target, isA<Configurator>());
@@ -31,7 +40,7 @@ void main() {
       final mockRC = MockFirebaseRemoteConfig();
       final target = Configurator.forTesting(mockRC);
 
-      when(mockRC.fetchAndActivate()).thenAnswer((_) async => true);
+      when(mockRC.fetchAndActivate).thenAnswer((_) async => true);
 
       final result = await target.fetchAndActivate();
 
@@ -44,7 +53,7 @@ void main() {
       final mockRC = MockFirebaseRemoteConfig();
       final target = Configurator.forTesting(mockRC);
 
-      when(mockRC.activate()).thenAnswer((_) async => true);
+      when(mockRC.activate).thenAnswer((_) async => true);
 
       final result = await target.activate();
 
@@ -57,6 +66,8 @@ void main() {
       final mockRC = MockFirebaseRemoteConfig();
       final target = Configurator.forTesting(mockRC);
 
+      when(() => mockRC.setConfigSettings(any())).thenAnswer((_) async {});
+
       const fetchTimeout = Duration(seconds: 10);
       const minimumFetchInterval = Duration(minutes: 5);
 
@@ -66,9 +77,9 @@ void main() {
       );
 
       verify(
-        mockRC.setConfigSettings(
-          argThat(
-            predicate<RemoteConfigSettings>(
+        () => mockRC.setConfigSettings(
+          any(
+            that: predicate<RemoteConfigSettings>(
               (settings) =>
                   settings.fetchTimeout == fetchTimeout &&
                   settings.minimumFetchInterval == minimumFetchInterval,
@@ -82,11 +93,12 @@ void main() {
   group('setDefaults', () {
     test('Can set defaults with String values', () async {
       final mockRC = MockFirebaseRemoteConfig();
+      when(() => mockRC.setDefaults({'key': 'value'})).thenAnswer((_) async {});
       final target = Configurator.forTesting(mockRC);
 
       await target.setDefaults({'key': 'value'});
 
-      verify(mockRC.setDefaults({'key': 'value'}));
+      verify(() => mockRC.setDefaults({'key': 'value'}));
     });
 
     test('Error occurs when setting a Class instance as a value', () {
@@ -128,6 +140,8 @@ void main() {
   group('onConfigUpdated', () {
     test('Can retrieve the Stream of RemoteConfigUpdate', () async {
       final mockRC = MockFirebaseRemoteConfig();
+      when(() => mockRC.onConfigUpdated)
+          .thenAnswer((_) => const Stream.empty());
       final target = Configurator.forTesting(mockRC);
 
       final stream = target.onConfigUpdated;
@@ -140,6 +154,9 @@ void main() {
       'Can retrieve the Stream of RemoteConfigUpdate filtered by key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
+        when(
+          () => mockRC.onConfigUpdated,
+        ).thenAnswer((_) => const Stream.empty());
         final target = Configurator.forTesting(mockRC);
 
         const key = 'string_001';
@@ -153,7 +170,7 @@ void main() {
   group('getString', () {
     test('Can retrieve the Remote string corresponding to the key', () {
       final mockRC = MockFirebaseRemoteConfig();
-      when(mockRC.getString('string_001')).thenReturn('string_value');
+      when(() => mockRC.getString('string_001')).thenReturn('string_value');
       final target = Configurator.forTesting(mockRC);
 
       const key = 'string_001';
@@ -166,7 +183,7 @@ void main() {
   group('getInt', () {
     test('Can retrieve the Remote integer corresponding to the key', () {
       final mockRC = MockFirebaseRemoteConfig();
-      when(mockRC.getInt('int_001')).thenReturn(1);
+      when(() => mockRC.getInt('int_001')).thenReturn(1);
       final target = Configurator.forTesting(mockRC);
 
       const key = 'int_001';
@@ -181,7 +198,7 @@ void main() {
       'Can retrieve the Remote floating-point number corresponding to the key',
       () {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getDouble('double_001')).thenReturn(0.1);
+        when(() => mockRC.getDouble('double_001')).thenReturn(0.1);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'double_001';
@@ -195,7 +212,7 @@ void main() {
   group('getBool', () {
     test('Can retrieve the boolean value corresponding to the key', () {
       final mockRC = MockFirebaseRemoteConfig();
-      when(mockRC.getBool('bool_001')).thenReturn(true);
+      when(() => mockRC.getBool('bool_001')).thenReturn(true);
       final target = Configurator.forTesting(mockRC);
 
       const key = 'bool_001';
@@ -208,7 +225,7 @@ void main() {
   group('getJson', () {
     test('Can retrieve the JSON (Map) corresponding to the key', () {
       final mockRC = MockFirebaseRemoteConfig();
-      when(mockRC.getString('json_001')).thenReturn('''
+      when(() => mockRC.getString('json_001')).thenReturn('''
       {
         "value_1": "01",
         "value_2": 2,
@@ -233,7 +250,7 @@ void main() {
   group('getListJson', () {
     test('Can retrieve the list of JSON (Map) corresponding to the key', () {
       final mockRC = MockFirebaseRemoteConfig();
-      when(mockRC.getString('list_json_001')).thenReturn('''
+      when(() => mockRC.getString('list_json_001')).thenReturn('''
       [
         {
           "value_1a": "01a",
@@ -277,7 +294,7 @@ void main() {
   group('getData', () {
     test('Can retrieve the class object corresponding to the key', () {
       final mockRC = MockFirebaseRemoteConfig();
-      when(mockRC.getString('data_001')).thenReturn('''
+      when(() => mockRC.getString('data_001')).thenReturn('''
       {
         "value": "tokyo"
       }
@@ -297,9 +314,11 @@ void main() {
       'Can retrieve the Config<String> corresponding to the key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getString('string_001')).thenReturn('string_value');
+        when(() => mockRC.getString('string_001')).thenReturn('string_value');
         final streamController = StreamController<RemoteConfigUpdate>();
-        when(mockRC.onConfigUpdated).thenAnswer((_) => streamController.stream);
+        when(() => mockRC.onConfigUpdated)
+            .thenAnswer((_) => streamController.stream);
+        when(mockRC.activate).thenAnswer((_) async => true);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'string_001';
@@ -333,9 +352,11 @@ void main() {
       'Can retrieve the Config<int> corresponding to the key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getInt('int_001')).thenReturn(1);
+        when(() => mockRC.getInt('int_001')).thenReturn(1);
         final streamController = StreamController<RemoteConfigUpdate>();
-        when(mockRC.onConfigUpdated).thenAnswer((_) => streamController.stream);
+        when(() => mockRC.onConfigUpdated)
+            .thenAnswer((_) => streamController.stream);
+        when(mockRC.activate).thenAnswer((_) async => true);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'int_001';
@@ -369,9 +390,11 @@ void main() {
       'Can retrieve the Config<double> corresponding to the key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getDouble('double_001')).thenReturn(0.1);
+        when(() => mockRC.getDouble('double_001')).thenReturn(0.1);
         final streamController = StreamController<RemoteConfigUpdate>();
-        when(mockRC.onConfigUpdated).thenAnswer((_) => streamController.stream);
+        when(() => mockRC.onConfigUpdated)
+            .thenAnswer((_) => streamController.stream);
+        when(mockRC.activate).thenAnswer((_) async => true);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'double_001';
@@ -405,9 +428,11 @@ void main() {
       'Can retrieve the Config<bool> corresponding to the key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getBool('bool_001')).thenReturn(true);
+        when(() => mockRC.getBool('bool_001')).thenReturn(true);
         final streamController = StreamController<RemoteConfigUpdate>();
-        when(mockRC.onConfigUpdated).thenAnswer((_) => streamController.stream);
+        when(() => mockRC.onConfigUpdated)
+            .thenAnswer((_) => streamController.stream);
+        when(mockRC.activate).thenAnswer((_) async => true);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'bool_001';
@@ -442,7 +467,7 @@ void main() {
       'corresponding to the key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getString('json_001')).thenReturn('''
+        when(() => mockRC.getString('json_001')).thenReturn('''
       {
         "value_1": "01",
         "value_2": 2,
@@ -451,7 +476,9 @@ void main() {
       }
       ''');
         final streamController = StreamController<RemoteConfigUpdate>();
-        when(mockRC.onConfigUpdated).thenAnswer((_) => streamController.stream);
+        when(() => mockRC.onConfigUpdated)
+            .thenAnswer((_) => streamController.stream);
+        when(mockRC.activate).thenAnswer((_) async => true);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'json_001';
@@ -496,7 +523,7 @@ void main() {
       'corresponding to the key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getString('list_json_001')).thenReturn('''
+        when(() => mockRC.getString('list_json_001')).thenReturn('''
       [
         {
           "value_1a": "01a",
@@ -513,7 +540,9 @@ void main() {
       ]
       ''');
         final streamController = StreamController<RemoteConfigUpdate>();
-        when(mockRC.onConfigUpdated).thenAnswer((_) => streamController.stream);
+        when(() => mockRC.onConfigUpdated)
+            .thenAnswer((_) => streamController.stream);
+        when(mockRC.activate).thenAnswer((_) async => true);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'list_json_001';
@@ -579,13 +608,15 @@ void main() {
       'Can retrieve the Config<Object> corresponding to the key',
       () async {
         final mockRC = MockFirebaseRemoteConfig();
-        when(mockRC.getString('data_001')).thenReturn('''
+        when(() => mockRC.getString('data_001')).thenReturn('''
       {
         "value": "tokyo"
       }
       ''');
         final streamController = StreamController<RemoteConfigUpdate>();
-        when(mockRC.onConfigUpdated).thenAnswer((_) => streamController.stream);
+        when(() => mockRC.onConfigUpdated)
+            .thenAnswer((_) => streamController.stream);
+        when(mockRC.activate).thenAnswer((_) async => true);
         final target = Configurator.forTesting(mockRC);
 
         const key = 'data_001';

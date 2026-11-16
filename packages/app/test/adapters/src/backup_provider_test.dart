@@ -8,7 +8,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:provider_utils/provider_utils.dart';
 
-import '../../golden/golden_test_helpers.mocks.dart';
+import '../../utils/clients.dart';
 
 void main() {
   group('backupControllerProvider', () {
@@ -16,7 +16,7 @@ void main() {
       final photoStorage = PhotoStorage(directory: Directory.systemTemp);
       final container = ProviderContainer(
         overrides: [
-          dbClientProvider.overrideWithValue(MockDbClient()),
+          dbClientProvider.overrideWithValue(createDbClient()),
           packageInfoProvider.overrideWithValue(
             PackageInfo(
               appName: 'OnePage',

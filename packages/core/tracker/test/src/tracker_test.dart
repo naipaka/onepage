@@ -5,10 +5,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core_platform_interface/test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:tracker/tracker.dart';
 
-import '../utils/mock.mocks.dart';
+import '../utils/mock.dart';
 
 void main() {
   group('Tracker', () {
@@ -61,12 +61,13 @@ void main() {
           exception: Exception('Test exception'),
         );
         when(
-          crashlytics.recordFlutterError(flutterErrorDetails),
+          () => crashlytics.recordFlutterError(flutterErrorDetails),
         ).thenAnswer((_) async {});
 
         await tracker.onFlutterError(flutterErrorDetails);
 
-        verify(crashlytics.recordFlutterError(flutterErrorDetails)).called(1);
+        verify(() => crashlytics.recordFlutterError(flutterErrorDetails))
+            .called(1);
         verifyNoMoreInteractions(crashlytics);
         verifyNoMoreInteractions(analytics);
       },
@@ -87,17 +88,18 @@ void main() {
         final error = Exception('Test exception');
         final stack = StackTrace.fromString('Test stack trace');
         when(
-          crashlytics.recordError(error, stack, fatal: true),
+          () => crashlytics.recordError(error, stack, fatal: true),
         ).thenAnswer((_) async {});
         when(
-          trackable.trackError(error, stack, fatal: true),
+          () => trackable.trackError(error, stack, fatal: true),
         ).thenAnswer((_) async {});
 
         final got = tracker.onPlatformError(error, stack);
 
         expect(got, true);
-        verify(crashlytics.recordError(error, stack, fatal: true)).called(1);
-        verify(trackable.trackError(error, stack, fatal: true)).called(1);
+        verify(() => crashlytics.recordError(error, stack, fatal: true))
+            .called(1);
+        verify(() => trackable.trackError(error, stack, fatal: true)).called(1);
         verifyNoMoreInteractions(crashlytics);
         verifyNoMoreInteractions(analytics);
         verifyNoMoreInteractions(trackable);
@@ -118,17 +120,17 @@ void main() {
       final error = Exception('Test exception');
       final stack = StackTrace.fromString('Test stack trace');
       when(
-        crashlytics.recordError(
-          any,
-          any,
-          fatal: anyNamed('fatal'),
+        () => crashlytics.recordError(
+          any<Object?>(),
+          any(),
+          fatal: any(named: 'fatal'),
         ),
       ).thenAnswer((_) async {});
       when(
-        trackable.trackError(
-          any,
-          any,
-          fatal: anyNamed('fatal'),
+        () => trackable.trackError(
+          any<Object?>(),
+          any(),
+          fatal: any(named: 'fatal'),
         ),
       ).thenAnswer((_) async {});
 
@@ -141,17 +143,17 @@ void main() {
       await pumpEventQueue();
 
       verify(
-        crashlytics.recordError(
-          any,
-          any,
-          fatal: anyNamed('fatal'),
+        () => crashlytics.recordError(
+          any<Object?>(),
+          any(),
+          fatal: any(named: 'fatal'),
         ),
       ).called(1);
       verify(
-        trackable.trackError(
-          any,
-          any,
-          fatal: anyNamed('fatal'),
+        () => trackable.trackError(
+          any<Object?>(),
+          any(),
+          fatal: any(named: 'fatal'),
         ),
       ).called(1);
       verifyNoMoreInteractions(crashlytics);
@@ -175,16 +177,18 @@ void main() {
         final stack = StackTrace.fromString('Test stack trace');
         const fatal = true;
         when(
-          crashlytics.recordError(error, stack, fatal: fatal),
+          () => crashlytics.recordError(error, stack, fatal: fatal),
         ).thenAnswer((_) async {});
         when(
-          trackable.trackError(error, stack, fatal: fatal),
+          () => trackable.trackError(error, stack, fatal: fatal),
         ).thenAnswer((_) async {});
 
         await tracker.recordError(error, stack, fatal: fatal);
 
-        verify(crashlytics.recordError(error, stack, fatal: fatal)).called(1);
-        verify(trackable.trackError(error, stack, fatal: fatal)).called(1);
+        verify(() => crashlytics.recordError(error, stack, fatal: fatal))
+            .called(1);
+        verify(() => trackable.trackError(error, stack, fatal: fatal))
+            .called(1);
         verifyNoMoreInteractions(crashlytics);
         verifyNoMoreInteractions(analytics);
         verifyNoMoreInteractions(trackable);
@@ -203,15 +207,16 @@ void main() {
       );
 
       const userId = 'b979be1991444eeb814acdccd594';
-      when(crashlytics.setUserIdentifier(userId)).thenAnswer((_) async {});
-      when(analytics.setUserId(id: userId)).thenAnswer((_) async {});
-      when(trackable.setUserId(userId)).thenAnswer((_) async {});
+      when(() => crashlytics.setUserIdentifier(userId))
+          .thenAnswer((_) async {});
+      when(() => analytics.setUserId(id: userId)).thenAnswer((_) async {});
+      when(() => trackable.setUserId(userId)).thenAnswer((_) async {});
 
       await tracker.setUserId(userId);
 
-      verify(crashlytics.setUserIdentifier(userId)).called(1);
-      verify(analytics.setUserId(id: userId)).called(1);
-      verify(trackable.setUserId(userId)).called(1);
+      verify(() => crashlytics.setUserIdentifier(userId)).called(1);
+      verify(() => analytics.setUserId(id: userId)).called(1);
+      verify(() => trackable.setUserId(userId)).called(1);
       verifyNoMoreInteractions(crashlytics);
       verifyNoMoreInteractions(analytics);
       verifyNoMoreInteractions(trackable);
@@ -229,15 +234,16 @@ void main() {
       );
 
       const userId = '';
-      when(crashlytics.setUserIdentifier(userId)).thenAnswer((_) async {});
-      when(analytics.setUserId()).thenAnswer((_) async {});
-      when(trackable.clearUserId()).thenAnswer((_) async {});
+      when(() => crashlytics.setUserIdentifier(userId))
+          .thenAnswer((_) async {});
+      when(analytics.setUserId).thenAnswer((_) async {});
+      when(trackable.clearUserId).thenAnswer((_) async {});
 
       await tracker.clearUserId();
 
-      verify(crashlytics.setUserIdentifier(userId)).called(1);
-      verify(analytics.setUserId()).called(1);
-      verify(trackable.clearUserId()).called(1);
+      verify(() => crashlytics.setUserIdentifier(userId)).called(1);
+      verify(analytics.setUserId).called(1);
+      verify(trackable.clearUserId).called(1);
       verifyNoMoreInteractions(crashlytics);
       verifyNoMoreInteractions(analytics);
       verifyNoMoreInteractions(trackable);
@@ -255,18 +261,18 @@ void main() {
 
         const properties = {'key': 'value'};
         when(
-          analytics.setUserProperty(
-            name: anyNamed('name'),
-            value: anyNamed('value'),
+          () => analytics.setUserProperty(
+            name: any(named: 'name'),
+            value: any(named: 'value'),
           ),
         ).thenAnswer((_) async {});
 
         await tracker.setUserProperties(properties);
 
         verify(
-          analytics.setUserProperty(
-            name: anyNamed('name'),
-            value: anyNamed('value'),
+          () => analytics.setUserProperty(
+            name: any(named: 'name'),
+            value: any(named: 'value'),
           ),
         ).called(1);
         verifyNoMoreInteractions(crashlytics);
@@ -333,20 +339,21 @@ void main() {
 
       const screenName = 'screen';
       when(
-        analytics.logScreenView(
+        () => analytics.logScreenView(
           screenName: screenName,
         ),
       ).thenAnswer((_) async {});
-      when(trackable.trackScreenView(screenName)).thenAnswer((_) async {});
+      when(() => trackable.trackScreenView(screenName))
+          .thenAnswer((_) async {});
 
       await tracker.trackScreenView(screenName);
 
       verify(
-        analytics.logScreenView(
+        () => analytics.logScreenView(
           screenName: screenName,
         ),
       ).called(1);
-      verify(trackable.trackScreenView(screenName)).called(1);
+      verify(() => trackable.trackScreenView(screenName)).called(1);
       verifyNoMoreInteractions(crashlytics);
       verifyNoMoreInteractions(analytics);
     });
@@ -364,13 +371,13 @@ void main() {
       const eventName = 'event';
       const parameters = {'key': 'value'};
       when(
-        analytics.logEvent(
+        () => analytics.logEvent(
           name: eventName,
           parameters: parameters,
         ),
       ).thenAnswer((_) async {});
       when(
-        trackable.trackEvent(
+        () => trackable.trackEvent(
           eventName,
           parameters: parameters,
         ),
@@ -379,13 +386,13 @@ void main() {
       await tracker.logEvent(eventName, parameters: parameters);
 
       verify(
-        analytics.logEvent(
+        () => analytics.logEvent(
           name: eventName,
           parameters: parameters,
         ),
       ).called(1);
       verify(
-        trackable.trackEvent(
+        () => trackable.trackEvent(
           eventName,
           parameters: parameters,
         ),

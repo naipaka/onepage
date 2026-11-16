@@ -3,11 +3,18 @@ import 'package:flutter_test/flutter_test.dart';
 
 const channel = MethodChannel('plugins.flutter.io/path_provider');
 
-void setUpMockPathProvider() {
+/// Makes path_provider return [temporaryPath] and [supportPath].
+void setUpMockPathProvider({
+  required String temporaryPath,
+  required String supportPath,
+}) {
   TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
       .setMockMethodCallHandler(channel, (methodCall) async {
-        if (methodCall.method == 'getTemporaryDirectory') {
-          return '/tmp';
+        switch (methodCall.method) {
+          case 'getTemporaryDirectory':
+            return temporaryPath;
+          case 'getApplicationSupportDirectory':
+            return supportPath;
         }
         throw PlatformException(
           code: 'Unimplemented',

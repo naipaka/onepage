@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:photo_storage/photo_storage.dart';
 
-import '../../golden/golden_test_helpers.mocks.dart';
+import '../../utils/clients.dart';
 
 void main() {
   group('photoRecoveryCommandProvider', () {
@@ -13,7 +13,7 @@ void main() {
       final photoStorage = PhotoStorage(directory: Directory.systemTemp);
       final container = ProviderContainer(
         overrides: [
-          dbClientProvider.overrideWithValue(MockDbClient()),
+          dbClientProvider.overrideWithValue(createDbClient()),
           photoStorageProvider.overrideWithValue(photoStorage),
         ],
       );
