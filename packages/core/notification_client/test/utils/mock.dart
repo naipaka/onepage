@@ -1,9 +1,11 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:mockito/annotations.dart';
+import 'package:mocktail/mocktail.dart';
 
-@GenerateNiceMocks([
-  MockSpec<FlutterLocalNotificationsPlugin>(),
-  MockSpec<AndroidFlutterLocalNotificationsPlugin>(),
-  MockSpec<IOSFlutterLocalNotificationsPlugin>(),
-])
-void main() {}
+class MockFlutterLocalNotificationsPlugin extends Mock
+    implements FlutterLocalNotificationsPlugin;
+
+class MockAndroidFlutterLocalNotificationsPlugin extends Mock
+    implements AndroidFlutterLocalNotificationsPlugin;
+
+class MockIOSFlutterLocalNotificationsPlugin extends Mock
+    implements IOSFlutterLocalNotificationsPlugin;

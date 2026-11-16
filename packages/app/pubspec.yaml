@@ -83,11 +83,10 @@ dev_dependencies:
     sdk: flutter
   go_router_builder: ^4.5.3
   meta: ^1.19.0
-  mockito: ^5.8.1
+  mocktail: ^1.0.5
   package_info_plus: ^10.2.2
   patrol: ^4.11.0
   riverpod_generator: ^4.0.10
-
 flutter:
   uses-material-design: true
 

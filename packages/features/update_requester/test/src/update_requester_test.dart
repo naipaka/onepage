@@ -1,14 +1,23 @@
 import 'dart:convert';
 
+import 'package:configurator/configurator.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:update_requester/src/models/models.dart';
 import 'package:update_requester/src/update_requester.dart';
 import 'package:version/version.dart';
 
-import '../util/mock.mocks.dart';
+import '../util/mock.dart';
 
 void main() {
+  PackageInfo packageInfo(String version) => PackageInfo(
+    appName: 'One Page',
+    packageName: 'jp.co.altive.onepage',
+    version: version,
+    buildNumber: '1',
+  );
+
   group('UpdateRequester', () {
     group('updateRequestDefaultValue', () {
       test('should have correct default value', () {
@@ -23,36 +32,38 @@ void main() {
     });
 
     group('getConfig', () {
-      test('should fetch UpdateRequest configuration', () {
+      test('returns the update request config of the configurator', () {
         final configurator = MockConfigurator();
-        final packageInfo = MockPackageInfo();
-        final updateRequester = UpdateRequester(
-          configurator: configurator,
-          packageInfo: packageInfo,
+        final config = Config(
+          value: UpdateRequest(version: Version(1, 0, 0), message: ''),
+          subscription: null,
         );
-
         void onConfigUpdated(UpdateRequest updateRequest) {}
-        updateRequester.getConfig(onConfigUpdated: onConfigUpdated);
-
-        verify(
-          configurator.getDataConfig(
+        when(
+          () => configurator.getDataConfig(
             updateRequestKey,
             fromJson: UpdateRequest.fromJson,
             onConfigUpdated: onConfigUpdated,
           ),
-        ).called(1);
+        ).thenReturn(config);
+        final updateRequester = UpdateRequester(
+          configurator: configurator,
+          packageInfo: packageInfo('1.0.0'),
+        );
+
+        expect(
+          updateRequester.getConfig(onConfigUpdated: onConfigUpdated),
+          config,
+        );
       });
     });
 
     group('updateRequestMessage', () {
       test('should return update message if current version is less than '
           'required version', () {
-        final configurator = MockConfigurator();
-        final packageInfo = MockPackageInfo();
-        when(packageInfo.version).thenReturn('0.9.0');
         final updateRequester = UpdateRequester(
-          configurator: configurator,
-          packageInfo: packageInfo,
+          configurator: MockConfigurator(),
+          packageInfo: packageInfo('0.9.0'),
         );
 
         final updateRequest = UpdateRequest(
@@ -66,12 +77,9 @@ void main() {
 
       test('should return null if current version is greater than or equal to '
           'required version', () {
-        final configurator = MockConfigurator();
-        final packageInfo = MockPackageInfo();
-        when(packageInfo.version).thenReturn('1.0.0');
         final updateRequester = UpdateRequester(
-          configurator: configurator,
-          packageInfo: packageInfo,
+          configurator: MockConfigurator(),
+          packageInfo: packageInfo('1.0.0'),
         );
 
         final updateRequest = UpdateRequest(

@@ -19,10 +19,9 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^4.2.0
-  build_runner: ^2.16.2
   flutter_test:
     sdk: flutter
-  mockito: ^5.8.1
+  mocktail: ^1.0.5
 
 flutter:
   uses-material-design: true

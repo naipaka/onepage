@@ -1,15 +1,23 @@
 import 'package:clock/clock.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:notification_client/notification_client.dart';
+import 'package:timezone/timezone.dart';
 
-import 'utils/mock.mocks.dart';
+import 'utils/mock.dart';
 import 'utils/mock_flutter_timezone.dart';
 import 'utils/mock_local_notifications.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(() {
+    registerFallbackValue(const InitializationSettings());
+    registerFallbackValue(TZDateTime.utc(2025));
+    registerFallbackValue(const NotificationDetails());
+    registerFallbackValue(AndroidScheduleMode.exactAllowWhileIdle);
+  });
 
   setUp(() {
     setupMockLocalNotification();
@@ -38,7 +46,7 @@ void main() {
 
     test('initialize calls initialize method', () async {
       when(
-        mockPlugin.initialize(settings: anyNamed('settings')),
+        () => mockPlugin.initialize(settings: any(named: 'settings')),
       ).thenAnswer((_) async => true);
 
       final client = NotificationClient.forTesting(
@@ -48,11 +56,12 @@ void main() {
       );
       await client.initialize();
 
-      verify(mockPlugin.initialize(settings: anyNamed('settings'))).called(1);
+      verify(() => mockPlugin.initialize(settings: any(named: 'settings')))
+          .called(1);
     });
 
     test('cancelAllNotifications calls cancelAll', () async {
-      when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+      when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
 
       final client = NotificationClient.forTesting(
         notificationsPlugin: mockPlugin,
@@ -61,11 +70,12 @@ void main() {
       );
       await client.cancelAllNotifications();
 
-      verify(mockPlugin.cancelAll()).called(1);
+      verify(() => mockPlugin.cancelAll()).called(1);
     });
 
     test('cancelNotification calls cancel with id', () async {
-      when(mockPlugin.cancel(id: anyNamed('id'))).thenAnswer((_) async {});
+      when(() => mockPlugin.cancel(id: any(named: 'id')))
+          .thenAnswer((_) async {});
 
       final client = NotificationClient.forTesting(
         notificationsPlugin: mockPlugin,
@@ -74,18 +84,18 @@ void main() {
       );
       await client.cancelNotification(123);
 
-      verify(mockPlugin.cancel(id: 123)).called(1);
+      verify(() => mockPlugin.cancel(id: 123)).called(1);
     });
 
     test('requestPermissions returns false when no platform', () async {
       when(
-        mockPlugin
+        () => mockPlugin
             .resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin
             >(),
       ).thenReturn(null);
       when(
-        mockPlugin
+        () => mockPlugin
             .resolvePlatformSpecificImplementation<
               IOSFlutterLocalNotificationsPlugin
             >(),
@@ -102,7 +112,7 @@ void main() {
     });
 
     test('scheduleNotifications with empty settings', () async {
-      when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+      when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
 
       final client = NotificationClient.forTesting(
         notificationsPlugin: mockPlugin,
@@ -115,11 +125,11 @@ void main() {
         message: 'Test message',
       );
 
-      verify(mockPlugin.cancelAll()).called(1);
+      verify(() => mockPlugin.cancelAll()).called(1);
     });
 
     test('scheduleNotifications with disabled settings', () async {
-      when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+      when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
 
       final client = NotificationClient.forTesting(
         notificationsPlugin: mockPlugin,
@@ -135,31 +145,31 @@ void main() {
         message: 'Test message',
       );
 
-      verify(mockPlugin.cancelAll()).called(1);
+      verify(() => mockPlugin.cancelAll()).called(1);
       verifyNever(
-        mockPlugin.zonedSchedule(
-          id: anyNamed('id'),
-          title: anyNamed('title'),
-          body: anyNamed('body'),
-          scheduledDate: anyNamed('scheduledDate'),
-          notificationDetails: anyNamed('notificationDetails'),
-          androidScheduleMode: anyNamed('androidScheduleMode'),
-          matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+        () => mockPlugin.zonedSchedule(
+          id: any(named: 'id'),
+          title: any(named: 'title'),
+          body: any(named: 'body'),
+          scheduledDate: any(named: 'scheduledDate'),
+          notificationDetails: any(named: 'notificationDetails'),
+          androidScheduleMode: any(named: 'androidScheduleMode'),
+          matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
         ),
       );
     });
 
     test('scheduleNotifications with enabled settings', () async {
-      when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+      when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
       when(
-        mockPlugin.zonedSchedule(
-          id: anyNamed('id'),
-          title: anyNamed('title'),
-          body: anyNamed('body'),
-          scheduledDate: anyNamed('scheduledDate'),
-          notificationDetails: anyNamed('notificationDetails'),
-          androidScheduleMode: anyNamed('androidScheduleMode'),
-          matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+        () => mockPlugin.zonedSchedule(
+          id: any(named: 'id'),
+          title: any(named: 'title'),
+          body: any(named: 'body'),
+          scheduledDate: any(named: 'scheduledDate'),
+          notificationDetails: any(named: 'notificationDetails'),
+          androidScheduleMode: any(named: 'androidScheduleMode'),
+          matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
         ),
       ).thenAnswer((_) async {});
 
@@ -177,31 +187,31 @@ void main() {
         message: 'Test message',
       );
 
-      verify(mockPlugin.cancelAll()).called(1);
+      verify(() => mockPlugin.cancelAll()).called(1);
       verify(
-        mockPlugin.zonedSchedule(
-          id: anyNamed('id'),
-          title: anyNamed('title'),
-          body: anyNamed('body'),
-          scheduledDate: anyNamed('scheduledDate'),
-          notificationDetails: anyNamed('notificationDetails'),
-          androidScheduleMode: anyNamed('androidScheduleMode'),
-          matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+        () => mockPlugin.zonedSchedule(
+          id: any(named: 'id'),
+          title: any(named: 'title'),
+          body: any(named: 'body'),
+          scheduledDate: any(named: 'scheduledDate'),
+          notificationDetails: any(named: 'notificationDetails'),
+          androidScheduleMode: any(named: 'androidScheduleMode'),
+          matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
         ),
       ).called(2);
     });
 
     test('scheduleNotifications handles past time correctly', () async {
-      when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+      when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
       when(
-        mockPlugin.zonedSchedule(
-          id: anyNamed('id'),
-          title: anyNamed('title'),
-          body: anyNamed('body'),
-          scheduledDate: anyNamed('scheduledDate'),
-          notificationDetails: anyNamed('notificationDetails'),
-          androidScheduleMode: anyNamed('androidScheduleMode'),
-          matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+        () => mockPlugin.zonedSchedule(
+          id: any(named: 'id'),
+          title: any(named: 'title'),
+          body: any(named: 'body'),
+          scheduledDate: any(named: 'scheduledDate'),
+          notificationDetails: any(named: 'notificationDetails'),
+          androidScheduleMode: any(named: 'androidScheduleMode'),
+          matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
         ),
       ).thenAnswer((_) async {});
 
@@ -221,32 +231,32 @@ void main() {
         message: 'Test message',
       );
 
-      verify(mockPlugin.cancelAll()).called(1);
+      verify(() => mockPlugin.cancelAll()).called(1);
       verify(
-        mockPlugin.zonedSchedule(
-          id: anyNamed('id'),
-          title: anyNamed('title'),
-          body: anyNamed('body'),
-          scheduledDate: anyNamed('scheduledDate'),
-          notificationDetails: anyNamed('notificationDetails'),
-          androidScheduleMode: anyNamed('androidScheduleMode'),
-          matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+        () => mockPlugin.zonedSchedule(
+          id: any(named: 'id'),
+          title: any(named: 'title'),
+          body: any(named: 'body'),
+          scheduledDate: any(named: 'scheduledDate'),
+          notificationDetails: any(named: 'notificationDetails'),
+          androidScheduleMode: any(named: 'androidScheduleMode'),
+          matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
         ),
       ).called(1);
     });
 
     group('scheduleNotifications variations', () {
       test('scheduleNotifications with single enabled setting', () async {
-        when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+        when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).thenAnswer((_) async {});
 
@@ -261,16 +271,16 @@ void main() {
           message: 'Daily reminder message',
         );
 
-        verify(mockPlugin.cancelAll()).called(1);
+        verify(() => mockPlugin.cancelAll()).called(1);
         verify(
-          mockPlugin.zonedSchedule(
+          () => mockPlugin.zonedSchedule(
             id: 42,
             title: 'Single Reminder',
             body: 'Daily reminder message',
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).called(1);
       });
@@ -280,7 +290,18 @@ void main() {
       test(
         'multiple notification settings handle disabled correctly',
         () async {
-          when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+          when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
+          when(
+            () => mockPlugin.zonedSchedule(
+              id: any(named: 'id'),
+              title: any(named: 'title'),
+              body: any(named: 'body'),
+              scheduledDate: any(named: 'scheduledDate'),
+              notificationDetails: any(named: 'notificationDetails'),
+              androidScheduleMode: any(named: 'androidScheduleMode'),
+              matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
+            ),
+          ).thenAnswer((_) async {});
 
           final client = NotificationClient.forTesting(
             notificationsPlugin: mockPlugin,
@@ -297,16 +318,16 @@ void main() {
             message: 'Test message',
           );
 
-          verify(mockPlugin.cancelAll()).called(1);
+          verify(() => mockPlugin.cancelAll()).called(1);
           verify(
-            mockPlugin.zonedSchedule(
-              id: anyNamed('id'),
-              title: anyNamed('title'),
-              body: anyNamed('body'),
-              scheduledDate: anyNamed('scheduledDate'),
-              notificationDetails: anyNamed('notificationDetails'),
-              androidScheduleMode: anyNamed('androidScheduleMode'),
-              matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+            () => mockPlugin.zonedSchedule(
+              id: any(named: 'id'),
+              title: any(named: 'title'),
+              body: any(named: 'body'),
+              scheduledDate: any(named: 'scheduledDate'),
+              notificationDetails: any(named: 'notificationDetails'),
+              androidScheduleMode: any(named: 'androidScheduleMode'),
+              matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
             ),
           ).called(2);
         },
@@ -330,20 +351,14 @@ void main() {
         final mockAndroid = MockAndroidFlutterLocalNotificationsPlugin();
 
         when(
-          mockPlugin
+          () => mockPlugin
               .resolvePlatformSpecificImplementation<
-                FlutterLocalNotificationsPlatform
+                AndroidFlutterLocalNotificationsPlugin
               >(),
-        ).thenAnswer((invocation) {
-          final t = invocation.typeArguments.single;
-          if (t == AndroidFlutterLocalNotificationsPlugin) {
-            return mockAndroid;
-          }
-          return null;
-        });
+        ).thenReturn(mockAndroid);
 
         when(
-          mockAndroid.requestNotificationsPermission(),
+          mockAndroid.requestNotificationsPermission,
         ).thenAnswer((_) async => true);
 
         final client = NotificationClient.forTesting(
@@ -361,23 +376,17 @@ void main() {
         final mockIOS = MockIOSFlutterLocalNotificationsPlugin();
 
         when(
-          mockPlugin
+          () => mockPlugin
               .resolvePlatformSpecificImplementation<
-                FlutterLocalNotificationsPlatform
+                IOSFlutterLocalNotificationsPlugin
               >(),
-        ).thenAnswer((invocation) {
-          final t = invocation.typeArguments.single;
-          if (t == IOSFlutterLocalNotificationsPlugin) {
-            return mockIOS;
-          }
-          return null;
-        });
+        ).thenReturn(mockIOS);
 
         when(
-          mockIOS.requestPermissions(
-            alert: anyNamed('alert'),
-            badge: anyNamed('badge'),
-            sound: anyNamed('sound'),
+          () => mockIOS.requestPermissions(
+            alert: any(named: 'alert'),
+            badge: any(named: 'badge'),
+            sound: any(named: 'sound'),
           ),
         ).thenAnswer((_) async => true);
 
@@ -394,16 +403,16 @@ void main() {
 
     group('Past time handling', () {
       test('covers past time scheduling (add day)', () async {
-        when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+        when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).thenAnswer((_) async {});
 
@@ -423,31 +432,31 @@ void main() {
           message: 'Test message',
         );
 
-        verify(mockPlugin.cancelAll()).called(1);
+        verify(() => mockPlugin.cancelAll()).called(1);
         verify(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).called(1);
       });
 
       test('explicitly covers line 165 - add day for past time', () async {
-        when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+        when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).thenAnswer((_) async {});
 
@@ -463,31 +472,31 @@ void main() {
           message: 'Test for past time handling',
         );
 
-        verify(mockPlugin.cancelAll()).called(1);
+        verify(() => mockPlugin.cancelAll()).called(1);
         verify(
-          mockPlugin.zonedSchedule(
+          () => mockPlugin.zonedSchedule(
             id: 999,
             title: 'Midnight Test',
             body: 'Test for past time handling',
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).called(1);
       });
 
       test('covers future time scheduling (no add day)', () async {
-        when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+        when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).thenAnswer((_) async {});
 
@@ -507,16 +516,16 @@ void main() {
           message: 'Test message',
         );
 
-        verify(mockPlugin.cancelAll()).called(1);
+        verify(() => mockPlugin.cancelAll()).called(1);
         verify(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).called(1);
       });
@@ -524,16 +533,16 @@ void main() {
 
     group('skipToday parameter', () {
       test('scheduleNotifications with skipToday: true', () async {
-        when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+        when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).thenAnswer((_) async {});
 
@@ -549,31 +558,31 @@ void main() {
           message: 'Test message',
         );
 
-        verify(mockPlugin.cancelAll()).called(1);
+        verify(() => mockPlugin.cancelAll()).called(1);
         verify(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).called(1);
       });
 
       test('scheduleNotifications with default skipToday behavior', () async {
-        when(mockPlugin.cancelAll()).thenAnswer((_) async {});
+        when(() => mockPlugin.cancelAll()).thenAnswer((_) async {});
         when(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).thenAnswer((_) async {});
 
@@ -589,16 +598,16 @@ void main() {
           message: 'Test message',
         );
 
-        verify(mockPlugin.cancelAll()).called(1);
+        verify(() => mockPlugin.cancelAll()).called(1);
         verify(
-          mockPlugin.zonedSchedule(
-            id: anyNamed('id'),
-            title: anyNamed('title'),
-            body: anyNamed('body'),
-            scheduledDate: anyNamed('scheduledDate'),
-            notificationDetails: anyNamed('notificationDetails'),
-            androidScheduleMode: anyNamed('androidScheduleMode'),
-            matchDateTimeComponents: anyNamed('matchDateTimeComponents'),
+          () => mockPlugin.zonedSchedule(
+            id: any(named: 'id'),
+            title: any(named: 'title'),
+            body: any(named: 'body'),
+            scheduledDate: any(named: 'scheduledDate'),
+            notificationDetails: any(named: 'notificationDetails'),
+            androidScheduleMode: any(named: 'androidScheduleMode'),
+            matchDateTimeComponents: any(named: 'matchDateTimeComponents'),
           ),
         ).called(1);
       });

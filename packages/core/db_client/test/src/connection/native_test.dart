@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:db_client/src/connection/native.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:path/path.dart' as p;
 
-import '../../utils/mock.mocks.dart';
+import '../../utils/mock.dart';
 import '../../utils/mock_path_provider.dart';
 
 void main() {
@@ -94,11 +94,11 @@ void main() {
         // Valid backup file path
         final validBackupFilePath = p.join(tempDir.path, 'import.sqlite');
 
-        when(mockSqlite3.open(backupFilePath)).thenReturn(mockDatabase);
+        when(() => mockSqlite3.open(backupFilePath)).thenReturn(mockDatabase);
         when(
-          mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]),
+          () => mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]),
         ).thenAnswer((_) {});
-        when(mockDatabase.close()).thenAnswer((_) {});
+        when(() => mockDatabase.close()).thenAnswer((_) {});
 
         // Execute
         final result = await connection.createValidBackupFile(
@@ -109,11 +109,11 @@ void main() {
         expect(result.path, equals(validBackupFilePath));
 
         // Verify mocks
-        verify(mockSqlite3.open(backupFilePath)).called(1);
+        verify(() => mockSqlite3.open(backupFilePath)).called(1);
         verify(
-          mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]),
+          () => mockDatabase.execute('VACUUM INTO ?', [validBackupFilePath]),
         ).called(1);
-        verify(mockDatabase.close()).called(1);
+        verify(() => mockDatabase.close()).called(1);
       });
 
       test('Removes a file left by an earlier attempt', () async {
@@ -121,7 +121,7 @@ void main() {
         final staleFile = File(p.join(tempDir.path, 'import.sqlite'))
           ..writeAsStringSync('stale');
 
-        when(mockSqlite3.open(backupFilePath)).thenReturn(mockDatabase);
+        when(() => mockSqlite3.open(backupFilePath)).thenReturn(mockDatabase);
 
         await connection.createValidBackupFile(backupFilePath: backupFilePath);
 
@@ -133,7 +133,7 @@ void main() {
         final backupFilePath = p.join(tempDir.path, 'invalid_backup.sqlite');
 
         when(
-          mockSqlite3.open(backupFilePath),
+          () => mockSqlite3.open(backupFilePath),
         ).thenThrow(Exception('Invalid database file'));
 
         // Execute and verify

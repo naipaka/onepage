@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:haptics/haptics.dart';
 
-import 'utils/mock.mocks.dart';
+import 'utils/mock.dart';
 
 void main() {
   group('Haptics library exports', () {

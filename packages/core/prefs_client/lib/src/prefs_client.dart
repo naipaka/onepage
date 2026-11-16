@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'prefs_key.dart';
@@ -18,12 +17,6 @@ class PrefsClient {
   /// This constructor is private to prevent external instantiation.
   /// Use [PrefsClient.initialize] to create instances.
   new _(this._prefs);
-
-  /// {@macro prefs_client.PrefsClient}
-  ///
-  /// This constructor allows for dependency injection in tests.
-  @visibleForTesting
-  new forTesting(this._prefs);
 
   final SharedPreferences _prefs;
 

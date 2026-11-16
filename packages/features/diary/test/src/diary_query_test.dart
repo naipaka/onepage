@@ -1,213 +1,136 @@
 import 'package:db_client/db_client.dart';
+import 'package:db_client/testing.dart';
 import 'package:diary/src/diary_query.dart';
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
-
-import '../utils/mock.mocks.dart';
 
 void main() {
   group('DiaryQuery', () {
-    test('getDiaries returns list of diaries within date range', () async {
-      final mockDbClient = MockDbClient();
-      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
+    late DbClient dbClient;
+    late DiaryQuery diaryQuery;
 
-      final from = DateTime(2024);
-      final to = DateTime(2024, 1, 31);
-
-      final expectedDiaries = [
-        Diary(
-          entry: DiaryEntry(
-            id: 1,
-            content: 'Diary 1',
-            date: DateTime(2024, 1, 10),
-            createdAt: DateTime(2024, 1, 10),
-            updatedAt: DateTime(2024, 1, 10),
-          ),
-          images: const [],
-        ),
-        Diary(
-          entry: DiaryEntry(
-            id: 2,
-            content: 'Diary 2',
-            date: DateTime(2024, 1, 20),
-            createdAt: DateTime(2024, 1, 20),
-            updatedAt: DateTime(2024, 1, 20),
-          ),
-          images: const [],
-        ),
-      ];
-
-      when(
-        mockDbClient.getDiaries(from: from, to: to),
-      ).thenAnswer((_) async => expectedDiaries);
-
-      final diaries = await diaryQuery.getDiaries(from: from, to: to);
-
-      expect(diaries, equals(expectedDiaries));
-      verify(mockDbClient.getDiaries(from: from, to: to)).called(1);
+    setUp(() {
+      dbClient = createInMemoryDbClient();
+      addTearDown(dbClient.close);
+      diaryQuery = DiaryQuery(dbClient: dbClient);
     });
 
-    test('getDiaries returns empty list when no diaries found', () async {
-      final mockDbClient = MockDbClient();
-      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
-
-      final from = DateTime(2024);
-      final to = DateTime(2024, 1, 31);
-
-      when(
-        mockDbClient.getDiaries(from: from, to: to),
-      ).thenAnswer((_) async => []);
-
-      final diaries = await diaryQuery.getDiaries(from: from, to: to);
-
-      expect(diaries, isEmpty);
-      verify(mockDbClient.getDiaries(from: from, to: to)).called(1);
-    });
-
-    test(
-      'searchDiaries returns list of diaries matching search term',
-      () async {
-        final mockDbClient = MockDbClient();
-        final diaryQuery = DiaryQuery(dbClient: mockDbClient);
-
-        const searchTerm = 'tokyo';
-        const limit = 10;
-        const offset = 0;
-
-        final expectedDiaries = [
-          DiaryEntry(
-            id: 1,
-            content: 'I went to Tokyo',
-            date: DateTime(2024, 1, 10),
-            createdAt: DateTime(2024, 1, 10),
-            updatedAt: DateTime(2024, 1, 10),
-          ),
-          DiaryEntry(
-            id: 2,
-            content: 'Tokyo is beautiful',
-            date: DateTime(2024, 1, 20),
-            createdAt: DateTime(2024, 1, 20),
-            updatedAt: DateTime(2024, 1, 20),
-          ),
-        ];
-
-        when(
-          mockDbClient.searchDiaries(
-            searchTerm: searchTerm,
-            limit: limit,
-            offset: offset,
-          ),
-        ).thenAnswer((_) async => expectedDiaries);
-
-        final diaries = await diaryQuery.searchDiaries(
-          searchTerm: searchTerm,
-          limit: limit,
-          offset: offset,
-        );
-
-        expect(diaries, equals(expectedDiaries));
-        verify(
-          mockDbClient.searchDiaries(
-            searchTerm: searchTerm,
-            limit: limit,
-            offset: offset,
-          ),
-        ).called(1);
-      },
-    );
-
-    test('searchDiaries returns empty list when no matches found', () async {
-      final mockDbClient = MockDbClient();
-      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
-
-      const searchTerm = 'nonexistent';
-
-      when(
-        mockDbClient.searchDiaries(searchTerm: searchTerm),
-      ).thenAnswer((_) async => []);
-
-      final diaries = await diaryQuery.searchDiaries(searchTerm: searchTerm);
-
-      expect(diaries, isEmpty);
-      verify(mockDbClient.searchDiaries(searchTerm: searchTerm)).called(1);
-    });
-
-    test('searchDiaries handles null limit and offset', () async {
-      final mockDbClient = MockDbClient();
-      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
-
-      const searchTerm = 'test';
-      final expectedDiaries = [
-        DiaryEntry(
-          id: 1,
-          content: 'Test diary',
+    group('getDiaries', () {
+      test('returns the diaries within the date range', () async {
+        final first = await dbClient.insertDiary(
+          content: 'Diary 1',
           date: DateTime(2024, 1, 10),
-          createdAt: DateTime(2024, 1, 10),
-          updatedAt: DateTime(2024, 1, 10),
-        ),
-      ];
-
-      when(
-        mockDbClient.searchDiaries(searchTerm: searchTerm),
-      ).thenAnswer((_) async => expectedDiaries);
-
-      final diaries = await diaryQuery.searchDiaries(searchTerm: searchTerm);
-
-      expect(diaries, equals(expectedDiaries));
-      verify(mockDbClient.searchDiaries(searchTerm: searchTerm)).called(1);
-    });
-
-    test(
-      'countUniqueDaysWithContentInRange returns count from dbClient',
-      () async {
-        final mockDbClient = MockDbClient();
-        final diaryQuery = DiaryQuery(dbClient: mockDbClient);
-
-        final from = DateTime(2024);
-        final to = DateTime(2024, 1, 31);
-        const expectedCount = 5;
-
-        when(
-          mockDbClient.countUniqueDaysWithContentInRange(from: from, to: to),
-        ).thenAnswer((_) async => expectedCount);
-
-        final count = await diaryQuery.countUniqueDaysWithContentInRange(
-          from: from,
-          to: to,
+        );
+        final second = await dbClient.insertDiary(
+          content: 'Diary 2',
+          date: DateTime(2024, 1, 20),
+        );
+        await dbClient.insertDiary(
+          content: 'Diary 3',
+          date: DateTime(2024, 2),
         );
 
-        expect(count, equals(expectedCount));
-        verify(
-          mockDbClient.countUniqueDaysWithContentInRange(from: from, to: to),
-        ).called(1);
-      },
-    );
+        final diaries = await diaryQuery.getDiaries(
+          from: DateTime(2024),
+          to: DateTime(2024, 1, 31),
+        );
+
+        expect(diaries, [
+          Diary(entry: first, images: const []),
+          Diary(entry: second, images: const []),
+        ]);
+      });
+
+      test('returns an empty list when no diaries are found', () async {
+        final diaries = await diaryQuery.getDiaries(
+          from: DateTime(2024),
+          to: DateTime(2024, 1, 31),
+        );
+
+        expect(diaries, isEmpty);
+      });
+    });
+
+    group('searchDiaries', () {
+      late DiaryEntry older;
+      late DiaryEntry newer;
+
+      setUp(() async {
+        older = await dbClient.insertDiary(
+          content: 'I went to Tokyo',
+          date: DateTime(2024, 1, 10),
+        );
+        newer = await dbClient.insertDiary(
+          content: 'Tokyo is beautiful',
+          date: DateTime(2024, 1, 20),
+        );
+        await dbClient.insertDiary(
+          content: 'Osaka',
+          date: DateTime(2024, 1, 30),
+        );
+      });
+
+      test('returns the diaries that contain the search term', () async {
+        final diaries = await diaryQuery.searchDiaries(searchTerm: 'tokyo');
+
+        expect(diaries, [newer, older]);
+      });
+
+      test('returns a page of the matches', () async {
+        final diaries = await diaryQuery.searchDiaries(
+          searchTerm: 'tokyo',
+          limit: 1,
+          offset: 1,
+        );
+
+        expect(diaries, [older]);
+      });
+
+      test('returns an empty list when no diaries match', () async {
+        final diaries = await diaryQuery.searchDiaries(
+          searchTerm: 'nonexistent',
+        );
+
+        expect(diaries, isEmpty);
+      });
+    });
+
+    test('countUniqueDaysWithContentInRange counts the written days', () async {
+      await dbClient.insertDiary(content: 'Diary', date: DateTime(2024, 1, 10));
+      await dbClient.insertDiary(content: ' ', date: DateTime(2024, 1, 11));
+      await dbClient.insertDiary(content: 'Diary', date: DateTime(2024, 2));
+
+      final count = await diaryQuery.countUniqueDaysWithContentInRange(
+        from: DateTime(2024),
+        to: DateTime(2024, 1, 31),
+      );
+
+      expect(count, 1);
+    });
 
     test('getExternalDiaryImages returns the images outside the app', () async {
-      final mockDbClient = MockDbClient();
-      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
-      final image = DiaryImage(
-        id: 1,
-        diaryId: 1,
-        photoId: 'photo',
-        createdAt: DateTime(2024),
-        updatedAt: DateTime(2024),
+      final entry = await dbClient.insertDiary(
+        content: 'Diary',
+        date: DateTime(2024),
       );
-      when(
-        mockDbClient.getExternalDiaryImages(),
-      ).thenAnswer((_) async => [image]);
+      await dbClient.insertDiaryImage(diaryId: entry.id, fileName: 'a.jpg');
+      final external = await insertExternalDiaryImage(
+        dbClient,
+        diaryId: entry.id,
+        photoId: 'photo',
+      );
 
-      expect(await diaryQuery.getExternalDiaryImages(), [image]);
+      expect(await diaryQuery.getExternalDiaryImages(), [external]);
     });
 
     test('diaryImageCount emits the image count', () async {
-      final mockDbClient = MockDbClient();
-      final diaryQuery = DiaryQuery(dbClient: mockDbClient);
-      when(
-        mockDbClient.watchDiaryImageCount(),
-      ).thenAnswer((_) => Stream.value(3));
+      final entry = await dbClient.insertDiary(
+        content: 'Diary',
+        date: DateTime(2024),
+      );
+      await dbClient.insertDiaryImage(diaryId: entry.id, fileName: 'a.jpg');
+      await dbClient.insertDiaryImage(diaryId: entry.id, fileName: 'b.jpg');
 
-      expect(await diaryQuery.diaryImageCount().first, 3);
+      expect(await diaryQuery.diaryImageCount().first, 2);
     });
   });
 }

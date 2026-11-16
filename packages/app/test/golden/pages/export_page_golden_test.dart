@@ -2,9 +2,6 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-// Test files do not need to specify provider dependencies
-// ignore_for_file: scoped_providers_should_specify_dependencies
-
 import 'package:material_ui/material_ui.dart';
 import 'package:onepage/pages/pages.dart';
 

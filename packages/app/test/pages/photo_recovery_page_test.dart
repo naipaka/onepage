@@ -1,26 +1,25 @@
-// Test files do not need to specify provider dependencies
-// ignore_for_file: scoped_providers_should_specify_dependencies
-
 import 'dart:async';
 import 'dart:io';
 
-import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
+import 'package:db_client/testing.dart';
 import 'package:device_photos/device_photos.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/pages/pages.dart';
 import 'package:onepage/router/router.dart';
 import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
+import 'package:prefs_client/prefs_client.dart';
 import 'package:theme/theme.dart';
 
-import '../golden/golden_test_helpers.mocks.dart';
+import '../utils/clients.dart';
+import '../utils/mock.dart';
 
 class _FakeLibrary extends Fake implements DevicePhotos {
   new(this.option);
@@ -81,43 +80,29 @@ class _FakeCommand extends Fake implements PhotoRecoveryCommand {
 void main() {
   group('PhotoRecoveryPage', () {
     late MockTracker tracker;
-    late MockPrefsClient prefsClient;
-    late MockDbClient dbClient;
+    late PrefsClient prefsClient;
+    late DbClient dbClient;
     late _FakeCommand command;
-    late List<DiaryImage> images;
-    var dismissed = false;
+    late DiaryImage image;
 
-    DiaryImage image() {
-      final now = clock.now();
-      return DiaryImage(
-        id: 1,
-        diaryId: 1,
-        photoId: 'a',
-        createdAt: now,
-        updatedAt: now,
-      );
-    }
-
-    setUp(() {
-      dismissed = false;
-      tracker = MockTracker();
-      prefsClient = MockPrefsClient();
-      dbClient = MockDbClient();
+    setUp(() async {
+      tracker = createTracker();
+      prefsClient = createPrefsClient();
+      dbClient = createDbClient();
       command = _FakeCommand();
-      images = [image()];
-
-      when(prefsClient.otherHapticEnabled).thenReturn(false);
-      when(prefsClient.photoRecoveryDismissed).thenAnswer((_) => dismissed);
-      when(
-        prefsClient.setPhotoRecoveryDismissed(
-          dismissed: anyNamed('dismissed'),
-        ),
-      ).thenAnswer((_) async {
-        dismissed = true;
-        return true;
-      });
-      when(tracker.recordError(any, any)).thenAnswer((_) async {});
+      final diary = await dbClient.insertDiary(
+        content: '',
+        date: DateTime(2024),
+      );
+      image = await insertExternalDiaryImage(
+        dbClient,
+        diaryId: diary.id,
+        photoId: 'a',
+      );
     });
+
+    Future<List<DiaryImage>> externalImages() =>
+        dbClient.getExternalDiaryImages();
 
     Future<void> pumpPage(
       WidgetTester tester, {
@@ -128,7 +113,6 @@ void main() {
       LocaleSettings.setLocaleRawSync('en');
       await tester.binding.setSurfaceSize(const Size(800, 1400));
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      when(dbClient.getExternalDiaryImages()).thenAnswer((_) async => images);
 
       await tester.pumpWidget(
         ProviderScope(
@@ -310,17 +294,11 @@ void main() {
 
       expect(find.text('Could not recover photos'), findsOneWidget);
       expect(find.text('Recover'), findsOneWidget);
-      verify(tracker.recordError(any, any)).called(1);
+      verify(() => tracker.recordError(any(), any())).called(1);
       await dismissToast(tester);
     });
 
     Future<void> openDelete(WidgetTester tester) async {
-      when(
-        dbClient.getDiaries(from: anyNamed('from'), to: anyNamed('to')),
-      ).thenAnswer((_) async => []);
-      when(
-        dbClient.deleteDiaryImage(id: anyNamed('id')),
-      ).thenAnswer((_) async => null);
       await pumpPage(tester);
       tester.container().listen(cachedDiariesProvider, (_, _) {});
       await tester.container().read(cachedDiariesProvider.future);
@@ -328,7 +306,7 @@ void main() {
       navigator
           .push(
             MaterialPageRoute<void>(
-              builder: (_) => const PhotoRecoveryPage(imageId: 1),
+              builder: (_) => PhotoRecoveryPage(imageId: image.id),
             ),
           )
           .ignore();
@@ -343,7 +321,7 @@ void main() {
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
 
-      verify(dbClient.deleteDiaryImage(id: 1)).called(1);
+      expect(await externalImages(), isEmpty);
       expect(find.text('Delete This Photo'), findsNothing);
     });
 
@@ -353,15 +331,11 @@ void main() {
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 
-      verifyNever(dbClient.deleteDiaryImage(id: anyNamed('id')));
+      expect(await externalImages(), [image]);
       expect(find.text('Delete This Photo'), findsOneWidget);
     });
 
     testWidgets('deletes the photos that are not shown', (tester) async {
-      when(
-        dbClient.getDiaries(from: anyNamed('from'), to: anyNamed('to')),
-      ).thenAnswer((_) async => []);
-      when(dbClient.deleteExternalDiaryImages()).thenAnswer((_) async {});
       await pumpPage(tester);
       tester.container().listen(cachedDiariesProvider, (_, _) {});
       await tester.container().read(cachedDiariesProvider.future);
@@ -375,7 +349,7 @@ void main() {
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
 
-      verify(dbClient.deleteExternalDiaryImages()).called(1);
+      expect(await externalImages(), isEmpty);
     });
 
     testWidgets('keeps the photos when deletion is canceled', (tester) async {
@@ -386,11 +360,11 @@ void main() {
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
 
-      verifyNever(dbClient.deleteExternalDiaryImages());
+      expect(await externalImages(), [image]);
     });
 
     testWidgets('shows that every photo is recovered', (tester) async {
-      images = [];
+      await dbClient.deleteExternalDiaryImages();
       await pumpPage(tester);
 
       expect(find.text('All photos have been recovered'), findsOneWidget);
@@ -401,11 +375,11 @@ void main() {
     testWidgets('route opens the page for an image', (tester) async {
       await pumpPage(tester);
 
-      final page = const PhotoRecoveryRouteData(
-        imageId: 1,
+      final page = PhotoRecoveryRouteData(
+        imageId: image.id,
       ).build(tester.element(find.byType(Scaffold).first), _FakeRouterState());
 
-      expect((page as PhotoRecoveryPage).imageId, 1);
+      expect((page as PhotoRecoveryPage).imageId, image.id);
     });
 
     testWidgets('dismisses the reminder', (tester) async {
@@ -423,7 +397,7 @@ void main() {
       await pumpPage(tester);
       expect(find.text('Delete This Photo'), findsNothing);
 
-      await pumpPage(tester, imageId: 1);
+      await pumpPage(tester, imageId: image.id);
       expect(find.text('Delete This Photo'), findsOneWidget);
     });
   });

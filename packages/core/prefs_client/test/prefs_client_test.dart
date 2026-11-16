@@ -1,319 +1,164 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
 import 'package:prefs_client/prefs_client.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'utils/mock.mocks.dart';
-
 void main() {
   group('PrefsClient', () {
-    late MockSharedPreferences mockSharedPreferences;
     late PrefsClient prefsClient;
+    late SharedPreferences prefs;
 
-    setUp(() {
-      mockSharedPreferences = MockSharedPreferences();
-      prefsClient = PrefsClient.forTesting(mockSharedPreferences);
-    });
+    Future<void> setUpStoredValues(Map<String, Object> values) async {
+      SharedPreferences.setMockInitialValues(values);
+      prefsClient = await PrefsClient.initialize();
+      prefs = await SharedPreferences.getInstance();
+    }
 
-    tearDown(() {
-      reset(mockSharedPreferences);
-    });
-
-    group('initialize', () {
-      test('creates PrefsClient instance', () async {
-        // This test requires SharedPreferences.setMockInitialValues
-        // to avoid platform dependencies
-        SharedPreferences.setMockInitialValues({});
-        final client = await PrefsClient.initialize();
-        expect(client, isA<PrefsClient>());
-      });
-    });
+    setUp(() => setUpStoredValues({}));
 
     group('textInputHapticEnabled', () {
       test('returns false when no value is stored', () {
-        when(
-          mockSharedPreferences.getBool('textInputHaptic'),
-        ).thenReturn(null);
-
         expect(prefsClient.textInputHapticEnabled, isFalse);
       });
 
-      test('returns stored value when present', () {
-        when(
-          mockSharedPreferences.getBool('textInputHaptic'),
-        ).thenReturn(true);
+      test('returns the stored value', () async {
+        await setUpStoredValues({'textInputHaptic': true});
 
         expect(prefsClient.textInputHapticEnabled, isTrue);
       });
-    });
 
-    group('setTextInputHapticEnabled', () {
-      test('stores the provided value', () async {
-        when(
-          mockSharedPreferences.setBool('textInputHaptic', true),
-        ).thenAnswer((_) async => true);
-
+      test('stores the value', () async {
         final result = await prefsClient.setTextInputHapticEnabled(
           enabled: true,
         );
 
         expect(result, isTrue);
-        verify(
-          mockSharedPreferences.setBool('textInputHaptic', true),
-        ).called(1);
-      });
-
-      test('returns false when storage fails', () async {
-        when(
-          mockSharedPreferences.setBool('textInputHaptic', false),
-        ).thenAnswer((_) async => false);
-
-        final result = await prefsClient.setTextInputHapticEnabled(
-          enabled: false,
-        );
-
-        expect(result, isFalse);
-      });
-    });
-
-    group('photoRecoveryDismissed', () {
-      test('returns false by default', () {
-        when(
-          mockSharedPreferences.getBool('photoRecoveryDismissed'),
-        ).thenReturn(null);
-
-        expect(prefsClient.photoRecoveryDismissed, isFalse);
-      });
-
-      test('stores the value', () async {
-        when(
-          mockSharedPreferences.setBool('photoRecoveryDismissed', true),
-        ).thenAnswer((_) async => true);
-
-        expect(
-          await prefsClient.setPhotoRecoveryDismissed(dismissed: true),
-          isTrue,
-        );
+        expect(prefs.getBool('textInputHaptic'), isTrue);
+        expect(prefsClient.textInputHapticEnabled, isTrue);
       });
     });
 
     group('otherHapticEnabled', () {
       test('returns false when no value is stored', () {
-        when(mockSharedPreferences.getBool('otherHaptic')).thenReturn(null);
-
         expect(prefsClient.otherHapticEnabled, isFalse);
       });
 
-      test('returns stored value when present', () {
-        when(mockSharedPreferences.getBool('otherHaptic')).thenReturn(true);
+      test('returns the stored value', () async {
+        await setUpStoredValues({'otherHaptic': true});
 
+        expect(prefsClient.otherHapticEnabled, isTrue);
+      });
+
+      test('stores the value', () async {
+        final result = await prefsClient.setOtherHapticEnabled(enabled: true);
+
+        expect(result, isTrue);
+        expect(prefs.getBool('otherHaptic'), isTrue);
         expect(prefsClient.otherHapticEnabled, isTrue);
       });
     });
 
-    group('setOtherHapticEnabled', () {
-      test('stores the provided value', () async {
-        when(
-          mockSharedPreferences.setBool('otherHaptic', true),
-        ).thenAnswer((_) async => true);
-
-        final result = await prefsClient.setOtherHapticEnabled(enabled: true);
-
-        expect(result, isTrue);
-        verify(mockSharedPreferences.setBool('otherHaptic', true)).called(1);
+    group('photoRecoveryDismissed', () {
+      test('returns false when no value is stored', () {
+        expect(prefsClient.photoRecoveryDismissed, isFalse);
       });
 
-      test('returns false when storage fails', () async {
-        when(
-          mockSharedPreferences.setBool('otherHaptic', false),
-        ).thenAnswer((_) async => false);
-
-        final result = await prefsClient.setOtherHapticEnabled(enabled: false);
-
-        expect(result, isFalse);
-      });
-    });
-
-    group('JSON list operations', () {
-      group('getNotificationSettings', () {
-        test('returns empty list when no value stored', () {
-          when(
-            mockSharedPreferences.getString('notificationSettings'),
-          ).thenReturn(null);
-
-          final result = prefsClient.notificationSettings;
-          expect(result, isEmpty);
-        });
-
-        test('returns empty list when empty string stored', () {
-          when(
-            mockSharedPreferences.getString('notificationSettings'),
-          ).thenReturn('');
-
-          final result = prefsClient.notificationSettings;
-          expect(result, isEmpty);
-        });
-
-        test('returns parsed JSON list when valid JSON stored', () {
-          final testData = [
-            {'id': 1, 'name': 'test1'},
-            {'id': 2, 'name': 'test2'},
-          ];
-          final jsonString = json.encode(testData);
-
-          when(
-            mockSharedPreferences.getString('notificationSettings'),
-          ).thenReturn(jsonString);
-
-          final result = prefsClient.notificationSettings;
-          expect(result, equals(testData));
-        });
-
-        test('returns empty list when invalid JSON stored', () {
-          when(
-            mockSharedPreferences.getString('notificationSettings'),
-          ).thenReturn('invalid json');
-
-          final result = prefsClient.notificationSettings;
-          expect(result, isEmpty);
-        });
-      });
-
-      group('setNotificationSettings', () {
-        test('stores JSON list successfully', () async {
-          final testData = [
-            {'id': 1, 'name': 'test1'},
-            {'id': 2, 'name': 'test2'},
-          ];
-          final expectedJson = json.encode(testData);
-
-          when(
-            mockSharedPreferences.setString(
-              'notificationSettings',
-              expectedJson,
-            ),
-          ).thenAnswer((_) async => true);
-
-          final result = await prefsClient.setNotificationSettings(testData);
-
-          expect(result, isTrue);
-          verify(
-            mockSharedPreferences.setString(
-              'notificationSettings',
-              expectedJson,
-            ),
-          ).called(1);
-        });
-      });
-    });
-
-    group('lastInAppReviewShownAt', () {
-      test('returns null when no value is stored', () {
-        when(
-          mockSharedPreferences.getInt('lastInAppReviewShownAt'),
-        ).thenReturn(null);
-
-        expect(prefsClient.lastInAppReviewShownAt, isNull);
-      });
-
-      test('returns stored timestamp when value is present', () {
-        const testTimestamp = 1704067200; // 2024-01-01 00:00:00 UTC
-        when(
-          mockSharedPreferences.getInt('lastInAppReviewShownAt'),
-        ).thenReturn(testTimestamp);
-
-        final result = prefsClient.lastInAppReviewShownAt;
-        expect(result, equals(testTimestamp));
-      });
-    });
-
-    group('setLastInAppReviewShownAt', () {
-      test('stores timestamp successfully', () async {
-        const testTimestamp = 1704067200; // 2024-01-01 00:00:00 UTC
-
-        when(
-          mockSharedPreferences.setInt(
-            'lastInAppReviewShownAt',
-            testTimestamp,
-          ),
-        ).thenAnswer((_) async => true);
-
-        final result = await prefsClient.setLastInAppReviewShownAt(
-          timestamp: testTimestamp,
+      test('stores the value', () async {
+        final result = await prefsClient.setPhotoRecoveryDismissed(
+          dismissed: true,
         );
 
         expect(result, isTrue);
-        verify(
-          mockSharedPreferences.setInt(
-            'lastInAppReviewShownAt',
-            testTimestamp,
-          ),
-        ).called(1);
+        expect(prefs.getBool('photoRecoveryDismissed'), isTrue);
+        expect(prefsClient.photoRecoveryDismissed, isTrue);
+      });
+    });
+
+    group('notificationSettings', () {
+      final settings = [
+        {'id': 1, 'hour': 8, 'isEnabled': true},
+        {'id': 2, 'hour': 20, 'isEnabled': false},
+      ];
+
+      test('returns an empty list when no value is stored', () {
+        expect(prefsClient.notificationSettings, isEmpty);
       });
 
-      test('returns false when storage fails', () async {
-        const testTimestamp = 1704067200;
-        when(
-          mockSharedPreferences.setInt(
-            'lastInAppReviewShownAt',
-            testTimestamp,
-          ),
-        ).thenAnswer((_) async => false);
+      test('returns an empty list when an empty string is stored', () async {
+        await setUpStoredValues({'notificationSettings': ''});
 
-        final result = await prefsClient.setLastInAppReviewShownAt(
-          timestamp: testTimestamp,
-        );
+        expect(prefsClient.notificationSettings, isEmpty);
+      });
 
-        expect(result, isFalse);
+      test('returns the stored JSON list', () async {
+        await setUpStoredValues({
+          'notificationSettings': json.encode(settings),
+        });
+
+        expect(prefsClient.notificationSettings, settings);
+      });
+
+      test('returns an empty list when the stored value is not JSON', () async {
+        await setUpStoredValues({'notificationSettings': 'invalid json'});
+
+        expect(prefsClient.notificationSettings, isEmpty);
+      });
+
+      test('stores the list as JSON', () async {
+        final result = await prefsClient.setNotificationSettings(settings);
+
+        expect(result, isTrue);
+        expect(prefs.getString('notificationSettings'), json.encode(settings));
+        expect(prefsClient.notificationSettings, settings);
       });
     });
 
     group('hasDeclinedInAppReview', () {
       test('returns false when no value is stored', () {
-        when(
-          mockSharedPreferences.getBool('hasDeclinedInAppReview'),
-        ).thenReturn(null);
-
         expect(prefsClient.hasDeclinedInAppReview, isFalse);
       });
 
-      test('returns stored value when present', () {
-        when(
-          mockSharedPreferences.getBool('hasDeclinedInAppReview'),
-        ).thenReturn(true);
+      test('stores the value', () async {
+        final result = await prefsClient.setHasDeclinedInAppReview(value: true);
 
+        expect(result, isTrue);
+        expect(prefs.getBool('hasDeclinedInAppReview'), isTrue);
         expect(prefsClient.hasDeclinedInAppReview, isTrue);
       });
     });
 
-    group('setHasDeclinedInAppReview', () {
-      test('stores the provided value', () async {
-        when(
-          mockSharedPreferences.setBool('hasDeclinedInAppReview', true),
-        ).thenAnswer((_) async => true);
+    group('lastInAppReviewShownAt', () {
+      const timestamp = 1704067200;
 
-        final result = await prefsClient.setHasDeclinedInAppReview(
-          value: true,
+      test('returns null when no value is stored', () {
+        expect(prefsClient.lastInAppReviewShownAt, isNull);
+      });
+
+      test('stores the timestamp', () async {
+        final result = await prefsClient.setLastInAppReviewShownAt(
+          timestamp: timestamp,
         );
 
         expect(result, isTrue);
-        verify(
-          mockSharedPreferences.setBool('hasDeclinedInAppReview', true),
-        ).called(1);
+        expect(prefs.getInt('lastInAppReviewShownAt'), timestamp);
+        expect(prefsClient.lastInAppReviewShownAt, timestamp);
+      });
+    });
+
+    group('hasShownDiaryImageNotice', () {
+      test('returns false when no value is stored', () {
+        expect(prefsClient.hasShownDiaryImageNotice, isFalse);
       });
 
-      test('returns false when storage fails', () async {
-        when(
-          mockSharedPreferences.setBool('hasDeclinedInAppReview', false),
-        ).thenAnswer((_) async => false);
-
-        final result = await prefsClient.setHasDeclinedInAppReview(
-          value: false,
+      test('stores the value', () async {
+        final result = await prefsClient.setHasShownDiaryImageNotice(
+          shown: true,
         );
 
-        expect(result, isFalse);
+        expect(result, isTrue);
+        expect(prefs.getBool('diaryImageNoticeShown'), isTrue);
+        expect(prefsClient.hasShownDiaryImageNotice, isTrue);
       });
     });
   });

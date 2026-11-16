@@ -1,5 +1,4 @@
 analyzer:
   exclude:
-    - "**/*.mocks.dart"
     - build/**
 include: ../../../analysis_options.yaml

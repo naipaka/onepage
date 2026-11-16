@@ -14,11 +14,9 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^4.2.0
-  build_runner: ^2.16.2
   firebase_core: ^5.1.0
   firebase_core_platform_interface: ^8.1.1
   firebase_remote_config_platform_interface: ^3.0.9
   flutter_test:
     sdk: flutter
-  mockito: ^5.8.1
-  plugin_platform_interface: ^2.1.8
+  mocktail: ^1.0.5
