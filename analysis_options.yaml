@@ -21,7 +21,9 @@ plugins:
       avoid_shrink_wrap_in_list_view: true
       avoid_single_child: true
       include_all_fields: true
+      matching_asset_files: true
       matching_json_keys: true
+      prefer_app_asset: true
       prefer_clock_now: true
       prefer_dedicated_media_query_methods: true
       prefer_enum_over_sealed_class: true

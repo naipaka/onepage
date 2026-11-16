@@ -21,7 +21,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
-import '../../gen/assets.gen.dart';
+import '../../app_asset.dart';
 import '../../keys.dart';
 import '../../router/src/app_routes.dart';
 import '../../widgets/widgets.dart';
@@ -389,7 +389,7 @@ class _Drawer extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
-                Assets.icon.image(width: 64, height: 64),
+                Image.asset(AppAsset.icon.path, width: 64, height: 64),
                 const Gap(4),
                 HeadlineSmallText(
                   t.title,

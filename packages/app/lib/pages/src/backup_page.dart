@@ -12,7 +12,7 @@ import 'package:theme/theme.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
-import '../../gen/assets.gen.dart';
+import '../../app_asset.dart';
 import '../../router/router.dart';
 import '../../widgets/widgets.dart';
 
@@ -61,7 +61,7 @@ class BackupPage extends ConsumerWidget {
                 constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Column(
                   children: [
-                    Assets.images.backup.image(width: 200, height: 200),
+                    Image.asset(AppAsset.backup.path, width: 200, height: 200),
                     TitleLargeText(t.backup.description),
                     const _Divider(),
                     // Create backup.
@@ -294,7 +294,11 @@ class _BackupRestoreDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Assets.images.restoredBackup.image(width: 160, height: 160),
+              Image.asset(
+                AppAsset.restoredBackup.path,
+                width: 160,
+                height: 160,
+              ),
               TitleMediumText(
                 t.backup.restoreSuccess,
                 textAlign: TextAlign.center,

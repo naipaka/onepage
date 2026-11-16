@@ -14,7 +14,9 @@ An analyzer plugin with the lint rules, fixes, and assists of One Page.
 | `avoid_shrink_wrap_in_list_view` | `shrinkWrap` of a `ListView` inside a `ListView`, `Column`, or `Row` |
 | `avoid_single_child` | A widget that lays out a list of children, such as `Column` or `ListView`, given one child at most |
 | `include_all_fields` | A field of an `@immutable` class that its `==`, `hashCode`, `toString`, `copyWith`, or `toJson` doesn't use |
+| `matching_asset_files` | An asset that only one of the enum `AppAsset` and the `assets` of `pubspec.yaml` has |
 | `matching_json_keys` | A JSON key that only one of `fromJson` and `toJson` uses |
+| `prefer_app_asset` | A path given to `Image.asset` or `AssetImage` that is not the `path` of an `AppAsset` value |
 | `prefer_clock_now` | `DateTime.now()` and `DateTime.timestamp()` |
 | `prefer_dedicated_media_query_methods` | `MediaQuery.of` and `MediaQuery.maybeOf`, and `.width` or `.height` of `MediaQuery.sizeOf` |
 | `prefer_enum_over_sealed_class` | A sealed class whose direct subtypes are all classes with no instance fields, type parameters, subclasses, or other supertypes |

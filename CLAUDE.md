@@ -68,6 +68,10 @@ Detailed package placement, dependency, and DI rules: `.claude/rules/architectur
 - **ALWAYS** add strings to both `packages/core/i18n/lib/src/i18n/app_ja.yaml` and `app_en.yaml`.
 - Access via `context.t.section.key`. Run `fvm dart run melos run slang` after updating YAML files.
 
+## Assets
+- Each asset file of the app is a value of the `AppAsset` enum in `packages/app/lib/app_asset.dart`. When adding or removing a file under `packages/app/assets/`, add or remove its value too (checked by the `matching_asset_files` rule).
+- Load assets by the value's path, as in `Image.asset(AppAsset.icon.path)` (checked by the `prefer_app_asset` rule).
+
 ## Code Generation Dependencies
 Run `fvm dart run melos run gen` after changes to:
 - Riverpod providers with `@riverpod`
