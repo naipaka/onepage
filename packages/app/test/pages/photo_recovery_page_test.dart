@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:db_client/db_client.dart';
+import 'package:db_client/testing.dart';
 import 'package:device_photos/device_photos.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -77,20 +78,16 @@ class _FakeCommand extends Fake implements PhotoRecoveryCommand {
 }
 
 void main() {
-  setUpAll(() {
-    registerFallbackValue(StackTrace.empty);
-  });
-
   group('PhotoRecoveryPage', () {
-    late MockFirebaseCrashlytics crashlytics;
+    late MockTracker tracker;
     late PrefsClient prefsClient;
     late DbClient dbClient;
     late _FakeCommand command;
     late DiaryImage image;
 
     setUp(() async {
-      crashlytics = MockFirebaseCrashlytics();
-      prefsClient = await createPrefsClient();
+      tracker = createTracker();
+      prefsClient = createPrefsClient();
       dbClient = createDbClient();
       command = _FakeCommand();
       final diary = await dbClient.insertDiary(
@@ -129,7 +126,7 @@ void main() {
             photoStorageProvider.overrideWithValue(
               PhotoStorage(directory: Directory.systemTemp),
             ),
-            trackerProvider.overrideWithValue(createTracker(crashlytics)),
+            trackerProvider.overrideWithValue(tracker),
           ],
           child: TranslationProvider(
             child: MaterialApp(
@@ -297,13 +294,7 @@ void main() {
 
       expect(find.text('Could not recover photos'), findsOneWidget);
       expect(find.text('Recover'), findsOneWidget);
-      verify(
-        () => crashlytics.recordError(
-          any<Object?>(),
-          any(),
-          fatal: any(named: 'fatal'),
-        ),
-      ).called(1);
+      verify(() => tracker.recordError(any(), any())).called(1);
       await dismissToast(tester);
     });
 

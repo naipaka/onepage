@@ -19,7 +19,6 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^4.2.0
-  firebase_remote_config: ^7.0.1
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.5

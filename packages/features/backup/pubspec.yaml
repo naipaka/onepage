@@ -29,6 +29,5 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^4.2.0
-  drift: ^2.35.4
   flutter_test:
     sdk: flutter

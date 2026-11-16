@@ -1,17 +1,13 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:in_app_review/in_app_review.dart';
+import 'package:in_app_reviewer/in_app_reviewer.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:notification_client/notification_client.dart';
+import 'package:prefs_client/prefs_client.dart';
+import 'package:tracker/tracker.dart';
 
-class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics;
+class MockInAppReviewer extends Mock implements InAppReviewer;
 
-class MockFirebaseCrashlytics extends Mock implements FirebaseCrashlytics;
+class MockNotificationClient extends Mock implements NotificationClient;
 
-class MockFlutterLocalNotificationsPlugin extends Mock
-    implements FlutterLocalNotificationsPlugin;
+class MockPrefsClient extends Mock implements PrefsClient;
 
-class MockIOSFlutterLocalNotificationsPlugin extends Mock
-    implements IOSFlutterLocalNotificationsPlugin;
-
-class MockInAppReview extends Mock implements InAppReview;
+class MockTracker extends Mock implements Tracker;

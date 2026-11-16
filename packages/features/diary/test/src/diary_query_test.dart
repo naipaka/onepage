@@ -1,8 +1,7 @@
 import 'package:db_client/db_client.dart';
+import 'package:db_client/testing.dart';
 import 'package:diary/src/diary_query.dart';
 import 'package:test/test.dart';
-
-import '../utils/db_client.dart';
 
 void main() {
   group('DiaryQuery', () {
@@ -10,7 +9,8 @@ void main() {
     late DiaryQuery diaryQuery;
 
     setUp(() {
-      dbClient = createDbClient();
+      dbClient = createInMemoryDbClient();
+      addTearDown(dbClient.close);
       diaryQuery = DiaryQuery(dbClient: dbClient);
     });
 

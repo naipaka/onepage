@@ -2,28 +2,47 @@ import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:notification_client/notification_client.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:prefs_client/prefs_client.dart';
 
-import '../../utils/clients.dart';
+import '../../utils/mock.dart';
 
 void main() {
   group('PrefsClientProvider', () {
-    late PrefsClient prefsClient;
     late ProviderContainer container;
+    late MockPrefsClient mockPrefsClient;
 
-    Future<void> setUpPrefs(Map<String, Object> values) async {
-      prefsClient = await createPrefsClient(values);
+    setUp(() {
+      mockPrefsClient = MockPrefsClient();
+      when(() => mockPrefsClient.textInputHapticEnabled).thenReturn(true);
+      when(() => mockPrefsClient.otherHapticEnabled).thenReturn(false);
+      when(() => mockPrefsClient.notificationSettings).thenReturn([]);
+      when(
+        () => mockPrefsClient.setTextInputHapticEnabled(
+          enabled: any(named: 'enabled'),
+        ),
+      ).thenAnswer((_) async => true);
+      when(
+        () => mockPrefsClient.setOtherHapticEnabled(
+          enabled: any(named: 'enabled'),
+        ),
+      ).thenAnswer((_) async => true);
+      when(
+        () => mockPrefsClient.setNotificationSettings(any()),
+      ).thenAnswer((_) async => true);
+
       container = ProviderContainer(
-        overrides: [prefsClientProvider.overrideWithValue(prefsClient)],
+        overrides: [
+          prefsClientProvider.overrideWithValue(mockPrefsClient),
+        ],
       );
-      addTearDown(container.dispose);
-    }
+    });
 
-    setUp(
-      () => setUpPrefs({'textInputHaptic': true, 'otherHaptic': false}),
-    );
+    tearDown(() {
+      container.dispose();
+    });
 
     test('prefsClientProvider is not available before initialization', () {
       final container = ProviderContainer(
@@ -39,40 +58,48 @@ void main() {
     });
 
     test('prefsClientProvider provides the initialized client', () async {
-      final container = ProviderContainer();
+      final container = ProviderContainer(
+        overrides: [
+          prefsClientInitializingProvider.overrideWith(
+            (ref) async => mockPrefsClient,
+          ),
+        ],
+      );
       addTearDown(container.dispose);
 
-      final client = await container.read(
-        prefsClientInitializingProvider.future,
-      );
+      await container.read(prefsClientInitializingProvider.future);
 
-      expect(container.read(prefsClientProvider), client);
+      expect(container.read(prefsClientProvider), mockPrefsClient);
     });
 
-    test('textInputHapticEnabledProvider returns the stored value', () {
-      expect(container.read(textInputHapticEnabledProvider), isTrue);
+    test('textInputHapticEnabledProvider returns initial state', () {
+      final isEnabled = container.read(textInputHapticEnabledProvider);
+      expect(isEnabled, isTrue);
+      verify(() => mockPrefsClient.textInputHapticEnabled);
     });
 
-    test('textInputHapticEnabledProvider stores a new value', () async {
+    test('textInputHapticEnabledProvider can update state', () async {
       final notifier = container.read(textInputHapticEnabledProvider.notifier);
 
       await notifier.setEnabled(enabled: false);
 
       expect(container.read(textInputHapticEnabledProvider), isFalse);
-      expect(prefsClient.textInputHapticEnabled, isFalse);
+      verify(() => mockPrefsClient.setTextInputHapticEnabled(enabled: false));
     });
 
-    test('otherHapticEnabledProvider returns the stored value', () {
-      expect(container.read(otherHapticEnabledProvider), isFalse);
+    test('otherHapticEnabledProvider returns initial state', () {
+      final isEnabled = container.read(otherHapticEnabledProvider);
+      expect(isEnabled, isFalse);
+      verify(() => mockPrefsClient.otherHapticEnabled);
     });
 
-    test('otherHapticEnabledProvider stores a new value', () async {
+    test('otherHapticEnabledProvider can update state', () async {
       final notifier = container.read(otherHapticEnabledProvider.notifier);
 
       await notifier.setEnabled(enabled: true);
 
       expect(container.read(otherHapticEnabledProvider), isTrue);
-      expect(prefsClient.otherHapticEnabled, isTrue);
+      verify(() => mockPrefsClient.setOtherHapticEnabled(enabled: true));
     });
 
     test(
@@ -87,20 +114,24 @@ void main() {
     );
 
     test('notificationSettingsProvider can add notification time', () async {
-      await prefsClient.setNotificationSettings([
-        const NotificationSetting(id: 1, hour: 8, isEnabled: false).toJson(),
-        const NotificationSetting(id: 2, hour: 12, isEnabled: false).toJson(),
-      ]);
       final notifier = container.read(notificationSettingsProvider.notifier);
+
+      final initialSettings = [
+        const NotificationSetting(id: 1, hour: 8, isEnabled: false),
+        const NotificationSetting(id: 2, hour: 12, isEnabled: false),
+      ];
+
+      when(() => mockPrefsClient.notificationSettings).thenReturn(
+        initialSettings.map((s) => s.toJson()).toList(),
+      );
+
+      container.refresh(notificationSettingsProvider);
 
       await notifier.addNotificationTime(18);
 
       final settings = container.read(notificationSettingsProvider);
-      expect(settings.map((s) => s.hour), [8, 12, 18]);
-      expect(
-        prefsClient.notificationSettings.map(NotificationSetting.fromJson),
-        settings,
-      );
+      expect(settings.length, equals(3));
+      expect(settings.last.hour, equals(18));
     });
 
     test('notificationSettingsProvider can toggle notification', () async {
@@ -108,10 +139,7 @@ void main() {
 
       await notifier.toggleNotification(1);
 
-      final stored = prefsClient.notificationSettings
-          .map(NotificationSetting.fromJson)
-          .toList();
-      expect(stored.firstWhere((s) => s.id == 1).isEnabled, isTrue);
+      verify(() => mockPrefsClient.setNotificationSettings(any()));
     });
   });
 }

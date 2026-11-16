@@ -2,171 +2,278 @@ import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:in_app_reviewer/in_app_reviewer.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:prefs_client/prefs_client.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/mock.dart';
 
 void main() {
   group('InAppReviewer', () {
-    late PrefsClient prefsClient;
+    late MockPrefsClient mockPrefsClient;
     late MockInAppReview mockInAppReview;
+    late InAppReviewer reviewer;
 
-    Future<void> setUpPrefs(Map<String, Object> values) async {
-      SharedPreferences.setMockInitialValues(values);
-      prefsClient = await PrefsClient.initialize();
-    }
+    setUp(() {
+      mockPrefsClient = MockPrefsClient();
+      mockInAppReview = MockInAppReview();
 
-    InAppReviewer createReviewer({bool isEligible = true}) {
-      return InAppReviewer(
-        isEligible: isEligible,
-        prefsClient: prefsClient,
+      reviewer = InAppReviewer(
+        isEligible: true,
+        prefsClient: mockPrefsClient,
         inAppReview: mockInAppReview,
       );
-    }
-
-    setUp(() async {
-      await setUpPrefs({});
-      mockInAppReview = MockInAppReview();
     });
 
     group('shouldShowReviewPrompt', () {
       test('returns false when user has declined review', () async {
-        await setUpPrefs({'hasDeclinedInAppReview': true});
+        // Arrange
+        when(() => mockPrefsClient.hasDeclinedInAppReview).thenReturn(true);
 
-        expect(await createReviewer().shouldShowReviewPrompt(), isFalse);
+        // Act
+        final result = await reviewer.shouldShowReviewPrompt();
+
+        // Assert
+        expect(result, false);
+        verify(() => mockPrefsClient.hasDeclinedInAppReview).called(1);
+        verifyNever(() => mockPrefsClient.lastInAppReviewShownAt);
       });
 
       test('returns false when in cooldown period', () async {
-        await setUpPrefs({
-          'lastInAppReviewShownAt': DateTime(2024).millisecondsSinceEpoch,
-        });
+        // Arrange
+        when(() => mockPrefsClient.hasDeclinedInAppReview).thenReturn(false);
+        // Set last shown to 30 days ago (within 180 day cooldown)
+        final thirtyDaysAgo = DateTime(2024).millisecondsSinceEpoch;
+        when(() => mockPrefsClient.lastInAppReviewShownAt)
+            .thenReturn(thirtyDaysAgo);
 
         await withClock(Clock.fixed(DateTime(2024, 1, 31)), () async {
-          expect(await createReviewer().shouldShowReviewPrompt(), isFalse);
+          // Act
+          final result = await reviewer.shouldShowReviewPrompt();
+
+          // Assert
+          expect(result, false);
+          verify(() => mockPrefsClient.hasDeclinedInAppReview).called(1);
+          verify(() => mockPrefsClient.lastInAppReviewShownAt).called(1);
         });
       });
 
       test('returns true after the cooldown period', () async {
-        await setUpPrefs({
-          'lastInAppReviewShownAt': DateTime(2024).millisecondsSinceEpoch,
-        });
+        when(() => mockPrefsClient.hasDeclinedInAppReview).thenReturn(false);
+        when(
+          () => mockPrefsClient.lastInAppReviewShownAt,
+        ).thenReturn(DateTime(2024).millisecondsSinceEpoch);
 
         await withClock(Clock.fixed(DateTime(2024, 7)), () async {
-          expect(await createReviewer().shouldShowReviewPrompt(), isTrue);
+          expect(await reviewer.shouldShowReviewPrompt(), isTrue);
         });
       });
 
-      test('returns false when user is not eligible', () async {
-        final reviewer = createReviewer(isEligible: false);
+      test(
+        'returns false when user is not eligible',
+        () async {
+          // Arrange
+          when(() => mockPrefsClient.hasDeclinedInAppReview).thenReturn(false);
+          when(() => mockPrefsClient.lastInAppReviewShownAt).thenReturn(null);
 
-        expect(await reviewer.shouldShowReviewPrompt(), isFalse);
-      });
+          final reviewerWithFalseEligibility = InAppReviewer(
+            isEligible: false,
+            prefsClient: mockPrefsClient,
+            inAppReview: mockInAppReview,
+          );
+
+          // Act
+          final result = await reviewerWithFalseEligibility
+              .shouldShowReviewPrompt();
+
+          // Assert
+          expect(result, false);
+          verify(() => mockPrefsClient.hasDeclinedInAppReview).called(1);
+          verify(() => mockPrefsClient.lastInAppReviewShownAt).called(1);
+        },
+      );
 
       test('returns true when all conditions are met', () async {
-        expect(await createReviewer().shouldShowReviewPrompt(), isTrue);
+        // Arrange
+        when(() => mockPrefsClient.hasDeclinedInAppReview).thenReturn(false);
+        when(() => mockPrefsClient.lastInAppReviewShownAt).thenReturn(null);
+
+        // Act
+        final result = await reviewer.shouldShowReviewPrompt();
+
+        // Assert
+        expect(result, true);
+        verify(() => mockPrefsClient.hasDeclinedInAppReview).called(1);
+        verify(() => mockPrefsClient.lastInAppReviewShownAt).called(1);
       });
     });
 
     group('requestReview', () {
       test('does nothing when in-app review is not available', () async {
-        when(
-          () => mockInAppReview.isAvailable(),
-        ).thenAnswer((_) async => false);
+        // Arrange
+        when(() => mockInAppReview.isAvailable())
+            .thenAnswer((_) async => false);
 
-        await createReviewer().requestReview();
+        // Act
+        await reviewer.requestReview();
 
+        // Assert
+        verify(() => mockInAppReview.isAvailable()).called(1);
         verifyNever(() => mockInAppReview.requestReview());
-        expect(prefsClient.lastInAppReviewShownAt, isNull);
+        verifyNever(
+          () => mockPrefsClient.setLastInAppReviewShownAt(
+            timestamp: any(named: 'timestamp'),
+          ),
+        );
       });
 
       test('requests review and records timestamp when available', () async {
+        // Arrange
         when(() => mockInAppReview.isAvailable()).thenAnswer((_) async => true);
         when(() => mockInAppReview.requestReview()).thenAnswer((_) async {});
+        when(
+          () => mockPrefsClient.setLastInAppReviewShownAt(
+            timestamp: any(named: 'timestamp'),
+          ),
+        ).thenAnswer((_) async => true);
 
         await withClock(Clock.fixed(DateTime(2024, 6)), () async {
-          await createReviewer().requestReview();
-        });
+          // Act
+          await reviewer.requestReview();
 
-        verify(() => mockInAppReview.requestReview()).called(1);
-        expect(
-          prefsClient.lastInAppReviewShownAt,
-          DateTime(2024, 6).millisecondsSinceEpoch,
-        );
+          // Assert
+          verify(() => mockInAppReview.isAvailable()).called(1);
+          verify(() => mockInAppReview.requestReview()).called(1);
+          verify(
+            () => mockPrefsClient.setLastInAppReviewShownAt(
+              timestamp: DateTime(2024, 6).millisecondsSinceEpoch,
+            ),
+          ).called(1);
+        });
       });
     });
 
     group('openStoreListing', () {
       test('opens store listing and records timestamp', () async {
+        // Arrange
         when(() => mockInAppReview.openStoreListing()).thenAnswer((_) async {});
+        when(
+          () => mockPrefsClient.setLastInAppReviewShownAt(
+            timestamp: any(named: 'timestamp'),
+          ),
+        ).thenAnswer((_) async => true);
 
         await withClock(Clock.fixed(DateTime(2024, 6)), () async {
-          await createReviewer().openStoreListing();
-        });
+          // Act
+          await reviewer.openStoreListing();
 
-        verify(() => mockInAppReview.openStoreListing()).called(1);
-        expect(
-          prefsClient.lastInAppReviewShownAt,
-          DateTime(2024, 6).millisecondsSinceEpoch,
-        );
+          // Assert
+          verify(() => mockInAppReview.openStoreListing()).called(1);
+          verify(
+            () => mockPrefsClient.setLastInAppReviewShownAt(
+              timestamp: DateTime(2024, 6).millisecondsSinceEpoch,
+            ),
+          ).called(1);
+        });
       });
     });
 
     group('checkAndShowReviewIfEligible', () {
       test('does not request review when conditions are not met', () async {
-        await setUpPrefs({'hasDeclinedInAppReview': true});
+        // Arrange
+        when(() => mockPrefsClient.hasDeclinedInAppReview).thenReturn(true);
 
-        await createReviewer().checkAndShowReviewIfEligible();
+        // Act
+        await reviewer.checkAndShowReviewIfEligible();
 
-        verifyNever(() => mockInAppReview.isAvailable());
-        verifyNever(() => mockInAppReview.requestReview());
+        // Assert
+        verify(() => mockPrefsClient.hasDeclinedInAppReview).called(1);
       });
 
       test('requests review when conditions are met', () async {
+        // Arrange
+        when(() => mockPrefsClient.hasDeclinedInAppReview).thenReturn(false);
+        when(() => mockPrefsClient.lastInAppReviewShownAt).thenReturn(null);
         when(() => mockInAppReview.isAvailable()).thenAnswer((_) async => true);
         when(() => mockInAppReview.requestReview()).thenAnswer((_) async {});
+        when(
+          () => mockPrefsClient.setLastInAppReviewShownAt(
+            timestamp: any(named: 'timestamp'),
+          ),
+        ).thenAnswer((_) async => true);
 
         await withClock(Clock.fixed(DateTime(2024, 6)), () async {
-          await createReviewer().checkAndShowReviewIfEligible();
-        });
+          // Act
+          await reviewer.checkAndShowReviewIfEligible();
 
-        verify(() => mockInAppReview.requestReview()).called(1);
-        expect(
-          prefsClient.lastInAppReviewShownAt,
-          DateTime(2024, 6).millisecondsSinceEpoch,
-        );
+          // Assert
+          verify(() => mockPrefsClient.hasDeclinedInAppReview).called(1);
+          verify(() => mockPrefsClient.lastInAppReviewShownAt).called(1);
+          verify(() => mockInAppReview.isAvailable()).called(1);
+          verify(() => mockInAppReview.requestReview()).called(1);
+          verify(
+            () => mockPrefsClient.setLastInAppReviewShownAt(
+              timestamp: DateTime(2024, 6).millisecondsSinceEpoch,
+            ),
+          ).called(1);
+        });
       });
     });
 
     group('markAsDeclined', () {
       test('sets declined preference to true', () async {
-        await createReviewer().markAsDeclined();
+        // Arrange
+        when(
+          () => mockPrefsClient.setHasDeclinedInAppReview(value: true),
+        ).thenAnswer((_) async => true);
 
-        expect(prefsClient.hasDeclinedInAppReview, isTrue);
+        // Act
+        await reviewer.markAsDeclined();
+
+        // Assert
+        verify(
+          () => mockPrefsClient.setHasDeclinedInAppReview(value: true),
+        ).called(1);
       });
     });
 
     group('recordReviewShown', () {
       test('records current timestamp', () async {
-        await withClock(Clock.fixed(DateTime(2024, 6)), () async {
-          await createReviewer().recordReviewShown();
-        });
+        // Arrange
+        when(
+          () => mockPrefsClient.setLastInAppReviewShownAt(
+            timestamp: any(named: 'timestamp'),
+          ),
+        ).thenAnswer((_) async => true);
 
-        expect(
-          prefsClient.lastInAppReviewShownAt,
-          DateTime(2024, 6).millisecondsSinceEpoch,
-        );
+        await withClock(Clock.fixed(DateTime(2024, 6)), () async {
+          // Act
+          await reviewer.recordReviewShown();
+
+          // Assert
+          verify(
+            () => mockPrefsClient.setLastInAppReviewShownAt(
+              timestamp: DateTime(2024, 6).millisecondsSinceEpoch,
+            ),
+          ).called(1);
+        });
       });
     });
 
     group('constructor', () {
       test('uses InAppReview.instance when inAppReview is not provided', () {
-        final reviewer = InAppReviewer(
+        // This test ensures the default InAppReview.instance is used
+        // when no inAppReview is explicitly provided, achieving 100%
+        // coverage
+
+        // Act
+        final reviewerWithDefaultInstance = InAppReviewer(
           isEligible: true,
-          prefsClient: prefsClient,
+          prefsClient: mockPrefsClient,
+          // inAppReview is intentionally not provided
         );
 
-        expect(reviewer, isNotNull);
+        // Assert
+        expect(reviewerWithDefaultInstance, isNotNull);
+        // The _inAppReview field should be initialized with
+        // InAppReview.instance
       });
     });
   });

@@ -2,12 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:db_client/db_client.dart';
+import 'package:db_client/testing.dart';
 import 'package:diary/src/diary_image_command.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:test/test.dart';
 
-import '../utils/db_client.dart';
 import '../utils/mock.dart';
 
 void main() {
@@ -18,7 +18,8 @@ void main() {
   final date = DateTime(2024);
 
   setUp(() {
-    dbClient = createDbClient();
+    dbClient = createInMemoryDbClient();
+    addTearDown(dbClient.close);
     photoEncoder = MockPhotoEncoder();
     final directory = Directory.systemTemp.createTempSync('diary_image_test');
     addTearDown(() => directory.deleteSync(recursive: true));

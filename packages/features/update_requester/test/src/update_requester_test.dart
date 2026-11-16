@@ -1,8 +1,6 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:configurator/configurator.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -34,37 +32,29 @@ void main() {
     });
 
     group('getConfig', () {
-      test('reads the update request and its updates', () async {
-        final remoteConfig = MockFirebaseRemoteConfig();
-        final updates = StreamController<RemoteConfigUpdate>();
-        addTearDown(updates.close);
-        var stored = UpdateRequest(version: Version(1, 2, 0), message: 'old');
+      test('returns the update request config of the configurator', () {
+        final configurator = MockConfigurator();
+        final config = Config(
+          value: UpdateRequest(version: Version(1, 0, 0), message: ''),
+          subscription: null,
+        );
+        void onConfigUpdated(UpdateRequest updateRequest) {}
         when(
-          () => remoteConfig.getString(updateRequestKey),
-        ).thenAnswer((_) => jsonEncode(stored.toJson()));
-        when(
-          () => remoteConfig.onConfigUpdated,
-        ).thenAnswer((_) => updates.stream);
-        when(remoteConfig.activate).thenAnswer((_) async => true);
+          () => configurator.getDataConfig(
+            updateRequestKey,
+            fromJson: UpdateRequest.fromJson,
+            onConfigUpdated: onConfigUpdated,
+          ),
+        ).thenReturn(config);
         final updateRequester = UpdateRequester(
-          configurator: Configurator.forTesting(remoteConfig),
+          configurator: configurator,
           packageInfo: packageInfo('1.0.0'),
         );
-        final received = <UpdateRequest>[];
-
-        final config = updateRequester.getConfig(onConfigUpdated: received.add);
-        addTearDown(config.dispose);
-        stored = UpdateRequest(version: Version(2, 0, 0), message: 'new');
-        updates.add(RemoteConfigUpdate({updateRequestKey}));
-        await pumpEventQueue();
 
         expect(
-          config.value,
-          UpdateRequest(version: Version(1, 2, 0), message: 'old'),
+          updateRequester.getConfig(onConfigUpdated: onConfigUpdated),
+          config,
         );
-        expect(received, [
-          UpdateRequest(version: Version(2, 0, 0), message: 'new'),
-        ]);
       });
     });
 
@@ -72,7 +62,7 @@ void main() {
       test('should return update message if current version is less than '
           'required version', () {
         final updateRequester = UpdateRequester(
-          configurator: Configurator.forTesting(MockFirebaseRemoteConfig()),
+          configurator: MockConfigurator(),
           packageInfo: packageInfo('0.9.0'),
         );
 
@@ -88,7 +78,7 @@ void main() {
       test('should return null if current version is greater than or equal to '
           'required version', () {
         final updateRequester = UpdateRequester(
-          configurator: Configurator.forTesting(MockFirebaseRemoteConfig()),
+          configurator: MockConfigurator(),
           packageInfo: packageInfo('1.0.0'),
         );
 

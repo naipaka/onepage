@@ -39,25 +39,19 @@ class _FakeBackupController extends Fake implements BackupController {
 }
 
 void main() {
-  setUpAll(() {
-    registerFallbackValue(StackTrace.empty);
-  });
-
   group('BackupPage', () {
     late _FakeBackupController controller;
-    late MockFirebaseCrashlytics crashlytics;
+    late MockTracker tracker;
     late PrefsClient prefsClient;
 
     setUp(() async {
       controller = _FakeBackupController();
-      crashlytics = MockFirebaseCrashlytics();
-      prefsClient = await createPrefsClient();
+      tracker = createTracker();
+      prefsClient = createPrefsClient();
     });
 
     void verifyFatalErrorRecorded() {
-      verify(
-        () => crashlytics.recordError(any<Object?>(), any(), fatal: true),
-      ).called(1);
+      verify(() => tracker.recordError(any(), any(), fatal: true)).called(1);
     }
 
     Future<void> pumpPage(WidgetTester tester) async {
@@ -73,7 +67,7 @@ void main() {
           overrides: [
             backupControllerProvider.overrideWithValue(controller),
             dbClientProvider.overrideWith((_) => createDbClient()),
-            trackerProvider.overrideWithValue(createTracker(crashlytics)),
+            trackerProvider.overrideWithValue(tracker),
             prefsClientProvider.overrideWithValue(prefsClient),
           ],
           child: TranslationProvider(

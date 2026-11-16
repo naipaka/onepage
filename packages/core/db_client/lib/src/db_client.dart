@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'db_client.steps.dart';
@@ -20,13 +19,6 @@ class DbClient extends _$DbClient {
   /// This constructor initializes the database connection using the
   /// [_openConnection] method.
   new([QueryExecutor? e]) : super(e ?? _openConnection());
-
-  /// {@macro db_client.DbClient}
-  ///
-  /// This constructor allows for dependency injection, making it easier to
-  /// test the database operations.
-  @visibleForTesting
-  new forTesting(super.e);
 
   @override
   int get schemaVersion => 4;

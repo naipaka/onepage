@@ -1,23 +1,21 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:haptics/src/haptics.dart';
-import 'package:prefs_client/prefs_client.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mocktail/mocktail.dart';
+
+import '../utils/mock.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('Haptics', () {
+    late MockPrefsClient mockPrefsClient;
     late Haptics haptics;
     late List<MethodCall> methodCalls;
 
-    Future<void> setUpPrefs(Map<String, Object> values) async {
-      SharedPreferences.setMockInitialValues(values);
-      haptics = Haptics(prefsClient: await PrefsClient.initialize());
-    }
-
-    setUp(() async {
-      await setUpPrefs({});
+    setUp(() {
+      mockPrefsClient = MockPrefsClient();
+      haptics = Haptics(prefsClient: mockPrefsClient);
       methodCalls = [];
 
       // Set up method channel to capture haptic feedback calls
@@ -29,14 +27,22 @@ void main() {
     });
 
     tearDown(() {
+      reset(mockPrefsClient);
       methodCalls.clear();
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(SystemChannels.platform, null);
     });
 
+    group('constructor', () {
+      test('creates instance with PrefsClient', () {
+        final instance = Haptics(prefsClient: mockPrefsClient);
+        expect(instance, isA<Haptics>());
+      });
+    });
+
     group('textInputFeedback', () {
       test('triggers light impact when text input haptic is enabled', () async {
-        await setUpPrefs({'textInputHaptic': true});
+        when(() => mockPrefsClient.textInputHapticEnabled).thenReturn(true);
 
         haptics.textInputFeedback();
 
@@ -46,7 +52,7 @@ void main() {
       });
 
       test('does not trigger when text input haptic is disabled', () async {
-        await setUpPrefs({'textInputHaptic': false});
+        when(() => mockPrefsClient.textInputHapticEnabled).thenReturn(false);
 
         haptics.textInputFeedback();
 
@@ -56,7 +62,7 @@ void main() {
 
     group('buttonTapFeedback', () {
       test('triggers light impact when other haptic is enabled', () async {
-        await setUpPrefs({'otherHaptic': true});
+        when(() => mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
         haptics.buttonTapFeedback();
 
@@ -66,7 +72,7 @@ void main() {
       });
 
       test('does not trigger when other haptic is disabled', () async {
-        await setUpPrefs({'otherHaptic': false});
+        when(() => mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
         haptics.buttonTapFeedback();
 
@@ -76,7 +82,7 @@ void main() {
 
     group('toggleFeedback', () {
       test('triggers selection click when other haptic is enabled', () async {
-        await setUpPrefs({'otherHaptic': true});
+        when(() => mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
         haptics.toggleFeedback();
 
@@ -89,7 +95,7 @@ void main() {
       });
 
       test('does not trigger when other haptic is disabled', () async {
-        await setUpPrefs({'otherHaptic': false});
+        when(() => mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
         haptics.toggleFeedback();
 
@@ -99,7 +105,7 @@ void main() {
 
     group('navigationFeedback', () {
       test('triggers light impact when other haptic is enabled', () async {
-        await setUpPrefs({'otherHaptic': true});
+        when(() => mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
         haptics.navigationFeedback();
 
@@ -109,7 +115,7 @@ void main() {
       });
 
       test('does not trigger when other haptic is disabled', () async {
-        await setUpPrefs({'otherHaptic': false});
+        when(() => mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
         haptics.navigationFeedback();
 
@@ -129,7 +135,7 @@ void main() {
                 return null;
               });
 
-          await setUpPrefs({'otherHaptic': true});
+          when(() => mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
           haptics.successFeedback();
 
@@ -161,7 +167,7 @@ void main() {
                 return null;
               });
 
-          await setUpPrefs({'otherHaptic': true});
+          when(() => mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
           haptics.successFeedback();
 
@@ -199,7 +205,7 @@ void main() {
               return null;
             });
 
-        await setUpPrefs({'otherHaptic': false});
+        when(() => mockPrefsClient.otherHapticEnabled).thenReturn(false);
 
         haptics.successFeedback();
 

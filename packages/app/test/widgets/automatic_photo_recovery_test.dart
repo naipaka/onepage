@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
+import 'package:db_client/testing.dart';
 import 'package:device_photos/device_photos.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +18,6 @@ import 'package:prefs_client/prefs_client.dart';
 import 'package:theme/theme.dart';
 
 import '../utils/clients.dart';
-import '../utils/mock.dart';
 
 const _message = 'Some photos need to be recovered';
 const _title = 'Recover Photos';
@@ -65,7 +65,7 @@ void main() {
 
     setUp(() async {
       dbClient = await createDbClientWithPhoto();
-      prefsClient = await createPrefsClient();
+      prefsClient = createPrefsClient();
       command = _FakeCommand();
     });
 
@@ -84,11 +84,9 @@ void main() {
           overrides: [
             dbClientProvider.overrideWith((ref) => dbClient),
             prefsClientProvider.overrideWithValue(prefsClient),
-            trackerProvider.overrideWithValue(
-              createTracker(MockFirebaseCrashlytics()),
-            ),
+            trackerProvider.overrideWithValue(createTracker()),
             inAppReviewerProvider.overrideWith(
-              (ref) async => createInAppReviewer(prefsClient),
+              (ref) async => createInAppReviewer(),
             ),
             devicePhotosProvider.overrideWithValue(_FakeLibrary(option)),
             photoRecoveryCommandProvider.overrideWithValue(command),
@@ -145,7 +143,7 @@ void main() {
     });
 
     testWidgets('does not remind after the user declines', (tester) async {
-      prefsClient = await createPrefsClient({'photoRecoveryDismissed': true});
+      prefsClient = createPrefsClient(photoRecoveryDismissed: true);
       await pumpApp(tester);
 
       expect(find.text(_message), findsNothing);

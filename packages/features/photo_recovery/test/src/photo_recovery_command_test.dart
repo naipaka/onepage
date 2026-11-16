@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:db_client/db_client.dart';
+import 'package:db_client/testing.dart';
 import 'package:device_photos/device_photos.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -10,7 +11,6 @@ import 'package:path/path.dart' as p;
 import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
 
-import '../utils/db_client.dart';
 import '../utils/mock.dart';
 
 void main() {
@@ -39,7 +39,8 @@ void main() {
     ];
 
     setUp(() async {
-      dbClient = createDbClient();
+      dbClient = createInMemoryDbClient();
+      addTearDown(dbClient.close);
       devicePhotos = MockDevicePhotos();
       photoEncoder = MockPhotoEncoder();
       directory = Directory.systemTemp.createTempSync('photo_recovery_test');

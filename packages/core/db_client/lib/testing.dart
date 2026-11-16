@@ -1,21 +1,30 @@
-import 'package:db_client/db_client.dart';
+/// Helpers for tests of code that uses [DbClient].
+library;
+
+import 'dart:io';
+
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
-import 'package:flutter_test/flutter_test.dart';
 
-/// Creates a [DbClient] on an in-memory database that closes after the test.
-DbClient createDbClient() {
-  final dbClient = DbClient.forTesting(
+import 'db_client.dart';
+
+/// Creates a [DbClient] on a new in-memory database.
+DbClient createInMemoryDbClient() {
+  return DbClient(
     DatabaseConnection(
       NativeDatabase.memory(),
       closeStreamsSynchronously: true,
     ),
   );
-  addTearDown(dbClient.close);
-  return dbClient;
 }
 
+/// Creates a [DbClient] on the database file at [file].
+DbClient createFileDbClient(File file) => DbClient(NativeDatabase(file));
+
 /// Adds a diary image that refers to [photoId] in the device's photo library.
+///
+/// The app no longer creates these images, but databases from older versions
+/// still have them.
 Future<DiaryImage> insertExternalDiaryImage(
   DbClient dbClient, {
   required int diaryId,

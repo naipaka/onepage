@@ -2,8 +2,7 @@ import 'dart:io';
 
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
-import 'package:drift/drift.dart' hide isNull;
-import 'package:drift/native.dart';
+import 'package:db_client/testing.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../utils/mock_path_provider.dart';
@@ -29,11 +28,7 @@ void main() {
     late DbClient dbClient;
 
     setUp(() {
-      final connection = DatabaseConnection(
-        NativeDatabase.memory(),
-        closeStreamsSynchronously: true,
-      );
-      dbClient = DbClient.forTesting(connection);
+      dbClient = createInMemoryDbClient();
     });
 
     tearDown(() async {
@@ -76,14 +71,11 @@ void main() {
       });
 
       test('getDiaryImageFileNames skips images without a file', () async {
-        await dbClient
-            .into(dbClient.diaryImages)
-            .insert(
-              DiaryImagesCompanion.insert(
-                diaryId: diary.id,
-                photoId: const Value('photo-id'),
-              ),
-            );
+        await insertExternalDiaryImage(
+          dbClient,
+          diaryId: diary.id,
+          photoId: 'photo-id',
+        );
         await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
 
         expect(await dbClient.getDiaryImageFileNames(), {'a.jpg'});
@@ -93,14 +85,11 @@ void main() {
         late int externalId;
 
         setUp(() async {
-          externalId = await dbClient
-              .into(dbClient.diaryImages)
-              .insert(
-                DiaryImagesCompanion.insert(
-                  diaryId: diary.id,
-                  photoId: const Value('photo-id'),
-                ),
-              );
+          externalId = (await insertExternalDiaryImage(
+            dbClient,
+            diaryId: diary.id,
+            photoId: 'photo-id',
+          )).id;
           await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
         });
 
@@ -120,14 +109,11 @@ void main() {
               content: 'Newer',
               date: DateTime(2025),
             );
-            final newerId = await dbClient
-                .into(dbClient.diaryImages)
-                .insert(
-                  DiaryImagesCompanion.insert(
-                    diaryId: newer.id,
-                    photoId: const Value('newer-photo-id'),
-                  ),
-                );
+            final newerId = (await insertExternalDiaryImage(
+              dbClient,
+              diaryId: newer.id,
+              photoId: 'newer-photo-id',
+            )).id;
 
             final images = await dbClient.getExternalDiaryImages();
 
@@ -169,20 +155,34 @@ void main() {
       });
 
       test('deleteDiaryImage returns null without a file', () async {
-        final image = await dbClient
-            .into(dbClient.diaryImages)
-            .insertReturning(
-              DiaryImagesCompanion.insert(
-                diaryId: diary.id,
-                photoId: const Value('photo-id'),
-              ),
-            );
+        final image = await insertExternalDiaryImage(
+          dbClient,
+          diaryId: diary.id,
+          photoId: 'photo-id',
+        );
 
         expect(await dbClient.deleteDiaryImage(id: image.id), isNull);
       });
 
       test('deleteDiaryImage returns null for an unknown ID', () async {
         expect(await dbClient.deleteDiaryImage(id: 999), isNull);
+      });
+    });
+
+    group('testing helpers', () {
+      test('createFileDbClient keeps the data in the file', () async {
+        final directory = Directory.systemTemp.createTempSync('db_client');
+        addTearDown(() => directory.deleteSync(recursive: true));
+        final file = File('${directory.path}/diary.sqlite');
+        final writer = createFileDbClient(file);
+        await writer.insertDiary(content: 'Saved', date: DateTime(2024));
+        await writer.close();
+
+        final reader = createFileDbClient(file);
+        addTearDown(reader.close);
+        final diary = await reader.getDiaryByDate(date: DateTime(2024));
+
+        expect(diary?.content, 'Saved');
       });
     });
 

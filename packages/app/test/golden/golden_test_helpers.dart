@@ -13,7 +13,6 @@ import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
 
 import '../utils/clients.dart';
-import '../utils/mock.dart';
 
 abstract final class GoldenTestHelpers {
   static Future<void> expectGoldenMatches(
@@ -23,10 +22,7 @@ abstract final class GoldenTestHelpers {
     ThemeMode themeMode = ThemeMode.light,
     Locale locale = const Locale('en'),
   }) async {
-    final prefsClient = await createPrefsClient({
-      'textInputHaptic': true,
-      'otherHaptic': true,
-    });
+    final prefsClient = createPrefsClient(hapticsEnabled: true);
     final dbClient = createDbClient();
 
     // Set iPhone 11 size (375x812)
@@ -52,11 +48,9 @@ abstract final class GoldenTestHelpers {
               PhotoStorage(directory: Directory.systemTemp),
             ),
             inAppReviewerProvider.overrideWith(
-              (ref) async => createInAppReviewer(prefsClient),
+              (ref) async => createInAppReviewer(),
             ),
-            trackerProvider.overrideWithValue(
-              createTracker(MockFirebaseCrashlytics()),
-            ),
+            trackerProvider.overrideWithValue(createTracker()),
             notificationClientInitializingProvider.overrideWith(
               (ref) async => createNotificationClient(),
             ),

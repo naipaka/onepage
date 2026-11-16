@@ -1,21 +1,35 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:haptics/haptics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:onepage/adapters/adapters.dart';
 
-import '../../utils/clients.dart';
+import '../../utils/mock.dart';
 
 void main() {
   group('HapticsProvider', () {
-    test('hapticsProvider provides Haptics instance', () async {
-      final container = ProviderContainer(
+    late ProviderContainer container;
+    late MockPrefsClient mockPrefsClient;
+
+    setUp(() {
+      mockPrefsClient = MockPrefsClient();
+      when(() => mockPrefsClient.textInputHapticEnabled).thenReturn(true);
+      when(() => mockPrefsClient.otherHapticEnabled).thenReturn(true);
+
+      container = ProviderContainer(
         overrides: [
-          prefsClientProvider.overrideWithValue(await createPrefsClient()),
+          prefsClientProvider.overrideWithValue(mockPrefsClient),
         ],
       );
-      addTearDown(container.dispose);
+    });
 
-      expect(container.read(hapticsProvider), isA<Haptics>());
+    tearDown(() {
+      container.dispose();
+    });
+
+    test('hapticsProvider provides Haptics instance', () {
+      final haptics = container.read(hapticsProvider);
+      expect(haptics, isA<Haptics>());
     });
   });
 }
