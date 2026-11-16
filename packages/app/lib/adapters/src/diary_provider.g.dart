@@ -333,7 +333,7 @@ final class CachedDiariesProvider
   CachedDiaries create() => CachedDiaries();
 }
 
-String _$cachedDiariesHash() => r'50a123df210ff505472c5f45eb2621dee29c0c1b';
+String _$cachedDiariesHash() => r'b024f11d60e1a1d2de41ae76721b1aebaabef976';
 
 /// Provides a list of diaries with dates within the specified date range.
 

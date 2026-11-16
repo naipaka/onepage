@@ -110,7 +110,7 @@ class CachedDiaries extends _$CachedDiaries {
     // Cannot use unawaited for optimistic update
     // because Diary ID is needed for state update.
     final entry = await _diaryCommand.addDiary(date: date, content: content);
-    final diary = Diary(entry: entry);
+    final diary = Diary(entry: entry, images: const []);
     final current = state.requireValue;
     state = AsyncValue.data((
       diaries: [...current.diaries, diary],

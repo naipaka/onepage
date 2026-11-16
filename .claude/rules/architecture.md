@@ -202,16 +202,19 @@ resolution: workspace # Required for workspace packages
 - **Use platform-specific implementations**: AndroidFlutterLocalNotificationsPlugin and IOSFlutterLocalNotificationsPlugin
 - **Handle permissions gracefully**: Check status before requesting
 
-### Freezed vs JsonSerializable
+### Data Classes
 
-- **Use Freezed** for data models when possible - provides immutability, copyWith, equality, and JSON serialization
-- **Avoid manual JsonSerializable** - Freezed includes it automatically
-- **Consistent dependency versions**: Match freezed versions across packages
+- Write data classes by hand as `@immutable` classes with `final` fields, like `Diary` in `db_client`.
+- Add `==`, `hashCode`, `toString`, `copyWith`, `fromJson`, and `toJson` only when code uses them. `include_all_fields` reports a field that one of them leaves out.
+- Make every constructor parameter `required`, nullable ones too, so that each caller decides every value. `avoid_optional_parameters_in_immutable_classes` reports an optional parameter.
+- Write `copyWith` like the Flutter framework does: each given non-null value replaces the field, as `title ?? this.title`. To set a field to null, create the object with the constructor.
+- Compare and hash collections by their elements, such as with `listEquals` and `Object.hashAll`. `avoid_collection_equality_checks` reports `==`, `!=`, and `hashCode` that use the collection itself.
+- In `fromJson`, read each key as `json['key']`, and return a map literal from `toJson`. `matching_json_keys` reports a key that only one of them uses.
+- Use an enum for a fixed set of values, and a sealed class when the cases hold different data. `prefer_enum_over_sealed_class` reports a sealed class whose cases hold no data.
 
 ### Latest Package Versions
 
 - **flutter_local_notifications**: Use latest version (19.3.0+)
-- **freezed**: Use latest major version (3.0.6+)
 
 ## Lint Configuration Standards
 

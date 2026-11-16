@@ -14,7 +14,7 @@ class Diary {
   /// {@macro db_client.Diary}
   const new({
     required this.entry,
-    this.images = const [],
+    required this.images,
   });
 
   /// The diary entry data.

@@ -40,29 +40,6 @@ class ClassName {
 }
 ```
 
-**For Freezed Classes:**
-```dart
-/// {@template package.ModelName}
-/// A detailed description of what this model represents.
-///
-/// Additional context about the model's purpose.
-/// {@endtemplate}
-@freezed
-abstract class ModelName with _$ModelName {
-  /// {@macro package.ModelName}
-  const factory ModelName({
-    /// Description of this field.
-    required String field,
-  }) = _ModelName;
-
-  /// {@macro package.ModelName}
-  ///
-  /// Creates a [ModelName] instance from a JSON object.
-  factory ModelName.fromJson(Map<String, Object?> json) =>
-      _$ModelNameFromJson(json);
-}
-```
-
 **For Widgets:**
 ```dart
 /// {@template package.WidgetName}

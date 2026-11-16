@@ -1,37 +1,27 @@
-import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
 import '../untranslated_texts.dart';
-
-part 'export_format.freezed.dart';
 
 /// {@template exporter.ExportFormat}
 /// Represents the available export formats for diary entries.
 /// {@endtemplate}
-@freezed
-abstract class ExportFormat with _$ExportFormat {
-  /// {@macro exporter.ExportFormat}
-  const factory pdf() = _Pdf;
+enum ExportFormat {
+  /// A PDF document.
+  pdf(displayName: UntranslatedTexts.pdfName, fileExtension: '.pdf'),
 
-  /// {@macro exporter.ExportFormat}
-  const factory csv() = _Csv;
+  /// A CSV file.
+  csv(displayName: UntranslatedTexts.csvName, fileExtension: '.csv'),
 
-  /// {@macro exporter.ExportFormat}
-  const factory markdown() = _Markdown;
-
-  const new _();
-
-  /// Gets the display name for this export format.
-  String get displayName => when(
-    pdf: () => UntranslatedTexts.pdfName,
-    csv: () => UntranslatedTexts.csvName,
-    markdown: () => UntranslatedTexts.markdownName,
+  /// A Markdown file.
+  markdown(
+    displayName: UntranslatedTexts.markdownName,
+    fileExtension: '.md',
   );
 
-  /// Gets the file extension for this export format.
-  String get fileExtension => when(
-    pdf: () => '.pdf',
-    csv: () => '.csv',
-    markdown: () => '.md',
-  );
+  /// {@macro exporter.ExportFormat}
+  new({required this.displayName, required this.fileExtension});
+
+  /// The display name for this export format.
+  final String displayName;
+
+  /// The file extension for this export format.
+  final String fileExtension;
 }

@@ -378,6 +378,7 @@ void main() {
       final entry2 = ExportDiary(date: date, content: content);
       final entry3 = ExportDiary(date: date, content: 'Different content');
 
+      expect(entry1, equals(entry1));
       expect(entry1, equals(entry2));
       expect(entry1, isNot(equals(entry3)));
     });
@@ -392,19 +393,15 @@ void main() {
       expect(entry.toString(), contains('ExportDiary'));
     });
 
-    test('supports JSON serialization', () {
-      final entry = ExportDiary(
-        date: DateTime(2023, 12),
-        content: 'Test content',
-      );
+    test('supports hashCode', () {
+      final date = DateTime(2023, 12);
 
-      final json = entry.toJson();
-      expect(json, isA<Map<String, dynamic>>());
-      expect(json['date'], isA<String>());
-      expect(json['content'], equals('Test content'));
+      final entry1 = ExportDiary(date: date, content: 'Test content');
+      final entry2 = ExportDiary(date: date, content: 'Test content');
+      final entry3 = ExportDiary(date: date, content: 'Different content');
 
-      final deserialized = ExportDiary.fromJson(json);
-      expect(deserialized, equals(entry));
+      expect(entry1.hashCode, equals(entry2.hashCode));
+      expect(entry1.hashCode, isNot(equals(entry3.hashCode)));
     });
 
     test('handles special characters in content', () {

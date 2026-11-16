@@ -23,6 +23,7 @@ void main() {
             createdAt: DateTime(2024, 1, 10),
             updatedAt: DateTime(2024, 1, 10),
           ),
+          images: const [],
         ),
         Diary(
           entry: DiaryEntry(
@@ -32,6 +33,7 @@ void main() {
             createdAt: DateTime(2024, 1, 20),
             updatedAt: DateTime(2024, 1, 20),
           ),
+          images: const [],
         ),
       ];
 
