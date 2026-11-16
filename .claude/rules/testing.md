@@ -13,8 +13,13 @@ paths:
   - Add comprehensive tests for all new functionality
   - **NEVER compromise on this requirement**: When user specifies 100% coverage, it must be achieved regardless of technical difficulty
   - **Platform-specific code coverage**: Use appropriate mocking strategies to cover all code paths, including platform-specific implementations
-- Use Mockito for mocking (`@GenerateMocks` annotation)
-- Mock files in `test/utils/mock_*.dart`
+- Use real instances of the app's own classes, and check the outcome (database rows, stored preferences, files) instead of the calls
+  - `DbClient`: `DbClient.forTesting(NativeDatabase.memory())`
+  - `PrefsClient`: `PrefsClient.initialize()` after `SharedPreferences.setMockInitialValues`
+  - `PhotoStorage`: a temporary directory
+- Mock only classes that call native code, Firebase, or platform plugins directly, with mocktail: write `class MockFoo extends Mock implements Foo;` by hand
+- In widget tests, real file IO never completes, so replace a class that reads or writes files with a hand-written `Fake` (`class _FakeFoo extends Fake implements Foo`)
+- Put a package's mock classes in `test/utils/mock.dart`
 - Platform channel mocks use `TestDefaultBinaryMessengerBinding`
 - Always clean up mocks in `tearDown`
 - **All tests must pass**: Failing tests are not acceptable for task completion

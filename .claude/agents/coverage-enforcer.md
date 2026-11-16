@@ -66,8 +66,9 @@ Add or extend test files under `packages/<directory>/<package_name>/test/`.
 
 ### Conventions
 
-- **Mocking**: Use Mockito with `@GenerateMocks` annotation, then run `fvm dart run melos run gen` from the workspace root to generate mock files.
-- **Mock file location**: `test/utils/mock_<subject>.dart`
+- **Real instances**: Use real instances of the app's own classes (an in-memory `DbClient`, `PrefsClient` after `SharedPreferences.setMockInitialValues`, `PhotoStorage` on a temporary directory) and check the outcome instead of the calls.
+- **Mocking**: Mock only classes that call native code, Firebase, or platform plugins directly. Use mocktail and write `class MockFoo extends Mock implements Foo;` by hand. In widget tests, replace a class that reads or writes files with a hand-written `Fake`.
+- **Mock file location**: `test/utils/mock.dart`
 - **Platform channels**: Mock using `TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler`
 - **Cleanup**: Always call `tearDown` (or `addTearDown`) to reset mocks and handlers after each test.
 

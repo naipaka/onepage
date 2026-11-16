@@ -140,9 +140,11 @@ packages/
    - Validate edge cases and boundary conditions
 
 2. Mocking Strategy:
-   - Use Mockito as the primary mocking solution
-   - Generate mocks using @GenerateMocks annotation
-   - Keep mocks in test/utils/mock_xxx.dart (where xxx is the package name)
+   - Use real instances of the app's own classes, and check the outcome instead of the calls
+   - Mock only classes that call native code, Firebase, or platform plugins directly, with mocktail
+   - Write mock classes by hand: `class MockFoo extends Mock implements Foo;`
+   - In widget tests, replace a class that reads or writes files with a hand-written Fake
+   - Keep mocks in test/utils/mock.dart
    - For static methods or platform channels:
      - Create a new file named mock_xxx.dart (where xxx is the package name)
      - Place in test/utils/ directory
