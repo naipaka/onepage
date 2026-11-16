@@ -36,31 +36,26 @@ class ExportPage extends HookConsumerWidget {
     final diaryQuery = ref.watch(diaryQueryProvider);
     final haptics = ref.watch(hapticsProvider);
 
-    final selectedFormat = useState(const ExportFormat.pdf());
+    final selectedFormat = useState(ExportFormat.pdf);
     final now = clock.now();
     final selectedYear = useState(now.year);
     final selectedMonth = useState(now.month);
 
-    VoidCallback? onExportPressed;
-    if (selectedFormat.value == const ExportFormat.pdf() ||
-        selectedFormat.value == const ExportFormat.csv() ||
-        selectedFormat.value == const ExportFormat.markdown()) {
-      onExportPressed = () {
-        haptics.buttonTapFeedback();
-        _export(
-          ref: ref,
-          context: context,
-          selectedYear: selectedYear.value,
-          selectedMonth: selectedMonth.value,
-          diaryQuery: diaryQuery,
-          pdfExporter: pdfExporter,
-          csvExporter: csvExporter,
-          markdownExporter: markdownExporter,
-          haptics: haptics,
-          t: t,
-          format: selectedFormat.value,
-        );
-      };
+    void onExportPressed() {
+      haptics.buttonTapFeedback();
+      _export(
+        ref: ref,
+        context: context,
+        selectedYear: selectedYear.value,
+        selectedMonth: selectedMonth.value,
+        diaryQuery: diaryQuery,
+        pdfExporter: pdfExporter,
+        csvExporter: csvExporter,
+        markdownExporter: markdownExporter,
+        haptics: haptics,
+        t: t,
+        format: selectedFormat.value,
+      );
     }
 
     return Scaffold(
@@ -84,20 +79,11 @@ class ExportPage extends HookConsumerWidget {
                 ),
                 showSelectedIcon: false,
                 segments: [
-                  ButtonSegment(
-                    value: const ExportFormat.pdf(),
-                    label: Text(const ExportFormat.pdf().displayName),
-                  ),
-                  ButtonSegment(
-                    value: const ExportFormat.csv(),
-                    label: Text(const ExportFormat.csv().displayName),
-                  ),
-                  ButtonSegment(
-                    value: const ExportFormat.markdown(),
-                    label: Text(
-                      const ExportFormat.markdown().displayName,
+                  for (final format in ExportFormat.values)
+                    ButtonSegment(
+                      value: format,
+                      label: Text(format.displayName),
                     ),
-                  ),
                 ],
                 selected: {selectedFormat.value},
                 onSelectionChanged: (formats) {
@@ -245,31 +231,28 @@ class ExportPage extends HookConsumerWidget {
       final File exportedFile;
       final Icon successIcon;
 
-      if (format == const ExportFormat.pdf()) {
-        exportedFile = await pdfExporter.exportMonth(
-          entries: entries,
-          year: selectedYear,
-          month: selectedMonth,
-        );
-        successIcon = const Icon(Icons.picture_as_pdf_outlined);
-      } else if (format == const ExportFormat.csv()) {
-        exportedFile = await csvExporter.exportMonth(
-          entries: entries,
-          year: selectedYear,
-          month: selectedMonth,
-        );
-        successIcon = const Icon(Icons.table_chart_outlined);
-      } else if (format == const ExportFormat.markdown()) {
-        exportedFile = await markdownExporter.exportMonth(
-          entries: entries,
-          year: selectedYear,
-          month: selectedMonth,
-        );
-        successIcon = const Icon(Icons.text_snippet_outlined);
-      } else {
-        throw UnimplementedError(
-          '${format.displayName} export not yet implemented',
-        );
+      switch (format) {
+        case ExportFormat.pdf:
+          exportedFile = await pdfExporter.exportMonth(
+            entries: entries,
+            year: selectedYear,
+            month: selectedMonth,
+          );
+          successIcon = const Icon(Icons.picture_as_pdf_outlined);
+        case ExportFormat.csv:
+          exportedFile = await csvExporter.exportMonth(
+            entries: entries,
+            year: selectedYear,
+            month: selectedMonth,
+          );
+          successIcon = const Icon(Icons.table_chart_outlined);
+        case ExportFormat.markdown:
+          exportedFile = await markdownExporter.exportMonth(
+            entries: entries,
+            year: selectedYear,
+            month: selectedMonth,
+          );
+          successIcon = const Icon(Icons.text_snippet_outlined);
       }
 
       if (!context.mounted) {

@@ -1,8 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
-
-part 'export_diary.freezed.dart';
-part 'export_diary.g.dart';
 
 /// {@template exporter.ExportDiary}
 /// A simplified diary entry model for exporting purposes.
@@ -10,17 +6,34 @@ part 'export_diary.g.dart';
 /// This model contains only the essential fields (date and content) needed
 /// for exporting diary entries to various formats (PDF, CSV, Markdown).
 /// {@endtemplate}
-@freezed
-abstract class ExportDiary with _$ExportDiary {
+@immutable
+class ExportDiary {
   /// {@macro exporter.ExportDiary}
-  const factory({
-    /// The date of the diary entry.
-    required DateTime date,
+  const new({
+    required this.date,
+    required this.content,
+  });
 
-    /// The content of the diary entry.
-    required String content,
-  }) = _ExportDiary;
+  /// The date of the diary entry.
+  final DateTime date;
 
-  /// Creates an [ExportDiary] instance from a JSON object.
-  factory fromJson(Map<String, Object?> json) => _$ExportDiaryFromJson(json);
+  /// The content of the diary entry.
+  final String content;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+
+    return other is ExportDiary &&
+        other.date == date &&
+        other.content == content;
+  }
+
+  @override
+  int get hashCode => Object.hash(date, content);
+
+  @override
+  String toString() => 'ExportDiary(date: $date, content: $content)';
 }
