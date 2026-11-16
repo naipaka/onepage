@@ -128,8 +128,6 @@ packages/
 2. Generated code includes:
    - Riverpod providers
    - Drift database code
-   - Freezed models
-   - i18n translations
 
 ## Testing Guidelines
 

@@ -71,7 +71,6 @@ If the change touches any of the following, run `fvm dart run melos run gen` **b
 
 - Riverpod providers annotated with `@riverpod`
 - Drift database table definitions
-- Freezed data classes
 
 ```bash
 fvm dart run melos run gen

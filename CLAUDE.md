@@ -72,7 +72,6 @@ Detailed package placement, dependency, and DI rules: `.claude/rules/architectur
 Run `fvm dart run melos run gen` after changes to:
 - Riverpod providers with `@riverpod`
 - Drift database tables
-- Freezed data classes
 
 ## Error Handling & Validation
 - Check `context.mounted` before async operations.

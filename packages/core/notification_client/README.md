@@ -9,7 +9,6 @@ This package provides local notification management for diary reminder notificat
 - Daily recurring notifications with timezone support
 - Notification cancellation and management
 - Integration with flutter_local_notifications
-- Freezed data models for type safety
 
 ## Getting started
 
@@ -55,7 +54,7 @@ void main() async {
 
 ## Notification Settings
 
-The package uses `NotificationSetting` model created with Freezed:
+The package uses the `NotificationSetting` model:
 
 ```dart
 final setting = NotificationSetting(
