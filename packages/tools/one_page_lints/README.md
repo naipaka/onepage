@@ -6,11 +6,14 @@ An analyzer plugin with the lint rules, fixes, and assists of One Page.
 
 | Rule | Reports |
 |---|---|
+| `avoid_collection_equality_checks` | `==` and `!=` between two collections (`Iterable`, `List`, `Set`, or `Map`) |
 | `avoid_consecutive_sliver_to_box_adapter` | A `SliverToBoxAdapter` that follows another one in a list |
 | `avoid_hardcoded_color` | Colors written in code outside a `ColorScheme`, except `Colors.transparent` |
 | `avoid_hardcoded_text` | String literals with text in `lib`, in any language, except values for machines and the documented constants of `UntranslatedTexts` |
+| `avoid_optional_parameters_in_immutable_classes` | An optional parameter of a constructor of an `@immutable` class |
 | `avoid_shrink_wrap_in_list_view` | `shrinkWrap` of a `ListView` inside a `ListView`, `Column`, or `Row` |
 | `avoid_single_child` | A widget that lays out a list of children, such as `Column` or `ListView`, given one child at most |
+| `include_all_fields` | A field of an `@immutable` class that its `==`, `hashCode`, `toString`, `copyWith`, or `toJson` doesn't use |
 | `matching_json_keys` | A JSON key that only one of `fromJson` and `toJson` uses |
 | `prefer_clock_now` | `DateTime.now()` and `DateTime.timestamp()` |
 | `prefer_dedicated_media_query_methods` | `MediaQuery.of` and `MediaQuery.maybeOf`, and `.width` or `.height` of `MediaQuery.sizeOf` |

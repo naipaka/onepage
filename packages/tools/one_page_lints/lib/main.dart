@@ -5,11 +5,14 @@ import 'src/assists/add_macro_document_comment.dart';
 import 'src/assists/add_macro_template_document_comment.dart';
 import 'src/assists/wrap_with_macro_template_document_comment.dart';
 import 'src/fixes/replace_with_clock_now.dart';
+import 'src/rules/avoid_collection_equality_checks.dart';
 import 'src/rules/avoid_consecutive_sliver_to_box_adapter.dart';
 import 'src/rules/avoid_hardcoded_color.dart';
 import 'src/rules/avoid_hardcoded_text.dart';
+import 'src/rules/avoid_optional_parameters_in_immutable_classes.dart';
 import 'src/rules/avoid_shrink_wrap_in_list_view.dart';
 import 'src/rules/avoid_single_child.dart';
+import 'src/rules/include_all_fields.dart';
 import 'src/rules/matching_json_keys.dart';
 import 'src/rules/prefer_clock_now.dart';
 import 'src/rules/prefer_dedicated_media_query_methods.dart';
@@ -31,11 +34,14 @@ class OnePageLintsPlugin extends Plugin {
   @override
   void register(PluginRegistry registry) {
     registry
+      ..registerLintRule(AvoidCollectionEqualityChecks())
       ..registerLintRule(AvoidConsecutiveSliverToBoxAdapter())
       ..registerLintRule(AvoidHardcodedColor())
       ..registerLintRule(AvoidHardcodedText())
+      ..registerLintRule(AvoidOptionalParametersInImmutableClasses())
       ..registerLintRule(AvoidShrinkWrapInListView())
       ..registerLintRule(AvoidSingleChild())
+      ..registerLintRule(IncludeAllFields())
       ..registerLintRule(MatchingJsonKeys())
       ..registerLintRule(PreferClockNow())
       ..registerLintRule(PreferDedicatedMediaQueryMethods())

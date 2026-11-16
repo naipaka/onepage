@@ -13,11 +13,14 @@ plugins:
   one_page_lints:
     path: packages/tools/one_page_lints
     diagnostics:
+      avoid_collection_equality_checks: true
       avoid_consecutive_sliver_to_box_adapter: true
       avoid_hardcoded_color: true
       avoid_hardcoded_text: true
+      avoid_optional_parameters_in_immutable_classes: true
       avoid_shrink_wrap_in_list_view: true
       avoid_single_child: true
+      include_all_fields: true
       matching_json_keys: true
       prefer_clock_now: true
       prefer_dedicated_media_query_methods: true
