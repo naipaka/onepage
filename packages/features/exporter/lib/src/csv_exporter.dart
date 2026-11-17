@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import 'export_period.dart';
 import 'exporter.dart';
 import 'models/models.dart';
 import 'untranslated_texts.dart';
@@ -26,8 +27,7 @@ class CsvExporter extends Exporter {
   Future<File> export({
     required List<ExportDiary> entries,
   }) async {
-    final title = _generateTitle(entries);
-    final fileName = _generateFileName(title);
+    final fileName = _generateFileName(ExportPeriod.ofEntries(entries));
     final content = _generateCsvContent(entries);
 
     return _saveToFile(content, fileName);
@@ -43,8 +43,7 @@ class CsvExporter extends Exporter {
       return entry.date.year == year && entry.date.month == month;
     }).toList();
 
-    final title = DateFormat.yMMMM().format(DateTime(year, month));
-    final fileName = _generateFileName(title);
+    final fileName = _generateFileName(ExportPeriod.month(year, month));
     final content = _generateCsvContentForMonth(filteredEntries, year, month);
 
     return _saveToFile(content, fileName);
@@ -62,8 +61,9 @@ class CsvExporter extends Exporter {
           entryDate.isBefore(endDate.add(const Duration(days: 1)));
     }).toList();
 
-    final title = _generateDateRangeTitle(startDate, endDate);
-    final fileName = _generateFileName(title);
+    final fileName = _generateFileName(
+      ExportPeriod.dateRange(startDate, endDate),
+    );
     final content = _generateCsvContent(filteredEntries);
 
     return _saveToFile(content, fileName);
@@ -122,49 +122,14 @@ class CsvExporter extends Exporter {
     return field;
   }
 
-  String _generateTitle(List<ExportDiary> entries) {
-    if (entries.isEmpty) {
-      return DateFormat.yMMMM().format(clock.now());
-    }
-
-    final dates = entries.map((e) => e.date).toList()..sort();
-    final firstDate = dates.first;
-    final lastDate = dates.last;
-
-    if (firstDate.year == lastDate.year && firstDate.month == lastDate.month) {
-      return DateFormat.yMMMM().format(firstDate);
-    } else {
-      return '${DateFormat.yMMMM().format(firstDate)} - '
-          '${DateFormat.yMMMM().format(lastDate)}';
-    }
-  }
-
-  String _generateDateRangeTitle(DateTime startDate, DateTime endDate) {
-    if (startDate.year == endDate.year &&
-        startDate.month == endDate.month &&
-        startDate.day == endDate.day) {
-      return DateFormat.yMMMEd().format(startDate);
-    }
-
-    if (startDate.year == endDate.year && startDate.month == endDate.month) {
-      return DateFormat.yMMMM().format(startDate);
-    }
-
-    return '${DateFormat.yMMMd().format(startDate)} - '
-        '${DateFormat.yMMMd().format(endDate)}';
-  }
-
-  String _generateFileName(String title) {
+  String _generateFileName(ExportPeriod period) {
     final appName = packageInfo.appName.replaceAll(RegExp(r'[^\w\s-]'), '');
     final version = packageInfo.version;
     final timestamp = DateFormat('yyyyMMddHHmmss').format(
       clock.now(),
     );
 
-    final sanitizedTitle = title
-        .replaceAll(RegExp(r'[^\w\s-]'), '')
-        .replaceAll(RegExp(r'\s+'), ' ');
-    return '${appName}_${sanitizedTitle}_v$version-$timestamp.csv';
+    return '${appName}_${period.fileNamePart}_v$version-$timestamp.csv';
   }
 
   Future<File> _saveToFile(String content, String fileName) async {

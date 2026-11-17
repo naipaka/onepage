@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
+import 'export_period.dart';
 import 'exporter.dart';
 import 'models/models.dart';
 
@@ -16,12 +17,16 @@ class MarkdownExporter extends Exporter {
   /// {@macro exporter.MarkdownExporter}
   const new({
     required this.packageInfo,
+    required this.locale,
     required this.noEntryText,
     required this.exportedFromText,
   });
 
   /// Package information for metadata.
   final PackageInfo packageInfo;
+
+  /// The locale of the dates, in the language of the app.
+  final String locale;
 
   /// The text for a day without an entry, in the language of the app.
   final String noEntryText;
@@ -35,9 +40,9 @@ class MarkdownExporter extends Exporter {
   Future<File> export({
     required List<ExportDiary> entries,
   }) async {
-    final title = _generateTitle(entries);
-    final fileName = _generateFileName(title);
-    final content = _generateMarkdownContent(entries, title);
+    final period = ExportPeriod.ofEntries(entries);
+    final fileName = _generateFileName(period);
+    final content = _generateMarkdownContent(entries, period.title(locale));
 
     return _saveToFile(content, fileName);
   }
@@ -52,11 +57,11 @@ class MarkdownExporter extends Exporter {
       return entry.date.year == year && entry.date.month == month;
     }).toList();
 
-    final title = DateFormat.yMMMM().format(DateTime(year, month));
-    final fileName = _generateFileName(title);
+    final period = ExportPeriod.month(year, month);
+    final fileName = _generateFileName(period);
     final content = _generateMarkdownContentForMonth(
       filteredEntries,
-      title,
+      period.title(locale),
       year,
       month,
     );
@@ -76,9 +81,12 @@ class MarkdownExporter extends Exporter {
           entryDate.isBefore(endDate.add(const Duration(days: 1)));
     }).toList();
 
-    final title = _generateDateRangeTitle(startDate, endDate);
-    final fileName = _generateFileName(title);
-    final content = _generateMarkdownContent(filteredEntries, title);
+    final period = ExportPeriod.dateRange(startDate, endDate);
+    final fileName = _generateFileName(period);
+    final content = _generateMarkdownContent(
+      filteredEntries,
+      period.title(locale),
+    );
 
     return _saveToFile(content, fileName);
   }
@@ -93,7 +101,7 @@ class MarkdownExporter extends Exporter {
           version: packageInfo.version,
         ),
       )
-      ..writeln(DateFormat.yMMMd().add_jm().format(clock.now()))
+      ..writeln(DateFormat.yMMMd(locale).add_jm().format(clock.now()))
       ..writeln()
       ..writeln('---')
       ..writeln();
@@ -103,7 +111,7 @@ class MarkdownExporter extends Exporter {
 
     for (final entry in sortedEntries) {
       buffer
-        ..writeln('## ${DateFormat.yMMMEd().format(entry.date)}')
+        ..writeln('## ${DateFormat.yMMMEd(locale).format(entry.date)}')
         ..writeln()
         ..writeln(entry.content)
         ..writeln();
@@ -127,7 +135,7 @@ class MarkdownExporter extends Exporter {
           version: packageInfo.version,
         ),
       )
-      ..writeln(DateFormat.yMMMd().add_jm().format(clock.now()))
+      ..writeln(DateFormat.yMMMd(locale).add_jm().format(clock.now()))
       ..writeln()
       ..writeln('---')
       ..writeln();
@@ -144,7 +152,7 @@ class MarkdownExporter extends Exporter {
     for (var day = 1; day <= daysInMonth; day++) {
       final date = DateTime(year, month, day);
       buffer
-        ..writeln('## ${DateFormat.yMMMEd().format(date)}')
+        ..writeln('## ${DateFormat.yMMMEd(locale).format(date)}')
         ..writeln();
 
       final entry = entryMap[day];
@@ -160,49 +168,14 @@ class MarkdownExporter extends Exporter {
     return buffer.toString();
   }
 
-  String _generateTitle(List<ExportDiary> entries) {
-    if (entries.isEmpty) {
-      return DateFormat.yMMMM().format(clock.now());
-    }
-
-    final dates = entries.map((e) => e.date).toList()..sort();
-    final firstDate = dates.first;
-    final lastDate = dates.last;
-
-    if (firstDate.year == lastDate.year && firstDate.month == lastDate.month) {
-      return DateFormat.yMMMM().format(firstDate);
-    } else {
-      return '${DateFormat.yMMMM().format(firstDate)} - '
-          '${DateFormat.yMMMM().format(lastDate)}';
-    }
-  }
-
-  String _generateDateRangeTitle(DateTime startDate, DateTime endDate) {
-    if (startDate.year == endDate.year &&
-        startDate.month == endDate.month &&
-        startDate.day == endDate.day) {
-      return DateFormat.yMMMEd().format(startDate);
-    }
-
-    if (startDate.year == endDate.year && startDate.month == endDate.month) {
-      return DateFormat.yMMMM().format(startDate);
-    }
-
-    return '${DateFormat.yMMMd().format(startDate)} - '
-        '${DateFormat.yMMMd().format(endDate)}';
-  }
-
-  String _generateFileName(String title) {
+  String _generateFileName(ExportPeriod period) {
     final appName = packageInfo.appName.replaceAll(RegExp(r'[^\w\s-]'), '');
     final version = packageInfo.version;
     final timestamp = DateFormat('yyyyMMddHHmmss').format(
       clock.now(),
     );
 
-    final sanitizedTitle = title
-        .replaceAll(RegExp(r'[^\w\s-]'), '')
-        .replaceAll(RegExp(r'\s+'), ' ');
-    return '${appName}_${sanitizedTitle}_v$version-$timestamp.md';
+    return '${appName}_${period.fileNamePart}_v$version-$timestamp.md';
   }
 
   Future<File> _saveToFile(String content, String fileName) async {

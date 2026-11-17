@@ -2,11 +2,13 @@ import 'package:clock/clock.dart';
 import 'package:exporter/exporter.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(initializeDateFormatting);
 
   group('MarkdownExporter', () {
     late MarkdownExporter exporter;
@@ -32,6 +34,7 @@ void main() {
       );
       exporter = MarkdownExporter(
         packageInfo: packageInfo,
+        locale: 'en',
         noEntryText: 'No entry',
         exportedFromText: _exportedFrom,
       );
@@ -53,11 +56,58 @@ void main() {
       expect(
         () => MarkdownExporter(
           packageInfo: packageInfo,
+          locale: 'en',
           noEntryText: 'No entry',
           exportedFromText: _exportedFrom,
         ),
         returnsNormally,
       );
+    });
+
+    group('in Japanese', () {
+      late MarkdownExporter japaneseExporter;
+
+      setUp(() {
+        japaneseExporter = MarkdownExporter(
+          packageInfo: packageInfo,
+          locale: 'ja',
+          noEntryText: '日記なし',
+          exportedFromText: _exportedFrom,
+        );
+      });
+
+      test('writes the dates in Japanese', () async {
+        await withClock(Clock.fixed(DateTime(2024, 3, 15, 12, 30)), () async {
+          final file = await japaneseExporter.export(
+            entries: [
+              ExportDiary(date: DateTime(2024, 1, 15), content: 'Test entry'),
+            ],
+          );
+          final content = await file.readAsString();
+
+          expect(content, contains('# 2024年1月'));
+          expect(content, contains('2024年3月15日 12:30'));
+          expect(content, contains('## 2024年1月15日(月)'));
+          expect(
+            p.basename(file.path),
+            'OnePage_2024-01_v1.0.0-20240315123000.md',
+          );
+        });
+      });
+
+      test('writes the dates of a month in Japanese', () async {
+        final file = await japaneseExporter.exportMonth(
+          entries: [],
+          year: 2024,
+          month: 2,
+        );
+        final content = await file.readAsString();
+
+        expect(content, contains('# 2024年2月'));
+        expect(content, contains('## 2024年2月1日(木)'));
+        expect(content, contains('## 2024年2月29日(木)'));
+        expect(p.basename(file.path), startsWith('OnePage_2024-02_'));
+      });
     });
 
     group('export method', () {
@@ -68,7 +118,7 @@ void main() {
 
           expect(file.path, contains('.md'));
           expect(file.path, contains('OnePage'));
-          expect(file.path, contains('March 2024'));
+          expect(file.path, contains('2024-03'));
           expect(file.path, contains('v1.0.0'));
           expect(file.path, contains('20240315123000'));
 
@@ -173,8 +223,7 @@ void main() {
           ];
 
           final file = await exporter.export(entries: entries);
-          const expectedFileName =
-              'OnePage_January 2024_v1.0.0-20240315144530.md';
+          const expectedFileName = 'OnePage_2024-01_v1.0.0-20240315144530.md';
 
           expect(p.basename(file.path), equals(expectedFileName));
         });
@@ -189,6 +238,7 @@ void main() {
         );
         final specialExporter = MarkdownExporter(
           packageInfo: specialPackageInfo,
+          locale: 'en',
           noEntryText: 'No entry',
           exportedFromText: _exportedFrom,
         );
@@ -212,7 +262,7 @@ void main() {
           );
 
           expect(file.path, contains('.md'));
-          expect(file.path, contains('January 2024'));
+          expect(file.path, contains('2024-01'));
 
           final content = await file.readAsString();
           expect(content, contains('# January 2024'));
@@ -324,8 +374,7 @@ void main() {
             month: 2,
           );
 
-          const expectedFileName =
-              'OnePage_February 2024_v1.0.0-20240315144530.md';
+          const expectedFileName = 'OnePage_2024-02_v1.0.0-20240315144530.md';
 
           expect(p.basename(file.path), equals(expectedFileName));
         });
@@ -439,7 +488,7 @@ void main() {
           );
 
           const expectedFileName =
-              'OnePage_Jan 15 2024 - Feb 15 2024_v1.0.0-20240315144530.md';
+              'OnePage_2024-01-15_2024-02-15_v1.0.0-20240315144530.md';
 
           expect(p.basename(file.path), equals(expectedFileName));
         });
@@ -483,6 +532,7 @@ void main() {
         );
         final specialExporter = MarkdownExporter(
           packageInfo: specialPackageInfo,
+          locale: 'en',
           noEntryText: 'No entry',
           exportedFromText: _exportedFrom,
         );
