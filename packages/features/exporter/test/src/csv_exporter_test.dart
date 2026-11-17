@@ -60,7 +60,7 @@ void main() {
 
           expect(file.path, contains('.csv'));
           expect(file.path, contains('OnePage'));
-          expect(file.path, contains('March 2024'));
+          expect(file.path, contains('2024-03'));
           expect(file.path, contains('v1.0.0'));
           expect(file.path, contains('20240315123000'));
 
@@ -183,7 +183,7 @@ void main() {
           final file = await exporter.export(entries: entries);
           final fileName = p.basename(file.path);
 
-          expect(fileName, contains('January 2024'));
+          expect(fileName, contains('2024-01'));
           expect(fileName, contains('OnePage'));
           expect(fileName, contains('v1.0.0'));
           expect(fileName, contains('20240315123000'));
@@ -208,7 +208,7 @@ void main() {
           final file = await exporter.export(entries: entries);
           final fileName = p.basename(file.path);
 
-          expect(fileName, contains('January 2024 - March 2024'));
+          expect(fileName, contains('2024-01_2024-03'));
           expect(fileName, contains('OnePage'));
           expect(fileName, contains('v1.0.0'));
           expect(fileName, contains('20240325144500'));
@@ -286,7 +286,7 @@ void main() {
           );
           final fileName = p.basename(file.path);
 
-          expect(fileName, contains('January 2024'));
+          expect(fileName, contains('2024-01'));
           expect(fileName, contains('OnePage'));
           expect(fileName, contains('v1.0.0'));
           expect(fileName, contains('20240315123000'));
@@ -372,7 +372,7 @@ void main() {
           );
           final fileName = p.basename(file.path);
 
-          expect(fileName, contains('Mon Jan 15 2024'));
+          expect(fileName, contains('2024-01-15'));
         });
       });
 
@@ -386,7 +386,7 @@ void main() {
           );
           final fileName = p.basename(file.path);
 
-          expect(fileName, contains('January 2024'));
+          expect(fileName, contains('2024-01'));
         });
       });
 
@@ -400,7 +400,7 @@ void main() {
           );
           final fileName = p.basename(file.path);
 
-          expect(fileName, contains('Jan 15 2024 - Mar 20 2024'));
+          expect(fileName, contains('2024-01-15_2024-03-20'));
         });
       });
 

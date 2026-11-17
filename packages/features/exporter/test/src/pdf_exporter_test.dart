@@ -2,10 +2,12 @@ import 'package:clock/clock.dart';
 import 'package:exporter/exporter.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  setUpAll(initializeDateFormatting);
 
   late PackageInfo packageInfo;
   late PdfExporter exporter;
@@ -34,6 +36,7 @@ void main() {
 
       exporter = PdfExporter(
         packageInfo: packageInfo,
+        locale: 'en',
         noEntryText: 'No entry',
       );
     });
@@ -70,7 +73,7 @@ void main() {
 
               expect(file.existsSync(), isTrue);
               expect(file.path, contains('Test App_'));
-              expect(file.path, contains('December 2023'));
+              expect(file.path, contains('2023-12'));
               expect(file.path, contains('v1.0.0-20231215103000.pdf'));
 
               await file.delete();
@@ -102,7 +105,7 @@ void main() {
 
               expect(file.existsSync(), isTrue);
               expect(file.path, contains('Test App_'));
-              expect(file.path, contains('November 2023 - December 2023'));
+              expect(file.path, contains('2023-11_2023-12'));
 
               await file.delete();
             },
@@ -118,7 +121,7 @@ void main() {
 
           expect(file.existsSync(), isTrue);
           expect(file.path, contains('Test App_'));
-          expect(file.path, contains('December 2023'));
+          expect(file.path, contains('2023-12'));
 
           await file.delete();
         });
@@ -161,7 +164,7 @@ void main() {
 
           expect(file.existsSync(), isTrue);
           expect(file.path, contains('Test App_'));
-          expect(file.path, contains('January 2023'));
+          expect(file.path, contains('2023-01'));
           // Verify special characters are removed from filename (not full path)
           final fileName = file.path.split('/').last;
           expect(fileName, isNot(contains(':')));
@@ -186,7 +189,7 @@ void main() {
 
         expect(file.existsSync(), isTrue);
         expect(file.path, contains('Test App_'));
-        expect(file.path, contains('May 2023'));
+        expect(file.path, contains('2023-05'));
 
         await file.delete();
       });
@@ -246,7 +249,7 @@ void main() {
 
         expect(file.existsSync(), isTrue);
         expect(file.path, contains('Test App_'));
-        expect(file.path, contains('December 2022 - January 2023'));
+        expect(file.path, contains('2022-12_2023-01'));
 
         await file.delete();
       });
@@ -256,7 +259,7 @@ void main() {
       test('generates correct title for empty entries', () async {
         await withClock(Clock.fixed(DateTime(2023, 3, 15)), () async {
           final file = await exporter.export(entries: <ExportDiary>[]);
-          expect(file.path, contains('March 2023'));
+          expect(file.path, contains('2023-03'));
           await file.delete();
         });
       });
@@ -268,7 +271,7 @@ void main() {
         ];
 
         final file = await exporter.export(entries: entries);
-        expect(file.path, contains('April 2023'));
+        expect(file.path, contains('2023-04'));
         await file.delete();
       });
 
@@ -279,7 +282,7 @@ void main() {
         ];
 
         final file = await exporter.export(entries: entries);
-        expect(file.path, contains('February 2023 - March 2023'));
+        expect(file.path, contains('2023-02_2023-03'));
         await file.delete();
       });
     });
@@ -331,12 +334,37 @@ void main() {
 
         final customExporter = PdfExporter(
           packageInfo: customPackageInfo,
+          locale: 'en',
           noEntryText: 'No entry',
         );
         final file = await customExporter.export(entries: <ExportDiary>[]);
 
         expect(file.path, contains('Custom App Name_'));
         expect(file.path, contains('v2.0.0'));
+
+        await file.delete();
+      });
+    });
+
+    test('exports in Japanese with the same file name', () async {
+      final japaneseExporter = PdfExporter(
+        packageInfo: packageInfo,
+        locale: 'ja',
+        noEntryText: '日記なし',
+      );
+
+      await withClock(Clock.fixed(DateTime(2023, 12, 15, 10, 30)), () async {
+        final file = await japaneseExporter.exportDateRange(
+          entries: [ExportDiary(date: DateTime(2023, 12, 3), content: 'a')],
+          startDate: DateTime(2023, 11, 20),
+          endDate: DateTime(2023, 12, 5),
+        );
+
+        expect(
+          file.path,
+          endsWith('Test App_2023-11-20_2023-12-05_v1.0.0-20231215103000.pdf'),
+        );
+        expect(file.existsSync(), isTrue);
 
         await file.delete();
       });
@@ -474,7 +502,7 @@ void main() {
 
       expect(file.existsSync(), isTrue);
       expect(file.path, contains('Test App_'));
-      expect(file.path, contains('December 2023'));
+      expect(file.path, contains('2023-12'));
 
       await file.delete();
     });
@@ -499,7 +527,7 @@ void main() {
 
       expect(file.existsSync(), isTrue);
       expect(file.path, contains('Test App_'));
-      expect(file.path, contains('December 2023'));
+      expect(file.path, contains('2023-12'));
 
       await file.delete();
     });
@@ -523,7 +551,7 @@ void main() {
       );
 
       expect(file.existsSync(), isTrue);
-      expect(file.path, contains('December 2023'));
+      expect(file.path, contains('2023-12'));
 
       await file.delete();
     });
@@ -543,7 +571,7 @@ void main() {
       );
 
       expect(file.existsSync(), isTrue);
-      expect(file.path, contains('February 2024'));
+      expect(file.path, contains('2024-02'));
 
       await file.delete();
     });
@@ -753,20 +781,20 @@ void main() {
         month: 12,
       );
 
-      expect(file.path, contains('December 2023'));
+      expect(file.path, contains('2023-12'));
 
       await file.delete();
     });
 
     test('generates different month title formats', () async {
       final testCases = [
-        (1, 'January'),
-        (2, 'February'),
-        (6, 'June'),
-        (12, 'December'),
+        (1, '2023-01'),
+        (2, '2023-02'),
+        (6, '2023-06'),
+        (12, '2023-12'),
       ];
 
-      for (final (month, expectedMonth) in testCases) {
+      for (final (month, expectedDate) in testCases) {
         final entries = [
           ExportDiary(
             date: DateTime(2023, month, 15),
@@ -780,7 +808,7 @@ void main() {
           month: month,
         );
 
-        expect(file.path, contains('$expectedMonth 2023'));
+        expect(file.path, contains(expectedDate));
 
         await file.delete();
       }
@@ -791,6 +819,7 @@ void main() {
     test('PdfExporter implements Exporter', () {
       final testExporter = PdfExporter(
         packageInfo: packageInfo,
+        locale: 'en',
         noEntryText: 'No entry',
       );
       expect(testExporter, isA<Exporter>());

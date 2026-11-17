@@ -10,6 +10,7 @@ part 'exporter_provider.g.dart';
 PdfExporter pdfExporter(Ref ref) {
   return PdfExporter(
     packageInfo: ref.watch(packageInfoProvider),
+    locale: t.$meta.locale.languageCode,
     noEntryText: t.export.noEntry,
   );
 }
@@ -27,6 +28,7 @@ CsvExporter csvExporter(Ref ref) {
 MarkdownExporter markdownExporter(Ref ref) {
   return MarkdownExporter(
     packageInfo: ref.watch(packageInfoProvider),
+    locale: t.$meta.locale.languageCode,
     noEntryText: t.export.noEntry,
     exportedFromText: t.export.exportedFrom,
   );

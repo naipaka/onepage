@@ -4,12 +4,13 @@ A Flutter package for exporting diary entries to various formats with extensible
 
 ## Features
 
-- Export diary entries to multiple formats (currently PDF)
+- Export diary entries to PDF, Markdown, and CSV
 - Extensible architecture with interface-based design
 - App-consistent design and styling
 - Share generated export files
 - Support for Japanese and English text
-- Automatic title generation from entry dates
+- Automatic title generation from entry dates, in the language of the app
+- File names with the dates in the same form in every language (e.g. `2024-06`)
 
 ## Getting Started
 
@@ -30,14 +31,16 @@ Create a `PdfExporter` and use it to export diary entries:
 ```dart
 final pdfExporter = PdfExporter(
   packageInfo: packageInfo,
+  locale: 'ja',
+  noEntryText: t.export.noEntry,
 );
 
 final entries = [
-  DiaryEntry(
+  ExportDiary(
     date: DateTime(2024, 6, 1),
     content: 'Today was a good day...',
   ),
-  DiaryEntry(
+  ExportDiary(
     date: DateTime(2024, 6, 2),
     content: 'Another diary entry...',
   ),
@@ -58,7 +61,7 @@ To add support for new export formats, implement the `Exporter` interface:
 ```dart
 class CsvExporter implements Exporter {
   @override
-  Future<File> export({required List<DiaryEntry> entries}) async {
+  Future<File> export({required List<ExportDiary> entries}) async {
     // Implementation for CSV export
   }
 }
@@ -70,6 +73,6 @@ The package follows an interface-based architecture:
 
 - `Exporter`: Interface defining the contract for all exporters
 - `PdfExporter`: Implementation for PDF export
-- `DiaryEntry`: Data model for diary entries
+- `ExportDiary`: Data model for diary entries
 
 This design allows for easy extension with new export formats while maintaining consistency across implementations.

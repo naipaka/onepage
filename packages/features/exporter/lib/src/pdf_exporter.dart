@@ -9,6 +9,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
+import 'export_period.dart';
 import 'exporter.dart';
 import 'models/models.dart';
 import 'untranslated_texts.dart';
@@ -20,11 +21,15 @@ class PdfExporter extends Exporter {
   /// {@macro exporter.PdfExporter}
   const new({
     required this.packageInfo,
+    required this.locale,
     required this.noEntryText,
   });
 
   /// Package information for metadata.
   final PackageInfo packageInfo;
+
+  /// The locale of the dates, in the language of the app.
+  final String locale;
 
   /// The text for a day without an entry, in the language of the app.
   final String noEntryText;
@@ -54,10 +59,10 @@ class PdfExporter extends Exporter {
   }) async {
     final pdf = pw.Document();
 
-    final title = _generateTitle(entries);
-    await _addDiariesPage(pdf, entries, title);
+    final period = ExportPeriod.ofEntries(entries);
+    await _addDiariesPage(pdf, entries, period.title(locale));
 
-    final fileName = _generateFileName(title);
+    final fileName = _generateFileName(period);
     final file = await _saveToFile(pdf, fileName);
 
     return file;
@@ -75,10 +80,16 @@ class PdfExporter extends Exporter {
     }).toList();
 
     final pdf = pw.Document();
-    final title = DateFormat.yMMMM().format(DateTime(year, month));
-    await _addDiariesPageForMonth(pdf, filteredEntries, title, year, month);
+    final period = ExportPeriod.month(year, month);
+    await _addDiariesPageForMonth(
+      pdf,
+      filteredEntries,
+      period.title(locale),
+      year,
+      month,
+    );
 
-    final fileName = _generateFileName(title);
+    final fileName = _generateFileName(period);
     final file = await _saveToFile(pdf, fileName);
 
     return file;
@@ -98,10 +109,10 @@ class PdfExporter extends Exporter {
     }).toList();
 
     final pdf = pw.Document();
-    final title = _generateDateRangeTitle(startDate, endDate);
-    await _addDiariesPage(pdf, filteredEntries, title);
+    final period = ExportPeriod.dateRange(startDate, endDate);
+    await _addDiariesPage(pdf, filteredEntries, period.title(locale));
 
-    final fileName = _generateFileName(title);
+    final fileName = _generateFileName(period);
     final file = await _saveToFile(pdf, fileName);
 
     return file;
@@ -198,23 +209,6 @@ class PdfExporter extends Exporter {
     );
   }
 
-  String _generateTitle(List<ExportDiary> entries) {
-    if (entries.isEmpty) {
-      return DateFormat.yMMMM().format(clock.now());
-    }
-
-    final dates = entries.map((e) => e.date).toList()..sort();
-    final firstDate = dates.first;
-    final lastDate = dates.last;
-
-    if (firstDate.year == lastDate.year && firstDate.month == lastDate.month) {
-      return DateFormat.yMMMM().format(firstDate);
-    } else {
-      return '${DateFormat.yMMMM().format(firstDate)} - '
-          '${DateFormat.yMMMM().format(lastDate)}';
-    }
-  }
-
   pw.Widget _buildExportDiary(
     ExportDiary entry,
     pw.Font baseFont,
@@ -222,7 +216,7 @@ class PdfExporter extends Exporter {
     pw.Font baseBoldFont,
     pw.Font jpBoldFont,
   ) {
-    final dateFormat = DateFormat.yMMMEd();
+    final dateFormat = DateFormat.yMMMEd(locale);
 
     return pw.Container(
       margin: const pw.EdgeInsets.only(bottom: 16),
@@ -265,7 +259,7 @@ class PdfExporter extends Exporter {
     pw.Font jpBoldFont,
   ) {
     final daysInMonth = DateTime(year, month + 1, 0).day;
-    final dateFormat = DateFormat.yMMMEd();
+    final dateFormat = DateFormat.yMMMEd(locale);
 
     final entryMap = <int, ExportDiary>{};
     for (final entry in entries) {
@@ -319,30 +313,14 @@ class PdfExporter extends Exporter {
     return pw.Column(children: dayWidgets);
   }
 
-  String _generateFileName(String title) {
+  String _generateFileName(ExportPeriod period) {
     final appName = packageInfo.appName;
     final version = packageInfo.version;
     final timestamp = DateFormat('yyyyMMddHHmmss').format(
       clock.now(),
     );
 
-    final sanitizedTitle = title.replaceAll(RegExp(r'[^\w\s-]'), '');
-    return '${appName}_${sanitizedTitle}_v$version-$timestamp.pdf';
-  }
-
-  String _generateDateRangeTitle(DateTime startDate, DateTime endDate) {
-    if (startDate.year == endDate.year &&
-        startDate.month == endDate.month &&
-        startDate.day == endDate.day) {
-      return DateFormat.yMMMEd().format(startDate);
-    }
-
-    if (startDate.year == endDate.year && startDate.month == endDate.month) {
-      return DateFormat.yMMMM().format(startDate);
-    }
-
-    return '${DateFormat.yMMMd().format(startDate)} - '
-        '${DateFormat.yMMMd().format(endDate)}';
+    return '${appName}_${period.fileNamePart}_v$version-$timestamp.pdf';
   }
 
   Future<File> _saveToFile(pw.Document pdf, String fileName) async {
