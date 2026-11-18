@@ -65,6 +65,7 @@ Detailed package placement, dependency, and DI rules: `.claude/rules/architectur
 - Slang framework for type-safe translations; English (`app_en.yaml`) and Japanese (`app_ja.yaml`).
 - **NEVER** hardcode text in any language in `lib` (enforced by the `avoid_hardcoded_text` rule of one_page_lints).
 - Text that stays the same in every language goes in a `static const` field of a class named `UntranslatedTexts`, with a doc comment that says why.
+- Sample data for checks and screenshots, such as `StubDbClient`, goes in a `stub` folder, which `avoid_hardcoded_text` skips.
 - **ALWAYS** add strings to both `packages/core/i18n/lib/src/i18n/app_ja.yaml` and `app_en.yaml`.
 - Access via `context.t.section.key`. Run `fvm dart run melos run slang` after updating YAML files.
 
