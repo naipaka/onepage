@@ -10,6 +10,7 @@ An analyzer plugin with the lint rules, fixes, and assists of One Page.
 | `avoid_consecutive_sliver_to_box_adapter` | A `SliverToBoxAdapter` that follows another one in a list |
 | `avoid_hardcoded_color` | Colors written in code outside a `ColorScheme`, except `Colors.transparent` |
 | `avoid_hardcoded_text` | String literals with text in `lib`, in any language, except values for machines and the documented constants of `UntranslatedTexts` |
+| `avoid_ignore_comments` | `// ignore:` and `// ignore_for_file:` comments |
 | `avoid_optional_parameters_in_immutable_classes` | An optional parameter of a constructor of an `@immutable` class |
 | `avoid_shrink_wrap_in_list_view` | `shrinkWrap` of a `ListView` inside a `ListView`, `Column`, or `Row` |
 | `avoid_single_child` | A widget that lays out a list of children, such as `Column` or `ListView`, given one child at most |
@@ -24,7 +25,9 @@ An analyzer plugin with the lint rules, fixes, and assists of One Page.
 | `prefer_to_include_sliver_in_name` | A widget that returns a sliver without "Sliver" in its name |
 | `prefer_widget_class` | A function, a method, or a getter that returns a widget |
 
-`avoid_hardcoded_color` and `prefer_widget_class` skip the test directories. `avoid_hardcoded_text` checks only `lib`, and skips generated files and the packages in `packages/tools`.
+`avoid_hardcoded_color` and `prefer_widget_class` skip the test directories. `avoid_hardcoded_text` checks only `lib`, and skips generated files, the files in a `stub` folder, and the packages in `packages/tools`. `avoid_ignore_comments` skips generated files.
+
+The rules tell generated files by name: `*.g.dart`, `*.steps.dart`, `test_bundle.dart`, and the files in a `generated` folder.
 
 ## Fix and assists
 
@@ -46,11 +49,7 @@ plugins:
       avoid_hardcoded_text: true
 ```
 
-To ignore a rule, prefix it with the plugin name:
-
-```dart
-// ignore: one_page_lints/avoid_hardcoded_text
-```
+When a rule reports code, change the code. `avoid_ignore_comments` reports ignore comments, and `fvm dart run melos run ignore-comments:ci` finds the ones that would hide `avoid_ignore_comments` itself.
 
 ## Tests
 

@@ -17,6 +17,7 @@ plugins:
       avoid_consecutive_sliver_to_box_adapter: true
       avoid_hardcoded_color: true
       avoid_hardcoded_text: true
+      avoid_ignore_comments: true
       avoid_optional_parameters_in_immutable_classes: true
       avoid_shrink_wrap_in_list_view: true
       avoid_single_child: true

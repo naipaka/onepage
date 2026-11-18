@@ -9,6 +9,7 @@ import 'src/rules/avoid_collection_equality_checks.dart';
 import 'src/rules/avoid_consecutive_sliver_to_box_adapter.dart';
 import 'src/rules/avoid_hardcoded_color.dart';
 import 'src/rules/avoid_hardcoded_text.dart';
+import 'src/rules/avoid_ignore_comments.dart';
 import 'src/rules/avoid_optional_parameters_in_immutable_classes.dart';
 import 'src/rules/avoid_shrink_wrap_in_list_view.dart';
 import 'src/rules/avoid_single_child.dart';
@@ -40,6 +41,7 @@ class OnePageLintsPlugin extends Plugin {
       ..registerLintRule(AvoidConsecutiveSliverToBoxAdapter())
       ..registerLintRule(AvoidHardcodedColor())
       ..registerLintRule(AvoidHardcodedText())
+      ..registerLintRule(AvoidIgnoreComments())
       ..registerLintRule(AvoidOptionalParametersInImmutableClasses())
       ..registerLintRule(AvoidShrinkWrapInListView())
       ..registerLintRule(AvoidSingleChild())

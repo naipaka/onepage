@@ -65,6 +65,17 @@ melos:
         find packages -name "*.dart" -not \( -name "*.g.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
       description: Check formatting without writing.
 
+    ignore-comments:ci:
+      # avoid_ignore_comments cannot report a comment that ignores the rule
+      # itself or every lint with `type=lint`, because the analysis server
+      # applies ignore comments to plugin rules too. This script finds them in
+      # the files that the rule checks. The tests of one_page_lints are skipped
+      # for their test code in string literals. `grep .` prints what the first
+      # grep finds, and fails the script when it finds any.
+      run: |
+        find packages -name "*.dart" -not \( -name "*.g.dart" -o -name "*.steps.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" -o -path "packages/tools/one_page_lints/test/*" \) -exec grep -nHE "//+ *ignore(_for_file)? *:.*(avoid_ignore_comments|type *= *lint)" {} + | (! grep .)
+      description: Check that no comment ignores avoid_ignore_comments.
+
     gen:
       run: dart run build_runner build --workspace
       description: Run generate code.
