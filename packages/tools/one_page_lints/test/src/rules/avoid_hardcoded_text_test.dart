@@ -85,7 +85,6 @@ String backupName(String app, int version) => '$app-v$version.backup';
 
   Future<void> test_directivesAndAnnotations() async {
     await assertNoDiagnostics('''
-// ignore_for_file: unused_import
 import 'dart:async' show Future;
 
 class Note {
@@ -95,7 +94,7 @@ class Note {
 }
 
 @Note('Use something else')
-void old() {}
+Future<void> old() async {}
 ''');
   }
 
@@ -245,11 +244,43 @@ abstract final class Texts {
   }
 
   Future<void> test_generatedFile() async {
-    await assertNoDiagnostics('''
-// GENERATED CODE - DO NOT MODIFY BY HAND
+    final path = convertPath('$testPackageRootPath/lib/src/titles.g.dart');
+    newFile(path, "const title = 'Settings';");
+    await assertNoDiagnosticsInFile(path);
+  }
+
+  Future<void> test_generatedPart() async {
+    newFile(convertPath('$testPackageRootPath/lib/titles.dart'), '''
+part 'titles.g.dart';
+''');
+    final path = convertPath('$testPackageRootPath/lib/titles.g.dart');
+    newFile(path, '''
+part of 'titles.dart';
 
 const title = 'Settings';
 ''');
+    await assertNoDiagnosticsInFile(path);
+  }
+
+  Future<void> test_generatedCommentInAHandWrittenFile() async {
+    const code = '''
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+const title = 'Settings';
+''';
+    await assertLintsOn(code, ["'Settings'"]);
+  }
+
+  Future<void> test_stubFolder() async {
+    final path = convertPath('$testPackageRootPath/lib/src/stub/diaries.dart');
+    newFile(path, "const diary = 'Woke up early today.';");
+    await assertNoDiagnosticsInFile(path);
+  }
+
+  Future<void> test_folderNamedLikeAStubFile() async {
+    final path = convertPath('$testPackageRootPath/lib/src/stubs/diaries.dart');
+    newFile(path, "const diary = 'Woke up early today.';");
+    await assertDiagnosticsInFile(path, [lint(14, 22)]);
   }
 
   Future<void> test_toolsPackage() async {

@@ -65,6 +65,17 @@ melos:
         find packages -name "*.dart" -not \( -name "*.g.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" \) -exec dart format --output=none --set-exit-if-changed {} +
       description: Check formatting without writing.
 
+    ignore-comments:ci:
+      # avoid_ignore_comments cannot report a comment that ignores the rule
+      # itself or every lint with `type=lint`, because the analysis server
+      # applies ignore comments to plugin rules too. This script finds them in
+      # the files that the rule checks. The tests of one_page_lints are skipped
+      # for their test code in string literals. `grep .` prints what the first
+      # grep finds, and fails the script when it finds any.
+      run: |
+        find packages -name "*.dart" -not \( -name "*.g.dart" -o -name "*.steps.dart" -o -name "test_bundle.dart" -o -name "firebase_options_*.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" -o -path "packages/tools/one_page_lints/test/*" \) -exec grep -nHE "//+ *ignore(_for_file)? *:.*(avoid_ignore_comments|type *= *lint)" {} + | (! grep .)
+      description: Check that no comment ignores avoid_ignore_comments.
+
     gen:
       run: dart run build_runner build --workspace
       description: Run generate code.
@@ -142,13 +153,16 @@ melos:
         - test:cov:flutter
         - test:cov:dart
 
+    # The coverage scripts collect the coverage the same way as the CI scripts,
+    # and remove the files that `ignore` of codecov.yml leaves out.
     test:cov:flutter:
       exec:
         command: |
-          flutter test --coverage
-          lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/new_lcov.info --ignore-errors unused
+          very_good test --coverage --collect-coverage-from=all
+          lcov --remove coverage/lcov.info '*/gen/*' '*.g.dart' '*.steps.dart' '*/stub/*' '*/tables/*' -o coverage/new_lcov.info --ignore-errors unused
           genhtml coverage/new_lcov.info -o coverage/html
           open coverage/html/index.html
+        concurrency: 1
         failFast: true
       description: Run the tests of the Flutter packages with coverage.
       private: true
@@ -159,9 +173,11 @@ melos:
     test:cov:dart:
       exec:
         command: |
-          dart test --coverage-path=coverage/lcov.info
-          genhtml coverage/lcov.info -o coverage/html
+          very_good dart test --coverage --collect-coverage-from=all
+          lcov --remove coverage/lcov.info '*/gen/*' '*.g.dart' '*.steps.dart' '*/stub/*' '*/tables/*' -o coverage/new_lcov.info --ignore-errors unused
+          genhtml coverage/new_lcov.info -o coverage/html
           open coverage/html/index.html
+        concurrency: 1
         failFast: true
       description: Run the tests of the Dart packages with coverage.
       private: true
@@ -176,11 +192,11 @@ melos:
         - test:ci:dart
 
     # `very_good test` fails when several packages compile its test optimizer
-    # at once (very_good_cli issue 947), so the CI scripts run one package at a
-    # time.
+    # at once (very_good_cli issue 947), so the CI and coverage scripts run one
+    # package at a time.
     test:ci:flutter:
       exec:
-        command: very_good test --coverage
+        command: very_good test --coverage --collect-coverage-from=all
         concurrency: 1
         failFast: true
       description: Run the tests of the Flutter packages that run on any OS for CI.
@@ -194,7 +210,7 @@ melos:
 
     test:ci:dart:
       exec:
-        command: very_good dart test --coverage
+        command: very_good dart test --coverage --collect-coverage-from=all
         concurrency: 1
         failFast: true
       description: Run the tests of the Dart packages for CI.
@@ -205,7 +221,7 @@ melos:
 
     test:ci:macos:
       exec:
-        command: very_good test --coverage
+        command: very_good test --coverage --collect-coverage-from=all
         concurrency: 1
         failFast: true
       description: Run the tests that need macOS for CI (golden tests and photo_manager).

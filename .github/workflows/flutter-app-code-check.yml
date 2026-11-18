@@ -72,6 +72,9 @@ jobs:
         # Cannot use `melos format` as it requires excluding files generated from the target file
         run: melos run format:ci --no-select
 
+      - name: Check for comments that ignore avoid_ignore_comments
+        run: melos run ignore-comments:ci --no-select
+
   test:
     needs: check
     if: needs.check.outputs.flutter == 'true'

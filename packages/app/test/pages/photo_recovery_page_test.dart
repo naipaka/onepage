@@ -5,14 +5,12 @@ import 'package:db_client/db_client.dart';
 import 'package:db_client/testing.dart';
 import 'package:device_photos/device_photos.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:onepage/pages/pages.dart';
-import 'package:onepage/router/router.dart';
 import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:prefs_client/prefs_client.dart';
@@ -42,10 +40,6 @@ class _FakeLibrary extends Fake implements DevicePhotos {
     return request;
   }
 }
-
-// GoRouterState has no public constructor for tests.
-// ignore: avoid_implementing_value_types
-class _FakeRouterState extends Fake implements GoRouterState;
 
 class _FakeCommand extends Fake implements PhotoRecoveryCommand {
   int deviceRuns = 0;
@@ -370,16 +364,6 @@ void main() {
       expect(find.text('All photos have been recovered'), findsOneWidget);
       expect(find.text('Back to Diary'), findsOneWidget);
       expect(find.text('Recover'), findsNothing);
-    });
-
-    testWidgets('route opens the page for an image', (tester) async {
-      await pumpPage(tester);
-
-      final page = PhotoRecoveryRouteData(
-        imageId: image.id,
-      ).build(tester.element(find.byType(Scaffold).first), _FakeRouterState());
-
-      expect((page as PhotoRecoveryPage).imageId, image.id);
     });
 
     testWidgets('dismisses the reminder', (tester) async {

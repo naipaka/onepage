@@ -2,13 +2,13 @@ import 'package:analyzer/analysis_rule/analysis_rule.dart';
 import 'package:analyzer/analysis_rule/rule_context.dart';
 import 'package:analyzer/analysis_rule/rule_visitor_registry.dart';
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:analyzer/dart/ast/token.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 import 'package:analyzer/workspace/workspace.dart';
 
+import '../file_paths.dart';
 import '../types.dart';
 
 /// {@template one_page_lints.AvoidHardcodedText}
@@ -31,7 +31,8 @@ import '../types.dart';
 ///   that stays the same in every language. Each field needs a documentation
 ///   comment that says why.
 ///
-/// Generated files and the packages in `packages/tools` are skipped.
+/// Generated files, the files in a `stub` folder, and the packages in
+/// `packages/tools` are skipped.
 ///
 /// ```dart
 /// Text('Settings'); // LINT
@@ -60,12 +61,10 @@ class AvoidHardcodedText extends AnalysisRule {
     RuleVisitorRegistry registry,
     RuleContext context,
   ) {
-    if (!context.isInLibDir ||
-        _isToolsPackage(context.package) ||
-        _isGenerated(context.definingUnit.unit)) {
+    if (!context.isInLibDir || _isToolsPackage(context.package)) {
       return;
     }
-    final visitor = _Visitor(this);
+    final visitor = _Visitor(this, context);
     registry
       ..addSimpleStringLiteral(this, visitor)
       ..addStringInterpolation(this, visitor);
@@ -75,28 +74,14 @@ class AvoidHardcodedText extends AnalysisRule {
   /// app does not include.
   static bool _isToolsPackage(WorkspacePackage? package) =>
       package?.root.parent.shortName == 'tools';
-
-  static final _generated = RegExp(r'\bgenerated\b', caseSensitive: false);
-
-  /// Whether the comments above the first line of code say the file is
-  /// generated.
-  static bool _isGenerated(CompilationUnit unit) {
-    final comments = <String>[];
-    for (
-      Token? comment = unit.beginToken.precedingComments;
-      comment != null;
-      comment = comment.next
-    ) {
-      comments.add(comment.lexeme);
-    }
-    return _generated.hasMatch(comments.join('\n'));
-  }
 }
 
 class _Visitor extends SimpleAstVisitor<void> {
-  new(this.rule);
+  new(this.rule, this.context);
 
   final AnalysisRule rule;
+
+  final RuleContext context;
 
   static final _letter = RegExp(r'\p{L}', unicode: true);
 
@@ -140,7 +125,8 @@ class _Visitor extends SimpleAstVisitor<void> {
   }
 
   void _check(StringLiteral node, String text) {
-    if (!_letter.hasMatch(text) ||
+    if (_isSkippedFile() ||
+        !_letter.hasMatch(text) ||
         _url.hasMatch(text) ||
         _path.hasMatch(text) ||
         (_identifier.hasMatch(text) && !_isWidgetText(node)) ||
@@ -149,6 +135,19 @@ class _Visitor extends SimpleAstVisitor<void> {
       return;
     }
     rule.reportAtNode(node);
+  }
+
+  /// Whether the file being analyzed is generated or in a `stub` folder.
+  ///
+  /// A stub replaces a real implementation with sample data in the language of
+  /// each locale, such as diaries for screenshots.
+  bool _isSkippedFile() {
+    final unit = context.currentUnit;
+    if (unit == null) {
+      return true;
+    }
+    return isGeneratedFile(unit.file, context.package) ||
+        folderNamesInPackage(unit.file, context.package).contains('stub');
   }
 
   /// Whether [node] is passed straight to a `String` parameter of a widget.
