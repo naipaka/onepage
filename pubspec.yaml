@@ -142,13 +142,16 @@ melos:
         - test:cov:flutter
         - test:cov:dart
 
+    # The coverage scripts collect the coverage the same way as the CI scripts,
+    # and remove the files that `ignore` of codecov.yml leaves out.
     test:cov:flutter:
       exec:
         command: |
-          flutter test --coverage
-          lcov --remove coverage/lcov.info 'lib/**.g.dart' -o coverage/new_lcov.info --ignore-errors unused
+          very_good test --coverage --collect-coverage-from=all
+          lcov --remove coverage/lcov.info '*/gen/*' '*.g.dart' '*.steps.dart' '*/stub/*' '*/tables/*' -o coverage/new_lcov.info --ignore-errors unused
           genhtml coverage/new_lcov.info -o coverage/html
           open coverage/html/index.html
+        concurrency: 1
         failFast: true
       description: Run the tests of the Flutter packages with coverage.
       private: true
@@ -159,9 +162,11 @@ melos:
     test:cov:dart:
       exec:
         command: |
-          dart test --coverage-path=coverage/lcov.info
-          genhtml coverage/lcov.info -o coverage/html
+          very_good dart test --coverage --collect-coverage-from=all
+          lcov --remove coverage/lcov.info '*/gen/*' '*.g.dart' '*.steps.dart' '*/stub/*' '*/tables/*' -o coverage/new_lcov.info --ignore-errors unused
+          genhtml coverage/new_lcov.info -o coverage/html
           open coverage/html/index.html
+        concurrency: 1
         failFast: true
       description: Run the tests of the Dart packages with coverage.
       private: true
@@ -176,11 +181,11 @@ melos:
         - test:ci:dart
 
     # `very_good test` fails when several packages compile its test optimizer
-    # at once (very_good_cli issue 947), so the CI scripts run one package at a
-    # time.
+    # at once (very_good_cli issue 947), so the CI and coverage scripts run one
+    # package at a time.
     test:ci:flutter:
       exec:
-        command: very_good test --coverage
+        command: very_good test --coverage --collect-coverage-from=all
         concurrency: 1
         failFast: true
       description: Run the tests of the Flutter packages that run on any OS for CI.
@@ -194,7 +199,7 @@ melos:
 
     test:ci:dart:
       exec:
-        command: very_good dart test --coverage
+        command: very_good dart test --coverage --collect-coverage-from=all
         concurrency: 1
         failFast: true
       description: Run the tests of the Dart packages for CI.
@@ -205,7 +210,7 @@ melos:
 
     test:ci:macos:
       exec:
-        command: very_good test --coverage
+        command: very_good test --coverage --collect-coverage-from=all
         concurrency: 1
         failFast: true
       description: Run the tests that need macOS for CI (golden tests and photo_manager).

@@ -14,7 +14,6 @@ coverage:
 ignore:
   - "**/gen"
   - "**/*.g.dart"
-  - "**/*.freezed.dart"
   - "**/*.steps.dart"
   - "**/stub/**"
   - "**/tables/**"
