@@ -10,6 +10,10 @@ const _generatedSuffixes = ['.g.dart', '.steps.dart'];
 /// writes `test_bundle.dart`.
 const _generatedNames = {'test_bundle.dart'};
 
+/// The start of the names of the Firebase options that FlutterFire CLI writes
+/// for each flavor, such as `firebase_options_dev.dart`.
+const _firebaseOptionsPrefix = 'firebase_options_';
+
 /// The name of the folders that hold only generated files: drift writes the
 /// test schemas in `generated`.
 const _generatedFolder = 'generated';
@@ -20,6 +24,7 @@ bool isGeneratedFile(File file, WorkspacePackage? package) {
   final name = file.shortName;
   return _generatedSuffixes.any(name.endsWith) ||
       _generatedNames.contains(name) ||
+      (name.startsWith(_firebaseOptionsPrefix) && name.endsWith('.dart')) ||
       folderNamesInPackage(file, package).contains(_generatedFolder);
 }
 

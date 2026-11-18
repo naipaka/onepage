@@ -100,6 +100,7 @@ void f() {}
       'lib/src/notes.steps.dart',
       'patrol_test/test_bundle.dart',
       'test/drift/generated/schema.dart',
+      'lib/environment/src/firebase_options_dev.dart',
     ]) {
       final path = convertPath('$testPackageRootPath/$name');
       newFile(path, '''
@@ -108,6 +109,17 @@ void _unused() {}
 ''');
       await assertNoDiagnosticsInFile(path);
     }
+  }
+
+  Future<void> test_firebaseOptionsSelector() async {
+    final path = convertPath(
+      '$testPackageRootPath/lib/environment/src/firebase_options.dart',
+    );
+    newFile(path, '''
+// ignore_for_file: unused_element
+void _unused() {}
+''');
+    await assertDiagnosticsInFile(path, [lint(0, 34)]);
   }
 
   Future<void> test_generatedPart() async {

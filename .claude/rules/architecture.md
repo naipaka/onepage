@@ -221,7 +221,7 @@ resolution: workspace # Required for workspace packages
 - Every package includes the root `analysis_options.yaml`, which includes `package:altive_lints/altive_lints_preset.yaml`. Each package has `altive_lints` in its dev dependencies at the same version.
 - The root `analysis_options.yaml` declares the analyzer plugins under `plugins:`: riverpod_lint for the Riverpod rules, and `one_page_lints` in `packages/tools/one_page_lints` for this project's own rules. The analyzer reads plugins only from the root options file.
 - Add a project rule to `one_page_lints` with tests, and turn it on under `diagnostics:` in the root `analysis_options.yaml`.
-- When a rule reports code, change the code. `avoid_ignore_comments` reports `// ignore:` and `// ignore_for_file:` comments outside generated files (`*.g.dart`, `*.steps.dart`, `test_bundle.dart`, and the files in a `generated` folder), and the `ignore-comments:ci` script of CI finds the comments that would hide it.
+- When a rule reports code, change the code. `avoid_ignore_comments` reports `// ignore:` and `// ignore_for_file:` comments outside generated files (`*.g.dart`, `*.steps.dart`, `test_bundle.dart`, `firebase_options_*.dart`, and the files in a `generated` folder), and the `ignore-comments:ci` script of CI finds the comments that would hide it.
 
 ## Tools Packages
 

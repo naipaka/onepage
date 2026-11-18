@@ -73,7 +73,7 @@ melos:
       # for their test code in string literals. `grep .` prints what the first
       # grep finds, and fails the script when it finds any.
       run: |
-        find packages -name "*.dart" -not \( -name "*.g.dart" -o -name "*.steps.dart" -o -name "test_bundle.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" -o -path "packages/tools/one_page_lints/test/*" \) -exec grep -nHE "//+ *ignore(_for_file)? *:.*(avoid_ignore_comments|type *= *lint)" {} + | (! grep .)
+        find packages -name "*.dart" -not \( -name "*.g.dart" -o -name "*.steps.dart" -o -name "test_bundle.dart" -o -name "firebase_options_*.dart" -o -path "*/generated/*" -o -path "*/.dart_tool/*" -o -path "*/build/*" -o -path "packages/tools/one_page_lints/test/*" \) -exec grep -nHE "//+ *ignore(_for_file)? *:.*(avoid_ignore_comments|type *= *lint)" {} + | (! grep .)
       description: Check that no comment ignores avoid_ignore_comments.
 
     gen:

@@ -27,7 +27,7 @@ An analyzer plugin with the lint rules, fixes, and assists of One Page.
 
 `avoid_hardcoded_color` and `prefer_widget_class` skip the test directories. `avoid_hardcoded_text` checks only `lib`, and skips generated files, the files in a `stub` folder, and the packages in `packages/tools`. `avoid_ignore_comments` skips generated files.
 
-The rules tell generated files by name: `*.g.dart`, `*.steps.dart`, `test_bundle.dart`, and the files in a `generated` folder.
+The rules tell generated files by name: `*.g.dart`, `*.steps.dart`, `test_bundle.dart`, `firebase_options_*.dart`, and the files in a `generated` folder.
 
 ## Fix and assists
 
