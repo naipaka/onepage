@@ -207,6 +207,49 @@ void main() {
       },
     );
 
+    group('setErrorReportingEnabled', () {
+      test('turns on reporting to crashlytics', () async {
+        final crashlytics = MockFirebaseCrashlytics();
+        final analytics = MockFirebaseAnalytics();
+        final tracker = Tracker.forTesting(
+          crashlytics: crashlytics,
+          analytics: analytics,
+        );
+        when(
+          () => crashlytics.setCrashlyticsCollectionEnabled(true),
+        ).thenAnswer((_) async {});
+
+        await tracker.setErrorReportingEnabled(enabled: true);
+
+        verify(() => crashlytics.setCrashlyticsCollectionEnabled(true))
+            .called(1);
+        verifyNoMoreInteractions(crashlytics);
+        verifyNoMoreInteractions(analytics);
+      });
+
+      test('turns off reporting and deletes unsent reports', () async {
+        final crashlytics = MockFirebaseCrashlytics();
+        final analytics = MockFirebaseAnalytics();
+        final tracker = Tracker.forTesting(
+          crashlytics: crashlytics,
+          analytics: analytics,
+        );
+        when(
+          () => crashlytics.setCrashlyticsCollectionEnabled(false),
+        ).thenAnswer((_) async {});
+        when(crashlytics.deleteUnsentReports).thenAnswer((_) async {});
+
+        await tracker.setErrorReportingEnabled(enabled: false);
+
+        verifyInOrder([
+          () => crashlytics.setCrashlyticsCollectionEnabled(false),
+          crashlytics.deleteUnsentReports,
+        ]);
+        verifyNoMoreInteractions(crashlytics);
+        verifyNoMoreInteractions(analytics);
+      });
+    });
+
     test('setUserId should call setUserIdentifier '
         'on crashlytics, analytics and trackers', () async {
       final crashlytics = MockFirebaseCrashlytics();

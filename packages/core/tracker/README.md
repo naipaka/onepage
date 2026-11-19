@@ -31,6 +31,9 @@ import 'package:tracker/tracker.dart';
 
 final tracker = Tracker();
 
+// Report errors only from release and profile builds
+await tracker.setErrorReportingEnabled(enabled: !kDebugMode);
+
 // Set up error handling
 FlutterError.onError = tracker.onFlutterError;
 PlatformDispatcher.instance.onError = tracker.onPlatformError;
