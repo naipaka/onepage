@@ -123,6 +123,20 @@ class Tracker {
     ]);
   }
 
+  /// Sets whether errors are reported to Crashlytics.
+  ///
+  /// The setting persists across launches of the app. Turning reporting off
+  /// also deletes the reports that are stored on the device and not sent yet.
+  ///
+  /// Parameters:
+  ///   [enabled] - Whether errors are reported.
+  Future<void> setErrorReportingEnabled({required bool enabled}) async {
+    await _crashlytics.setCrashlyticsCollectionEnabled(enabled);
+    if (!enabled) {
+      await _crashlytics.deleteUnsentReports();
+    }
+  }
+
   /// Sets the user ID for tracking purposes.
   ///
   /// This method sets the user ID in Crashlytics, Analytics,

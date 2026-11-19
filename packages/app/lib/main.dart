@@ -1,7 +1,7 @@
 import 'dart:isolate';
-import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:i18n/i18n.dart';
 import 'package:material_ui/material_ui.dart';
@@ -21,6 +21,7 @@ Future<void> main() async {
   );
 
   final tracker = Tracker();
+  await tracker.setErrorReportingEnabled(enabled: !kDebugMode);
   // Logs errors caught by the Flutter framework.
   FlutterError.onError = tracker.onFlutterError;
   // Logs uncaught asynchronous errors that the Flutter framework cannot catch.
