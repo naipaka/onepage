@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:notification_client/notification_client.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:prefs_client/prefs_client.dart';
+import 'package:provider_utils/provider_utils.dart';
 
 import '../../utils/mock.dart';
 
@@ -34,6 +35,7 @@ void main() {
       ).thenAnswer((_) async => true);
 
       container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           prefsClientProvider.overrideWithValue(mockPrefsClient),
         ],
@@ -46,6 +48,7 @@ void main() {
 
     test('prefsClientProvider is not available before initialization', () {
       final container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           prefsClientInitializingProvider.overrideWith(
             (ref) => Completer<PrefsClient>().future,
@@ -59,6 +62,7 @@ void main() {
 
     test('prefsClientProvider provides the initialized client', () async {
       final container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           prefsClientInitializingProvider.overrideWith(
             (ref) async => mockPrefsClient,

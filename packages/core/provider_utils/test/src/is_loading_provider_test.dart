@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider_utils/src/is_loading_provider.dart';
+import 'package:provider_utils/src/no_retry.dart';
 
 import '../util/provider_container.dart';
 
@@ -49,6 +50,7 @@ void main() {
     testWidgets('WidgetRefExtensionForLoading', (tester) async {
       await tester.pumpWidget(
         const ProviderScope(
+          retry: noRetry,
           child: MaterialApp(
             home: TestWidget(),
           ),

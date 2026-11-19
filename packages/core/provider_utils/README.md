@@ -6,6 +6,8 @@ A Flutter package for common utilities for the riverpod packages.
 
 - Provides overridden providers for common use cases.
 - Provider Logger.
+- `ProviderFailureReporter`, which passes the errors that providers fail with to a callback, such as an error tracker.
+- `noRetry`, a retry setting that retries no failed provider.
 
 ## Getting started
 
@@ -19,7 +21,7 @@ dependencies:
 
 ## Usage
 
-Here is an example of how to use the `ProviderLogger` widget.
+Here is an example of how to use `ProviderLogger`, `ProviderFailureReporter`, and `noRetry`.
 
 ```dart
 void main() {
@@ -32,7 +34,14 @@ void main() {
 
   runApp(
     ProviderScope(
-      observers: [providerLogger],
+      observers: [
+        providerLogger,
+        ProviderFailureReporter(
+          onFailure: (error, stackTrace) =>
+              unawaited(tracker.recordError(error, stackTrace)),
+        ),
+      ],
+      retry: noRetry,
       child: const App(),
     ),
   );

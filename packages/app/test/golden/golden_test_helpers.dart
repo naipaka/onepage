@@ -41,6 +41,7 @@ abstract final class GoldenTestHelpers {
       );
       await tester.pumpWidget(
         ProviderScope(
+          retry: noRetry,
           overrides: [
             prefsClientProvider.overrideWithValue(prefsClient),
             dbClientProvider.overrideWithValue(dbClient),

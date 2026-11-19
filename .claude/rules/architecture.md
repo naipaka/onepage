@@ -136,6 +136,8 @@ PrefsClient prefsClient(Ref ref) {
 
 - An error is fatal when no code of the app caught it. `Tracker.onFlutterError`, `onPlatformError`, and `isolateErrorListener` receive those errors in `main` and report them as fatal. Crashlytics counts only fatal errors as crashes
 - Report an error that the app catches and handles, such as by showing a toast, with `Tracker.recordError`, which reports it as non-fatal
+- The root `ProviderScope` has a `ProviderFailureReporter`, which reports the errors that providers fail with through `Tracker.recordError`. A screen that shows a provider's error shows a translated message for the user
+- Pass `noRetry` from `provider_utils` as `retry` to every `ProviderScope` and `ProviderContainer`, tests included, so that a failed provider shows its error at once. A provider whose failure can pass by waiting, such as a network request, sets its own `retry` with `@Riverpod(retry: ...)`
 
 ## Package Architecture Patterns
 

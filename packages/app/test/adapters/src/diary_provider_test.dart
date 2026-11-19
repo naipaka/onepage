@@ -6,6 +6,7 @@ import 'package:diary/diary.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:onepage/adapters/adapters.dart';
+import 'package:provider_utils/provider_utils.dart';
 
 class _FakeDiaryQuery implements DiaryQuery {
   @override
@@ -95,6 +96,7 @@ void main() {
     diaryCommand = _FakeDiaryCommand();
     imageCommand = _FakeDiaryImageCommand();
     container = ProviderContainer(
+      retry: noRetry,
       overrides: [
         diaryQueryProvider.overrideWithValue(_FakeDiaryQuery()),
         diaryCommandProvider.overrideWithValue(diaryCommand),

@@ -39,7 +39,6 @@ class HomePage extends HookConsumerWidget {
 
     final haptic = ref.watch(hapticsProvider);
     final inAppReview = ref.watch(inAppReviewerProvider);
-    final tracker = ref.watch(trackerProvider);
 
     // Get the list of dates for the previous month for calendar display.
     final now = useMemoized(() => clock.now());
@@ -87,10 +86,6 @@ class HomePage extends HookConsumerWidget {
     Future<void> checkInAppReview() async {
       await switch (inAppReview) {
         AsyncData(:final value) => value.checkAndShowReviewIfEligible(),
-        AsyncError(:final error, :final stackTrace) => tracker.recordError(
-          error,
-          stackTrace,
-        ),
         _ => Future<void>.value(),
       };
     }
@@ -151,11 +146,25 @@ class HomePage extends HookConsumerWidget {
               final notifier = ref.watch(cachedDiariesProvider.notifier);
               return asyncDiaries.when(
                 loading: () => centerLoadingIndicator,
-                error: (error, _) => Center(
+                error: (_, _) => Center(
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.error, color: colorScheme.error),
-                      Text(error.toString()),
+                      const Gap(8),
+                      BodyLargeText(
+                        context.t.home.loadFailed,
+                        textAlign: TextAlign.center,
+                      ),
+                      const Gap(16),
+                      HapticFilledButton(
+                        onPressed: () {
+                          ref
+                            ..invalidate(diariesProvider)
+                            ..invalidate(cachedDiariesProvider);
+                        },
+                        child: Text(context.t.home.retry),
+                      ),
                     ],
                   ),
                 ),

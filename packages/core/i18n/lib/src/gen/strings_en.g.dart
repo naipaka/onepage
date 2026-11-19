@@ -67,6 +67,9 @@ class Translations$initialization$en {
 
 	// Translations
 
+	/// en: 'Could not start the app'
+	String get failed => 'Could not start the app';
+
 	/// en: 'Retry'
 	String get retry => 'Retry';
 }
@@ -95,6 +98,12 @@ class Translations$home$en {
 
 	/// en: 'Home'
 	String get title => 'Home';
+
+	/// en: 'Could not load your diary'
+	String get loadFailed => 'Could not load your diary';
+
+	/// en: 'Retry'
+	String get retry => 'Retry';
 
 	/// en: 'Notifications'
 	String get notifications => 'Notifications';
@@ -623,10 +632,13 @@ extension on Translations {
 		return switch (path) {
 			'title' => 'One Page',
 			'organization' => 'NPK Studio',
+			'initialization.failed' => 'Could not start the app',
 			'initialization.retry' => 'Retry',
 			'updateRequest.title' => 'Update Request',
 			'updateRequest.button.updateNow' => 'Update Now',
 			'home.title' => 'Home',
+			'home.loadFailed' => 'Could not load your diary',
+			'home.retry' => 'Retry',
 			'home.notifications' => 'Notifications',
 			'home.backup' => 'Backup',
 			'home.export' => 'Export',

@@ -14,6 +14,7 @@ import 'package:onepage/pages/pages.dart';
 import 'package:photo_recovery/photo_recovery.dart';
 import 'package:photo_storage/photo_storage.dart';
 import 'package:prefs_client/prefs_client.dart';
+import 'package:provider_utils/provider_utils.dart';
 import 'package:theme/theme.dart';
 
 import '../utils/clients.dart';
@@ -110,6 +111,7 @@ void main() {
 
       await tester.pumpWidget(
         ProviderScope(
+          retry: noRetry,
           overrides: [
             dbClientProvider.overrideWithValue(dbClient),
             devicePhotosProvider.overrideWithValue(
