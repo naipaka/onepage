@@ -11,6 +11,15 @@ import 'trackable.dart';
 /// Its role is to "send necessary events to Analytics."
 ///
 /// It exposes methods for sending analytic events and for configuration.
+///
+/// An error is fatal when no code of the app caught it. Only
+/// [onFlutterError], [onPlatformError], and [isolateErrorListener], which
+/// receive those errors, report fatal errors. An error that the app caught
+/// and handled, such as by showing a message, is reported with [recordError]
+/// as a non-fatal error. Crashlytics counts only fatal errors as crashes.
+///
+/// On iOS, Crashlytics keeps only the first of the fatal errors reported in
+/// the same second.
 class Tracker {
   /// Create a Tracker instance.
   new({
@@ -32,18 +41,23 @@ class Tracker {
 
   /// Handles Flutter framework errors.
   ///
-  /// This method is called when the Flutter framework catches an error.
-  /// It presents the error to the user and records it to Crashlytics.
+  /// This method is called when the Flutter framework catches an error that
+  /// no code of the app caught. It records the error to Crashlytics, which
+  /// also presents it, and to all custom trackers as a fatal error.
   ///
   /// Parameters:
   ///   [flutterErrorDetails] - The error details from Flutter framework.
-  ///   [fatal] - Whether the error should be marked as fatal.
-  Future<void> onFlutterError(
-    FlutterErrorDetails flutterErrorDetails, {
-    bool fatal = false,
-  }) async {
-    FlutterError.presentError(flutterErrorDetails);
-    await _crashlytics.recordFlutterError(flutterErrorDetails, fatal: fatal);
+  Future<void> onFlutterError(FlutterErrorDetails flutterErrorDetails) async {
+    await Future.wait([
+      _crashlytics.recordFlutterFatalError(flutterErrorDetails),
+      ..._trackers.map(
+        (tracker) => tracker.trackError(
+          flutterErrorDetails.exception,
+          flutterErrorDetails.stack,
+          fatal: true,
+        ),
+      ),
+    ]);
   }
 
   /// Handles platform errors that occur outside of Flutter.
@@ -70,7 +84,7 @@ class Tracker {
   ///
   /// This method returns a SendPort that can be used to receive error
   /// data from isolates. When an error is received, it records the error
-  /// to Crashlytics and all custom trackers.
+  /// to Crashlytics and all custom trackers as a fatal error.
   ///
   /// Returns:
   ///   A SendPort for receiving isolate error data.
@@ -94,25 +108,17 @@ class Tracker {
     }).sendPort;
   }
 
-  /// Records an error to Crashlytics and custom trackers.
-  ///
-  /// This method allows manual recording of errors that are caught
-  /// in application code. The error will be sent to Crashlytics
-  /// and all configured custom trackers.
+  /// Records an error that the app caught to Crashlytics and custom trackers
+  /// as a non-fatal error.
   ///
   /// Parameters:
   ///   [exception] - The exception or error object.
   ///   [stack] - The stack trace associated with the error.
-  ///   [fatal] - Whether the error should be marked as fatal.
-  Future<void> recordError(
-    Object exception,
-    StackTrace stack, {
-    bool fatal = false,
-  }) async {
+  Future<void> recordError(Object exception, StackTrace stack) async {
     await Future.wait([
-      _crashlytics.recordError(exception, stack, fatal: fatal),
+      _crashlytics.recordError(exception, stack),
       ..._trackers.map(
-        (tracker) => tracker.trackError(exception, stack, fatal: fatal),
+        (tracker) => tracker.trackError(exception, stack, fatal: false),
       ),
     ]);
   }

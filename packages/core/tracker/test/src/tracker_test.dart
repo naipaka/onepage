@@ -48,28 +48,41 @@ void main() {
     });
 
     test(
-      'onFlutterError should call recordFlutterError on crashlytics',
+      'onFlutterError should record a fatal error on crashlytics and trackers',
       () async {
         final crashlytics = MockFirebaseCrashlytics();
         final analytics = MockFirebaseAnalytics();
+        final trackable = MockTrackable();
         final tracker = Tracker.forTesting(
           crashlytics: crashlytics,
           analytics: analytics,
+          trackers: [trackable],
         );
 
+        final exception = Exception('Test exception');
+        final stack = StackTrace.fromString('Test stack trace');
         final flutterErrorDetails = FlutterErrorDetails(
-          exception: Exception('Test exception'),
+          exception: exception,
+          stack: stack,
         );
         when(
-          () => crashlytics.recordFlutterError(flutterErrorDetails),
+          () => crashlytics.recordFlutterFatalError(flutterErrorDetails),
+        ).thenAnswer((_) async {});
+        when(
+          () => trackable.trackError(exception, stack, fatal: true),
         ).thenAnswer((_) async {});
 
         await tracker.onFlutterError(flutterErrorDetails);
 
-        verify(() => crashlytics.recordFlutterError(flutterErrorDetails))
-            .called(1);
+        verify(
+          () => crashlytics.recordFlutterFatalError(flutterErrorDetails),
+        ).called(1);
+        verify(
+          () => trackable.trackError(exception, stack, fatal: true),
+        ).called(1);
         verifyNoMoreInteractions(crashlytics);
         verifyNoMoreInteractions(analytics);
+        verifyNoMoreInteractions(trackable);
       },
     );
 
@@ -162,7 +175,7 @@ void main() {
     });
 
     test(
-      'recordError should call recordError on crashlytics and trackers',
+      'recordError should record a non-fatal error on crashlytics and trackers',
       () async {
         final crashlytics = MockFirebaseCrashlytics();
         final analytics = MockFirebaseAnalytics();
@@ -175,20 +188,19 @@ void main() {
 
         final error = Exception('Test exception');
         final stack = StackTrace.fromString('Test stack trace');
-        const fatal = true;
         when(
-          () => crashlytics.recordError(error, stack, fatal: fatal),
+          () => crashlytics.recordError(error, stack),
         ).thenAnswer((_) async {});
         when(
-          () => trackable.trackError(error, stack, fatal: fatal),
+          () => trackable.trackError(error, stack, fatal: false),
         ).thenAnswer((_) async {});
 
-        await tracker.recordError(error, stack, fatal: fatal);
+        await tracker.recordError(error, stack);
 
-        verify(() => crashlytics.recordError(error, stack, fatal: fatal))
-            .called(1);
-        verify(() => trackable.trackError(error, stack, fatal: fatal))
-            .called(1);
+        verify(() => crashlytics.recordError(error, stack)).called(1);
+        verify(
+          () => trackable.trackError(error, stack, fatal: false),
+        ).called(1);
         verifyNoMoreInteractions(crashlytics);
         verifyNoMoreInteractions(analytics);
         verifyNoMoreInteractions(trackable);

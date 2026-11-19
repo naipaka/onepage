@@ -278,7 +278,6 @@ class ExportPage extends HookConsumerWidget {
         tracker.recordError(
           e,
           StackTrace.current,
-          fatal: true,
         ),
       );
       if (context.mounted) {

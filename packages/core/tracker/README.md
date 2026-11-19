@@ -92,11 +92,12 @@ MaterialApp(
 
 ### Error Tracking
 
+An error is fatal when no code of the app caught it. The error handlers above report those errors as fatal, and Crashlytics counts only fatal errors as crashes. An error that the app catches and handles is reported with `recordError` as a non-fatal error:
+
 ```dart
-// Record custom errors
 try {
   // Some operation that might fail
 } catch (error, stackTrace) {
-  await tracker.recordError(error, stackTrace, fatal: false);
+  await tracker.recordError(error, stackTrace);
 }
 ```
