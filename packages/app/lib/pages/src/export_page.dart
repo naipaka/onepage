@@ -5,6 +5,7 @@ import 'package:clock/clock.dart';
 import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:diary/diary.dart';
 import 'package:exporter/exporter.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:haptics/haptics.dart';
@@ -104,7 +105,7 @@ class ExportPage extends HookConsumerWidget {
                       children: [
                         LabelMediumText(t.export.year),
                         const Gap(4),
-                        if (Platform.isIOS)
+                        if (defaultTargetPlatform == TargetPlatform.iOS)
                           _IOSYearPicker(
                             selectedYear: selectedYear,
                             selectedMonth: selectedMonth,
@@ -124,7 +125,7 @@ class ExportPage extends HookConsumerWidget {
                       children: [
                         LabelMediumText(t.export.month),
                         const Gap(4),
-                        if (Platform.isIOS)
+                        if (defaultTargetPlatform == TargetPlatform.iOS)
                           _IOSMonthPicker(
                             selectedYear: selectedYear,
                             selectedMonth: selectedMonth,

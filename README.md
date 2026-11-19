@@ -147,7 +147,7 @@ fvm dart run melos run test
 
 It runs every package's tests, including the golden tests. The Flutter packages run with `flutter test` and the Dart packages with `dart test`.
 
-If you change the UI, update the golden images with the following command:
+The golden tests draw text with Noto Sans JP, which is in `packages/app/test/golden/fonts` with its license, and take each page in English and Japanese. If you change the UI, update the golden images with the following command:
 
 ```shell
 fvm dart run melos run golden:update

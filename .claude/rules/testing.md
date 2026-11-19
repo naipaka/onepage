@@ -24,3 +24,14 @@ paths:
 - Platform channel mocks use `TestDefaultBinaryMessengerBinding`
 - Always clean up mocks in `tearDown`
 - **All tests must pass**: Failing tests are not acceptable for task completion
+
+## Golden Tests
+
+- Take golden images with `GoldenTestHelpers.expectGoldenMatches` in `packages/app/test/golden`. It draws text with Noto Sans JP from `test/golden/fonts` and icons with the Material icon font, in place of the iOS system font that tests do not have
+- Take a golden image of each state of a page whose look the app defines, such as a dialog, a sheet, or a list with data. Check a state that shows only a loading indicator with a widget test
+- Take each state in the three variants of `GoldenVariant`: light theme English, dark theme English, and light theme Japanese
+- Put states that can appear together in one image, such as days with and without a photo on the home page
+- Build a state with the arguments of `expectGoldenMatches`: data in `dbClient` and `photoStorage`, settings in `prefsClient`, and providers in `overrides`. Open a dialog or a sheet with taps in `act`
+- For a state with an endless animation, such as a loading indicator, reach the state in `act` and pump a fixed time. Riverpod stops updating the widgets under a disabled `TickerMode`, so it cannot stop the animation
+- Pass text in golden tests from the translations (`context.t`), so that the Japanese images show Japanese
+- Build the text styles of a theme from its `TextTheme`. Tests draw a `TextStyle` with no font family in boxes

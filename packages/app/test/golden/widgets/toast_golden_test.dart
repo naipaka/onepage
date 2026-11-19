@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:i18n/i18n.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:widgets/widgets.dart';
 
@@ -9,8 +10,8 @@ import '../golden_test_helpers.dart';
 
 void main() {
   group('Toast Golden Tests', () {
-    for (final themeMode in [ThemeMode.light, ThemeMode.dark]) {
-      testWidgets('renders a success toast with ${themeMode.name} theme', (
+    for (final variant in GoldenVariant.values) {
+      testWidgets('renders a success toast with ${variant.suffix}', (
         tester,
       ) async {
         await GoldenTestHelpers.expectGoldenMatches(
@@ -18,16 +19,16 @@ void main() {
           _ToastScreen(
             show: (context) => showSuccessToast(
               context,
-              title: 'Backup created successfully!',
+              title: context.t.backup.successMessage,
               icon: const Icon(Icons.backup_outlined),
             ),
           ),
-          'goldens/toast_success_${themeMode.name}_en.png',
-          themeMode: themeMode,
+          'toast_success',
+          variant: variant,
         );
       });
 
-      testWidgets('renders an error toast with ${themeMode.name} theme', (
+      testWidgets('renders an error toast with ${variant.suffix}', (
         tester,
       ) async {
         await GoldenTestHelpers.expectGoldenMatches(
@@ -35,11 +36,11 @@ void main() {
           _ToastScreen(
             show: (context) => showErrorToast(
               context,
-              title: 'Failed to create backup',
+              title: context.t.backup.failedMessage,
             ),
           ),
-          'goldens/toast_error_${themeMode.name}_en.png',
-          themeMode: themeMode,
+          'toast_error',
+          variant: variant,
         );
       });
     }

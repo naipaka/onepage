@@ -12,7 +12,7 @@ FilledButtonThemeData appFilledButtonThemeData({
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(16),
     ),
-    textStyle: const TextStyle(
+    textStyle: textTheme.labelLarge?.copyWith(
       fontWeight: FontWeight.bold,
       fontSize: 16,
     ),
