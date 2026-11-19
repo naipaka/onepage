@@ -2,6 +2,7 @@
 title: "One Page"
 organization: "NPK Studio"
 initialization:
+  failed: "アプリを起動できませんでした"
   retry: "再試行"
 updateRequest:
   title: "アップデートのお願い"
@@ -9,6 +10,8 @@ updateRequest:
     updateNow: "更新する"
 home:
   title: "Home"
+  loadFailed: "日記を読み込めませんでした"
+  retry: "再試行"
   notifications: "Notifications"
   backup: "Backup"
   export: "Export"

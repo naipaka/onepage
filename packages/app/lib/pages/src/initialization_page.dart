@@ -36,8 +36,7 @@ class InitializationPage extends ConsumerWidget {
       AsyncData(isLoading: false) => _InitializedPage(
         onInitialized: onInitialized,
       ),
-      AsyncError(:final error) => _ErrorPage(
-        error,
+      AsyncError() => _ErrorPage(
         onRetry: () {
           ref
             ..invalidate(prefsClientInitializingProvider)
@@ -124,30 +123,33 @@ class _LoadingPage extends StatelessWidget {
 }
 
 class _ErrorPage extends StatelessWidget {
-  const new(this.error, {required this.onRetry});
+  const new({required this.onRetry});
 
-  final Object error;
   final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = context.textTheme;
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              error.toString(),
-              style: textTheme.headlineMedium,
-            ),
-            const Gap(16),
-            HapticFilledButton(
-              onPressed: onRetry,
-              child: Text(context.t.initialization.retry),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.error, color: context.colorScheme.error),
+              const Gap(8),
+              BodyLargeText(
+                context.t.initialization.failed,
+                textAlign: TextAlign.center,
+              ),
+              const Gap(16),
+              HapticFilledButton(
+                onPressed: onRetry,
+                child: Text(context.t.initialization.retry),
+              ),
+            ],
+          ),
         ),
       ),
     );

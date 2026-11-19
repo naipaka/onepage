@@ -11,6 +11,7 @@ void main() {
 
     setUp(() {
       container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           packageInfoProvider.overrideWithValue(
             PackageInfo(

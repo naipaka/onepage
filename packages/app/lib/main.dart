@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:isolate';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -40,7 +41,12 @@ Future<void> main() async {
           outputLogTypes: ProviderEvent.getEventsFromNames(providerLogPrint),
           logger: logger,
         ),
+        ProviderFailureReporter(
+          onFailure: (error, stackTrace) =>
+              unawaited(tracker.recordError(error, stackTrace)),
+        ),
       ],
+      retry: noRetry,
       child: TranslationProvider(child: const App()),
     ),
   );

@@ -3,6 +3,7 @@ import 'package:haptics/haptics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:onepage/adapters/adapters.dart';
+import 'package:provider_utils/provider_utils.dart';
 
 import '../../utils/mock.dart';
 
@@ -17,6 +18,7 @@ void main() {
       when(() => mockPrefsClient.otherHapticEnabled).thenReturn(true);
 
       container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           prefsClientProvider.overrideWithValue(mockPrefsClient),
         ],

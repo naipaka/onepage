@@ -5,11 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:photo_storage/photo_storage.dart';
+import 'package:provider_utils/provider_utils.dart';
 
 void main() {
   group('photoStorageProvider', () {
     test('is not available before initialization', () {
       final container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           photoStorageInitializingProvider.overrideWith(
             (ref) => Completer<PhotoStorage>().future,
@@ -24,6 +26,7 @@ void main() {
     test('provides the initialized storage', () async {
       final storage = PhotoStorage(directory: Directory.systemTemp);
       final container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           photoStorageInitializingProvider.overrideWith(
             (ref) async => storage,
@@ -42,6 +45,7 @@ void main() {
     test('returns the file in photo storage', () {
       final directory = Directory.systemTemp;
       final container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           photoStorageProvider.overrideWithValue(
             PhotoStorage(directory: directory),

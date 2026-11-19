@@ -58,6 +58,7 @@ class _Translations$initialization$ja implements Translations$initialization$en 
 	final TranslationsJa _root; // ignore: unused_field
 
 	// Translations
+	@override String get failed => 'アプリを起動できませんでした';
 	@override String get retry => '再試行';
 }
 
@@ -80,6 +81,8 @@ class _Translations$home$ja implements Translations$home$en {
 
 	// Translations
 	@override String get title => 'Home';
+	@override String get loadFailed => '日記を読み込めませんでした';
+	@override String get retry => '再試行';
 	@override String get notifications => 'Notifications';
 	@override String get backup => 'Backup';
 	@override String get export => 'Export';
@@ -400,10 +403,13 @@ extension on TranslationsJa {
 		return switch (path) {
 			'title' => 'One Page',
 			'organization' => 'NPK Studio',
+			'initialization.failed' => 'アプリを起動できませんでした',
 			'initialization.retry' => '再試行',
 			'updateRequest.title' => 'アップデートのお願い',
 			'updateRequest.button.updateNow' => '更新する',
 			'home.title' => 'Home',
+			'home.loadFailed' => '日記を読み込めませんでした',
+			'home.retry' => '再試行',
 			'home.notifications' => 'Notifications',
 			'home.backup' => 'Backup',
 			'home.export' => 'Export',

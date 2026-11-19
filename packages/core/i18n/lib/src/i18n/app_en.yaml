@@ -2,6 +2,7 @@
 title: "One Page"
 organization: "NPK Studio"
 initialization:
+  failed: "Could not start the app"
   retry: "Retry"
 updateRequest:
   title: "Update Request"
@@ -9,6 +10,8 @@ updateRequest:
     updateNow: "Update Now"
 home:
   title: "Home"
+  loadFailed: "Could not load your diary"
+  retry: "Retry"
   notifications: "Notifications"
   backup: "Backup"
   export: "Export"

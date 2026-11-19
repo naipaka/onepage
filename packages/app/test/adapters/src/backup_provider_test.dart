@@ -15,6 +15,7 @@ void main() {
     test('uses the photo storage from its provider', () {
       final photoStorage = PhotoStorage(directory: Directory.systemTemp);
       final container = ProviderContainer(
+        retry: noRetry,
         overrides: [
           dbClientProvider.overrideWithValue(createDbClient()),
           packageInfoProvider.overrideWithValue(

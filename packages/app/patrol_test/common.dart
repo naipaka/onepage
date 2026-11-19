@@ -7,6 +7,7 @@ import 'package:onepage/app.dart';
 import 'package:onepage/environment/environment.dart';
 import 'package:onepage/keys.dart';
 import 'package:patrol/patrol.dart';
+import 'package:provider_utils/provider_utils.dart';
 
 export 'package:flutter_test/flutter_test.dart';
 export 'package:onepage/keys.dart';
@@ -26,7 +27,10 @@ Future<void> createApp(PatrolIntegrationTester $) async {
   );
   await LocaleSettings.useDeviceLocale();
   await $.pumpWidget(
-    ProviderScope(child: TranslationProvider(child: const App())),
+    ProviderScope(
+      retry: noRetry,
+      child: TranslationProvider(child: const App()),
+    ),
   );
   await $.waitUntilVisible($(K.homePage), timeout: const Duration(seconds: 30));
   await $.waitUntilVisible(
