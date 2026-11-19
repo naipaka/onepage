@@ -2,34 +2,31 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:onepage/pages/pages.dart';
 
+import '../../utils/clients.dart';
 import '../golden_test_helpers.dart';
 
 void main() {
   group('HapticFeedbackPage Golden Tests', () {
-    testWidgets(
-      'renders correctly with light theme and English locale',
-      (tester) async {
-        await GoldenTestHelpers.expectGoldenMatches(
-          tester,
-          const HapticFeedbackPage(),
-          'goldens/haptic_feedback_page_light_en.png',
-        );
-      },
-    );
+    for (final variant in GoldenVariant.values) {
+      testWidgets(
+        'renders a switch that is on and one that is off with '
+        '${variant.suffix}',
+        (tester) async {
+          final prefsClient = createPrefsClient(hapticsEnabled: true);
+          when(() => prefsClient.otherHapticEnabled).thenReturn(false);
 
-    testWidgets(
-      'renders correctly with dark theme and English locale',
-      (tester) async {
-        await GoldenTestHelpers.expectGoldenMatches(
-          tester,
-          const HapticFeedbackPage(),
-          'goldens/haptic_feedback_page_dark_en.png',
-          themeMode: ThemeMode.dark,
-        );
-      },
-    );
+          await GoldenTestHelpers.expectGoldenMatches(
+            tester,
+            const HapticFeedbackPage(),
+            'haptic_feedback_page',
+            variant: variant,
+            prefsClient: prefsClient,
+          );
+        },
+      );
+    }
   });
 }

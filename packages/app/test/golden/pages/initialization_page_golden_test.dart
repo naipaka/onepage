@@ -2,43 +2,54 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
+import 'package:onepage/adapters/adapters.dart';
+import 'package:onepage/pages/pages.dart';
 
+import '../golden_fakes.dart';
 import '../golden_test_helpers.dart';
 
 void main() {
   group('InitializationPage Golden Tests', () {
-    testWidgets(
-      'renders loading state correctly with light theme and English locale',
-      (tester) async {
+    for (final variant in GoldenVariant.values) {
+      testWidgets('renders a failed start with ${variant.suffix}', (
+        tester,
+      ) async {
         await GoldenTestHelpers.expectGoldenMatches(
           tester,
-          Scaffold(
-            appBar: AppBar(),
-            body: const Center(
-              child: Text('Loading...'),
+          InitializationPage(onInitialized: (_) => null),
+          'initialization_page_error',
+          variant: variant,
+          overrides: [
+            initializationProvider.overrideWith(
+              (ref) => Future.error(Exception('failed')),
             ),
-          ),
-          'goldens/initialization_page_loading_light_en.png',
+          ],
         );
-      },
-    );
+      });
 
-    testWidgets(
-      'renders loading state correctly with dark theme and English locale',
-      (tester) async {
+      testWidgets('renders an update request with ${variant.suffix}', (
+        tester,
+      ) async {
         await GoldenTestHelpers.expectGoldenMatches(
           tester,
-          Scaffold(
-            appBar: AppBar(),
-            body: const Center(
-              child: Text('Loading...'),
+          InitializationPage(onInitialized: (_) => const HomePage()),
+          'initialization_page_update_request',
+          variant: variant,
+          overrides: [
+            initializationProvider.overrideWith((ref) async {}),
+            devicePhotosProvider.overrideWithValue(FakeDevicePhotos()),
+            photoRecoveryCommandProvider.overrideWithValue(
+              FakePhotoRecoveryCommand(),
             ),
-          ),
-          'goldens/initialization_page_loading_dark_en.png',
-          themeMode: ThemeMode.dark,
+            updateRequestMessageProvider.overrideWithValue(
+              switch (variant.locale.languageCode) {
+                'ja' => '新しいバージョンを公開しました。アップデートしてからお使いください。',
+                _ => 'A new version is available. Please update the app.',
+              },
+            ),
+          ],
         );
-      },
-    );
+      });
+    }
   });
 }
