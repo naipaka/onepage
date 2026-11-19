@@ -41,7 +41,7 @@ MockTracker createTracker() {
   registerFallbackValue(StackTrace.empty);
   final tracker = MockTracker();
   when(
-    () => tracker.recordError(any(), any(), fatal: any(named: 'fatal')),
+    () => tracker.recordError(any(), any()),
   ).thenAnswer((_) async {});
   return tracker;
 }

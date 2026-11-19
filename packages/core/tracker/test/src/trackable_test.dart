@@ -14,7 +14,7 @@ void main() {
         final error = Exception('Test error');
         final stackTrace = StackTrace.fromString('Test stack trace');
 
-        await trackable.trackError(error, stackTrace);
+        await trackable.trackError(error, stackTrace, fatal: false);
 
         expect(trackable.lastError, equals(error));
         expect(trackable.lastStackTrace, equals(stackTrace));
@@ -98,7 +98,7 @@ class TestTrackable implements Trackable {
   Future<void> trackError(
     dynamic error,
     StackTrace? stackTrace, {
-    bool fatal = false,
+    required bool fatal,
   }) async {
     lastError = error;
     lastStackTrace = stackTrace;

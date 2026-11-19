@@ -276,7 +276,7 @@ class _DiaryItem extends ConsumerWidget {
         Navigator.pop(context);
         await notifier.deleteImage(imageId: image.id);
       } on Object catch (e) {
-        unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
+        unawaited(tracker.recordError(e, StackTrace.current));
       }
     }
 
@@ -315,7 +315,7 @@ class _DiaryItem extends ConsumerWidget {
                   }
                 } on Object catch (e) {
                   unawaited(
-                    tracker.recordError(e, StackTrace.current, fatal: true),
+                    tracker.recordError(e, StackTrace.current),
                   );
                   if (!context.mounted) {
                     return;
@@ -1036,7 +1036,7 @@ class _ImageSelectionActionButton extends ConsumerWidget {
               await photo.delete();
             }
           } on Object catch (e) {
-            unawaited(tracker.recordError(e, StackTrace.current, fatal: true));
+            unawaited(tracker.recordError(e, StackTrace.current));
             if (!context.mounted) {
               return;
             }

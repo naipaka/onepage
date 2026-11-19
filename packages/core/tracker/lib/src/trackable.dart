@@ -8,16 +8,15 @@ abstract interface class Trackable {
   /// Tracks an error.
   ///
   /// Use this method to record errors that occur in the application.
-  /// You can mark an error as fatal by setting [fatal] to true.
   ///
   /// Parameters:
-  ///   [error] - The error object that was caught.
+  ///   [error] - The error object.
   ///   [stackTrace] - The stack trace associated with the error.
-  ///   [fatal] - A flag to indicate if the error is fatal. Defaults to false.
+  ///   [fatal] - Whether no code of the app caught the error.
   Future<void> trackError(
     dynamic error,
     StackTrace? stackTrace, {
-    bool fatal = false,
+    required bool fatal,
   });
 
   /// Tracks an screen view.

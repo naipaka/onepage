@@ -97,7 +97,6 @@ class BackupPage extends ConsumerWidget {
                             tracker.recordError(
                               e,
                               StackTrace.current,
-                              fatal: true,
                             ),
                           );
                           showErrorToast(
@@ -176,7 +175,6 @@ class BackupPage extends ConsumerWidget {
                             tracker.recordError(
                               e,
                               StackTrace.current,
-                              fatal: true,
                             ),
                           );
                           if (context.mounted) {

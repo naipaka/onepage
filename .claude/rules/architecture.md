@@ -132,6 +132,11 @@ PrefsClient prefsClient(Ref ref) {
 - When `main` needs the same instance before `runApp`, such as the `Tracker` for the error handlers, create it in `main` and pass it with `overrideWithValue` in the root `ProviderScope` given directly to `runApp`. The provider's own body creates the instance for the E2E tests and widget tests.
 - `main` runs only what must happen before `runApp` (Firebase, the slang locale and the error handlers) and calls `runApp(ProviderScope(...))`. The E2E tests do the same setup and pump the same root, without the error handlers.
 
+### Error Reporting
+
+- An error is fatal when no code of the app caught it. `Tracker.onFlutterError`, `onPlatformError`, and `isolateErrorListener` receive those errors in `main` and report them as fatal. Crashlytics counts only fatal errors as crashes
+- Report an error that the app catches and handles, such as by showing a toast, with `Tracker.recordError`, which reports it as non-fatal
+
 ## Package Architecture Patterns
 
 ### Domain-Specific vs Generic APIs

@@ -50,8 +50,8 @@ void main() {
       prefsClient = createPrefsClient();
     });
 
-    void verifyFatalErrorRecorded() {
-      verify(() => tracker.recordError(any(), any(), fatal: true)).called(1);
+    void verifyErrorRecorded() {
+      verify(() => tracker.recordError(any(), any())).called(1);
     }
 
     Future<void> pumpPage(WidgetTester tester) async {
@@ -141,7 +141,7 @@ void main() {
 
         expect(find.text('Creating backup'), findsNothing);
         expect(find.text('Failed to create backup'), findsOneWidget);
-        verifyFatalErrorRecorded();
+        verifyErrorRecorded();
         await dismissToast(tester);
       });
     });
@@ -167,7 +167,7 @@ void main() {
         expect(find.text('Failed to restore backup'), findsOneWidget);
         expect(tester.container().read(dbClientProvider), same(client));
         expect(controller.restored, isEmpty);
-        verifyFatalErrorRecorded();
+        verifyErrorRecorded();
         await dismissToast(tester);
       });
 
@@ -246,7 +246,7 @@ void main() {
           tester.container().read(dbClientProvider),
           isNot(same(client)),
         );
-        verifyFatalErrorRecorded();
+        verifyErrorRecorded();
         await dismissToast(tester);
       });
     });
