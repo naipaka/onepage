@@ -1,5 +1,8 @@
 name: Create release pull request
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
     inputs:
@@ -9,15 +12,83 @@ on:
           If not specified, only the build number is incremented.
         required: false
         type: string
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  PUBSPEC_FILE: packages/app/pubspec.yaml
+
 jobs:
   create:
-    permissions:
-      contents: write
-      pull-requests: write
-    uses: altive/.github/.github/workflows/create-release-pull-request-for-flutter-app.yaml@main
-    with:
-      version: ${{ inputs.version }}
-      working-directory: "./packages/app"
-    secrets: 
-      app-id: ${{ vars.PR_WRITER_APP_ID }}
-      private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
+    name: Create release pull request
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Bump version and build number
+        id: bump
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          line=$(grep -E '^version:' "$PUBSPEC_FILE")
+          if [[ ! "$line" =~ ^version:\ ([0-9]+\.[0-9]+\.[0-9]+)\+([0-9]+)$ ]]; then
+            echo "::error file=$PUBSPEC_FILE::The version must be in the form 1.0.0+1, but it is: $line"
+            exit 1
+          fi
+          current_version="${BASH_REMATCH[1]}"
+          build_number=$((BASH_REMATCH[2] + 1))
+
+          version="${INPUT_VERSION:-$current_version}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::The version input must be in the form 1.0.0, but it is: $version"
+            exit 1
+          fi
+
+          sed -i "s/^version:.*$/version: $version+$build_number/" "$PUBSPEC_FILE"
+          {
+            echo "branch=release/$version"
+            echo "title=build: bump app to $version+$build_number"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Check that the release branch does not exist
+        env:
+          BRANCH: ${{ steps.bump.outputs.branch }}
+        run: |
+          if git ls-remote --exit-code --heads origin "$BRANCH" > /dev/null; then
+            echo "::error::$BRANCH already exists. Merge or delete it before creating another release pull request."
+            exit 1
+          fi
+
+      - name: Generate GitHub App token
+        id: generate_token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.PR_WRITER_CLIENT_ID }}
+          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
+
+      - name: Setup ghcp
+        uses: ./.github/actions/setup-ghcp
+
+      - name: Commit the version
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          BRANCH: ${{ steps.bump.outputs.branch }}
+          TITLE: ${{ steps.bump.outputs.title }}
+        run: |
+          ghcp commit \
+            -r "$GITHUB_REPOSITORY" \
+            -b "$BRANCH" \
+            --parent "$GITHUB_REF_NAME" \
+            -m "$TITLE" \
+            "$PUBSPEC_FILE"
+
+      - name: Create release pull request
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          BRANCH: ${{ steps.bump.outputs.branch }}
+          TITLE: ${{ steps.bump.outputs.title }}
+          BODY: "This pull request was generated automatically by GitHub Actions."
+        run: gh pr create -B "$GITHUB_REF_NAME" -H "$BRANCH" -t "$TITLE" -b "$BODY" -a "$GITHUB_ACTOR"
