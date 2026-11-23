@@ -234,6 +234,28 @@ void main() {
       expect(itemRect(tester, -30).top, 0);
     });
 
+    testWidgets('prepend far from the center item keeps the position', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        harness(items: range(0, 200), initialValue: 50, alignment: 0.5),
+      );
+      for (var i = 0; i < 4; i++) {
+        await tester.drag(find.byType(AnchorListView), const Offset(0, -1500));
+        await tester.pumpAndSettle();
+      }
+      expect(itemRect(tester, 50).bottom, lessThan(-height));
+      final probe = range(0, 200).where(built).firstWhere((v) {
+        final r = itemRect(tester, v);
+        return r.top >= 0 && r.bottom <= height;
+      });
+      final before = itemRect(tester, probe).top;
+      await tester.pumpWidget(
+        harness(items: range(-30, 200), initialValue: 50, alignment: 0.5),
+      );
+      expect(itemRect(tester, probe).top, before);
+    });
+
     testWidgets('prepend 30 repeatedly, as the comparison app does', (
       tester,
     ) async {

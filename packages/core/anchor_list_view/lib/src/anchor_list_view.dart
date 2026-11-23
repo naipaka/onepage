@@ -331,7 +331,8 @@ class _AnchorListViewState extends State<AnchorListView>
   }
 
   /// Whether the sliver list that holds the box has given it a layout
-  /// offset. A kept-alive or cached child can be attached without one.
+  /// offset. A child that the find-index callback moves to another index
+  /// has none until the next layout.
   static bool _laidOut(RenderBox box) {
     RenderObject child = box;
     for (var parent = child.parent; parent != null; parent = parent.parent) {
