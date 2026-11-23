@@ -5,14 +5,15 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 /// {@template anchor_list_view.RangeScrollView}
-/// A vertical [CustomScrollView] whose scroll range stops at the ends of its slivers,
-/// measured from the slivers laid out around the center sliver.
+/// A vertical [CustomScrollView] whose scroll range stops at the ends of its
+/// slivers, measured from the slivers laid out around the center sliver.
 ///
 /// Its controller must create an [AnchorScrollPosition].
 /// {@endtemplate}
 class RangeScrollView extends CustomScrollView {
   /// {@macro anchor_list_view.RangeScrollView}
   const new({
+    super.key,
     super.controller,
     super.center,
     super.anchor,
@@ -113,7 +114,7 @@ class _RangeRenderViewport extends RenderViewport {
     if (reverse + forward <= extent) {
       return (min: top, max: top);
     }
-    final max = math.max(math.min(0.0, top), bottom);
+    final max = math.max(math.min<double>(0, top), bottom);
     return (min: math.min(top, max), max: max);
   }
 }
@@ -126,11 +127,8 @@ class _RangeRenderViewport extends RenderViewport {
 /// {@endtemplate}
 class AnchorScrollPosition extends ScrollPositionWithSingleContext {
   /// {@macro anchor_list_view.AnchorScrollPosition}
-  new({
-    required super.physics,
-    required super.context,
-    super.oldPosition,
-  }) : super(keepScrollOffset: false);
+  new({required super.physics, required super.context, super.oldPosition})
+    : super(keepScrollOffset: false);
 
   _RangeRenderViewport? _rangeSource;
 

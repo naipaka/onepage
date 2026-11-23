@@ -1,6 +1,6 @@
 import 'package:anchor_list_view/anchor_list_view.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 double heightOf(int v) => 40 + (v * 37 % 120).toDouble();
 const height = 600.0;
@@ -582,7 +582,9 @@ void main() {
       for (var i = 0; i < 60; i++) {
         await tester.pump(const Duration(milliseconds: 16));
         final o = tester.widget<FadeTransition>(fade.first).opacity.value;
-        if (o < min) min = o;
+        if (o < min) {
+          min = o;
+        }
       }
       await tester.pumpAndSettle();
       await future;
@@ -661,7 +663,9 @@ void main() {
     testWidgets('near: a visible item scrolls without fading', (tester) async {
       final c = await setUp(tester);
       final visible = range(0, 200).where((v) {
-        if (!built(v)) return false;
+        if (!built(v)) {
+          return false;
+        }
         final r = itemRect(tester, v);
         return r.top >= 0 && r.bottom <= height;
       }).first;
@@ -745,7 +749,9 @@ void main() {
         expect(
           find.byType(Scrollbar),
           paints..everything((method, args) {
-            if (method == #drawRect) rects.add(args.first as Rect);
+            if (method == #drawRect) {
+              rects.add(args.first as Rect);
+            }
             return true;
           }),
         );
@@ -845,7 +851,7 @@ void main() {
 }
 
 class _Counter extends StatefulWidget {
-  const _Counter({super.key, required this.label});
+  const new({super.key, required this.label});
 
   final String label;
 

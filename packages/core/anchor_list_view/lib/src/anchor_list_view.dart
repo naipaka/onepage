@@ -164,10 +164,6 @@ class _AnchorListViewState extends State<AnchorListView>
   /// The index of the item at the center of the scroll coordinates.
   late int _target;
 
-  /// The key of the widget built for [_target], used to find the item again
-  /// when the items change.
-  Key? _targetKey;
-
   late double _alignment;
 
   /// Counts the changes of the center item. The slivers before and after
@@ -202,7 +198,7 @@ class _AnchorListViewState extends State<AnchorListView>
       }
       _controller._views.add(this);
     }
-    final key = _targetKey;
+    final key = _markerOf(_target)?.widget.key;
     final found = key == null ? null : widget._findItemIndex?.call(key);
     if (found != null) {
       _target = found;
@@ -214,7 +210,6 @@ class _AnchorListViewState extends State<AnchorListView>
   void _setTarget(int index) {
     if (index != _target) {
       _target = index;
-      _targetKey = null;
       _generation++;
     }
   }
@@ -301,14 +296,18 @@ class _AnchorListViewState extends State<AnchorListView>
     return visible.isEmpty ? _target : visible.first.index;
   }
 
-  RenderBox? _boxOf(int index) {
+  _MarkerState? _markerOf(int index) {
     for (final marker in _mounted) {
       if (marker.widget.index == index) {
-        final box = marker.context.findRenderObject();
-        return box is RenderBox ? box : null;
+        return marker;
       }
     }
     return null;
+  }
+
+  RenderBox? _boxOf(int index) {
+    final box = _markerOf(index)?.context.findRenderObject();
+    return box is RenderBox ? box : null;
   }
 
   double? _offsetToReveal(int index, double alignment) {
@@ -427,19 +426,6 @@ class _AnchorListViewState extends State<AnchorListView>
     return separated ? 2 * (i - t - 1) + 1 : i - t - 1;
   }
 
-  Widget _item(BuildContext context, int index) {
-    final child = widget.itemBuilder(context, index);
-    if (index == _target) {
-      _targetKey = child.key;
-    }
-    return _Marker(
-      key: child.key,
-      index: index,
-      registry: _mounted,
-      child: child,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     _schedulePositions();
@@ -461,11 +447,16 @@ class _AnchorListViewState extends State<AnchorListView>
               padding: widget.padding.copyWith(bottom: 0),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, c) => separator != null
-                      ? (c.isEven
-                            ? separator(context, t - 1 - c ~/ 2)
-                            : _item(context, t - 1 - c ~/ 2))
-                      : _item(context, t - 1 - c),
+                  (context, c) {
+                    final index = t - 1 - (separator == null ? c : c ~/ 2);
+                    return separator != null && c.isEven
+                        ? separator(context, index)
+                        : _Marker(
+                            index: index,
+                            registry: _mounted,
+                            child: widget.itemBuilder(context, index),
+                          );
+                  },
                   childCount: separator != null ? 2 * t : t,
                   findChildIndexCallback: (key) =>
                       _childIndex(key, t, before: true),
@@ -478,7 +469,13 @@ class _AnchorListViewState extends State<AnchorListView>
               sliver: SliverToBoxAdapter(
                 child: count == 0
                     ? null
-                    : Builder(builder: (context) => _item(context, t)),
+                    : Builder(
+                        builder: (context) => _Marker(
+                          index: t,
+                          registry: _mounted,
+                          child: widget.itemBuilder(context, t),
+                        ),
+                      ),
               ),
             ),
             SliverPadding(
@@ -486,11 +483,16 @@ class _AnchorListViewState extends State<AnchorListView>
               padding: widget.padding.copyWith(top: 0),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, c) => separator != null
-                      ? (c.isEven
-                            ? separator(context, t + c ~/ 2)
-                            : _item(context, t + 1 + c ~/ 2))
-                      : _item(context, t + 1 + c),
+                  (context, c) {
+                    final step = separator == null ? c : c ~/ 2;
+                    return separator != null && c.isEven
+                        ? separator(context, t + step)
+                        : _Marker(
+                            index: t + 1 + step,
+                            registry: _mounted,
+                            child: widget.itemBuilder(context, t + 1 + step),
+                          );
+                  },
                   childCount: separator != null
                       ? 2 * math.max(0, count - t - 1)
                       : math.max(0, count - t - 1),
@@ -508,13 +510,15 @@ class _AnchorListViewState extends State<AnchorListView>
 
 /// Registers the state of a built item, so that the list can find the
 /// render box of an item by its index.
+///
+/// It takes the key of [child], so that the sliver lists find the item by
+/// the key of its widget.
 class _Marker extends StatefulWidget {
-  const new({
-    super.key,
+  new({
     required this.index,
     required this.registry,
     required this.child,
-  });
+  }) : super(key: child.key);
 
   final int index;
   final Set<_MarkerState> registry;
