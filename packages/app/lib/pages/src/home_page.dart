@@ -66,7 +66,11 @@ class HomePage extends HookConsumerWidget {
         if (availableDates.any((d) => DateUtils.isSameDay(d, date))) {
           return false;
         }
-        await notifier.loadMoreOlder();
+        if (date.isBefore(availableDates.first)) {
+          await notifier.loadMoreOlder();
+        } else {
+          await notifier.loadMoreNewer();
+        }
         return true;
       });
 
@@ -490,8 +494,6 @@ class _DiaryEntryDatePickerDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final now = clock.now();
-
     final diariesWithDates = ref.watch(cachedDiariesProvider).value;
     final notifier = ref.watch(cachedDiariesProvider.notifier);
 
@@ -507,15 +509,18 @@ class _DiaryEntryDatePickerDialog extends ConsumerWidget {
 
     return CalendarDatePickerDialog(
       initialDate: initialDate,
-      lastDate: dates.lastOrNull ?? DateTime(now.year, now.month + 1),
       markedDates: entryDates,
       onMonthChanged: (date) async {
-        if (dates.any((d) => DateUtils.isSameDay(d, date))) {
+        if (dates.isEmpty || dates.any((d) => DateUtils.isSameDay(d, date))) {
           // If the selected month is already in the diary dates, do nothing.
           return;
         }
-        // If the selected month is not in the diary dates, load more diaries.
-        await notifier.loadMoreOlder();
+        // Load the month to mark its diaries.
+        if (date.isBefore(dates.first)) {
+          await notifier.loadMoreOlder();
+        } else {
+          await notifier.loadMoreNewer();
+        }
       },
       cancelLabel: t.home.datePickerCancel,
       confirmLabel: t.home.datePickerConfirm,
