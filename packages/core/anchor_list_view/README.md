@@ -22,35 +22,77 @@ dependencies:
 
 ## Usage
 
+A list of days that keeps the visible days in place when earlier days are added, and moves to the first day:
+
 ```dart
-final controller = AnchorListController();
+import 'package:anchor_list_view/anchor_list_view.dart';
+import 'package:material_ui/material_ui.dart';
 
-Scrollbar(
-  controller: controller,
-  child: AnchorListView.builder(
-    controller: controller,
-    itemCount: days.length,
-    initialIndex: days.indexOf(today),
-    initialAlignment: 0.5,
-    itemBuilder: (context, index) =>
-        DayTile(key: ValueKey(days[index]), day: days[index]),
-    // Finds an item again after days are added before it.
-    findChildIndexCallback: (key) =>
-        key is ValueKey<DateTime> ? days.indexOf(key.value) : null,
-    onPositionsChanged: (positions) {
-      // The items in the viewport, from top to bottom.
-    },
-  ),
-);
+void main() {
+  runApp(const MaterialApp(home: DaysPage()));
+}
 
-// Moves the item to the top of the viewport.
-controller.jumpToItem(index);
+class DaysPage extends StatefulWidget {
+  const DaysPage({super.key});
 
-// Scrolls to the item, or fades to it when it is far.
-await controller.animateToItem(
-  index,
-  alignment: 0.5,
-  duration: const Duration(milliseconds: 800),
-  curve: Curves.easeInOut,
-);
+  @override
+  State<DaysPage> createState() => _DaysPageState();
+}
+
+class _DaysPageState extends State<DaysPage> {
+  final controller = AnchorListController();
+  List<int> days = [for (var day = 1; day <= 30; day++) day];
+  String top = '';
+
+  void addEarlierDays() {
+    setState(() {
+      final first = days.first;
+      days = [for (var day = first - 30; day < first; day++) day, ...days];
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(top),
+        actions: [
+          IconButton(onPressed: addEarlierDays, icon: const Icon(Icons.add)),
+          IconButton(
+            // Fades to the first day when it is far from the visible days.
+            onPressed: () => controller.animateToItem(
+              0,
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeInOut,
+            ),
+            icon: const Icon(Icons.vertical_align_top),
+          ),
+        ],
+      ),
+      body: Scrollbar(
+        controller: controller,
+        child: AnchorListView.builder(
+          controller: controller,
+          itemCount: days.length,
+          initialIndex: days.length - 1,
+          initialAlignment: 0.5,
+          itemBuilder: (_, index) => ListTile(
+            key: ValueKey(days[index]),
+            title: Text('Day ${days[index]}'),
+          ),
+          // Finds each day again after earlier days are added, so the
+          // visible days stay in place.
+          findChildIndexCallback: (key) {
+            final index = key is ValueKey<int> ? days.indexOf(key.value) : -1;
+            return index < 0 ? null : index;
+          },
+          // The items in the viewport, from top to bottom.
+          onPositionsChanged: (positions) => setState(() {
+            top = positions.isEmpty ? '' : 'Day ${days[positions.first.index]}';
+          }),
+        ),
+      ),
+    );
+  }
+}
 ```

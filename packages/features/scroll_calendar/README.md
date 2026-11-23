@@ -22,23 +22,60 @@ dependencies:
 
 ## Usage
 
+A calendar that loads a month of dates at either end of the list:
+
 ```dart
-final controller = ScrollCalendarController();
+import 'package:material_ui/material_ui.dart';
+import 'package:scroll_calendar/scroll_calendar.dart';
 
-VerticalScrollCalendar(
-  controller: controller,
-  dates: dates, // Consecutive dates, oldest first.
-  loadMoreOlder: () => setState(() => dates = [...previousMonth, ...dates]),
-  loadMoreNewer: () => setState(() => dates = [...dates, ...nextMonth]),
-  onVisibleDateChanged: (date) => setState(() => visibleDate = date),
-  loadingIndicator: const CircularProgressIndicator(),
-  dateItemBuilder: (_, date) => Text('${date.month}/${date.day}'),
-  // The separator above each date except the first one.
-  separatorBuilder: (_, date) =>
-      date.day == 1 ? const Divider() : const SizedBox(height: 32),
-);
+void main() {
+  runApp(const MaterialApp(home: CalendarPage()));
+}
 
-// Scrolls to a date, which must be in `dates`.
-await controller.scrollToDate(date);
-await controller.highlightDate(date);
+class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+
+  @override
+  State<CalendarPage> createState() => _CalendarPageState();
+}
+
+class _CalendarPageState extends State<CalendarPage> {
+  final controller = ScrollCalendarController();
+
+  // Last month, this month, and next month, oldest first.
+  List<DateTime> dates = DateTime.now().datesInMonths(-1, 1);
+  DateTime visibleDate = DateTime.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${visibleDate.year}/${visibleDate.month}'),
+        actions: [
+          IconButton(
+            onPressed: controller.scrollToToday,
+            icon: const Icon(Icons.today),
+          ),
+        ],
+      ),
+      body: VerticalScrollCalendar(
+        controller: controller,
+        dates: dates,
+        loadMoreOlder: () => setState(() {
+          dates = [...dates.first.previousMonthDates, ...dates];
+        }),
+        loadMoreNewer: () => setState(() {
+          dates = [...dates, ...dates.last.nextMonthDates];
+        }),
+        onVisibleDateChanged: (date) => setState(() => visibleDate = date),
+        loadingIndicator: const CircularProgressIndicator(),
+        dateItemBuilder: (_, date) => Text('Notes of ${date.month}/${date.day}'),
+        // The separator above each date except the first one.
+        separatorBuilder: (_, date) => date.day == 1
+            ? const Divider(height: 64)
+            : const SizedBox(height: 32),
+      ),
+    );
+  }
+}
 ```
