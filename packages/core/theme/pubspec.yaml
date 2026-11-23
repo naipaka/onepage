@@ -9,10 +9,10 @@ environment:
 resolution: workspace
 
 dependencies:
-  cupertino_ui: ^1.1.6
+  cupertino_ui: ^1.1.7
   flutter:
     sdk: flutter
-  material_ui: ^1.11.0
+  material_ui: ^1.11.1
 
 dev_dependencies:
   altive_lints: ^4.2.0
