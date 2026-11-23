@@ -49,6 +49,7 @@ The dependency graph below is updated automatically: a GitHub Actions workflow o
 
 | Package | Description |
 |---|---|
+| [anchor_list_view](packages/core/anchor_list_view) | List view that scrolls to any item by index and keeps the visible item in place when items are added before it |
 | [configurator](packages/core/configurator) | Firebase Remote Config |
 | [db_client](packages/core/db_client) | Database client built on Drift |
 | [device_photos](packages/core/device_photos) | Reading photos saved on the device by their stored IDs |
