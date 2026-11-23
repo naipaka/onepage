@@ -192,7 +192,6 @@ class _VerticalScrollCalendarState extends State<VerticalScrollCalendar>
   /// visible date: the middle of the viewport.
   static const _alignment = 0.5;
 
-
   /// The current date and time.
   final DateTime now = clock.now();
 
