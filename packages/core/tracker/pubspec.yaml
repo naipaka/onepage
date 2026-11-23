@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   firebase_analytics: ^13.0.1
-  firebase_crashlytics: ^6.0.1
+  firebase_crashlytics: ^6.1.0
   flutter:
     sdk: flutter
   material_ui: ^1.11.0
