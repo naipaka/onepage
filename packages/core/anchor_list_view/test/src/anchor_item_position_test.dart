@@ -23,5 +23,12 @@ void main() {
       expect(position(leadingEdge: 0), isNot(position()));
       expect(position(trailingEdge: 1), isNot(position()));
     });
+
+    test('shows its values as a string', () {
+      expect(
+        position().toString(),
+        'AnchorItemPosition(index: 1, leadingEdge: 0.25, trailingEdge: 0.5)',
+      );
+    });
   });
 }

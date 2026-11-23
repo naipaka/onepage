@@ -34,4 +34,9 @@ class AnchorItemPosition {
 
   @override
   int get hashCode => Object.hash(index, leadingEdge, trailingEdge);
+
+  @override
+  String toString() =>
+      'AnchorItemPosition(index: $index, leadingEdge: $leadingEdge, '
+      'trailingEdge: $trailingEdge)';
 }
