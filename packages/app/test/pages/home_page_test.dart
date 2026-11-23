@@ -200,6 +200,48 @@ void main() {
       });
     });
 
+    group('date picker', () {
+      Future<void> pickDate(
+        WidgetTester tester, {
+        required int months,
+        required int day,
+      }) async {
+        await tester.tap(find.byKey(K.diaryDatePickerButton));
+        await tester.pumpAndSettle();
+        final arrow = months < 0 ? Icons.chevron_left : Icons.chevron_right;
+        for (var i = 0; i < months.abs(); i++) {
+          await tester.tap(find.byIcon(arrow));
+          await tester.pumpAndSettle();
+        }
+        await tester.tap(
+          find.descendant(
+            of: find.byType(AlertDialog),
+            matching: find.text('$day'),
+          ),
+        );
+        await tester.tap(find.text('OK'));
+        await tester.pumpAndSettle();
+      }
+
+      void expectOnScreen(WidgetTester tester, DateTime date) {
+        final rect = tester.getRect(find.byKey(K.diaryTextField(date)));
+        final screen = tester.getRect(find.byKey(K.diaryCalendar));
+        expect(screen.contains(rect.center), isTrue);
+      }
+
+      for (final months in [4, -4]) {
+        testWidgets('moves to a date $months months away', (tester) async {
+          await pumpHome(tester);
+          final now = clock.now();
+          final target = DateTime(now.year, now.month + months, 15);
+
+          await pickDate(tester, months: months, day: 15);
+
+          expectOnScreen(tester, target);
+        });
+      }
+    });
+
     testWidgets('shows a failed load and loads again on retry', (
       tester,
     ) async {

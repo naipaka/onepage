@@ -1,0 +1,18 @@
+name: anchor_list_view
+description: A list view that scrolls to any item by index and keeps the visible item in place when items are added before it.
+version: 1.0.0
+publish_to: "none"
+
+environment:
+  sdk: ^3.14.0
+
+resolution: workspace
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  altive_lints: ^4.2.0
+  flutter_test:
+    sdk: flutter

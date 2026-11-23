@@ -23,6 +23,9 @@ extension DateTimeExtensionForCalendar on DateTime {
     return previousDate.datesInMonth;
   }
 
+  /// Get a list of [DateTime] for the next month.
+  List<DateTime> get nextMonthDates => DateTime(year, month + 1).datesInMonth;
+
   /// Get a list of dates from [start] months
   /// before to [end] months after the target date.
   ///

@@ -81,7 +81,7 @@ Run `fvm dart run melos run gen` after changes to:
 ## Error Handling & Validation
 - Check `context.mounted` before async operations.
 - Always validate date ranges and scroll positions.
-- **ScrollCalendar limits**: `VerticalScrollCalendar` has a limited date range. Check if the target date is within the loaded range before `scrollToDate()`, use `loadMoreOlder()` to expand it, and wrap scroll operations in try-catch.
+- **ScrollCalendar limits**: `VerticalScrollCalendar` shows only the loaded dates. Before `scrollToDate()`, load the month of the target date with `loadMoreOlder()` or `loadMoreNewer()` of `CachedDiaries`; `scrollToDate()` throws an `ArgumentError` for a date that is not loaded.
 
 ## Environment Configuration
 - Environment variables in `packages/app/dart_defines/`.

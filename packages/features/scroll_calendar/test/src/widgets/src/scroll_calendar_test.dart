@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:clock/clock.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gap/gap.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 void main() {
   group('ScrollCalendarController', () {
@@ -128,146 +126,249 @@ void main() {
   });
 
   group('VerticalScrollCalendar', () {
+    const height = 600.0;
+    final today = DateTime(2024, 10, 15);
+
     setUpAll(() async {
       await initializeDateFormatting();
-      VisibilityDetectorController.instance.updateInterval = Duration.zero;
     });
 
-    testWidgets('renders dates in the current month', (tester) async {
-      final date = DateTime(2024, 10, 15);
-      await withClock(Clock.fixed(date), () async {
-        await tester.pumpWidget(
-          _TestVerticalScrollCalendar(dates: date.datesInMonth),
-        );
+    Rect rectOf(WidgetTester tester, DateTime date) =>
+        tester.getRect(find.text('$date', skipOffstage: false));
 
-        expect(find.text('$date'), findsOneWidget);
-      });
-    });
+    ScrollPosition positionOf(WidgetTester tester) =>
+        tester.state<ScrollableState>(find.byType(Scrollable)).position;
 
-    testWidgets('renders first date in the current month', (tester) async {
-      // Temporarily set to the 2nd as the 1st is not displayed.
-      // It is probably a bug in scrollable_positioned_list.
-      final date = DateTime(2024, 10, 2);
-      await withClock(Clock.fixed(date), () async {
-        await tester.pumpWidget(
-          _TestVerticalScrollCalendar(dates: date.datesInMonth),
-        );
-
-        expect(find.text('$date'), findsOneWidget);
-      });
-    });
-
-    testWidgets('renders last date in the current month', (tester) async {
-      final date = DateTime(2024, 10, 31);
-      await withClock(Clock.fixed(date), () async {
-        await tester.pumpWidget(
-          _TestVerticalScrollCalendar(dates: date.datesInMonth),
-        );
-
-        expect(find.text('$date'), findsOneWidget);
-      });
-    });
-
-    testWidgets('calls loadMoreOlder when end of list is reached', (
-      tester,
-    ) async {
-      final date = DateTime(2024, 10, 15);
-
-      var loadMoreOlderCalled = false;
-
-      await withClock(Clock.fixed(date), () async {
+    Future<void> pumpCalendar(
+      WidgetTester tester, {
+      DateTime? now,
+      List<DateTime>? dates,
+      ScrollCalendarController? controller,
+      VoidCallback? loadMoreOlder,
+      VoidCallback? loadMoreNewer,
+      ValueChanged<DateTime>? onVisibleDateChanged,
+    }) {
+      return withClock(Clock.fixed(now ?? today), () async {
         await tester.pumpWidget(
           _TestVerticalScrollCalendar(
-            dates: date.datesInMonth,
-            loadMoreOlder: () {
-              loadMoreOlderCalled = true;
-            },
+            controller: controller,
+            dates: dates ?? today.datesInMonth,
+            loadMoreOlder: loadMoreOlder,
+            loadMoreNewer: loadMoreNewer,
+            onVisibleDateChanged: onVisibleDateChanged,
           ),
         );
-
-        await tester.drag(find.text('$date'), const Offset(0, 1000));
-        await tester.pumpAndSettle();
-
-        expect(loadMoreOlderCalled, isTrue);
+        await tester.pump();
       });
+    }
+
+    testWidgets('shows today in the middle', (tester) async {
+      await pumpCalendar(tester);
+
+      expect(rectOf(tester, today).top, height / 2);
+    });
+
+    testWidgets('shows the first date of the month', (tester) async {
+      final first = DateTime(2024, 10);
+      await pumpCalendar(tester, now: first);
+
+      expect(rectOf(tester, first).top, greaterThanOrEqualTo(0));
+      expect(rectOf(tester, first).bottom, lessThanOrEqualTo(height));
+    });
+
+    testWidgets('shows the last date of the month', (tester) async {
+      final last = DateTime(2024, 10, 31);
+      await pumpCalendar(tester, now: last);
+
+      expect(rectOf(tester, last).top, greaterThanOrEqualTo(0));
+      expect(rectOf(tester, last).bottom, lessThanOrEqualTo(height));
+    });
+
+    testWidgets('keeps its keys apart from the keys of the dates', (
+      tester,
+    ) async {
+      await pumpCalendar(tester);
+
+      expect(find.byKey(ValueKey(today)), findsOneWidget);
+    });
+
+    testWidgets('builds the separators above the dates after the first', (
+      tester,
+    ) async {
+      await pumpCalendar(tester, now: DateTime(2024, 10, 2));
+
+      expect(find.text('above ${DateTime(2024, 10)}'), findsNothing);
+      final separator = DateTime(2024, 10, 2);
+      expect(
+        tester.getRect(find.text('above $separator')).bottom,
+        rectOf(tester, separator).top,
+      );
+    });
+
+    testWidgets('calls loadMoreOlder when the start of the list is visible', (
+      tester,
+    ) async {
+      var older = 0;
+      var newer = 0;
+      await pumpCalendar(
+        tester,
+        loadMoreOlder: () => older++,
+        loadMoreNewer: () => newer++,
+      );
+      expect(older, 0);
+
+      await tester.drag(find.byType(Scrollable), const Offset(0, 3000));
+      await tester.pumpAndSettle();
+
+      expect(older, greaterThan(0));
+      expect(newer, 0);
+    });
+
+    testWidgets('calls loadMoreNewer when the end of the list is visible', (
+      tester,
+    ) async {
+      var older = 0;
+      var newer = 0;
+      await pumpCalendar(
+        tester,
+        loadMoreOlder: () => older++,
+        loadMoreNewer: () => newer++,
+      );
+      expect(newer, 0);
+
+      await tester.drag(find.byType(Scrollable), const Offset(0, -3000));
+      await tester.pumpAndSettle();
+
+      expect(newer, greaterThan(0));
+      expect(older, 0);
+    });
+
+    testWidgets('keeps the visible dates in place when older dates are added', (
+      tester,
+    ) async {
+      await pumpCalendar(tester);
+      final top = rectOf(tester, today).top;
+
+      await pumpCalendar(tester, dates: today.datesInMonths(-1, 0));
+
+      expect(rectOf(tester, today).top, top);
+    });
+
+    testWidgets('keeps the visible dates in place when newer dates are added', (
+      tester,
+    ) async {
+      final last = DateTime(2024, 10, 31);
+      await pumpCalendar(tester);
+      await tester.drag(find.byType(Scrollable), const Offset(0, -3000));
+      await tester.pumpAndSettle();
+      final top = rectOf(tester, last).top;
+
+      await pumpCalendar(tester, dates: today.datesInMonths(0, 1));
+
+      expect(rectOf(tester, last).top, top);
     });
 
     testWidgets('scrolls to today when controller.scrollToToday is called', (
       tester,
     ) async {
-      final date = DateTime(2024, 10, 15);
+      final controller = ScrollCalendarController();
+      await pumpCalendar(tester, controller: controller);
+      await tester.drag(find.byType(Scrollable), const Offset(0, 3000));
+      await tester.pumpAndSettle();
+      expect(rectOf(tester, today).top, isNot(height / 2));
 
-      await withClock(Clock.fixed(date), () async {
-        final controller = ScrollCalendarController();
+      unawaited(controller.scrollToToday());
+      await tester.pumpAndSettle();
 
-        await tester.pumpWidget(
-          _TestVerticalScrollCalendar(
-            controller: controller,
-            dates: date.datesInMonth,
-          ),
-        );
-
-        await tester.drag(find.text('$date'), const Offset(0, 1000));
-        await tester.pumpAndSettle();
-
-        expect(find.text('$date'), findsNothing);
-
-        unawaited(controller.scrollToToday());
-        await tester.pumpAndSettle();
-
-        expect(find.text('$date'), findsOneWidget);
-      });
+      expect(rectOf(tester, today).top, height / 2);
     });
 
     testWidgets('scrolls to date when controller.scrollToDate is called', (
       tester,
     ) async {
-      final date = DateTime(2024, 10, 15);
-      final targetDate = DateTime(2024, 10, 31);
+      final controller = ScrollCalendarController();
+      final target = DateTime(2024, 10, 20);
+      await pumpCalendar(tester, controller: controller);
 
-      await withClock(Clock.fixed(date), () async {
-        final controller = ScrollCalendarController();
+      unawaited(controller.scrollToDate(target));
+      await tester.pumpAndSettle();
 
-        await tester.pumpWidget(
-          _TestVerticalScrollCalendar(
-            controller: controller,
-            dates: date.datesInMonth,
-          ),
-        );
-
-        await tester.drag(find.text('$date'), const Offset(0, 1000));
-        await tester.pumpAndSettle();
-
-        expect(find.text('$targetDate'), findsNothing);
-
-        unawaited(controller.scrollToDate(targetDate));
-        await tester.pumpAndSettle();
-
-        expect(find.text('$targetDate'), findsOneWidget);
-      });
+      expect(rectOf(tester, target).top, height / 2);
     });
 
-    testWidgets('calls onVisibleDateChanged when visible date changes', (
+    testWidgets('scrollToDate throws for a date that is not loaded', (
       tester,
     ) async {
-      final date = DateTime(2024, 10, 15);
-      DateTime? visibleDate;
+      final controller = ScrollCalendarController();
+      await pumpCalendar(tester, controller: controller);
 
-      await withClock(Clock.fixed(date), () async {
-        await tester.pumpWidget(
-          _TestVerticalScrollCalendar(
-            dates: date.datesInMonths(-2, 0),
-            onVisibleDateChanged: (date) {
-              visibleDate = date;
-            },
-          ),
-        );
+      await expectLater(
+        controller.scrollToDate(DateTime(2024, 12)),
+        throwsArgumentError,
+      );
+    });
 
-        await tester.drag(find.text('$date'), const Offset(0, 1000));
-        await tester.pumpAndSettle();
+    testWidgets('reports the date in the middle of the viewport', (
+      tester,
+    ) async {
+      final controller = ScrollCalendarController();
+      final reported = <DateTime>[];
+      await pumpCalendar(
+        tester,
+        controller: controller,
+        onVisibleDateChanged: reported.add,
+      );
+      expect(reported, [today]);
 
-        expect(visibleDate, isNotNull);
-      });
+      final target = DateTime(2024, 10, 20);
+      unawaited(controller.scrollToDate(target));
+      await tester.pumpAndSettle();
+      expect(reported.last, target);
+
+      // The middle of the viewport is now on the separator above the target.
+      final position = positionOf(tester);
+      position.jumpTo(position.pixels - 16);
+      await tester.pump();
+      expect(rectOf(tester, target).top, height / 2 + 16);
+      expect(reported.last, target);
+
+      // Reports a date once while it stays in the middle.
+      expect(reported.where((d) => d == target), hasLength(1));
+    });
+
+    testWidgets('reports the last date when every date ends above the middle', (
+      tester,
+    ) async {
+      final reported = <DateTime>[];
+      final dates = [today, DateTime(2024, 10, 16)];
+      await pumpCalendar(
+        tester,
+        dates: dates,
+        onVisibleDateChanged: reported.add,
+      );
+
+      expect(rectOf(tester, dates.last).bottom, lessThan(height / 2));
+      expect(reported, [dates.last]);
+    });
+
+    testWidgets('highlight animation shows visual effect', (tester) async {
+      final controller = ScrollCalendarController();
+      await pumpCalendar(tester, controller: controller);
+
+      // Start highlight animation
+      unawaited(
+        controller.highlightDate(
+          today,
+          duration: const Duration(milliseconds: 100),
+        ),
+      );
+      await tester.pump(const Duration(milliseconds: 50)); // Mid-animation
+
+      // Check that animation is running (AnimatedBuilder should be building)
+      expect(find.text('$today'), findsOneWidget);
+
+      // Complete animation
+      await tester.pumpAndSettle();
     });
 
     test('highlightDate with custom duration', () async {
@@ -292,36 +393,6 @@ void main() {
       expect(receivedDuration, customDuration);
       controller.detach();
     });
-
-    testWidgets('highlight animation shows visual effect', (tester) async {
-      final date = DateTime(2024, 10, 15);
-
-      await withClock(Clock.fixed(date), () async {
-        final controller = ScrollCalendarController();
-
-        await tester.pumpWidget(
-          _TestVerticalScrollCalendar(
-            controller: controller,
-            dates: date.datesInMonth,
-          ),
-        );
-
-        // Start highlight animation
-        unawaited(
-          controller.highlightDate(
-            date,
-            duration: const Duration(milliseconds: 100),
-          ),
-        );
-        await tester.pump(const Duration(milliseconds: 50)); // Mid-animation
-
-        // Check that animation is running (AnimatedBuilder should be building)
-        expect(find.text('$date'), findsOneWidget);
-
-        // Complete animation
-        await tester.pumpAndSettle();
-      });
-    });
   });
 }
 
@@ -330,12 +401,14 @@ class _TestVerticalScrollCalendar extends StatelessWidget {
     this.controller,
     required this.dates,
     this.loadMoreOlder,
+    this.loadMoreNewer,
     this.onVisibleDateChanged,
   });
 
   final ScrollCalendarController? controller;
   final List<DateTime> dates;
   final VoidCallback? loadMoreOlder;
+  final VoidCallback? loadMoreNewer;
   final ValueChanged<DateTime>? onVisibleDateChanged;
 
   @override
@@ -346,10 +419,12 @@ class _TestVerticalScrollCalendar extends StatelessWidget {
           controller: controller,
           dates: dates,
           loadMoreOlder: loadMoreOlder ?? () {},
+          loadMoreNewer: loadMoreNewer ?? () {},
           onVisibleDateChanged: onVisibleDateChanged ?? (date) {},
           loadingIndicator: const SizedBox(),
-          dateItemBuilder: (_, date) => Text('$date'),
-          separatorBuilder: (_, _) => const Gap(32),
+          dateItemBuilder: (_, date) => Text('$date', key: ValueKey(date)),
+          separatorBuilder: (_, date) =>
+              SizedBox(height: 32, child: Text('above $date')),
         ),
       ),
     );

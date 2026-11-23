@@ -8,12 +8,36 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:onepage/adapters/adapters.dart';
 import 'package:provider_utils/provider_utils.dart';
 
+/// Returns a diary for every day of the range when [everyDay] is true.
 class _FakeDiaryQuery implements DiaryQuery {
+  bool everyDay = false;
+
   @override
   Future<List<Diary>> getDiaries({
     required DateTime from,
     required DateTime to,
-  }) async => [];
+  }) async {
+    if (!everyDay) {
+      return [];
+    }
+    return [
+      for (
+        var day = from;
+        !day.isAfter(to);
+        day = DateTime(day.year, day.month, day.day + 1)
+      )
+        Diary(
+          entry: DiaryEntry(
+            id: day.millisecondsSinceEpoch,
+            content: '$day',
+            date: day,
+            createdAt: day,
+            updatedAt: day,
+          ),
+          images: const [],
+        ),
+    ];
+  }
 
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -88,17 +112,19 @@ class _FakeDiaryImageCommand implements DiaryImageCommand {
 
 void main() {
   final date = DateTime(2026, 11, 5);
+  late _FakeDiaryQuery diaryQuery;
   late _FakeDiaryCommand diaryCommand;
   late _FakeDiaryImageCommand imageCommand;
   late ProviderContainer container;
 
   setUp(() async {
+    diaryQuery = _FakeDiaryQuery();
     diaryCommand = _FakeDiaryCommand();
     imageCommand = _FakeDiaryImageCommand();
     container = ProviderContainer(
       retry: noRetry,
       overrides: [
-        diaryQueryProvider.overrideWithValue(_FakeDiaryQuery()),
+        diaryQueryProvider.overrideWithValue(diaryQuery),
         diaryCommandProvider.overrideWithValue(diaryCommand),
         diaryImageCommandProvider.overrideWithValue(imageCommand),
       ],
@@ -113,6 +139,73 @@ void main() {
         .read(cachedDiariesProvider.notifier)
         .addImage(date: date, path: 'picked.jpg');
   }
+
+  group('loading', () {
+    late CachedDiaries notifier;
+
+    setUp(() async {
+      diaryQuery.everyDay = true;
+      await withClock(Clock.fixed(date), () async {
+        container
+          ..invalidate(diariesProvider)
+          ..invalidate(cachedDiariesProvider);
+        await container.read(cachedDiariesProvider.future);
+      });
+      notifier = container.read(cachedDiariesProvider.notifier);
+    });
+
+    DiariesWithDates read() =>
+        container.read(cachedDiariesProvider).requireValue;
+
+    void expectOneDiaryADay() {
+      final diaryDates = read().diaries.map((d) => d.entry.date).toList();
+      expect(diaryDates.toSet(), hasLength(diaryDates.length));
+      expect(diaryDates, read().dates);
+    }
+
+    test('starts with the last, this, and next month', () {
+      expect(read().dates.first, DateTime(2026, 10));
+      expect(read().dates.last, DateTime(2026, 12, 31));
+      expectOneDiaryADay();
+    });
+
+    test('loadMoreOlder adds the diaries of the previous month once', () async {
+      await notifier.loadMoreOlder();
+      await notifier.loadMoreOlder();
+
+      expect(read().dates.first, DateTime(2026, 8));
+      expectOneDiaryADay();
+    });
+
+    test('loadMoreNewer adds the diaries of the next month once', () async {
+      await notifier.loadMoreNewer();
+      await notifier.loadMoreNewer();
+
+      expect(read().dates.last, DateTime(2027, 2, 28));
+      expectOneDiaryADay();
+    });
+
+    test('calls during a load wait for it instead of loading again', () async {
+      await Future.wait([
+        notifier.loadMoreOlder(),
+        notifier.loadMoreOlder(),
+        notifier.loadMoreNewer(),
+        notifier.loadMoreNewer(),
+      ]);
+
+      expect(read().dates.first, DateTime(2026, 9));
+      expect(read().dates.last, DateTime(2027, 1, 31));
+      expectOneDiaryADay();
+    });
+
+    test('keeps a diary added during a load', () async {
+      final loading = notifier.loadMoreOlder();
+      await notifier.addDiary(date: DateTime(2026, 11, 30), content: 'new');
+      await loading;
+
+      expect(read().diaries.map((d) => d.entry.content), contains('new'));
+    });
+  });
 
   group('addImage', () {
     test('adds a diary with the stored photo to the state', () async {

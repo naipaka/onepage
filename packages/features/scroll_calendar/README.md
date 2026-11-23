@@ -4,10 +4,11 @@ A Flutter package for a scrollable calendar widget.
 
 ## Features
 
-- Scrollable calendar with vertical scrolling.
-- Supports loading past dates incrementally.
+- Vertical calendar of consecutive dates in ascending order, starting with today in the middle.
+- Asks for older and newer dates when either end of the list is visible, and keeps the visible dates in place when dates are added before them.
+- Reports the date in the middle of the viewport.
+- Scrolls to today or to a loaded date, and highlights a date.
 - Customizable date item builder and separator builder.
-- Scroll to today's date or a specific date with animation.
 
 ## Getting started
 
@@ -21,51 +22,59 @@ dependencies:
 
 ## Usage
 
-Here is an example of how to use the `VerticalScrollCalendar` widget.
+A calendar that loads a month of dates at either end of the list:
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 
 void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Scroll Calendar Example'),
-        ),
-        body: CalendarPage(),
-      ),
-    );
-  }
+  runApp(const MaterialApp(home: CalendarPage()));
 }
 
 class CalendarPage extends StatefulWidget {
+  const CalendarPage({super.key});
+
   @override
-  _CalendarPageState createState() => _CalendarPageState();
+  State<CalendarPage> createState() => _CalendarPageState();
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  final scrollCalendarController = ScrollCalendarController();
+  final controller = ScrollCalendarController();
+
+  // Last month, this month, and next month, oldest first.
+  List<DateTime> dates = DateTime.now().datesInMonths(-1, 1);
+  DateTime visibleDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return VerticalScrollCalendar(
-      controller: scrollCalendarController,
-      separatorBuilder: (_, __) => const Divider(),
-      dateItemBuilder: (_, date) {
-        return ListTile(
-          title: Text('${date.year}/${date.month}/${date.day}'),
-          onTap: () {
-            print('Tapped: $date');
-          },
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('${visibleDate.year}/${visibleDate.month}'),
+        actions: [
+          IconButton(
+            onPressed: controller.scrollToToday,
+            icon: const Icon(Icons.today),
+          ),
+        ],
+      ),
+      body: VerticalScrollCalendar(
+        controller: controller,
+        dates: dates,
+        loadMoreOlder: () => setState(() {
+          dates = [...dates.first.previousMonthDates, ...dates];
+        }),
+        loadMoreNewer: () => setState(() {
+          dates = [...dates, ...dates.last.nextMonthDates];
+        }),
+        onVisibleDateChanged: (date) => setState(() => visibleDate = date),
+        loadingIndicator: const CircularProgressIndicator(),
+        dateItemBuilder: (_, date) => Text('Notes of ${date.month}/${date.day}'),
+        // The separator above each date except the first one.
+        separatorBuilder: (_, date) => date.day == 1
+            ? const Divider(height: 64)
+            : const SizedBox(height: 32),
+      ),
     );
   }
 }

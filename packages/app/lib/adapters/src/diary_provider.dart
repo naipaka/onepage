@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:async/async.dart';
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
@@ -72,34 +73,58 @@ class CachedDiaries extends _$CachedDiaries {
 
   DiaryImageCommand get _imageCommand => ref.read(diaryImageCommandProvider);
 
+  /// Runs one load of each direction at a time, so that calls during a load
+  /// wait for it instead of loading the same month again.
+  final _olderLoad = AsyncCache<void>.ephemeral();
+  final _newerLoad = AsyncCache<void>.ephemeral();
+
   @override
   Future<DiariesWithDates> build() async {
-    final nextMonthDate = DateTime(_now.year, _now.month + 1);
-    final dates = _now.datesInMonths(-1, 0)..add(nextMonthDate);
+    final dates = _now.datesInMonths(-1, 1);
     final diaries = await ref.watch(
       diariesProvider(fromDate: dates.first, toDate: dates.last).future,
     );
     return (diaries: diaries, dates: dates);
   }
 
-  /// Load more older diaries.
-  Future<void> loadMoreOlder() async {
+  /// Loads the diaries of the month before the loaded dates.
+  Future<void> loadMoreOlder() => _olderLoad.fetch(_loadOlder);
+
+  /// Loads the diaries of the month after the loaded dates.
+  Future<void> loadMoreNewer() => _newerLoad.fetch(_loadNewer);
+
+  Future<void> _loadOlder() async {
     if (state.isLoading || !state.hasValue) {
       // Do nothing if the state is loading or has no value.
       return;
     }
-    final current = state.requireValue;
-    final previousMonthDates = current.dates.first.previousMonthDates;
-    final diaries = await ref.read(
-      diariesProvider(
-        fromDate: previousMonthDates.first,
-        toDate: current.dates.last,
-      ).future,
-    );
+    final month = state.requireValue.dates.first.previousMonthDates;
+    final diaries = await _diariesIn(month);
+    final latest = state.requireValue;
     state = AsyncValue.data((
-      diaries: [...diaries, ...current.diaries],
-      dates: [...previousMonthDates, ...current.dates],
+      diaries: [...diaries, ...latest.diaries],
+      dates: [...month, ...latest.dates],
     ));
+  }
+
+  Future<void> _loadNewer() async {
+    if (state.isLoading || !state.hasValue) {
+      // Do nothing if the state is loading or has no value.
+      return;
+    }
+    final month = state.requireValue.dates.last.nextMonthDates;
+    final diaries = await _diariesIn(month);
+    final latest = state.requireValue;
+    state = AsyncValue.data((
+      diaries: [...latest.diaries, ...diaries],
+      dates: [...latest.dates, ...month],
+    ));
+  }
+
+  Future<List<Diary>> _diariesIn(List<DateTime> month) {
+    return ref.read(
+      diariesProvider(fromDate: month.first, toDate: month.last).future,
+    );
   }
 
   /// Add a new diary entry.

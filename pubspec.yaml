@@ -5,6 +5,7 @@ environment:
 
 workspace:
   - packages/app
+  - packages/core/anchor_list_view
   - packages/core/configurator
   - packages/core/db_client
   - packages/core/device_photos
