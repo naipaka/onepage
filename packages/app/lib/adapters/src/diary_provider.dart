@@ -93,7 +93,7 @@ class CachedDiaries extends _$CachedDiaries {
     final diaries = await ref.read(
       diariesProvider(
         fromDate: previousMonthDates.first,
-        toDate: current.dates.last,
+        toDate: previousMonthDates.last,
       ).future,
     );
     state = AsyncValue.data((
