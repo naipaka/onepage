@@ -17,7 +17,7 @@ dependencies:
 
 dev_dependencies:
   altive_lints: ^4.2.0
-  firebase_analytics_platform_interface: ^6.0.9
+  firebase_analytics_platform_interface: ^6.1.0
   firebase_core: ^5.1.0
   firebase_core_platform_interface: ^8.1.1
   flutter_test:
