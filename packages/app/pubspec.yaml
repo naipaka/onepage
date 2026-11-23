@@ -18,7 +18,7 @@ dependencies:
   collection: ^1.19.1
   configurator:
     path: ../core/configurator/
-  cupertino_ui: ^1.1.6
+  cupertino_ui: ^1.1.7
   db_client:
     path: ../core/db_client/
   device_photos:
@@ -46,7 +46,7 @@ dependencies:
   # FIXME: Remove once adaptive_dialog stops allowing macos_ui 2.0.0, which
   # uses IgnorePointer.ignoringSemantics, removed in Flutter 3.50.
   macos_ui: ^2.2.2
-  material_ui: ^1.11.0
+  material_ui: ^1.11.1
   notification_client:
     path: ../core/notification_client/
   photo_client:

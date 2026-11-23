@@ -13,7 +13,7 @@ dependencies:
     path: ../../core/configurator/
   flutter:
     sdk: flutter
-  material_ui: ^1.11.0
+  material_ui: ^1.11.1
   package_info_plus: ^10.2.2
   version: ^3.0.2
 
