@@ -140,22 +140,70 @@ void main() {
         .addImage(date: date, path: 'picked.jpg');
   }
 
-  group('loadMoreOlder', () {
-    test('adds the diaries of the previous month once', () async {
+  group('loading', () {
+    late CachedDiaries notifier;
+
+    setUp(() async {
       diaryQuery.everyDay = true;
-      container
-        ..invalidate(diariesProvider)
-        ..invalidate(cachedDiariesProvider);
-      await container.read(cachedDiariesProvider.future);
-      final notifier = container.read(cachedDiariesProvider.notifier);
+      await withClock(Clock.fixed(date), () async {
+        container
+          ..invalidate(diariesProvider)
+          ..invalidate(cachedDiariesProvider);
+        await container.read(cachedDiariesProvider.future);
+      });
+      notifier = container.read(cachedDiariesProvider.notifier);
+    });
 
-      await notifier.loadMoreOlder();
-      await notifier.loadMoreOlder();
+    DiariesWithDates read() =>
+        container.read(cachedDiariesProvider).requireValue;
 
-      final state = container.read(cachedDiariesProvider).requireValue;
-      final diaryDates = state.diaries.map((d) => d.entry.date).toList();
+    void expectOneDiaryADay() {
+      final diaryDates = read().diaries.map((d) => d.entry.date).toList();
       expect(diaryDates.toSet(), hasLength(diaryDates.length));
-      expect(diaryDates.toSet(), state.dates.toSet());
+      expect(diaryDates, read().dates);
+    }
+
+    test('starts with the last, this, and next month', () {
+      expect(read().dates.first, DateTime(2026, 10));
+      expect(read().dates.last, DateTime(2026, 12, 31));
+      expectOneDiaryADay();
+    });
+
+    test('loadMoreOlder adds the diaries of the previous month once', () async {
+      await notifier.loadMoreOlder();
+      await notifier.loadMoreOlder();
+
+      expect(read().dates.first, DateTime(2026, 8));
+      expectOneDiaryADay();
+    });
+
+    test('loadMoreNewer adds the diaries of the next month once', () async {
+      await notifier.loadMoreNewer();
+      await notifier.loadMoreNewer();
+
+      expect(read().dates.last, DateTime(2027, 2, 28));
+      expectOneDiaryADay();
+    });
+
+    test('calls during a load wait for it instead of loading again', () async {
+      await Future.wait([
+        notifier.loadMoreOlder(),
+        notifier.loadMoreOlder(),
+        notifier.loadMoreNewer(),
+        notifier.loadMoreNewer(),
+      ]);
+
+      expect(read().dates.first, DateTime(2026, 9));
+      expect(read().dates.last, DateTime(2027, 1, 31));
+      expectOneDiaryADay();
+    });
+
+    test('keeps a diary added during a load', () async {
+      final loading = notifier.loadMoreOlder();
+      await notifier.addDiary(date: DateTime(2026, 11, 30), content: 'new');
+      await loading;
+
+      expect(read().diaries.map((d) => d.entry.content), contains('new'));
     });
   });
 

@@ -28,6 +28,14 @@ void main() {
       },
     );
 
+    test('nextMonthDates should return correct dates for the next month', () {
+      final date = DateTime(2024, 12, 31);
+      final nextMonthDates = date.nextMonthDates;
+      expect(nextMonthDates.length, 31);
+      expect(nextMonthDates.first, DateTime(2025));
+      expect(nextMonthDates.last, DateTime(2025, 1, 31));
+    });
+
     test('datesInMonths should return correct dates for a range of months', () {
       final date = DateTime(2024, 11);
       final dates = date.datesInMonths(-1, 1);
