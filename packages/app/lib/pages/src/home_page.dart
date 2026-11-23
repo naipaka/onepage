@@ -181,6 +181,7 @@ class HomePage extends HookConsumerWidget {
                       controller: scrollCalendarController,
                       dates: dates,
                       loadMoreOlder: notifier.loadMoreOlder,
+                      loadMoreNewer: notifier.loadMoreNewer,
                       onVisibleDateChanged: (date) {
                         visibleDateState.value = date;
                       },
