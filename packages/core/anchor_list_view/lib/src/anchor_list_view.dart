@@ -24,8 +24,10 @@ class AnchorListController extends ScrollController {
 
   /// Moves the item at [index] to [alignment] without animation.
   ///
-  /// [alignment] is a fraction of the viewport extent: 0 puts the top of
-  /// the item at the top of the viewport, and 1 at the bottom.
+  /// [alignment] is a fraction of the viewport extent in the scroll
+  /// direction: 0 puts the leading edge of the item at the leading edge of
+  /// the viewport, such as the top of a vertical list, and 1 at the trailing
+  /// edge.
   void jumpToItem(int index, {double alignment = 0}) {
     assert(_views.isNotEmpty, 'AnchorListController is not attached.');
     for (final view in _views.toList()) {
@@ -86,6 +88,7 @@ class AnchorListView extends StatefulWidget {
     this.controller,
     this.onPositionsChanged,
     this.physics,
+    this.scrollDirection = Axis.vertical,
     this.padding = EdgeInsets.zero,
   }) : separatorBuilder = null,
        _findItemIndex = findChildIndexCallback;
@@ -105,6 +108,7 @@ class AnchorListView extends StatefulWidget {
     this.controller,
     this.onPositionsChanged,
     this.physics,
+    this.scrollDirection = Axis.vertical,
     this.padding = EdgeInsets.zero,
   }) : _findItemIndex = findItemIndexCallback;
 
@@ -127,22 +131,27 @@ class AnchorListView extends StatefulWidget {
   /// The index of the item shown first.
   final int initialIndex;
 
-  /// Where the item at [initialIndex] is shown first, as a fraction of the
-  /// viewport extent: 0 is the top and 1 is the bottom.
+  /// Where the leading edge of the item at [initialIndex] is shown first, as
+  /// a fraction of the viewport extent: 0 is the leading edge of the
+  /// viewport and 1 is the trailing edge.
   final double initialAlignment;
 
   /// Moves the list to items. The list creates its own when it is null.
   final AnchorListController? controller;
 
-  /// Called with the items at least partly in the viewport, from top to
-  /// bottom, when they or their positions differ from the last call.
+  /// Called with the items at least partly in the viewport, from the leading
+  /// edge to the trailing edge, when they or their positions differ from the
+  /// last call.
   final ValueChanged<List<AnchorItemPosition>>? onPositionsChanged;
 
   /// How the list responds to user input.
   final ScrollPhysics? physics;
 
+  /// The axis along which the list scrolls.
+  final Axis scrollDirection;
+
   /// The space around the items.
-  final EdgeInsets padding;
+  final EdgeInsetsGeometry padding;
 
   @override
   State<AnchorListView> createState() => _AnchorListViewState();
@@ -253,13 +262,13 @@ class _AnchorListViewState extends State<AnchorListView>
       );
       return;
     }
-    final height = position.viewportDimension;
+    final extent = position.viewportDimension;
     final direction = index > _firstVisible() ? 1.0 : -1.0;
     final out = duration * 0.3;
     await Future.wait([
       _fade.animateTo(0, duration: out, curve: Curves.easeIn),
       position.animateTo(
-        position.pixels + direction * 0.5 * height,
+        position.pixels + direction * 0.5 * extent,
         duration: out,
         curve: Curves.easeIn,
       ),
@@ -268,7 +277,7 @@ class _AnchorListViewState extends State<AnchorListView>
       _setTarget(index);
       _alignment = alignment;
     });
-    position.jumpTo(-direction * height);
+    position.jumpTo(-direction * extent);
     await SchedulerBinding.instance.endOfFrame;
     final rest = duration - out;
     await Future.wait([
@@ -286,9 +295,9 @@ class _AnchorListViewState extends State<AnchorListView>
       return false;
     }
     final extent = position.viewportDimension;
-    final top = (leading - position.pixels) / extent;
-    final bottom = top + box.size.height / extent;
-    return bottom > -_nearViewports && top < 1 + _nearViewports;
+    final start = (leading - position.pixels) / extent;
+    final end = start + _extentOf(box, position.axis) / extent;
+    return end > -_nearViewports && start < 1 + _nearViewports;
   }
 
   int _firstVisible() {
@@ -315,6 +324,11 @@ class _AnchorListViewState extends State<AnchorListView>
     return box == null ? null : _offsetOf(box, alignment);
   }
 
+  static double _extentOf(RenderBox box, Axis axis) => switch (axis) {
+    Axis.vertical => box.size.height,
+    Axis.horizontal => box.size.width,
+  };
+
   /// The scroll offset that puts the leading edge of a laid-out box at
   /// [alignment], or null when the box is not laid out.
   static double? _offsetOf(RenderBox box, double alignment) {
@@ -325,7 +339,7 @@ class _AnchorListViewState extends State<AnchorListView>
     if (viewport is! RenderViewport) {
       return null;
     }
-    final extent = viewport.size.height;
+    final extent = _extentOf(viewport, viewport.axis);
     final leading = viewport.getOffsetToReveal(box, 0).offset;
     return leading + (viewport.anchor - alignment) * extent;
   }
@@ -363,7 +377,7 @@ class _AnchorListViewState extends State<AnchorListView>
         continue;
       }
       final leading = (offset - position.pixels) / extent;
-      final trailing = leading + box.size.height / extent;
+      final trailing = leading + _extentOf(box, position.axis) / extent;
       if (trailing > 0 && leading < 1) {
         positions.add(
           AnchorItemPosition(
@@ -433,6 +447,31 @@ class _AnchorListViewState extends State<AnchorListView>
     final count = widget.itemCount;
     final t = _target;
     final separator = widget.separatorBuilder;
+    final padding = widget.padding.resolve(Directionality.maybeOf(context));
+    final reversed = axisDirectionIsReversed(
+      getAxisDirectionFromAxisReverseAndDirectionality(
+        context,
+        widget.scrollDirection,
+        false,
+      ),
+    );
+
+    // The padding of a sliver, keeping the edges at the start and at the end
+    // of the list only when the sliver reaches them.
+    EdgeInsets paddingOf({required bool start, required bool end}) {
+      final (first, last) = reversed ? (end, start) : (start, end);
+      return switch (widget.scrollDirection) {
+        Axis.vertical => padding.copyWith(
+          top: first ? null : 0,
+          bottom: last ? null : 0,
+        ),
+        Axis.horizontal => padding.copyWith(
+          left: first ? null : 0,
+          right: last ? null : 0,
+        ),
+      };
+    }
+
     return NotificationListener<Notification>(
       onNotification: _onScroll,
       child: FadeTransition(
@@ -442,10 +481,11 @@ class _AnchorListViewState extends State<AnchorListView>
           center: _centerKey,
           anchor: _alignment,
           physics: widget.physics,
+          scrollDirection: widget.scrollDirection,
           slivers: [
             SliverPadding(
               key: ValueKey(('before', _generation)),
-              padding: widget.padding.copyWith(bottom: 0),
+              padding: paddingOf(start: true, end: false),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, c) {
@@ -466,7 +506,7 @@ class _AnchorListViewState extends State<AnchorListView>
             ),
             SliverPadding(
               key: _centerKey,
-              padding: widget.padding.copyWith(top: 0, bottom: 0),
+              padding: paddingOf(start: false, end: false),
               sliver: SliverToBoxAdapter(
                 child: count == 0
                     ? null
@@ -481,7 +521,7 @@ class _AnchorListViewState extends State<AnchorListView>
             ),
             SliverPadding(
               key: ValueKey(('after', _generation)),
-              padding: widget.padding.copyWith(top: 0),
+              padding: paddingOf(start: false, end: true),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, c) {

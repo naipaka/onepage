@@ -8,6 +8,7 @@ A list view that scrolls to any item by its index, including items that are not 
 - Keep the visible items and their states in place when items are inserted or removed before them
 - Report the items in the viewport and their positions
 - Use the controller as a `ScrollController`, such as with a `Scrollbar`
+- Scroll vertically or horizontally, in either text direction
 
 ## Getting Started
 

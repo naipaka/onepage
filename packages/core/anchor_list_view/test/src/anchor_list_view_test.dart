@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:anchor_list_view/anchor_list_view.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -72,6 +74,13 @@ List<int> range(int from, int to) => [for (var i = from; i < to; i++) i];
 Future<void> dragMany(WidgetTester tester, double dy) async {
   for (var i = 0; i < 10; i++) {
     await tester.drag(find.byType(AnchorListView), Offset(0, dy));
+    await tester.pumpAndSettle();
+  }
+}
+
+Future<void> dragHorizontally(WidgetTester tester, double dx) async {
+  for (var i = 0; i < 10; i++) {
+    await tester.drag(find.byType(AnchorListView), Offset(dx, 0));
     await tester.pumpAndSettle();
   }
 }
@@ -865,6 +874,136 @@ void main() {
       await tester.pump();
       await tester.pump();
       expect(reports.last.first.trailingEdge, 200 / height);
+    });
+  });
+
+  group('horizontal', () {
+    const width = 800.0;
+
+    Widget horizontal({
+      required List<int> items,
+      required int initialValue,
+      double alignment = 0,
+      TextDirection textDirection = TextDirection.ltr,
+      EdgeInsetsGeometry padding = EdgeInsets.zero,
+      AnchorListController? controller,
+      ValueChanged<List<AnchorItemPosition>>? onPositions,
+    }) {
+      final indexes = {for (var i = 0; i < items.length; i++) items[i]: i};
+      return Directionality(
+        textDirection: textDirection,
+        child: AnchorListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: items.length,
+          initialIndex: indexes[initialValue]!,
+          initialAlignment: alignment,
+          controller: controller,
+          onPositionsChanged: onPositions,
+          padding: padding,
+          findChildIndexCallback: (key) =>
+              key is ValueKey<int> ? indexes[key.value] : null,
+          itemBuilder: (_, i) => SizedBox(
+            key: ValueKey(items[i]),
+            width: heightOf(items[i]),
+            child: Text('item ${items[i]}'),
+          ),
+        ),
+      );
+    }
+
+    testWidgets('lays out the items from left to right', (tester) async {
+      await tester.pumpWidget(
+        horizontal(items: range(0, 100), initialValue: 50, alignment: 0.5),
+      );
+      expect(itemRect(tester, 50).left, width / 2);
+      expect(itemRect(tester, 51).left, itemRect(tester, 50).right);
+      expect(itemRect(tester, 49).right, itemRect(tester, 50).left);
+    });
+
+    testWidgets('lays out the items from right to left in RTL', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        horizontal(
+          items: range(0, 100),
+          initialValue: 50,
+          alignment: 0.5,
+          textDirection: TextDirection.rtl,
+        ),
+      );
+      expect(itemRect(tester, 50).right, width / 2);
+      expect(itemRect(tester, 51).right, itemRect(tester, 50).left);
+    });
+
+    testWidgets('stops at the ends', (tester) async {
+      await tester.pumpWidget(
+        horizontal(items: range(0, 100), initialValue: 50),
+      );
+      await dragHorizontally(tester, 3000);
+      expect(itemRect(tester, 0).left, 0);
+      await dragHorizontally(tester, -3000);
+      expect(itemRect(tester, 99).right, width);
+    });
+
+    testWidgets('keeps the padding at the ends in the scroll direction', (
+      tester,
+    ) async {
+      const padding = EdgeInsetsDirectional.fromSTEB(40, 16, 80, 8);
+      await tester.pumpWidget(
+        horizontal(
+          items: range(0, 100),
+          initialValue: 50,
+          padding: padding,
+          textDirection: TextDirection.rtl,
+        ),
+      );
+      await dragHorizontally(tester, -3000);
+      expect(itemRect(tester, 0).right, width - 40);
+      expect(itemRect(tester, 0).top, 16);
+      await dragHorizontally(tester, 3000);
+      expect(itemRect(tester, 99).left, 80);
+    });
+
+    testWidgets('prepend keeps the position', (tester) async {
+      await tester.pumpWidget(
+        horizontal(items: range(0, 100), initialValue: 50, alignment: 0.5),
+      );
+      final before = itemRect(tester, 50).left;
+      await tester.pumpWidget(
+        horizontal(items: range(-30, 100), initialValue: 50, alignment: 0.5),
+      );
+      expect(itemRect(tester, 50).left, before);
+    });
+
+    testWidgets('jumps and reports positions along the width', (
+      tester,
+    ) async {
+      final controller = AnchorListController();
+      final reports = <List<AnchorItemPosition>>[];
+      await tester.pumpWidget(
+        horizontal(
+          items: range(0, 100),
+          initialValue: 0,
+          controller: controller,
+          onPositions: reports.add,
+        ),
+      );
+      controller.jumpToItem(60, alignment: 0.25);
+      await tester.pumpAndSettle();
+      expect(itemRect(tester, 60).left, width * 0.25);
+      final reported = reports.last.firstWhere((p) => p.index == 60);
+      expect(reported.leadingEdge, 0.25);
+      expect(reported.trailingEdge, 0.25 + heightOf(60) / width);
+      unawaited(
+        controller.animateToItem(
+          62,
+          alignment: 0.25,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.linear,
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(itemRect(tester, 62).left, width * 0.25);
     });
   });
 }

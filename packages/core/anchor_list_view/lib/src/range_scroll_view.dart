@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 /// {@template anchor_list_view.RangeScrollView}
-/// A vertical [CustomScrollView] whose scroll range stops at the ends of its
+/// A [CustomScrollView] whose scroll range stops at the ends of its
 /// slivers, measured from the slivers laid out around the center sliver.
 ///
 /// Its controller must create an [AnchorScrollPosition].
@@ -18,6 +18,7 @@ class RangeScrollView extends CustomScrollView {
     super.center,
     super.anchor,
     super.physics,
+    super.scrollDirection,
     super.slivers,
   });
 
@@ -86,7 +87,8 @@ class _RangeRenderViewport extends RenderViewport {
   /// The scroll range that stops at the ends of the slivers, from their
   /// extents in the current layout.
   ///
-  /// Slivers shorter than the viewport start at the top, as in a [ListView].
+  /// Slivers shorter than the viewport start at the leading edge, as in a
+  /// [ListView].
   ({double min, double max})? computeRange() {
     final center = this.center;
     if (center == null) {
@@ -108,14 +110,17 @@ class _RangeRenderViewport extends RenderViewport {
     ) {
       forward += sliver.geometry?.scrollExtent ?? 0;
     }
-    final extent = size.height;
-    final top = -reverse + extent * anchor;
-    final bottom = forward - extent * (1 - anchor);
+    final extent = switch (axis) {
+      Axis.vertical => size.height,
+      Axis.horizontal => size.width,
+    };
+    final leading = -reverse + extent * anchor;
+    final trailing = forward - extent * (1 - anchor);
     if (reverse + forward <= extent) {
-      return (min: top, max: top);
+      return (min: leading, max: leading);
     }
-    final max = math.max(math.min<double>(0, top), bottom);
-    return (min: math.min(top, max), max: max);
+    final max = math.max(math.min<double>(0, leading), trailing);
+    return (min: math.min(leading, max), max: max);
   }
 }
 
