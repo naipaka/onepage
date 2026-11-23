@@ -1,48 +1,32 @@
 name: Update Dependency Graph
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 on:
   push:
     branches:
       - main
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 env:
   BRANCH_NAME: update-dependency-graph
+  DOT_FILE: docs/dependency_graph.dot
+  SVG_FILE: docs/dependency_graph.svg
 
 jobs:
-  generate-and-compare:
-    name: Generate and Compare Dependency Graph
+  update:
+    name: Update Dependency Graph
     runs-on: ubuntu-latest
-    outputs:
-      has_diff: ${{ steps.check_diff.outputs.has_diff }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Flutter with FVM
-        uses: kuhnroyal/flutter-fvm-config-action/setup@v3
-
-      - name: Prepare Melos
-        run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> "$GITHUB_ENV"
-
-      - name: Install Melos
-        uses: bluefireteam/melos-action@v3
-        with:
-          run-bootstrap: false
-
-      - name: Install Dependencies
-        run: dart pub get --enforce-lockfile
-
-      - name: Ensure Docs Directory Exists
-        run: mkdir -p "./docs"
-
-      - name: Ensure Previous Dependency Graph Exists
-        run: |
-          if [ ! -f "./docs/dependency_graph.dot" ]; then
-            touch "./docs/dependency_graph.dot"
-          fi
+      - name: Setup Flutter
+        uses: ./.github/actions/setup-flutter
 
       - name: Generate Dependency Graph
         # Workaround: Update `pubspec.lock` timestamp to prevent "Resolving dependencies..."
@@ -58,144 +42,69 @@ jobs:
         # - https://github.com/Dart-Code/Dart-Code/pull/5760
         run: |
           touch pubspec.lock
-          melos list --gviz > "dependency_graph.dot"
+          melos list --gviz > "$DOT_FILE"
 
-      - name: Upload Dependency Graph as Artifact
-        uses: actions/upload-artifact@v7
+      - name: Generate GitHub App token
+        id: generate_token
+        uses: actions/create-github-app-token@v3
         with:
-          name: dependency_graph
-          path: dependency_graph.dot
+          client-id: ${{ vars.PR_WRITER_CLIENT_ID }}
+          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
 
-      - name: Compare with Previous Output
-        id: check_diff
+      - name: Decide whether to create a pull request
+        id: decide
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
-          if diff "dependency_graph.dot" "./docs/dependency_graph.dot"; then
-            echo "has_diff=false" >> "$GITHUB_OUTPUT"
+          if [ -z "$(git status --porcelain -- "$DOT_FILE")" ]; then
+            echo "::notice::The dependency graph has not changed."
+            echo "create=false" >> "$GITHUB_OUTPUT"
+          elif [ "$(gh pr list --head "$BRANCH_NAME" --state open --json number --jq length)" -ne 0 ]; then
+            echo "::notice::An open pull request from $BRANCH_NAME already exists."
+            echo "create=false" >> "$GITHUB_OUTPUT"
           else
-            echo "has_diff=true" >> "$GITHUB_OUTPUT"
+            echo "create=true" >> "$GITHUB_OUTPUT"
           fi
 
-  create-branch:
-    name: Create Branch
-    runs-on: ubuntu-latest
-    needs: generate-and-compare
-    if: needs.generate-and-compare.outputs.has_diff == 'true'
-    outputs:
-      branch_exists: ${{ steps.check-branch.outputs.branch_exists }}
-      branch_created: ${{ steps.create-new-branch.outputs.branch_created }}
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Check if branch already exists
-        id: check-branch
+      - name: Delete the branch left without an open pull request
+        if: steps.decide.outputs.create == 'true'
+        env:
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
-          if git fetch origin ${{ env.BRANCH_NAME }}; then
-            echo "Branch already exists."
-            echo "branch_exists=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "branch_exists=false" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --heads origin "$BRANCH_NAME" > /dev/null; then
+            gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$BRANCH_NAME"
           fi
-
-      - name: Create and Push New Branch
-        id: create-new-branch
-        if: steps.check-branch.outputs.branch_exists != 'true'
-        run: |
-          git switch -c ${{ env.BRANCH_NAME }}
-          git push origin ${{ env.BRANCH_NAME }}
-          echo "branch_created=true" >> "$GITHUB_OUTPUT"
-
-  commit-changes:
-    name: Commit Changes
-    runs-on: ubuntu-latest
-    needs: create-branch
-    if: needs.create-branch.outputs.branch_exists != 'true'
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ env.BRANCH_NAME }}
-
-      - name: Download Dependency Graph Artifact
-        uses: actions/download-artifact@v8
-        with:
-          name: dependency_graph
 
       - name: Install Graphviz
+        if: steps.decide.outputs.create == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y graphviz
 
-      - name: Set up ghcp
-        run: |
-          curl -fL -o /tmp/ghcp.zip https://github.com/int128/ghcp/releases/download/v1.13.5/ghcp_linux_amd64.zip
-          unzip /tmp/ghcp.zip -d /tmp
-
-      - name: Ensure Docs Directory Exists
-        run: mkdir -p "./docs"
-
       - name: Generate SVG Image
-        run: dot -Tsvg "dependency_graph.dot" -o "./docs/dependency_graph.svg"
+        if: steps.decide.outputs.create == 'true'
+        run: dot -Tsvg "$DOT_FILE" -o "$SVG_FILE"
 
-      - name: Update Docs Directory
-        run: |
-          mv "dependency_graph.dot" "./docs/dependency_graph.dot"
-
-      - name: Generate GitHub App token
-        id: generate_token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ vars.PR_WRITER_APP_ID }}
-          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
+      - name: Setup ghcp
+        if: steps.decide.outputs.create == 'true'
+        uses: ./.github/actions/setup-ghcp
 
       - name: Commit Changes
+        if: steps.decide.outputs.create == 'true'
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
         run: |
-          find docs/ -type f -print0 | xargs -0 /tmp/ghcp commit \
+          ghcp commit \
             -r "$GITHUB_REPOSITORY" \
-            -b "${{ env.BRANCH_NAME }}" \
+            -b "$BRANCH_NAME" \
+            --parent "$GITHUB_REF_NAME" \
             -m "Update Dependency Graph and SVG image" \
+            "$DOT_FILE" "$SVG_FILE"
 
-  create-pr:
-    name: Create Pull Request
-    runs-on: ubuntu-latest
-    needs: commit-changes
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Generate GitHub App token
-        id: generate_token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ vars.PR_WRITER_APP_ID }}
-          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
-
-      - name: Create release PR
+      - name: Create Pull Request
+        if: steps.decide.outputs.create == 'true'
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-          title: "doc: Update Dependency Graph"
-          body: "This PR updates the dependency graph and SVG image."
-        run: gh pr create -B "$GITHUB_REF" -H "${{ env.BRANCH_NAME }}" -t "${{ env.title }}" -b "${{ env.body }}" -a "$GITHUB_ACTOR"
-
-  cleanup-on-failure:
-    name: Cleanup Branch on Failure
-    runs-on: ubuntu-latest
-    needs: [create-branch, commit-changes]
-    if: |
-      always() &&
-      needs.create-branch.outputs.branch_created == 'true' &&
-      needs.commit-changes.result == 'failure'
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Generate GitHub App token
-        id: generate_token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ vars.PR_WRITER_APP_ID }}
-          private-key: ${{ secrets.PR_WRITER_PRIVATE_KEY }}
-
-      - name: Delete created branch
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
-        run: |
-          git push origin --delete ${{ env.BRANCH_NAME }}
+          GH_TOKEN: ${{ steps.generate_token.outputs.token }}
+          TITLE: "doc: Update Dependency Graph"
+          BODY: "This PR updates the dependency graph and SVG image."
+        run: gh pr create -B "$GITHUB_REF_NAME" -H "$BRANCH_NAME" -t "$TITLE" -b "$BODY" -a "$GITHUB_ACTOR"
