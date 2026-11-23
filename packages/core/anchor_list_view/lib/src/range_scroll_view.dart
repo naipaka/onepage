@@ -5,7 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 /// {@template anchor_list_view.RangeScrollView}
-/// A [CustomScrollView] whose scroll range stops at the ends of its slivers,
+/// A vertical [CustomScrollView] whose scroll range stops at the ends of its slivers,
 /// measured from the slivers laid out around the center sliver.
 ///
 /// Its controller must create an [AnchorScrollPosition].
@@ -107,10 +107,7 @@ class _RangeRenderViewport extends RenderViewport {
     ) {
       forward += sliver.geometry?.scrollExtent ?? 0;
     }
-    final extent = switch (axis) {
-      Axis.vertical => size.height,
-      Axis.horizontal => size.width,
-    };
+    final extent = size.height;
     final top = -reverse + extent * anchor;
     final bottom = forward - extent * (1 - anchor);
     if (reverse + forward <= extent) {
