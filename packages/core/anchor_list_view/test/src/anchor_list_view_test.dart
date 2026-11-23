@@ -1,6 +1,6 @@
 import 'package:anchor_list_view/anchor_list_view.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
 
 double heightOf(int v) => 40 + (v * 37 % 120).toDouble();
 const height = 600.0;
@@ -28,36 +28,35 @@ Widget harness({
         height: heightOf(items[i]),
         child: Text('item ${items[i]}'),
       );
-  return MaterialApp(
-    home: Scaffold(
-      body: separators
-          ? AnchorListView.separated(
-              itemCount: items.length,
-              initialIndex: indexes[initialValue] ?? 0,
-              initialAlignment: alignment,
-              controller: controller,
-              onPositionsChanged: onPositions,
-              physics: physics,
-              padding: padding,
-              findItemIndexCallback: findIndex ? find : null,
-              separatorBuilder: (_, i) => SizedBox(
-                height: 10,
-                child: Text('sep ${items[i]}-${items[i + 1]}'),
-              ),
-              itemBuilder: build,
-            )
-          : AnchorListView.builder(
-              itemCount: items.length,
-              initialIndex: indexes[initialValue] ?? 0,
-              initialAlignment: alignment,
-              controller: controller,
-              onPositionsChanged: onPositions,
-              physics: physics,
-              padding: padding,
-              findChildIndexCallback: findIndex ? find : null,
-              itemBuilder: build,
+  return Directionality(
+    textDirection: TextDirection.ltr,
+    child: separators
+        ? AnchorListView.separated(
+            itemCount: items.length,
+            initialIndex: indexes[initialValue] ?? 0,
+            initialAlignment: alignment,
+            controller: controller,
+            onPositionsChanged: onPositions,
+            physics: physics,
+            padding: padding,
+            findItemIndexCallback: findIndex ? find : null,
+            separatorBuilder: (_, i) => SizedBox(
+              height: 10,
+              child: Text('sep ${items[i]}-${items[i + 1]}'),
             ),
-    ),
+            itemBuilder: build,
+          )
+        : AnchorListView.builder(
+            itemCount: items.length,
+            initialIndex: indexes[initialValue] ?? 0,
+            initialAlignment: alignment,
+            controller: controller,
+            onPositionsChanged: onPositions,
+            physics: physics,
+            padding: padding,
+            findChildIndexCallback: findIndex ? find : null,
+            itemBuilder: build,
+          ),
   );
 }
 
@@ -747,21 +746,20 @@ void main() {
       expect(c.offset, greaterThan(30));
     });
 
-    testWidgets('can be given to a Scrollbar', (tester) async {
+    testWidgets('can be given to a scrollbar', (tester) async {
       final c = AnchorListController();
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Scrollbar(
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: RawScrollbar(
+            controller: c,
+            thumbVisibility: true,
+            child: AnchorListView.builder(
               controller: c,
-              thumbVisibility: true,
-              child: AnchorListView.builder(
-                controller: c,
-                itemCount: 100,
-                initialIndex: 50,
-                itemBuilder: (_, i) =>
-                    SizedBox(height: heightOf(i), child: Text('item $i')),
-              ),
+              itemCount: 100,
+              initialIndex: 50,
+              itemBuilder: (_, i) =>
+                  SizedBox(height: heightOf(i), child: Text('item $i')),
             ),
           ),
         ),
@@ -769,7 +767,7 @@ void main() {
       Rect thumb() {
         final rects = <Rect>[];
         expect(
-          find.byType(Scrollbar),
+          find.byType(RawScrollbar),
           paints..everything((method, args) {
             if (method == #drawRect) {
               rects.add(args.first as Rect);
@@ -844,22 +842,21 @@ void main() {
       var tall = false;
       late StateSetter set;
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: StatefulBuilder(
-              builder: (context, setState) {
-                set = setState;
-                return AnchorListView.builder(
-                  itemCount: 100,
-                  initialIndex: 50,
-                  onPositionsChanged: reports.add,
-                  itemBuilder: (_, i) => SizedBox(
-                    height: i == 50 && tall ? 200 : 100,
-                    child: Text('item $i'),
-                  ),
-                );
-              },
-            ),
+        Directionality(
+          textDirection: TextDirection.ltr,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              set = setState;
+              return AnchorListView.builder(
+                itemCount: 100,
+                initialIndex: 50,
+                onPositionsChanged: reports.add,
+                itemBuilder: (_, i) => SizedBox(
+                  height: i == 50 && tall ? 200 : 100,
+                  child: Text('item $i'),
+                ),
+              );
+            },
           ),
         ),
       );
