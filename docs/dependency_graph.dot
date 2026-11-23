@@ -1,5 +1,6 @@
 digraph packages {
   size="10"; ratio=fill;
+  anchor_list_view [shape="box"; color="#db95e3"];
   backup [shape="box"; color="#022013"];
   configurator [shape="box"; color="#205f06"];
   db_client [shape="box"; color="#c4fbfc"];
@@ -61,23 +62,13 @@ digraph packages {
   photo_recovery -> photo_storage [style="filled"; color="#c6f715"];
   photo_storage -> native_image_compressor [style="filled"; color="#d71507"];
   provider_utils -> utils [style="filled"; color="#f548cf"];
+  scroll_calendar -> anchor_list_view [style="filled"; color="#db95e3"];
   update_requester -> configurator [style="filled"; color="#205f06"];
   widgets -> utils [style="filled"; color="#f548cf"];
-  subgraph "cluster packages/features" {
-    label="packages/features";
-    color="#f62736";
-    backup;
-    diary;
-    exporter;
-    haptics;
-    in_app_reviewer;
-    photo_recovery;
-    scroll_calendar;
-    update_requester;
-  }
   subgraph "cluster packages/core" {
     label="packages/core";
     color="#7bbd47";
+    anchor_list_view;
     configurator;
     db_client;
     device_photos;
@@ -92,6 +83,18 @@ digraph packages {
     tracker;
     utils;
     widgets;
+  }
+  subgraph "cluster packages/features" {
+    label="packages/features";
+    color="#f62736";
+    backup;
+    diary;
+    exporter;
+    haptics;
+    in_app_reviewer;
+    photo_recovery;
+    scroll_calendar;
+    update_requester;
   }
   subgraph "cluster packages/core/native_image_compressor" {
     label="packages/core/native_image_compressor";
