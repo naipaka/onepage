@@ -242,6 +242,178 @@ void main() {
       }
     });
 
+    group('search', () {
+      final field = find.descendant(
+        of: find.byType(Dialog),
+        matching: find.byType(TextField),
+      );
+
+      Finder result(String content) => find.descendant(
+        of: find.byType(Dialog),
+        matching: find.text(content, findRichText: true),
+      );
+
+      setUp(() async {
+        final today = clock.now();
+        for (var i = 1; i <= 30; i++) {
+          await dbClient.insertDiary(
+            content: 'cafe $i',
+            date: DateTime(today.year, today.month, today.day - i),
+          );
+        }
+      });
+
+      // The cursor of the search field keeps blinking, so the frames never
+      // settle.
+      Future<void> pumpFrames(WidgetTester tester) async {
+        await tester.pump();
+        await tester.pump(const Duration(seconds: 1));
+      }
+
+      Future<void> openSearch(WidgetTester tester) async {
+        await tester.tap(find.byIcon(Icons.search).first);
+        await pumpFrames(tester);
+      }
+
+      Future<void> closeSearch(WidgetTester tester) async {
+        await tester.tapAt(const Offset(5, 5));
+        await pumpFrames(tester);
+      }
+
+      Future<void> search(WidgetTester tester, String term) async {
+        await openSearch(tester);
+        await tester.enterText(field, term);
+        // Waits for the search after typing stops.
+        await pumpFrames(tester);
+        await pumpFrames(tester);
+      }
+
+      ScrollPosition resultsPosition(WidgetTester tester) {
+        return tester
+            .state<ScrollableState>(
+              find.descendant(
+                of: find.descendant(
+                  of: find.byType(Dialog),
+                  matching: find.byType(ListView),
+                ),
+                matching: find.byType(Scrollable),
+              ),
+            )
+            .position;
+      }
+
+      testWidgets('loads the next page at the end of the results', (
+        tester,
+      ) async {
+        await pumpHome(tester);
+        await search(tester, 'cafe');
+        final container = ProviderScope.containerOf(tester.element(field));
+        int loadedCount() => container
+            .read(diarySearchResultsProvider('cafe'))
+            .requireValue
+            .entries
+            .length;
+        expect(loadedCount(), 20);
+
+        final position = resultsPosition(tester);
+        position.jumpTo(position.maxScrollExtent);
+        await pumpFrames(tester);
+        position.jumpTo(position.maxScrollExtent);
+        await pumpFrames(tester);
+
+        expect(loadedCount(), 30);
+        expect(result('cafe 30'), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byType(Dialog),
+            matching: find.byType(CircularProgressIndicator),
+          ),
+          findsNothing,
+        );
+      });
+
+      testWidgets('opens again with the term, the results, and the scroll '
+          'position', (tester) async {
+        await pumpHome(tester);
+        await search(tester, 'cafe');
+        resultsPosition(tester).jumpTo(300);
+        await pumpFrames(tester);
+
+        await closeSearch(tester);
+        await openSearch(tester);
+
+        expect(tester.widget<TextField>(field).controller!.text, 'cafe');
+        expect(resultsPosition(tester).pixels, 300);
+      });
+
+      testWidgets('opens again with the diaries as they are now', (
+        tester,
+      ) async {
+        await pumpHome(tester);
+        await search(tester, 'cafe');
+        expect(result('cafe 1'), findsOneWidget);
+        await closeSearch(tester);
+
+        final entry = (await dbClient.searchDiaries(searchTerm: 'cafe 1'))
+            .first;
+        await dbClient.updateDiary(id: entry.id, content: 'cafe one');
+        await openSearch(tester);
+
+        expect(result('cafe 1'), findsNothing);
+        expect(result('cafe one'), findsOneWidget);
+      });
+
+      testWidgets('saves the term of an opened result as a recent term', (
+        tester,
+      ) async {
+        await pumpHome(tester);
+        await search(tester, 'cafe');
+
+        await tester.tap(result('cafe 1'));
+        await tester.pumpAndSettle();
+        await openSearch(tester);
+        await tester.enterText(field, '');
+        await pumpFrames(tester);
+
+        expect(find.text('Recent searches'), findsOneWidget);
+        expect(prefsClient.recentDiarySearchTerms, ['cafe']);
+      });
+
+      testWidgets('searches a recent term at once when it is tapped', (
+        tester,
+      ) async {
+        prefsClient = createPrefsClient(recentDiarySearchTerms: ['cafe']);
+        await pumpHome(tester);
+        await openSearch(tester);
+
+        await tester.tap(find.text('cafe'));
+        await tester.pump();
+        await tester.pump();
+
+        expect(tester.widget<TextField>(field).controller!.text, 'cafe');
+        expect(result('cafe 1'), findsOneWidget);
+      });
+
+      testWidgets('removes one recent term, and then every term', (
+        tester,
+      ) async {
+        prefsClient = createPrefsClient(
+          recentDiarySearchTerms: ['cafe', 'rain', 'tea'],
+        );
+        await pumpHome(tester);
+        await openSearch(tester);
+
+        await tester.tap(find.byTooltip('Remove').first);
+        await pumpFrames(tester);
+        expect(prefsClient.recentDiarySearchTerms, ['rain', 'tea']);
+
+        await tester.tap(find.text('Clear All'));
+        await pumpFrames(tester);
+        expect(prefsClient.recentDiarySearchTerms, isEmpty);
+        expect(find.text('Recent searches'), findsNothing);
+      });
+    });
+
     testWidgets('shows a failed load and loads again on retry', (
       tester,
     ) async {
