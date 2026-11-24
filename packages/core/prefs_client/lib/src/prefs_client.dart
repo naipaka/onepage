@@ -111,4 +111,14 @@ class PrefsClient {
   /// Sets whether the diary image notice dialog has been shown.
   Future<bool> setHasShownDiaryImageNotice({required bool shown}) =>
       _prefs.setBool(PrefsKey.diaryImageNoticeShown.name, shown);
+
+  /// Gets the diary search terms used recently, the newest first.
+  ///
+  /// Returns an empty list if no value has been set.
+  List<String> get recentDiarySearchTerms =>
+      _prefs.getStringList(PrefsKey.recentDiarySearchTerms.name) ?? [];
+
+  /// Sets the diary search terms used recently, the newest first.
+  Future<bool> setRecentDiarySearchTerms(List<String> terms) =>
+      _prefs.setStringList(PrefsKey.recentDiarySearchTerms.name, terms);
 }

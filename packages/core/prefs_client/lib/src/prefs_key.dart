@@ -29,4 +29,7 @@ enum PrefsKey {
 
   /// Whether the user chose not to recover the remaining photos.
   photoRecoveryDismissed,
+
+  /// The diary search terms used recently, the newest first.
+  recentDiarySearchTerms,
 }
