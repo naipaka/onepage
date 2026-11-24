@@ -144,7 +144,7 @@ Device checks agreed in step 3, from `packages/app`:
 
 - Other projects use simulators and emulators on this machine. Boot your own device, pass its id to every command (`-d <udid>`, `adb -s <id>`), and leave every other device untouched. Commands without a device id (`simctl shutdown all`, `adb kill-server`) are off limits.
 - iOS simulator, debug, on the newest iOS runtime: `fvm flutter run -d <udid> --debug --dart-define-from-file=dart_defines/dev.env`
-- Android emulator: `adb -s <id> uninstall com.naipaka.onepage.dev` first, then `fvm flutter run -d <id>`; trust the run only after the install succeeds.
+- Android emulator, debug: `fvm flutter run -d <id> --debug --dart-define-from-file=dart_defines/dev.env`; trust the run only after the install succeeds. Never use `adb uninstall` or `flutter install`.
 - The connected iPhone runs release builds only; use it when the user asks or when a change needs a real device.
 - Exercise only the agreed flows, and watch the console for exceptions and deprecation warnings.
 - Each flow takes the shortest path that runs the changed code, and checks only the result after it that the change affects. Skip results another flow already checks.

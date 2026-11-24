@@ -73,7 +73,9 @@ The release APK can still print a few `e:` lines of this kind from `play-service
 
 ### The emulator check uses a stale app
 
-Uninstall `com.naipaka.onepage.dev` before installing, and trust the run only after the install reports success. Uninstalling also removes the app's data on that emulator.
+`fvm flutter run -d <id> --debug --dart-define-from-file=dart_defines/dev.env` installs over the app already on the emulator and keeps its data. Trust the run only after the log shows `Installing build/app/outputs/flutter-apk/app-debug.apk...` and the app starts.
+
+Never run `adb uninstall` or `flutter install`: they remove the app's data, and the `guard-app-data.sh` hook stops them for the user's approval, so an unattended run waits there until the user answers.
 
 ## GitHub
 
