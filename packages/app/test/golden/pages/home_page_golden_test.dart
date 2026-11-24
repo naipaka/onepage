@@ -16,7 +16,6 @@ import 'package:onepage/pages/pages.dart';
 import 'package:onepage/widgets/widgets.dart';
 import 'package:photo_client/photo_client.dart';
 import 'package:photo_storage/photo_storage.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../utils/clients.dart';
 import '../golden_fakes.dart';
@@ -119,10 +118,25 @@ class _FailingDiaries extends CachedDiaries {
   Future<DiariesWithDates> build() => Future.error(Exception('failed'));
 }
 
-/// A search whose next page keeps loading.
-class _LoadingMoreSearch extends DiarySearch {
+/// Search results whose next page keeps loading.
+class _LoadingMoreSearch extends DiarySearchResults {
   @override
   Future<void> loadMore() => Completer<void>().future;
+}
+
+/// Search results whose first page fails to load.
+class _FailingSearch extends DiarySearchResults {
+  @override
+  Future<LoadedDiaryEntries> build(String term) =>
+      Future.error(Exception('failed'));
+}
+
+/// Search results whose next page fails to load.
+class _FailingToLoadMoreSearch extends DiarySearchResults {
+  @override
+  Future<void> loadMore() async {
+    state = AsyncError(Exception('failed'), StackTrace.current);
+  }
 }
 
 void main() {
@@ -133,6 +147,7 @@ void main() {
       required GoldenVariant variant,
       Widget page = const HomePage(),
       bool recoveryRuns = false,
+      List<String> recentDiarySearchTerms = const [],
       List<Override> overrides = const [],
       Future<void> Function(WidgetTester tester, _Texts texts)? act,
     }) async {
@@ -146,6 +161,10 @@ void main() {
         now: _now,
         dbClient: dbClient,
         photoStorage: photoStorage,
+        prefsClient: createPrefsClient(
+          hapticsEnabled: true,
+          recentDiarySearchTerms: recentDiarySearchTerms,
+        ),
         overrides: [
           devicePhotosProvider.overrideWithValue(FakeDevicePhotos()),
           photoRecoveryCommandProvider.overrideWithValue(
@@ -179,6 +198,24 @@ void main() {
       // Waits for the search after typing stops.
       await tester.pump(const Duration(seconds: 1));
       await tester.pump(const Duration(seconds: 1));
+    }
+
+    /// Scrolls the search results to the end, where the next page loads.
+    Future<void> scrollResultsToEnd(WidgetTester tester) async {
+      final position = tester
+          .state<ScrollableState>(
+            find.descendant(
+              of: find.descendant(
+                of: find.byType(Dialog),
+                matching: find.byType(ListView),
+              ),
+              matching: find.byType(Scrollable),
+            ),
+          )
+          .position;
+      position.jumpTo(position.maxScrollExtent);
+      await tester.pump();
+      await tester.pump();
     }
 
     for (final variant in GoldenVariant.values) {
@@ -334,36 +371,68 @@ void main() {
 
       testWidgets('renders the search results loading more with '
           '${variant.suffix}', (tester) async {
-        // Reports the visibility of the last row in the frame that shows it,
-        // so that no timer of the next report is left after the test.
-        final interval = VisibilityDetectorController.instance.updateInterval;
-        VisibilityDetectorController.instance.updateInterval = Duration.zero;
-        addTearDown(
-          () => VisibilityDetectorController.instance.updateInterval = interval,
-        );
-
         await expectGoldenMatches(
           tester,
           'home_page_search_results',
           variant: variant,
-          overrides: [diarySearchProvider.overrideWith(_LoadingMoreSearch.new)],
+          overrides: [
+            diarySearchResultsProvider.overrideWith2(
+              (_) => _LoadingMoreSearch(),
+            ),
+          ],
           act: (tester, texts) async {
             await search(tester, texts.found);
-            final position = tester
-                .state<ScrollableState>(
-                  find.descendant(
-                    of: find.descendant(
-                      of: find.byType(Dialog),
-                      matching: find.byType(ListView),
-                    ),
-                    matching: find.byType(Scrollable),
-                  ),
-                )
-                .position;
-            position.jumpTo(position.maxScrollExtent);
+            await scrollResultsToEnd(tester);
             // The loading indicator keeps moving, so the frames never settle.
-            await tester.pump();
             await tester.pump(const Duration(milliseconds: 500));
+          },
+        );
+      });
+
+      testWidgets('renders the recent search terms with ${variant.suffix}', (
+        tester,
+      ) async {
+        await expectGoldenMatches(
+          tester,
+          'home_page_search_recent',
+          variant: variant,
+          recentDiarySearchTerms: [
+            _textsOf(variant).found,
+            _textsOf(variant).missing,
+          ],
+          act: (tester, _) => openSearch(tester),
+        );
+      });
+
+      testWidgets('renders a search that failed with ${variant.suffix}', (
+        tester,
+      ) async {
+        await expectGoldenMatches(
+          tester,
+          'home_page_search_failed',
+          variant: variant,
+          overrides: [
+            diarySearchResultsProvider.overrideWith2((_) => _FailingSearch()),
+          ],
+          act: (tester, texts) => search(tester, texts.found),
+        );
+      });
+
+      testWidgets('renders search results that failed to load more with '
+          '${variant.suffix}', (tester) async {
+        await expectGoldenMatches(
+          tester,
+          'home_page_search_load_more_failed',
+          variant: variant,
+          overrides: [
+            diarySearchResultsProvider.overrideWith2(
+              (_) => _FailingToLoadMoreSearch(),
+            ),
+          ],
+          act: (tester, texts) async {
+            await search(tester, texts.found);
+            await scrollResultsToEnd(tester);
+            await scrollResultsToEnd(tester);
           },
         );
       });

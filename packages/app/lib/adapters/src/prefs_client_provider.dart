@@ -82,6 +82,50 @@ class PhotoRecoveryDismissed extends _$PhotoRecoveryDismissed {
   }
 }
 
+/// {@template onepage.RecentDiarySearchTerms}
+/// The diary search terms that the user used recently, the newest first.
+///
+/// A term counts as used when the user opens one of its results or submits
+/// it from the keyboard. Terms that differ only in letter case are the same
+/// term, since the search ignores letter case.
+/// {@endtemplate}
+@Riverpod(keepAlive: true)
+class RecentDiarySearchTerms extends _$RecentDiarySearchTerms {
+  /// The most terms to keep.
+  static const maxCount = 8;
+
+  @override
+  List<String> build() {
+    final prefsClient = ref.watch(prefsClientProvider);
+    return prefsClient.recentDiarySearchTerms;
+  }
+
+  /// Puts [term] first, removing the same term used before.
+  Future<void> add(String term) {
+    final key = term.toLowerCase();
+    return _save(
+      [
+        term,
+        ...state.where((t) => t.toLowerCase() != key),
+      ].take(maxCount).toList(),
+    );
+  }
+
+  /// Removes [term].
+  Future<void> remove(String term) {
+    return _save(state.where((t) => t != term).toList());
+  }
+
+  /// Removes every term.
+  Future<void> clear() => _save([]);
+
+  Future<void> _save(List<String> terms) async {
+    state = terms;
+    final prefsClient = ref.read(prefsClientProvider);
+    await prefsClient.setRecentDiarySearchTerms(terms);
+  }
+}
+
 /// {@template onepage.NotificationSettingsNotifier}
 /// Notifier for managing notification settings.
 /// {@endtemplate}

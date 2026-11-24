@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:async/async.dart';
 import 'package:clock/clock.dart';
@@ -218,65 +219,116 @@ class CachedDiaries extends _$CachedDiaries {
   }
 }
 
-/// Type definition for search result with pagination information.
-typedef SearchResult = ({
-  List<DiaryEntry> diaries,
-  bool hasMore,
-  String searchTerm,
-});
+/// The search term of the diary search, and how far its results are
+/// scrolled.
+typedef DiarySearchPlace = ({String term, double scrollOffset});
 
-/// Provides search functionality for diary entries.
+/// {@template onepage.DiarySearchSession}
+/// The diary search that the search dialog shows, kept until the app closes
+/// so that the dialog opens again where the user left it.
+///
+/// The term is empty when nothing is searched.
+/// {@endtemplate}
 @Riverpod(keepAlive: true)
-class DiarySearch extends _$DiarySearch {
-  static const int _pageSize = 20;
-
+class DiarySearchSession extends _$DiarySearchSession {
   @override
-  SearchResult build() {
-    return (diaries: [], hasMore: false, searchTerm: '');
-  }
+  DiarySearchPlace build() => (term: '', scrollOffset: 0);
 
-  /// Searches diary entries with the given search term.
+  /// Searches [term] from the top of its results.
   ///
-  /// If [isLoadMore] is true, it appends results to existing ones.
-  /// Otherwise, it replaces the current results.
-  Future<void> search(String searchTerm, {bool isLoadMore = false}) async {
-    if (searchTerm.trim().isEmpty) {
-      state = (diaries: [], hasMore: false, searchTerm: '');
+  /// Does nothing when [term] is the term already searched.
+  void search(String term) {
+    if (term == state.term) {
       return;
     }
-
-    final diaryQuery = ref.read(diaryQueryProvider);
-    final currentState = state;
-    final offset = isLoadMore ? currentState.diaries.length : 0;
-
-    final results = await diaryQuery.searchDiaries(
-      searchTerm: searchTerm.trim(),
-      limit: _pageSize,
-      offset: offset,
-    );
-
-    final hasMore = results.length == _pageSize;
-    final diaries = isLoadMore
-        ? [...currentState.diaries, ...results]
-        : results;
-
-    state = (
-      diaries: diaries,
-      hasMore: hasMore,
-      searchTerm: searchTerm.trim(),
-    );
+    state = (term: term, scrollOffset: 0);
   }
 
-  /// Loads more search results for the current search term.
-  Future<void> loadMore() async {
-    final currentState = state;
-    if (currentState.hasMore && currentState.searchTerm.isNotEmpty) {
-      await search(currentState.searchTerm, isLoadMore: true);
+  /// Saves how far the results of the term are scrolled.
+  void saveScrollOffset(double scrollOffset) {
+    state = (term: state.term, scrollOffset: scrollOffset);
+  }
+}
+
+/// The diary entries loaded for a search, and whether more of them are left.
+typedef LoadedDiaryEntries = ({List<DiaryEntry> entries, bool hasMore});
+
+/// {@template onepage.DiarySearchResults}
+/// The diary entries that contain a search term, the newest first, loaded
+/// a page at a time.
+///
+/// The results of the term of [DiarySearchSession] stay after the search
+/// dialog closes, and the others are disposed when nothing watches them.
+/// A failure to load more entries keeps the loaded ones in the state.
+/// {@endtemplate}
+@riverpod
+class DiarySearchResults extends _$DiarySearchResults {
+  static const _pageSize = 20;
+
+  /// Runs one load at a time, so that calls during a load wait for it
+  /// instead of loading the same entries again.
+  final _load = AsyncCache<void>.ephemeral();
+
+  @override
+  Future<LoadedDiaryEntries> build(String term) {
+    final link = ref.keepAlive();
+    ref.listen(diarySearchSessionProvider, (_, place) {
+      if (place.term != term) {
+        link.close();
+      }
+    }, fireImmediately: true);
+    return _search(offset: 0, limit: _pageSize);
+  }
+
+  /// Loads the next page of the entries.
+  ///
+  /// Does nothing when no entries are loaded or none are left.
+  Future<void> loadMore() => _load.fetch(() async {
+    final loaded = state.value;
+    if (loaded == null || !loaded.hasMore) {
+      return;
     }
-  }
+    final result = await AsyncValue.guard(() async {
+      final next = await _search(
+        offset: loaded.entries.length,
+        limit: _pageSize,
+      );
+      return (
+        entries: [...loaded.entries, ...next.entries],
+        hasMore: next.hasMore,
+      );
+    });
+    if (ref.mounted) {
+      state = result;
+    }
+  });
 
-  /// Clears the search results.
-  void clear() {
-    state = (diaries: [], hasMore: false, searchTerm: '');
+  /// Loads the pages loaded so far again, so that they show the diaries as
+  /// they are now.
+  ///
+  /// Searches again from the first page when no entries are loaded.
+  Future<void> reload() => _load.fetch(() async {
+    final loaded = state.value;
+    if (loaded == null) {
+      ref.invalidateSelf();
+      return;
+    }
+    final pages = (loaded.entries.length / _pageSize).ceil();
+    final result = await AsyncValue.guard(
+      () => _search(offset: 0, limit: max(pages, 1) * _pageSize),
+    );
+    if (ref.mounted) {
+      state = result;
+    }
+  });
+
+  Future<LoadedDiaryEntries> _search({
+    required int offset,
+    required int limit,
+  }) async {
+    final entries = await ref
+        .read(diaryQueryProvider)
+        .searchDiaries(searchTerm: term, limit: limit, offset: offset);
+    return (entries: entries, hasMore: entries.length == limit);
   }
 }

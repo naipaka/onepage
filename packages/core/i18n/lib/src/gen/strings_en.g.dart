@@ -287,6 +287,24 @@ class Translations$search$en {
 
 	/// en: 'No search results found'
 	String get noResults => 'No search results found';
+
+	/// en: 'Recent searches'
+	String get recentTitle => 'Recent searches';
+
+	/// en: 'Clear All'
+	String get clearRecent => 'Clear All';
+
+	/// en: 'Remove'
+	String get removeRecent => 'Remove';
+
+	/// en: 'Could not search your diary'
+	String get failed => 'Could not search your diary';
+
+	/// en: 'Could not load more results'
+	String get loadMoreFailed => 'Could not load more results';
+
+	/// en: 'Retry'
+	String get retry => 'Retry';
 }
 
 // Path: notification
@@ -711,6 +729,12 @@ extension on Translations {
 			'search.searchHint' => 'Enter search keyword',
 			'search.placeholder' => 'Search results will appear here',
 			'search.noResults' => 'No search results found',
+			'search.recentTitle' => 'Recent searches',
+			'search.clearRecent' => 'Clear All',
+			'search.removeRecent' => 'Remove',
+			'search.failed' => 'Could not search your diary',
+			'search.loadMoreFailed' => 'Could not load more results',
+			'search.retry' => 'Retry',
 			'notification.title' => 'Notifications',
 			'notification.timePickerConfirm' => 'OK',
 			'notification.addTime' => 'Add time',

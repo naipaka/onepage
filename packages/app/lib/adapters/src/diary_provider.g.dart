@@ -356,60 +356,224 @@ abstract class _$CachedDiaries extends $AsyncNotifier<DiariesWithDates> {
   }
 }
 
-/// Provides search functionality for diary entries.
+/// {@template onepage.DiarySearchSession}
+/// The diary search that the search dialog shows, kept until the app closes
+/// so that the dialog opens again where the user left it.
+///
+/// The term is empty when nothing is searched.
+/// {@endtemplate}
 
-@ProviderFor(DiarySearch)
-final diarySearchProvider = DiarySearchProvider._();
+@ProviderFor(DiarySearchSession)
+final diarySearchSessionProvider = DiarySearchSessionProvider._();
 
-/// Provides search functionality for diary entries.
-final class DiarySearchProvider
-    extends $NotifierProvider<DiarySearch, SearchResult> {
-  /// Provides search functionality for diary entries.
-  DiarySearchProvider._()
+/// {@template onepage.DiarySearchSession}
+/// The diary search that the search dialog shows, kept until the app closes
+/// so that the dialog opens again where the user left it.
+///
+/// The term is empty when nothing is searched.
+/// {@endtemplate}
+final class DiarySearchSessionProvider
+    extends $NotifierProvider<DiarySearchSession, DiarySearchPlace> {
+  /// {@template onepage.DiarySearchSession}
+  /// The diary search that the search dialog shows, kept until the app closes
+  /// so that the dialog opens again where the user left it.
+  ///
+  /// The term is empty when nothing is searched.
+  /// {@endtemplate}
+  DiarySearchSessionProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'diarySearchProvider',
+        name: r'diarySearchSessionProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$diarySearchHash();
+  String debugGetCreateSourceHash() => _$diarySearchSessionHash();
 
   @$internal
   @override
-  DiarySearch create() => DiarySearch();
+  DiarySearchSession create() => DiarySearchSession();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(SearchResult value) {
+  Override overrideWithValue(DiarySearchPlace value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<SearchResult>(value),
+      providerOverride: $SyncValueProvider<DiarySearchPlace>(value),
     );
   }
 }
 
-String _$diarySearchHash() => r'9655f6dd5d9515995bec8c6b4312b59f16dcd9fb';
+String _$diarySearchSessionHash() =>
+    r'fa7e6af7145c437621f4dd1cdd0f5e0eec23e983';
 
-/// Provides search functionality for diary entries.
+/// {@template onepage.DiarySearchSession}
+/// The diary search that the search dialog shows, kept until the app closes
+/// so that the dialog opens again where the user left it.
+///
+/// The term is empty when nothing is searched.
+/// {@endtemplate}
 
-abstract class _$DiarySearch extends $Notifier<SearchResult> {
-  SearchResult build();
+abstract class _$DiarySearchSession extends $Notifier<DiarySearchPlace> {
+  DiarySearchPlace build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<SearchResult, SearchResult>;
+    final ref = this.ref as $Ref<DiarySearchPlace, DiarySearchPlace>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<SearchResult, SearchResult>,
-              SearchResult,
+              AnyNotifier<DiarySearchPlace, DiarySearchPlace>,
+              DiarySearchPlace,
               Object?,
               Object?
             >;
     return element.handleCreate(ref, build);
+  }
+}
+
+/// {@template onepage.DiarySearchResults}
+/// The diary entries that contain a search term, the newest first, loaded
+/// a page at a time.
+///
+/// The results of the term of [DiarySearchSession] stay after the search
+/// dialog closes, and the others are disposed when nothing watches them.
+/// A failure to load more entries keeps the loaded ones in the state.
+/// {@endtemplate}
+
+@ProviderFor(DiarySearchResults)
+final diarySearchResultsProvider = DiarySearchResultsFamily._();
+
+/// {@template onepage.DiarySearchResults}
+/// The diary entries that contain a search term, the newest first, loaded
+/// a page at a time.
+///
+/// The results of the term of [DiarySearchSession] stay after the search
+/// dialog closes, and the others are disposed when nothing watches them.
+/// A failure to load more entries keeps the loaded ones in the state.
+/// {@endtemplate}
+final class DiarySearchResultsProvider
+    extends $AsyncNotifierProvider<DiarySearchResults, LoadedDiaryEntries> {
+  /// {@template onepage.DiarySearchResults}
+  /// The diary entries that contain a search term, the newest first, loaded
+  /// a page at a time.
+  ///
+  /// The results of the term of [DiarySearchSession] stay after the search
+  /// dialog closes, and the others are disposed when nothing watches them.
+  /// A failure to load more entries keeps the loaded ones in the state.
+  /// {@endtemplate}
+  DiarySearchResultsProvider._({
+    required DiarySearchResultsFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'diarySearchResultsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$diarySearchResultsHash();
+
+  @override
+  String toString() {
+    return r'diarySearchResultsProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  DiarySearchResults create() => DiarySearchResults();
+
+  @override
+  bool operator ==(Object other) {
+    return other is DiarySearchResultsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$diarySearchResultsHash() =>
+    r'7726a063a7eba138db0ff4e0c412426b19054aa5';
+
+/// {@template onepage.DiarySearchResults}
+/// The diary entries that contain a search term, the newest first, loaded
+/// a page at a time.
+///
+/// The results of the term of [DiarySearchSession] stay after the search
+/// dialog closes, and the others are disposed when nothing watches them.
+/// A failure to load more entries keeps the loaded ones in the state.
+/// {@endtemplate}
+
+final class DiarySearchResultsFamily extends $Family
+    with
+        $ClassFamilyOverride<
+          DiarySearchResults,
+          AsyncValue<LoadedDiaryEntries>,
+          LoadedDiaryEntries,
+          FutureOr<LoadedDiaryEntries>,
+          String
+        > {
+  DiarySearchResultsFamily._()
+    : super(
+        retry: null,
+        name: r'diarySearchResultsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// {@template onepage.DiarySearchResults}
+  /// The diary entries that contain a search term, the newest first, loaded
+  /// a page at a time.
+  ///
+  /// The results of the term of [DiarySearchSession] stay after the search
+  /// dialog closes, and the others are disposed when nothing watches them.
+  /// A failure to load more entries keeps the loaded ones in the state.
+  /// {@endtemplate}
+
+  DiarySearchResultsProvider call(String term) =>
+      DiarySearchResultsProvider._(argument: term, from: this);
+
+  @override
+  String toString() => r'diarySearchResultsProvider';
+}
+
+/// {@template onepage.DiarySearchResults}
+/// The diary entries that contain a search term, the newest first, loaded
+/// a page at a time.
+///
+/// The results of the term of [DiarySearchSession] stay after the search
+/// dialog closes, and the others are disposed when nothing watches them.
+/// A failure to load more entries keeps the loaded ones in the state.
+/// {@endtemplate}
+
+abstract class _$DiarySearchResults extends $AsyncNotifier<LoadedDiaryEntries> {
+  late final _$args = ref.$arg as String;
+  String get term => _$args;
+
+  FutureOr<LoadedDiaryEntries> build(String term);
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref =
+        this.ref as $Ref<AsyncValue<LoadedDiaryEntries>, LoadedDiaryEntries>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<LoadedDiaryEntries>, LoadedDiaryEntries>,
+              AsyncValue<LoadedDiaryEntries>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, () => build(_$args));
   }
 }

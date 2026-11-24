@@ -315,6 +315,89 @@ abstract class _$PhotoRecoveryDismissed extends $Notifier<bool> {
   }
 }
 
+/// {@template onepage.RecentDiarySearchTerms}
+/// The diary search terms that the user used recently, the newest first.
+///
+/// A term counts as used when the user opens one of its results or submits
+/// it from the keyboard. Terms that differ only in letter case are the same
+/// term, since the search ignores letter case.
+/// {@endtemplate}
+
+@ProviderFor(RecentDiarySearchTerms)
+final recentDiarySearchTermsProvider = RecentDiarySearchTermsProvider._();
+
+/// {@template onepage.RecentDiarySearchTerms}
+/// The diary search terms that the user used recently, the newest first.
+///
+/// A term counts as used when the user opens one of its results or submits
+/// it from the keyboard. Terms that differ only in letter case are the same
+/// term, since the search ignores letter case.
+/// {@endtemplate}
+final class RecentDiarySearchTermsProvider
+    extends $NotifierProvider<RecentDiarySearchTerms, List<String>> {
+  /// {@template onepage.RecentDiarySearchTerms}
+  /// The diary search terms that the user used recently, the newest first.
+  ///
+  /// A term counts as used when the user opens one of its results or submits
+  /// it from the keyboard. Terms that differ only in letter case are the same
+  /// term, since the search ignores letter case.
+  /// {@endtemplate}
+  RecentDiarySearchTermsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'recentDiarySearchTermsProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$recentDiarySearchTermsHash();
+
+  @$internal
+  @override
+  RecentDiarySearchTerms create() => RecentDiarySearchTerms();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<String> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<String>>(value),
+    );
+  }
+}
+
+String _$recentDiarySearchTermsHash() =>
+    r'6528322c2937046bb62b494c9585329b85bd6e8a';
+
+/// {@template onepage.RecentDiarySearchTerms}
+/// The diary search terms that the user used recently, the newest first.
+///
+/// A term counts as used when the user opens one of its results or submits
+/// it from the keyboard. Terms that differ only in letter case are the same
+/// term, since the search ignores letter case.
+/// {@endtemplate}
+
+abstract class _$RecentDiarySearchTerms extends $Notifier<List<String>> {
+  List<String> build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<List<String>, List<String>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<String>, List<String>>,
+              List<String>,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
 /// {@template onepage.NotificationSettingsNotifier}
 /// Notifier for managing notification settings.
 /// {@endtemplate}
