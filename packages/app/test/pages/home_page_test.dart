@@ -346,6 +346,20 @@ void main() {
         expect(resultsPosition(tester).pixels, 300);
       });
 
+      testWidgets('opens again with the term after a result is opened', (
+        tester,
+      ) async {
+        await pumpHome(tester);
+        await search(tester, 'cafe');
+
+        await tester.tap(result('cafe 1'));
+        await tester.pumpAndSettle();
+        await openSearch(tester);
+
+        expect(tester.widget<TextField>(field).controller!.text, 'cafe');
+        expect(result('cafe 1'), findsOneWidget);
+      });
+
       testWidgets('opens again with the diaries as they are now', (
         tester,
       ) async {

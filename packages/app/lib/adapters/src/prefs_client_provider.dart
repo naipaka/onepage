@@ -92,7 +92,7 @@ class PhotoRecoveryDismissed extends _$PhotoRecoveryDismissed {
 @Riverpod(keepAlive: true)
 class RecentDiarySearchTerms extends _$RecentDiarySearchTerms {
   /// The most terms to keep.
-  static const maxCount = 8;
+  static const maxCount = 5;
 
   @override
   List<String> build() {
