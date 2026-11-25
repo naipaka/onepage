@@ -17,6 +17,9 @@ class _ControlledDiaryQuery extends DiaryQuery {
   Completer<void>? waiting;
 
   @override
+  int minSearchTermLength = 2;
+
+  @override
   Future<List<DiaryEntry>> searchDiaries({
     required String searchTerm,
     int? limit,
@@ -57,7 +60,10 @@ void main() {
     diaryQuery = _ControlledDiaryQuery(dbClient: dbClient);
     container = ProviderContainer(
       retry: noRetry,
-      overrides: [diaryQueryProvider.overrideWithValue(diaryQuery)],
+      overrides: [
+        diaryQueryProvider.overrideWithValue(diaryQuery),
+        prefsClientProvider.overrideWithValue(createPrefsClient()),
+      ],
     );
     addTearDown(container.dispose);
   });
@@ -68,6 +74,29 @@ void main() {
 
     test('starts with no term at the top', () {
       expect(container.read(diarySearchSessionProvider), (
+        input: '',
+        term: '',
+        scrollOffset: 0.0,
+      ));
+    });
+
+    test('searches the input without the spaces around it', () {
+      notifier().search(' cafe ');
+
+      expect(container.read(diarySearchSessionProvider), (
+        input: ' cafe ',
+        term: 'cafe',
+        scrollOffset: 0.0,
+      ));
+    });
+
+    test('searches nothing for a term shorter than the minimum', () {
+      diaryQuery.minSearchTermLength = 5;
+
+      notifier().search('cafe');
+
+      expect(container.read(diarySearchSessionProvider), (
+        input: 'cafe',
         term: '',
         scrollOffset: 0.0,
       ));
@@ -77,9 +106,10 @@ void main() {
       notifier()
         ..search('cafe')
         ..saveScrollOffset(120)
-        ..search('cafe');
+        ..search('cafe ');
 
       expect(container.read(diarySearchSessionProvider), (
+        input: 'cafe ',
         term: 'cafe',
         scrollOffset: 120.0,
       ));
@@ -92,9 +122,26 @@ void main() {
         ..search('rain');
 
       expect(container.read(diarySearchSessionProvider), (
+        input: 'rain',
         term: 'rain',
         scrollOffset: 0.0,
       ));
+    });
+
+    test('addTermToRecent adds the searched term', () async {
+      notifier().search(' cafe ');
+
+      await notifier().addTermToRecent();
+
+      expect(container.read(recentDiarySearchTermsProvider), ['cafe']);
+    });
+
+    test('addTermToRecent adds nothing when nothing is searched', () async {
+      notifier().search('c');
+
+      await notifier().addTermToRecent();
+
+      expect(container.read(recentDiarySearchTermsProvider), isEmpty);
     });
   });
 
@@ -206,6 +253,16 @@ void main() {
 
       expect(await container.read(cafe.future), isA<LoadedDiaryEntries>());
       expect(contents(), hasLength(20));
+    });
+
+    test('has no entries for an empty term, searching nothing', () {
+      diaryQuery.failingOffsets.add(0);
+
+      final results = container.read(diarySearchResultsProvider(''));
+
+      expect(results, const AsyncData<LoadedDiaryEntries>(
+        (entries: [], hasMore: false),
+      ));
     });
 
     test(

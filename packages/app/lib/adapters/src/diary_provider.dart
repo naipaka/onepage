@@ -10,6 +10,7 @@ import 'package:scroll_calendar/scroll_calendar.dart';
 
 import 'db_client_provider.dart';
 import 'diary_image_provider.dart';
+import 'prefs_client_provider.dart';
 
 part 'diary_provider.g.dart';
 
@@ -219,34 +220,65 @@ class CachedDiaries extends _$CachedDiaries {
   }
 }
 
-/// The search term of the diary search, and how far its results are
-/// scrolled.
-typedef DiarySearchPlace = ({String term, double scrollOffset});
+/// The minimum length of a diary search term.
+///
+/// {@macro diary.DiaryQuery.minSearchTermLength}
+@Riverpod(keepAlive: true)
+int minDiarySearchTermLength(Ref ref) {
+  final diaryQuery = ref.watch(diaryQueryProvider);
+  return diaryQuery.minSearchTermLength;
+}
+
+/// The text the user entered in the diary search, the term searched from it,
+/// and how far the results of the term are scrolled.
+typedef DiarySearchPlace = ({String input, String term, double scrollOffset});
 
 /// {@template onepage.DiarySearchSession}
 /// The diary search that the search dialog shows, kept until the app closes
 /// so that the dialog opens again where the user left it.
 ///
-/// The term is empty when nothing is searched.
+/// The term is the input without the spaces around it, and is empty when
+/// nothing is searched.
 /// {@endtemplate}
 @Riverpod(keepAlive: true)
 class DiarySearchSession extends _$DiarySearchSession {
-  @override
-  DiarySearchPlace build() => (term: '', scrollOffset: 0);
+  int get _minDiarySearchTermLength =>
+      ref.read(minDiarySearchTermLengthProvider);
 
-  /// Searches [term] from the top of its results.
+  RecentDiarySearchTerms get _recentDiarySearchTermsNotifier =>
+      ref.read(recentDiarySearchTermsProvider.notifier);
+
+  @override
+  DiarySearchPlace build() => (input: '', term: '', scrollOffset: 0);
+
+  /// Searches the term in [input].
   ///
-  /// Does nothing when [term] is the term already searched.
-  void search(String term) {
-    if (term == state.term) {
-      return;
-    }
-    state = (term: term, scrollOffset: 0);
+  /// Searches nothing when the term is shorter than
+  /// [minDiarySearchTermLength]. Keeps how far the results are scrolled when
+  /// the term is the term already searched, and starts from the top of them
+  /// otherwise.
+  void search(String input) {
+    final trimmed = input.trim();
+    final isSearchable = trimmed.length >= _minDiarySearchTermLength;
+    final term = isSearchable ? trimmed : '';
+    final isSameTerm = term == state.term;
+    final scrollOffset = isSameTerm ? state.scrollOffset : 0.0;
+    state = (input: input, term: term, scrollOffset: scrollOffset);
   }
 
   /// Saves how far the results of the term are scrolled.
   void saveScrollOffset(double scrollOffset) {
-    state = (term: state.term, scrollOffset: scrollOffset);
+    state = (input: state.input, term: state.term, scrollOffset: scrollOffset);
+  }
+
+  /// Adds the searched term to [RecentDiarySearchTerms].
+  ///
+  /// Does nothing when nothing is searched.
+  Future<void> addTermToRecent() async {
+    if (state.term.isEmpty) {
+      return;
+    }
+    await _recentDiarySearchTermsNotifier.add(state.term);
   }
 }
 
@@ -259,24 +291,30 @@ typedef LoadedDiaryEntries = ({List<DiaryEntry> entries, bool hasMore});
 ///
 /// The results of the term of [DiarySearchSession] stay after the search
 /// dialog closes, and the others are disposed when nothing watches them.
+/// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 @riverpod
 class DiarySearchResults extends _$DiarySearchResults {
   static const _pageSize = 20;
 
+  static const LoadedDiaryEntries _noEntries = (entries: [], hasMore: false);
+
   /// Runs one load at a time, so that calls during a load wait for it
   /// instead of loading the same entries again.
   final _load = AsyncCache<void>.ephemeral();
 
   @override
-  Future<LoadedDiaryEntries> build(String term) {
+  FutureOr<LoadedDiaryEntries> build(String term) {
     final link = ref.keepAlive();
     ref.listen(diarySearchSessionProvider, (_, place) {
       if (place.term != term) {
         link.close();
       }
     }, fireImmediately: true);
+    if (term.isEmpty) {
+      return _noEntries;
+    }
     return _search(offset: 0, limit: _pageSize);
   }
 

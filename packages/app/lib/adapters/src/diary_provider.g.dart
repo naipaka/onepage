@@ -356,11 +356,65 @@ abstract class _$CachedDiaries extends $AsyncNotifier<DiariesWithDates> {
   }
 }
 
+/// The minimum length of a diary search term.
+///
+/// {@macro diary.DiaryQuery.minSearchTermLength}
+
+@ProviderFor(minDiarySearchTermLength)
+final minDiarySearchTermLengthProvider = MinDiarySearchTermLengthProvider._();
+
+/// The minimum length of a diary search term.
+///
+/// {@macro diary.DiaryQuery.minSearchTermLength}
+
+final class MinDiarySearchTermLengthProvider
+    extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  /// The minimum length of a diary search term.
+  ///
+  /// {@macro diary.DiaryQuery.minSearchTermLength}
+  MinDiarySearchTermLengthProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'minDiarySearchTermLengthProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$minDiarySearchTermLengthHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return minDiarySearchTermLength(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$minDiarySearchTermLengthHash() =>
+    r'2c0231b3fa43f380af4760ba9823e3a29cb16f73';
+
 /// {@template onepage.DiarySearchSession}
 /// The diary search that the search dialog shows, kept until the app closes
 /// so that the dialog opens again where the user left it.
 ///
-/// The term is empty when nothing is searched.
+/// The term is the input without the spaces around it, and is empty when
+/// nothing is searched.
 /// {@endtemplate}
 
 @ProviderFor(DiarySearchSession)
@@ -370,7 +424,8 @@ final diarySearchSessionProvider = DiarySearchSessionProvider._();
 /// The diary search that the search dialog shows, kept until the app closes
 /// so that the dialog opens again where the user left it.
 ///
-/// The term is empty when nothing is searched.
+/// The term is the input without the spaces around it, and is empty when
+/// nothing is searched.
 /// {@endtemplate}
 final class DiarySearchSessionProvider
     extends $NotifierProvider<DiarySearchSession, DiarySearchPlace> {
@@ -378,7 +433,8 @@ final class DiarySearchSessionProvider
   /// The diary search that the search dialog shows, kept until the app closes
   /// so that the dialog opens again where the user left it.
   ///
-  /// The term is empty when nothing is searched.
+  /// The term is the input without the spaces around it, and is empty when
+  /// nothing is searched.
   /// {@endtemplate}
   DiarySearchSessionProvider._()
     : super(
@@ -408,13 +464,14 @@ final class DiarySearchSessionProvider
 }
 
 String _$diarySearchSessionHash() =>
-    r'fa7e6af7145c437621f4dd1cdd0f5e0eec23e983';
+    r'f8adaf2a6e190be2b6be0578f68f33ebd0e7c6d7';
 
 /// {@template onepage.DiarySearchSession}
 /// The diary search that the search dialog shows, kept until the app closes
 /// so that the dialog opens again where the user left it.
 ///
-/// The term is empty when nothing is searched.
+/// The term is the input without the spaces around it, and is empty when
+/// nothing is searched.
 /// {@endtemplate}
 
 abstract class _$DiarySearchSession extends $Notifier<DiarySearchPlace> {
@@ -441,6 +498,7 @@ abstract class _$DiarySearchSession extends $Notifier<DiarySearchPlace> {
 ///
 /// The results of the term of [DiarySearchSession] stay after the search
 /// dialog closes, and the others are disposed when nothing watches them.
+/// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 
@@ -453,6 +511,7 @@ final diarySearchResultsProvider = DiarySearchResultsFamily._();
 ///
 /// The results of the term of [DiarySearchSession] stay after the search
 /// dialog closes, and the others are disposed when nothing watches them.
+/// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 final class DiarySearchResultsProvider
@@ -463,6 +522,7 @@ final class DiarySearchResultsProvider
   ///
   /// The results of the term of [DiarySearchSession] stay after the search
   /// dialog closes, and the others are disposed when nothing watches them.
+  /// An empty term has no entries, and searches nothing.
   /// A failure to load more entries keeps the loaded ones in the state.
   /// {@endtemplate}
   DiarySearchResultsProvider._({
@@ -502,7 +562,7 @@ final class DiarySearchResultsProvider
 }
 
 String _$diarySearchResultsHash() =>
-    r'7726a063a7eba138db0ff4e0c412426b19054aa5';
+    r'f57cae3c6841a13d75a2cbaad726c41a6483ab60';
 
 /// {@template onepage.DiarySearchResults}
 /// The diary entries that contain a search term, the newest first, loaded
@@ -510,6 +570,7 @@ String _$diarySearchResultsHash() =>
 ///
 /// The results of the term of [DiarySearchSession] stay after the search
 /// dialog closes, and the others are disposed when nothing watches them.
+/// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 
@@ -537,6 +598,7 @@ final class DiarySearchResultsFamily extends $Family
   ///
   /// The results of the term of [DiarySearchSession] stay after the search
   /// dialog closes, and the others are disposed when nothing watches them.
+  /// An empty term has no entries, and searches nothing.
   /// A failure to load more entries keeps the loaded ones in the state.
   /// {@endtemplate}
 
@@ -553,6 +615,7 @@ final class DiarySearchResultsFamily extends $Family
 ///
 /// The results of the term of [DiarySearchSession] stay after the search
 /// dialog closes, and the others are disposed when nothing watches them.
+/// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 

@@ -552,18 +552,24 @@ class _SearchDiaryDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final input = ref.watch(
+      diarySearchSessionProvider.select((place) => place.input),
+    );
     final term = ref.watch(
       diarySearchSessionProvider.select((place) => place.term),
     );
-    final isLoading =
-        term.isNotEmpty &&
-        ref.watch(diarySearchResultsProvider(term).select((r) => r.isLoading));
+    final diarySearchSessionNotifier = ref.watch(
+      diarySearchSessionProvider.notifier,
+    );
+    final isLoading = ref.watch(
+      diarySearchResultsProvider(term).select((results) => results.isLoading),
+    );
 
-    final searchController = useTextEditingController(text: term);
+    final searchController = useTextEditingController(text: input);
     final searchFocusNode = useFocusNode();
     final text = useListenableSelector(
       searchController,
-      () => searchController.text.trim(),
+      () => searchController.text,
     );
     final debounce = useMemoized(
       () => Debounce(delay: const Duration(seconds: 1)),
@@ -574,33 +580,24 @@ class _SearchDiaryDialog extends HookConsumerWidget {
       return debounce.dispose;
     }, []);
 
-    // Terms shorter than two characters match too many diaries to help.
-    String searchableTerm(String value) {
-      final trimmed = value.trim();
-      return trimmed.length < 2 ? '' : trimmed;
-    }
+    final isWaitingForSearch = text != input;
 
     void search(String value) {
       debounce.dispose();
-      ref
-          .read(diarySearchSessionProvider.notifier)
-          .search(searchableTerm(value));
+      diarySearchSessionNotifier.search(value);
     }
 
     void onTextChanged(String value) {
-      if (searchableTerm(value).isEmpty) {
+      if (value.isEmpty) {
         search(value);
       } else {
         debounce(() => search(value));
       }
     }
 
-    Future<void> useTerm(String value) async {
+    Future<void> searchAndAddToRecent(String value) async {
       search(value);
-      final term = searchableTerm(value);
-      if (term.isNotEmpty) {
-        await ref.read(recentDiarySearchTermsProvider.notifier).add(term);
-      }
+      await diarySearchSessionNotifier.addTermToRecent();
     }
 
     return Dialog(
@@ -614,33 +611,34 @@ class _SearchDiaryDialog extends HookConsumerWidget {
               controller: searchController,
               focusNode: searchFocusNode,
               onChanged: onTextChanged,
-              onSubmitted: () => useTerm(searchController.text),
-              isSearching:
-                  isLoading || searchableTerm(text) != term && text.isNotEmpty,
+              onSubmitted: () => searchAndAddToRecent(searchController.text),
+              isSearching: isLoading || isWaitingForSearch,
             ),
             const Gap(16),
             Flexible(
-              child: text.isEmpty
-                  ? _RecentSearchTerms(
-                      onSelected: (recentTerm) async {
-                        searchController.value = TextEditingValue(
-                          text: recentTerm,
-                          selection: TextSelection.collapsed(
-                            offset: recentTerm.length,
-                          ),
-                        );
-                        await useTerm(recentTerm);
-                      },
-                    )
-                  : _SearchResults(
-                      term: term,
-                      onSelected: (entry) async {
-                        await useTerm(term);
-                        if (context.mounted) {
-                          Navigator.of(context).pop(entry.date);
-                        }
-                      },
-                    ),
+              child: switch ((text: text, term: term)) {
+                (text: '', term: _) => _RecentSearchTerms(
+                  onSelected: (recentTerm) async {
+                    searchController.value = TextEditingValue(
+                      text: recentTerm,
+                      selection: TextSelection.collapsed(
+                        offset: recentTerm.length,
+                      ),
+                    );
+                    await searchAndAddToRecent(recentTerm);
+                  },
+                ),
+                (text: _, term: '') => const _SearchPlaceholder(),
+                (text: _, term: _) => _SearchResults(
+                  term: term,
+                  onSelected: (entry) async {
+                    await diarySearchSessionNotifier.addTermToRecent();
+                    if (context.mounted) {
+                      Navigator.of(context).pop(entry.date);
+                    }
+                  },
+                ),
+              },
             ),
           ],
         ),
@@ -845,9 +843,6 @@ class _SearchResults extends HookConsumerWidget {
       keepScrollOffset: false,
       keys: [term],
     );
-    if (term.isEmpty) {
-      return const _SearchPlaceholder();
-    }
 
     final colorScheme = context.colorScheme;
     final results = ref.watch(diarySearchResultsProvider(term));

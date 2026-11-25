@@ -346,6 +346,37 @@ void main() {
         expect(resultsPosition(tester).pixels, 300);
       });
 
+      testWidgets('opens again with the text as it was entered', (
+        tester,
+      ) async {
+        await pumpHome(tester);
+        await search(tester, ' cafe ');
+
+        await closeSearch(tester);
+        await openSearch(tester);
+
+        expect(tester.widget<TextField>(field).controller!.text, ' cafe ');
+        expect(result('cafe 1'), findsOneWidget);
+      });
+
+      testWidgets('waits for typing to stop, and then searches nothing for '
+          'a term that is too short', (tester) async {
+        final searchingIndicator = find.descendant(
+          of: find.byType(Dialog),
+          matching: find.byType(CircularProgressIndicator),
+        );
+        await pumpHome(tester);
+        await openSearch(tester);
+
+        await tester.enterText(field, 'c');
+        await tester.pump();
+        expect(searchingIndicator, findsOneWidget);
+
+        await pumpFrames(tester);
+        expect(searchingIndicator, findsNothing);
+        expect(find.text('Search results will appear here'), findsOneWidget);
+      });
+
       testWidgets('opens again with the term after a result is opened', (
         tester,
       ) async {

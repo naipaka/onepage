@@ -370,7 +370,7 @@ final class RecentDiarySearchTermsProvider
 }
 
 String _$recentDiarySearchTermsHash() =>
-    r'6528322c2937046bb62b494c9585329b85bd6e8a';
+    r'd4591dff45b4d0d2cd32f494a65050a81983eb96';
 
 /// {@template onepage.RecentDiarySearchTerms}
 /// The diary search terms that the user used recently, the newest first.
