@@ -33,6 +33,13 @@ class DiaryQuery {
     );
   }
 
+  /// {@template diary.DiaryQuery.minSearchTermLength}
+  /// The minimum length of a search term that [searchDiaries] is used with.
+  ///
+  /// A shorter term matches too many diaries to be useful.
+  /// {@endtemplate}
+  int get minSearchTermLength => 2;
+
   /// Searches diaries by content.
   ///
   /// - [searchTerm] - The search term to look for in diary content.

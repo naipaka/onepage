@@ -50,6 +50,10 @@ void main() {
       });
     });
 
+    test('minSearchTermLength is two characters', () {
+      expect(diaryQuery.minSearchTermLength, 2);
+    });
+
     group('searchDiaries', () {
       late DiaryEntry older;
       late DiaryEntry newer;
