@@ -1123,8 +1123,6 @@ class _ImageSelectionActionButton extends ConsumerWidget {
     final cachedDiaries = ref.watch(cachedDiariesProvider.notifier);
     final tracker = ref.watch(trackerProvider);
     final prefsClient = ref.watch(prefsClientProvider);
-    final imageCount = ref.watch(diaryImageCountProvider);
-    final colorScheme = context.colorScheme;
 
     return ListenableBuilder(
       listenable: FocusManager.instance,
@@ -1230,12 +1228,7 @@ class _ImageSelectionActionButton extends ConsumerWidget {
 
         return IconButton(
           onPressed: selectImage,
-          icon: Icon(
-            Icons.add_photo_alternate_outlined,
-            color: imageCount.whenOrNull(
-              data: (count) => count < 1 ? colorScheme.primary : null,
-            ),
-          ),
+          icon: const Icon(Icons.add_photo_alternate_outlined),
         );
       },
     );

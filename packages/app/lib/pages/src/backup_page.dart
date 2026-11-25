@@ -148,8 +148,6 @@ class BackupPage extends ConsumerWidget {
                             return;
                           }
 
-                          // A paused stream keeps the database from closing.
-                          ref.invalidate(diaryImageCountProvider);
                           await runWithProgress(
                             title: t.backup.progress.restoring,
                             task: (onProgress) => controller.restoreBackupFile(

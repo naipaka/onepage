@@ -32,15 +32,6 @@ DiaryQuery diaryQuery(Ref ref) {
   return DiaryQuery(dbClient: dbClient);
 }
 
-/// Provides a stream of the total diary image count.
-///
-/// Emits the current count whenever images are added or removed.
-@riverpod
-Stream<int> diaryImageCount(Ref ref) {
-  final query = ref.watch(diaryQueryProvider);
-  return query.diaryImageCount();
-}
-
 /// Provides the diary images whose photo data is outside the app.
 ///
 /// This is not a stream, because a paused stream keeps the database from
