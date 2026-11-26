@@ -619,7 +619,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
                   },
                 ),
                 (text: _, term: '') => const _SearchPlaceholder(),
-                (text: _, term: _) => _SearchResults(
+                (text: _, term: _) => _SearchResultsView(
                   term: term,
                   onSelected: (entry) async {
                     await diarySearchSessionNotifier.addTermToRecent();
@@ -820,7 +820,7 @@ class _RecentSearchTerms extends ConsumerWidget {
   }
 }
 
-class _SearchResults extends HookConsumerWidget {
+class _SearchResultsView extends HookConsumerWidget {
   const new({required this.term, required this.onSelected});
 
   final String term;
@@ -828,15 +828,30 @@ class _SearchResults extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scrollOffset = ref.watch(
+      diarySearchSessionProvider.select((place) => place.scrollOffset),
+    );
+    final diarySearchSessionNotifier = ref.watch(
+      diarySearchSessionProvider.notifier,
+    );
+    final results = ref.watch(diarySearchResultsProvider);
+    final notifier = ref.watch(diarySearchResultsProvider.notifier);
+
     final scrollController = useScrollController(
-      initialScrollOffset: ref.read(diarySearchSessionProvider).scrollOffset,
+      initialScrollOffset: scrollOffset,
       keepScrollOffset: false,
+      onAttach: (position) {
+        final isScrolling = position.isScrollingNotifier;
+        isScrolling.addListener(() {
+          if (!isScrolling.value) {
+            diarySearchSessionNotifier.saveScrollOffset(position.pixels);
+          }
+        });
+      },
       keys: [term],
     );
 
     final colorScheme = context.colorScheme;
-    final results = ref.watch(diarySearchResultsProvider);
-    final notifier = ref.watch(diarySearchResultsProvider.notifier);
     switch (results) {
       case AsyncValue(value: final loaded?, :final hasError):
         if (loaded.entries.isEmpty) {
@@ -848,38 +863,26 @@ class _SearchResults extends HookConsumerWidget {
             ),
           );
         }
-        return NotificationListener<ScrollEndNotification>(
-          onNotification: (notification) {
-            if (notification.depth == 0) {
-              ref
-                  .read(diarySearchSessionProvider.notifier)
-                  .saveScrollOffset(notification.metrics.pixels);
-            }
-            return false;
-          },
-          child: ScrollEndReachedListener(
-            onEndReached: loaded.hasMore && !hasError
-                ? notifier.loadMore
-                : null,
-            child: ListView.separated(
-              controller: scrollController,
-              shrinkWrap: true,
-              itemCount: loaded.entries.length + (loaded.hasMore ? 1 : 0),
-              separatorBuilder: (context, index) => const Gap(8),
-              itemBuilder: (context, index) {
-                if (index == loaded.entries.length) {
-                  return hasError
-                      ? _LoadMoreFailedItem(onRetry: notifier.loadMore)
-                      : const _LoadingMoreItem();
-                }
-                final entry = loaded.entries[index];
-                return _SearchResultTile(
-                  diary: entry,
-                  searchTerm: term,
-                  onTap: () => onSelected(entry),
-                );
-              },
-            ),
+        return ScrollEndReachedListener(
+          onEndReached: loaded.hasMore && !hasError ? notifier.loadMore : null,
+          child: ListView.separated(
+            controller: scrollController,
+            shrinkWrap: true,
+            itemCount: loaded.entries.length + (loaded.hasMore ? 1 : 0),
+            separatorBuilder: (context, index) => const Gap(8),
+            itemBuilder: (context, index) {
+              if (index == loaded.entries.length) {
+                return hasError
+                    ? _LoadMoreFailedItem(onRetry: notifier.loadMore)
+                    : const _LoadingMoreItem();
+              }
+              final entry = loaded.entries[index];
+              return _SearchResultTile(
+                diary: entry,
+                searchTerm: term,
+                onTap: () => onSelected(entry),
+              );
+            },
           ),
         );
       case AsyncValue(hasError: true):

@@ -336,14 +336,16 @@ void main() {
           'position', (tester) async {
         await pumpHome(tester);
         await search(tester, 'cafe');
-        resultsPosition(tester).jumpTo(300);
+        await tester.drag(result('cafe 3'), const Offset(0, -300));
         await pumpFrames(tester);
+        final scrolled = resultsPosition(tester).pixels;
 
         await closeSearch(tester);
         await openSearch(tester);
 
         expect(tester.widget<TextField>(field).controller!.text, 'cafe');
-        expect(resultsPosition(tester).pixels, 300);
+        expect(scrolled, greaterThan(0));
+        expect(resultsPosition(tester).pixels, scrolled);
       });
 
       testWidgets('opens again with the text as it was entered', (
