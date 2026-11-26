@@ -449,6 +449,73 @@ void main() {
         expect(searchResults.length, 1);
         expect(searchResults[0].content, 'Programming is fun');
       });
+
+      test(r'matches %, _ and \ in the term only as themselves', () async {
+        final now = clock.now();
+
+        await dbClient.insertDiary(content: '100% sure', date: now);
+        await dbClient.insertDiary(
+          content: '1000 times',
+          date: now.subtract(const Duration(days: 1)),
+        );
+        await dbClient.insertDiary(
+          content: 'snake_case',
+          date: now.subtract(const Duration(days: 2)),
+        );
+        await dbClient.insertDiary(
+          content: 'snakeXcase',
+          date: now.subtract(const Duration(days: 3)),
+        );
+        await dbClient.insertDiary(
+          content: r'C:\temp',
+          date: now.subtract(const Duration(days: 4)),
+        );
+
+        final percent = await dbClient.searchDiaries(searchTerm: '100%');
+        final underscore = await dbClient.searchDiaries(searchTerm: 'e_c');
+        final backslash = await dbClient.searchDiaries(searchTerm: r':\t');
+
+        expect(percent.map((d) => d.content), ['100% sure']);
+        expect(underscore.map((d) => d.content), ['snake_case']);
+        expect(backslash.map((d) => d.content), [r'C:\temp']);
+      });
+    });
+
+    group('searchDiariesByIdIn', () {
+      test('returns the entries of the ids that contain the term', () async {
+        final now = clock.now();
+
+        final tokyo = await dbClient.insertDiary(
+          content: 'Went to Tokyo',
+          date: now,
+        );
+        final osaka = await dbClient.insertDiary(
+          content: 'Went to Osaka',
+          date: now.subtract(const Duration(days: 1)),
+        );
+        await dbClient.insertDiary(
+          content: 'Back to TOKYO',
+          date: now.subtract(const Duration(days: 2)),
+        );
+
+        final searchResults = await dbClient.searchDiariesByIdIn(
+          ids: [tokyo.id, osaka.id],
+          searchTerm: 'tokyo',
+        );
+
+        expect(searchResults, [tokyo]);
+      });
+
+      test('returns nothing for no ids', () async {
+        await dbClient.insertDiary(content: 'Tokyo', date: clock.now());
+
+        final searchResults = await dbClient.searchDiariesByIdIn(
+          ids: const [],
+          searchTerm: 'tokyo',
+        );
+
+        expect(searchResults, isEmpty);
+      });
     });
 
     group('countUniqueDaysWithContentInRange', () {
