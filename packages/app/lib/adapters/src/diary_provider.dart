@@ -248,28 +248,24 @@ class DiarySearchSession extends _$DiarySearchSession {
   /// [minDiarySearchTermLength]. Keeps how far the results are scrolled when
   /// the term is the term already searched, and starts from the top of them
   /// otherwise.
-  void search(String input) {
+  /// A search that is not [incremental] adds the term to
+  /// [RecentDiarySearchTerms].
+  Future<void> search(String input, {required bool incremental}) async {
     final trimmed = input.trim();
     final isSearchable = trimmed.length >= _minDiarySearchTermLength;
     final term = isSearchable ? trimmed : '';
     final isSameTerm = term == state.term;
     final scrollOffset = isSameTerm ? state.scrollOffset : 0.0;
     state = (input: input, term: term, scrollOffset: scrollOffset);
+    if (incremental || term.isEmpty) {
+      return;
+    }
+    await _recentDiarySearchTermsNotifier.add(term);
   }
 
   /// Saves how far the results of the term are scrolled.
   void saveScrollOffset(double scrollOffset) {
     state = (input: state.input, term: state.term, scrollOffset: scrollOffset);
-  }
-
-  /// Adds the searched term to [RecentDiarySearchTerms].
-  ///
-  /// Does nothing when nothing is searched.
-  Future<void> addTermToRecent() async {
-    if (state.term.isEmpty) {
-      return;
-    }
-    await _recentDiarySearchTermsNotifier.add(state.term);
   }
 }
 

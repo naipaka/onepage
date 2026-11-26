@@ -565,30 +565,38 @@ class _SearchDiaryDialog extends HookConsumerWidget {
       () => Debounce(delay: const Duration(seconds: 1)),
     );
 
+    Future<void> search({required bool incremental}) {
+      debounce.dispose();
+      return diarySearchSessionNotifier.search(
+        searchController.text,
+        incremental: incremental,
+      );
+    }
+
     useEffect(() {
       searchFocusNode.requestFocus();
-      return debounce.dispose;
+      var searchedText = searchController.text;
+      void searchChangedText() {
+        final text = searchController.text;
+        if (text == searchedText) {
+          return;
+        }
+        searchedText = text;
+        if (text.isEmpty) {
+          unawaited(search(incremental: true));
+        } else {
+          debounce(() => unawaited(search(incremental: true)));
+        }
+      }
+
+      searchController.addListener(searchChangedText);
+      return () {
+        searchController.removeListener(searchChangedText);
+        debounce.dispose();
+      };
     }, []);
 
     final isWaitingForSearch = text != input;
-
-    void search(String value) {
-      debounce.dispose();
-      diarySearchSessionNotifier.search(value);
-    }
-
-    void onTextChanged(String value) {
-      if (value.isEmpty) {
-        search(value);
-      } else {
-        debounce(() => search(value));
-      }
-    }
-
-    Future<void> searchAndAddToRecent(String value) async {
-      search(value);
-      await diarySearchSessionNotifier.addTermToRecent();
-    }
 
     return Dialog(
       child: Container(
@@ -600,8 +608,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
             _SearchBar(
               controller: searchController,
               focusNode: searchFocusNode,
-              onChanged: onTextChanged,
-              onSubmitted: () => searchAndAddToRecent(searchController.text),
+              onSubmitted: () => search(incremental: false),
               isSearching: isLoading || isWaitingForSearch,
             ),
             const Gap(16),
@@ -615,14 +622,17 @@ class _SearchDiaryDialog extends HookConsumerWidget {
                         offset: recentTerm.length,
                       ),
                     );
-                    await searchAndAddToRecent(recentTerm);
+                    await search(incremental: false);
                   },
                 ),
                 (text: _, term: '') => const _SearchPlaceholder(),
                 (text: _, term: _) => _SearchResultsView(
                   term: term,
                   onSelected: (entry) async {
-                    await diarySearchSessionNotifier.addTermToRecent();
+                    await diarySearchSessionNotifier.search(
+                      input,
+                      incremental: false,
+                    );
                     if (context.mounted) {
                       Navigator.of(context).pop(entry.date);
                     }
@@ -641,14 +651,12 @@ class _SearchBar extends HookWidget {
   const new({
     required this.controller,
     required this.focusNode,
-    required this.onChanged,
     required this.onSubmitted,
     required this.isSearching,
   });
 
   final TextEditingController controller;
   final FocusNode focusNode;
-  final void Function(String) onChanged;
   final void Function() onSubmitted;
   final bool isSearching;
 
@@ -691,7 +699,6 @@ class _SearchBar extends HookWidget {
                 contentPadding: EdgeInsets.zero,
               ),
               textInputAction: TextInputAction.search,
-              onChanged: onChanged,
               onSubmitted: (_) => onSubmitted(),
             ),
           ),
@@ -709,10 +716,7 @@ class _SearchBar extends HookWidget {
           ] else if (hasText) ...[
             const SizedBox(width: 8),
             GestureDetector(
-              onTap: () {
-                controller.clear();
-                onChanged('');
-              },
+              onTap: controller.clear,
               child: Container(
                 width: 20,
                 height: 20,

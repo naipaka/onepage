@@ -81,7 +81,7 @@ void main() {
     });
 
     test('searches the input without the spaces around it', () {
-      notifier().search(' cafe ');
+      notifier().search(' cafe ', incremental: true);
 
       expect(container.read(diarySearchSessionProvider), (
         input: ' cafe ',
@@ -93,7 +93,7 @@ void main() {
     test('searches nothing for a term shorter than the minimum', () {
       diaryQuery.minSearchTermLength = 5;
 
-      notifier().search('cafe');
+      notifier().search('cafe', incremental: true);
 
       expect(container.read(diarySearchSessionProvider), (
         input: 'cafe',
@@ -104,9 +104,9 @@ void main() {
 
     test('keeps the scroll offset while the term stays', () {
       notifier()
-        ..search('cafe')
+        ..search('cafe', incremental: true)
         ..saveScrollOffset(120)
-        ..search('cafe ');
+        ..search('cafe ', incremental: true);
 
       expect(container.read(diarySearchSessionProvider), (
         input: 'cafe ',
@@ -117,9 +117,9 @@ void main() {
 
     test('goes back to the top for another term', () {
       notifier()
-        ..search('cafe')
+        ..search('cafe', incremental: true)
         ..saveScrollOffset(120)
-        ..search('rain');
+        ..search('rain', incremental: true);
 
       expect(container.read(diarySearchSessionProvider), (
         input: 'rain',
@@ -128,18 +128,20 @@ void main() {
       ));
     });
 
-    test('addTermToRecent adds the searched term', () async {
-      notifier().search(' cafe ');
-
-      await notifier().addTermToRecent();
+    test('adds the term to the recent terms when not incremental', () async {
+      await notifier().search(' cafe ', incremental: false);
 
       expect(container.read(recentDiarySearchTermsProvider), ['cafe']);
     });
 
-    test('addTermToRecent adds nothing when nothing is searched', () async {
-      notifier().search('c');
+    test('adds no term to the recent terms when incremental', () async {
+      await notifier().search('cafe', incremental: true);
 
-      await notifier().addTermToRecent();
+      expect(container.read(recentDiarySearchTermsProvider), isEmpty);
+    });
+
+    test('adds nothing to the recent terms when nothing is searched', () async {
+      await notifier().search('c', incremental: false);
 
       expect(container.read(recentDiarySearchTermsProvider), isEmpty);
     });
@@ -149,7 +151,9 @@ void main() {
     final cafe = diarySearchResultsProvider;
 
     setUp(() {
-      container.read(diarySearchSessionProvider.notifier).search('cafe');
+      container
+          .read(diarySearchSessionProvider.notifier)
+          .search('cafe', incremental: true);
     });
 
     Future<LoadedDiaryEntries> load() {
@@ -255,7 +259,9 @@ void main() {
 
     test('has no entries for an empty term, searching nothing', () {
       diaryQuery.failingOffsets.add(0);
-      container.read(diarySearchSessionProvider.notifier).search('');
+      container
+          .read(diarySearchSessionProvider.notifier)
+          .search('', incremental: true);
 
       final results = container.read(cafe);
 
@@ -270,7 +276,9 @@ void main() {
     test('searches again when the term changes', () async {
       await load();
 
-      container.read(diarySearchSessionProvider.notifier).search('rain');
+      await container
+          .read(diarySearchSessionProvider.notifier)
+          .search('rain', incremental: true);
 
       expect(
         (await container.read(cafe.future)).entries.map((e) => e.content),
