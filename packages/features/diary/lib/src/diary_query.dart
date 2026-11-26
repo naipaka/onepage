@@ -57,6 +57,19 @@ class DiaryQuery {
     );
   }
 
+  /// Searches the diaries of [ids] by content, as [searchDiaries] does.
+  ///
+  /// Returns the diaries in no particular order.
+  ///
+  /// - [ids] - The IDs of the diaries to search.
+  /// - [searchTerm] - The search term to look for in diary content.
+  Future<List<DiaryEntry>> searchDiariesByIdIn({
+    required Iterable<int> ids,
+    required String searchTerm,
+  }) {
+    return dbClient.searchDiariesByIdIn(ids: ids, searchTerm: searchTerm);
+  }
+
   /// Counts unique days with diary entries containing non-empty content within
   /// a date range.
   ///

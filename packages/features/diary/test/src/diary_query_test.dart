@@ -96,6 +96,15 @@ void main() {
 
         expect(diaries, isEmpty);
       });
+
+      test('searchDiariesByIdIn returns the matches among the ids', () async {
+        final diaries = await diaryQuery.searchDiariesByIdIn(
+          ids: [older.id],
+          searchTerm: 'tokyo',
+        );
+
+        expect(diaries, [older]);
+      });
     });
 
     test('countUniqueDaysWithContentInRange counts the written days', () async {
