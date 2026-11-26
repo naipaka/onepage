@@ -105,10 +105,7 @@ class HomePage extends HookConsumerWidget {
         actions: [
           HapticIconButton(
             onPressed: () async {
-              final selectedDate = await _SearchDiaryDialog.show(
-                context,
-                ref,
-              );
+              final selectedDate = await _SearchDiaryDialog.show(context);
               if (!context.mounted || selectedDate == null) {
                 return;
               }
@@ -536,14 +533,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
   const new();
 
   /// Shows a search dialog for diary entries and returns the selected date.
-  ///
-  /// Loads the results of the kept search again, so that they show the
-  /// diaries as they are now.
-  static Future<DateTime?> show(BuildContext context, WidgetRef ref) {
-    final term = ref.read(diarySearchSessionProvider).term;
-    if (term.isNotEmpty) {
-      unawaited(ref.read(diarySearchResultsProvider(term).notifier).reload());
-    }
+  static Future<DateTime?> show(BuildContext context) {
     return showDialog<DateTime?>(
       context: context,
       builder: (context) => const _SearchDiaryDialog(),
@@ -562,7 +552,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
       diarySearchSessionProvider.notifier,
     );
     final isLoading = ref.watch(
-      diarySearchResultsProvider(term).select((results) => results.isLoading),
+      diarySearchResultsProvider.select((results) => results.isLoading),
     );
 
     final searchController = useTextEditingController(text: input);
@@ -845,8 +835,8 @@ class _SearchResults extends HookConsumerWidget {
     );
 
     final colorScheme = context.colorScheme;
-    final results = ref.watch(diarySearchResultsProvider(term));
-    final notifier = ref.watch(diarySearchResultsProvider(term).notifier);
+    final results = ref.watch(diarySearchResultsProvider);
+    final notifier = ref.watch(diarySearchResultsProvider.notifier);
     switch (results) {
       case AsyncValue(value: final loaded?, :final hasError):
         if (loaded.entries.isEmpty) {

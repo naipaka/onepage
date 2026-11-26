@@ -309,7 +309,7 @@ void main() {
         await search(tester, 'cafe');
         final container = ProviderScope.containerOf(tester.element(field));
         int loadedCount() => container
-            .read(diarySearchResultsProvider('cafe'))
+            .read(diarySearchResultsProvider)
             .requireValue
             .entries
             .length;
@@ -391,7 +391,7 @@ void main() {
         expect(result('cafe 1'), findsOneWidget);
       });
 
-      testWidgets('opens again with the diaries as they are now', (
+      testWidgets('opens again with a diary changed while it was closed', (
         tester,
       ) async {
         await pumpHome(tester);
@@ -401,7 +401,12 @@ void main() {
 
         final entry = (await dbClient.searchDiaries(searchTerm: 'cafe 1'))
             .first;
-        await dbClient.updateDiary(id: entry.id, content: 'cafe one');
+        final container = ProviderScope.containerOf(
+          tester.element(find.byType(Scaffold).first),
+        );
+        await container
+            .read(cachedDiariesProvider.notifier)
+            .updateDiary(id: entry.id, content: 'cafe one');
         await openSearch(tester);
 
         expect(result('cafe 1'), findsNothing);

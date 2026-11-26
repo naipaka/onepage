@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,12 +10,11 @@ import 'package:provider_utils/provider_utils.dart';
 
 import '../../utils/clients.dart';
 
-/// Searches the database, and fails or waits at the offsets given.
+/// Searches the database, and fails at the offsets given.
 class _ControlledDiaryQuery extends DiaryQuery {
   new({required super.dbClient});
 
   final failingOffsets = <int>{};
-  Completer<void>? waiting;
 
   @override
   int minSearchTermLength = 2;
@@ -25,7 +25,6 @@ class _ControlledDiaryQuery extends DiaryQuery {
     int? limit,
     int? offset,
   }) async {
-    await waiting?.future;
     if (failingOffsets.contains(offset)) {
       throw Exception('search');
     }
@@ -61,6 +60,7 @@ void main() {
     container = ProviderContainer(
       retry: noRetry,
       overrides: [
+        dbClientProvider.overrideWithValue(dbClient),
         diaryQueryProvider.overrideWithValue(diaryQuery),
         prefsClientProvider.overrideWithValue(createPrefsClient()),
       ],
@@ -146,7 +146,11 @@ void main() {
   });
 
   group('DiarySearchResults', () {
-    final cafe = diarySearchResultsProvider('cafe');
+    final cafe = diarySearchResultsProvider;
+
+    setUp(() {
+      container.read(diarySearchSessionProvider.notifier).search('cafe');
+    });
 
     Future<LoadedDiaryEntries> load() {
       container.listen(cafe, (_, _) {});
@@ -157,6 +161,36 @@ void main() {
       for (final entry in container.read(cafe).requireValue.entries)
         entry.content,
     ];
+
+    /// Waits for the next entries of the results.
+    Future<List<String>> nextContents() {
+      final next = Completer<List<String>>();
+      final subscription = container.listen(cafe, (_, results) {
+        if (!next.isCompleted && results.hasValue) {
+          next.complete([
+            for (final entry in results.requireValue.entries) entry.content,
+          ]);
+        }
+      });
+      return next.future.whenComplete(subscription.close);
+    }
+
+    /// Loads [CachedDiaries] around the diaries of November 2026, and
+    /// returns its notifier.
+    Future<CachedDiaries> loadCachedDiaries() async {
+      final notifier = withClock(
+        Clock.fixed(DateTime(2026, 11, 10)),
+        () {
+          container.listen(cachedDiariesProvider, (_, _) {});
+          return container.read(cachedDiariesProvider.notifier);
+        },
+      );
+      await container.read(cachedDiariesProvider.future);
+      return notifier;
+    }
+
+    Future<DiaryEntry> entryOf(String content) async =>
+        (await dbClient.searchDiaries(searchTerm: content)).single;
 
     test('loads the first page, the newest first', () async {
       final loaded = await load();
@@ -219,76 +253,104 @@ void main() {
       expect(container.read(cafe).value, isNull);
     });
 
-    test('reload reads the loaded pages again from the database', () async {
-      await load();
-      final notifier = container.read(cafe.notifier);
-      await notifier.loadMore();
-      final changed = container.read(cafe).requireValue.entries.first;
-      await dbClient.updateDiary(id: changed.id, content: 'tea');
-
-      await notifier.reload();
-
-      expect(contents(), hasLength(40));
-      expect(contents(), isNot(contains(changed.content)));
-      expect(contents().first, 'cafe 43');
-    });
-
-    test('reload keeps the entries on the screen while it loads', () async {
-      await load();
-      diaryQuery.waiting = Completer();
-
-      final reloading = container.read(cafe.notifier).reload();
-
-      expect(container.read(cafe).value?.entries, hasLength(20));
-      diaryQuery.waiting!.complete();
-      await reloading;
-    });
-
-    test('reload searches again after the first page failed', () async {
-      diaryQuery.failingOffsets.add(0);
-      await expectLater(load(), throwsException);
-
-      diaryQuery.failingOffsets.clear();
-      await container.read(cafe.notifier).reload();
-
-      expect(await container.read(cafe.future), isA<LoadedDiaryEntries>());
-      expect(contents(), hasLength(20));
-    });
-
     test('has no entries for an empty term, searching nothing', () {
       diaryQuery.failingOffsets.add(0);
+      container.read(diarySearchSessionProvider.notifier).search('');
 
-      final results = container.read(diarySearchResultsProvider(''));
+      final results = container.read(cafe);
 
-      expect(results, const AsyncData<LoadedDiaryEntries>(
-        (entries: [], hasMore: false),
-      ));
+      expect(
+        results,
+        const AsyncData<LoadedDiaryEntries>(
+          (entries: [], hasMore: false),
+        ),
+      );
     });
 
-    test(
-      'stays without listeners while it is the term of the session',
-      () async {
-        container.read(diarySearchSessionProvider.notifier).search('cafe');
+    test('searches again when the term changes', () async {
+      await load();
+
+      container.read(diarySearchSessionProvider.notifier).search('rain');
+
+      expect(
+        (await container.read(cafe.future)).entries.map((e) => e.content),
+        ['rain'],
+      );
+    });
+
+    test('stays without listeners', () async {
+      final subscription = container.listen(cafe, (_, _) {});
+      await container.read(cafe.future);
+
+      subscription.close();
+      await container.pump();
+
+      expect(container.read(cafe.exists), isTrue);
+    });
+
+    group('when a diary of CachedDiaries changes', () {
+      test('updates a loaded entry that still contains the term', () async {
+        await load();
+        final diaries = await loadCachedDiaries();
+        final entry = await entryOf('cafe 44');
+
+        final next = nextContents();
+        await diaries.updateDiary(id: entry.id, content: 'cafe tea');
+
+        expect((await next).first, 'cafe tea');
+      });
+
+      test('removes a loaded entry that no longer contains the term', () async {
+        await load();
+        final diaries = await loadCachedDiaries();
+        final entry = await entryOf('cafe 44');
+
+        final next = nextContents();
+        await diaries.updateDiary(id: entry.id, content: 'tea');
+
+        final contents = await next;
+        expect(contents, hasLength(19));
+        expect(contents.first, 'cafe 43');
+      });
+
+      test('adds a diary with the term among the loaded dates', () async {
+        await load();
+        final diaries = await loadCachedDiaries();
+
+        final next = nextContents();
+        await diaries.addDiary(date: DateTime(2026, 11, 20), content: 'cafe');
+
+        final contents = await next;
+        expect(contents, hasLength(21));
+        expect(contents.first, 'cafe');
+      });
+
+      test('leaves out a diary older than the loaded dates', () async {
+        await load();
+        final diaries = await loadCachedDiaries();
+        final entry = await entryOf('cafe 0');
+
+        final next = nextContents();
+        await diaries.updateDiary(id: entry.id, content: 'cafe zero');
+
+        final contents = await next;
+        expect(contents, hasLength(20));
+        expect(contents, isNot(contains('cafe zero')));
+      });
+
+      test('follows the change without listeners', () async {
         final subscription = container.listen(cafe, (_, _) {});
         await container.read(cafe.future);
-
+        final diaries = await loadCachedDiaries();
+        final entry = await entryOf('cafe 44');
         subscription.close();
         await container.pump();
 
-        expect(container.read(cafe.exists), isTrue);
-      },
-    );
+        final next = nextContents();
+        await diaries.updateDiary(id: entry.id, content: 'tea');
 
-    test('is disposed without listeners for another term', () async {
-      container.read(diarySearchSessionProvider.notifier).search('cafe');
-      final subscription = container.listen(cafe, (_, _) {});
-      await container.read(cafe.future);
-      subscription.close();
-
-      container.read(diarySearchSessionProvider.notifier).search('rain');
-      await container.pump();
-
-      expect(container.read(cafe.exists), isFalse);
+        expect((await next).first, 'cafe 43');
+      });
     });
   });
 }

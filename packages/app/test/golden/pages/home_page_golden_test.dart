@@ -127,8 +127,7 @@ class _LoadingMoreSearch extends DiarySearchResults {
 /// Search results whose first page fails to load.
 class _FailingSearch extends DiarySearchResults {
   @override
-  Future<LoadedDiaryEntries> build(String term) =>
-      Future.error(Exception('failed'));
+  Future<LoadedDiaryEntries> build() => Future.error(Exception('failed'));
 }
 
 /// Search results whose next page fails to load.
@@ -376,9 +375,7 @@ void main() {
           'home_page_search_results',
           variant: variant,
           overrides: [
-            diarySearchResultsProvider.overrideWith2(
-              (_) => _LoadingMoreSearch(),
-            ),
+            diarySearchResultsProvider.overrideWith(_LoadingMoreSearch.new),
           ],
           act: (tester, texts) async {
             await search(tester, texts.found);
@@ -412,7 +409,7 @@ void main() {
           'home_page_search_failed',
           variant: variant,
           overrides: [
-            diarySearchResultsProvider.overrideWith2((_) => _FailingSearch()),
+            diarySearchResultsProvider.overrideWith(_FailingSearch.new),
           ],
           act: (tester, texts) => search(tester, texts.found),
         );
@@ -425,8 +422,8 @@ void main() {
           'home_page_search_load_more_failed',
           variant: variant,
           overrides: [
-            diarySearchResultsProvider.overrideWith2(
-              (_) => _FailingToLoadMoreSearch(),
+            diarySearchResultsProvider.overrideWith(
+              _FailingToLoadMoreSearch.new,
             ),
           ],
           act: (tester, texts) async {

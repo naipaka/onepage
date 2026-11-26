@@ -449,137 +449,80 @@ abstract class _$DiarySearchSession extends $Notifier<DiarySearchPlace> {
 }
 
 /// {@template onepage.DiarySearchResults}
-/// The diary entries that contain a search term, the newest first, loaded
-/// a page at a time.
+/// The diary entries that contain the term of [DiarySearchSession], the
+/// newest first, loaded a number of entries at a time.
 ///
-/// The results of the term of [DiarySearchSession] stay after the search
-/// dialog closes, and the others are disposed when nothing watches them.
+/// The results stay after the search dialog closes once the first entries
+/// are loaded, and are searched again when the term changes.
+/// When diaries of [CachedDiaries] are added or changed, the results add,
+/// update or remove them, among the dates loaded so far.
 /// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 
 @ProviderFor(DiarySearchResults)
-final diarySearchResultsProvider = DiarySearchResultsFamily._();
+final diarySearchResultsProvider = DiarySearchResultsProvider._();
 
 /// {@template onepage.DiarySearchResults}
-/// The diary entries that contain a search term, the newest first, loaded
-/// a page at a time.
+/// The diary entries that contain the term of [DiarySearchSession], the
+/// newest first, loaded a number of entries at a time.
 ///
-/// The results of the term of [DiarySearchSession] stay after the search
-/// dialog closes, and the others are disposed when nothing watches them.
+/// The results stay after the search dialog closes once the first entries
+/// are loaded, and are searched again when the term changes.
+/// When diaries of [CachedDiaries] are added or changed, the results add,
+/// update or remove them, among the dates loaded so far.
 /// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 final class DiarySearchResultsProvider
     extends $AsyncNotifierProvider<DiarySearchResults, LoadedDiaryEntries> {
   /// {@template onepage.DiarySearchResults}
-  /// The diary entries that contain a search term, the newest first, loaded
-  /// a page at a time.
+  /// The diary entries that contain the term of [DiarySearchSession], the
+  /// newest first, loaded a number of entries at a time.
   ///
-  /// The results of the term of [DiarySearchSession] stay after the search
-  /// dialog closes, and the others are disposed when nothing watches them.
+  /// The results stay after the search dialog closes once the first entries
+  /// are loaded, and are searched again when the term changes.
+  /// When diaries of [CachedDiaries] are added or changed, the results add,
+  /// update or remove them, among the dates loaded so far.
   /// An empty term has no entries, and searches nothing.
   /// A failure to load more entries keeps the loaded ones in the state.
   /// {@endtemplate}
-  DiarySearchResultsProvider._({
-    required DiarySearchResultsFamily super.from,
-    required String super.argument,
-  }) : super(
-         retry: null,
-         name: r'diarySearchResultsProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  DiarySearchResultsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'diarySearchResultsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$diarySearchResultsHash();
 
-  @override
-  String toString() {
-    return r'diarySearchResultsProvider'
-        ''
-        '($argument)';
-  }
-
   @$internal
   @override
   DiarySearchResults create() => DiarySearchResults();
-
-  @override
-  bool operator ==(Object other) {
-    return other is DiarySearchResultsProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
 }
 
 String _$diarySearchResultsHash() =>
-    r'f57cae3c6841a13d75a2cbaad726c41a6483ab60';
+    r'90050b68b37aea7829d4a221b1fa62c96994364f';
 
 /// {@template onepage.DiarySearchResults}
-/// The diary entries that contain a search term, the newest first, loaded
-/// a page at a time.
+/// The diary entries that contain the term of [DiarySearchSession], the
+/// newest first, loaded a number of entries at a time.
 ///
-/// The results of the term of [DiarySearchSession] stay after the search
-/// dialog closes, and the others are disposed when nothing watches them.
-/// An empty term has no entries, and searches nothing.
-/// A failure to load more entries keeps the loaded ones in the state.
-/// {@endtemplate}
-
-final class DiarySearchResultsFamily extends $Family
-    with
-        $ClassFamilyOverride<
-          DiarySearchResults,
-          AsyncValue<LoadedDiaryEntries>,
-          LoadedDiaryEntries,
-          FutureOr<LoadedDiaryEntries>,
-          String
-        > {
-  DiarySearchResultsFamily._()
-    : super(
-        retry: null,
-        name: r'diarySearchResultsProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: true,
-      );
-
-  /// {@template onepage.DiarySearchResults}
-  /// The diary entries that contain a search term, the newest first, loaded
-  /// a page at a time.
-  ///
-  /// The results of the term of [DiarySearchSession] stay after the search
-  /// dialog closes, and the others are disposed when nothing watches them.
-  /// An empty term has no entries, and searches nothing.
-  /// A failure to load more entries keeps the loaded ones in the state.
-  /// {@endtemplate}
-
-  DiarySearchResultsProvider call(String term) =>
-      DiarySearchResultsProvider._(argument: term, from: this);
-
-  @override
-  String toString() => r'diarySearchResultsProvider';
-}
-
-/// {@template onepage.DiarySearchResults}
-/// The diary entries that contain a search term, the newest first, loaded
-/// a page at a time.
-///
-/// The results of the term of [DiarySearchSession] stay after the search
-/// dialog closes, and the others are disposed when nothing watches them.
+/// The results stay after the search dialog closes once the first entries
+/// are loaded, and are searched again when the term changes.
+/// When diaries of [CachedDiaries] are added or changed, the results add,
+/// update or remove them, among the dates loaded so far.
 /// An empty term has no entries, and searches nothing.
 /// A failure to load more entries keeps the loaded ones in the state.
 /// {@endtemplate}
 
 abstract class _$DiarySearchResults extends $AsyncNotifier<LoadedDiaryEntries> {
-  late final _$args = ref.$arg as String;
-  String get term => _$args;
-
-  FutureOr<LoadedDiaryEntries> build(String term);
+  FutureOr<LoadedDiaryEntries> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
@@ -593,6 +536,6 @@ abstract class _$DiarySearchResults extends $AsyncNotifier<LoadedDiaryEntries> {
               Object?,
               Object?
             >;
-    return element.handleCreate(ref, () => build(_$args));
+    return element.handleCreate(ref, build);
   }
 }
