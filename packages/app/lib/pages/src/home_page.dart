@@ -533,7 +533,7 @@ class _SearchDiaryDialog extends HookConsumerWidget {
   const new();
 
   /// Shows a search dialog for diary entries and returns the selected date.
-  static Future<DateTime?> show(BuildContext context) {
+  static Future<DateTime?> show(BuildContext context) async {
     return showDialog<DateTime?>(
       context: context,
       builder: (context) => const _SearchDiaryDialog(),
@@ -542,61 +542,50 @@ class _SearchDiaryDialog extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final input = ref.watch(
-      diarySearchSessionProvider.select((place) => place.input),
-    );
-    final term = ref.watch(
-      diarySearchSessionProvider.select((place) => place.term),
-    );
-    final diarySearchSessionNotifier = ref.watch(
-      diarySearchSessionProvider.notifier,
-    );
-    final isLoading = ref.watch(
-      diarySearchResultsProvider.select((results) => results.isLoading),
-    );
+    final searchState = ref.watch(diarySearchProvider);
 
-    final searchController = useTextEditingController(text: input);
+    final searchController = useTextEditingController();
     final searchFocusNode = useFocusNode();
-    final text = useListenableSelector(
-      searchController,
-      () => searchController.text,
-    );
+    final isSearching = useState(false);
+
+    // Debounce instance.
     final debounce = useMemoized(
       () => Debounce(delay: const Duration(seconds: 1)),
     );
 
-    Future<void> search({required bool incremental}) {
-      debounce.dispose();
-      return diarySearchSessionNotifier.search(
-        searchController.text,
-        incremental: incremental,
-      );
-    }
-
     useEffect(() {
+      // Set the previous search term as the initial value.
+      searchController.text = searchState.searchTerm;
       searchFocusNode.requestFocus();
-      var searchedText = searchController.text;
-      void searchChangedText() {
-        final text = searchController.text;
-        if (text == searchedText) {
-          return;
-        }
-        searchedText = text;
-        if (text.isEmpty) {
-          unawaited(search(incremental: true));
-        } else {
-          debounce(() => unawaited(search(incremental: true)));
-        }
-      }
-
-      searchController.addListener(searchChangedText);
-      return () {
-        searchController.removeListener(searchChangedText);
-        debounce.dispose();
-      };
+      return debounce.dispose;
     }, []);
 
-    final isWaitingForSearch = text != input;
+    Future<void> performSearch() async {
+      final trimmedText = searchController.text.trim();
+      if (trimmedText.isEmpty || trimmedText.length < 2) {
+        // Clear search results if empty or less than 2 characters.
+        isSearching.value = false;
+        ref.read(diarySearchProvider.notifier).clear();
+      } else {
+        isSearching.value = true;
+        await ref.read(diarySearchProvider.notifier).search(trimmedText);
+        isSearching.value = false;
+      }
+    }
+
+    void onTextChanged(String value) {
+      // Execute debounced search (search after 1 second).
+      final trimmedValue = value.trim();
+      if (trimmedValue.isEmpty || trimmedValue.length < 2) {
+        // Clear immediately if empty or less than 2 characters.
+        debounce.dispose();
+        isSearching.value = false;
+        ref.read(diarySearchProvider.notifier).clear();
+      } else {
+        isSearching.value = true;
+        debounce(performSearch);
+      }
+    }
 
     return Dialog(
       child: Container(
@@ -608,38 +597,15 @@ class _SearchDiaryDialog extends HookConsumerWidget {
             _SearchBar(
               controller: searchController,
               focusNode: searchFocusNode,
-              onSubmitted: () => search(incremental: false),
-              isSearching: isLoading || isWaitingForSearch,
+              onChanged: onTextChanged,
+              onSubmitted: () async {
+                debounce.dispose();
+                await performSearch();
+              },
+              isSearching: isSearching.value,
             ),
             const Gap(16),
-            Flexible(
-              child: switch ((text: text, term: term)) {
-                (text: '', term: _) => _RecentSearchTerms(
-                  onSelected: (recentTerm) async {
-                    searchController.value = TextEditingValue(
-                      text: recentTerm,
-                      selection: TextSelection.collapsed(
-                        offset: recentTerm.length,
-                      ),
-                    );
-                    await search(incremental: false);
-                  },
-                ),
-                (text: _, term: '') => const _SearchPlaceholder(),
-                (text: _, term: _) => _SearchResultsView(
-                  term: term,
-                  onSelected: (entry) async {
-                    await diarySearchSessionNotifier.search(
-                      input,
-                      incremental: false,
-                    );
-                    if (context.mounted) {
-                      Navigator.of(context).pop(entry.date);
-                    }
-                  },
-                ),
-              },
-            ),
+            Flexible(child: _SearchResults(searchState: searchState)),
           ],
         ),
       ),
@@ -651,12 +617,14 @@ class _SearchBar extends HookWidget {
   const new({
     required this.controller,
     required this.focusNode,
+    required this.onChanged,
     required this.onSubmitted,
     required this.isSearching,
   });
 
   final TextEditingController controller;
   final FocusNode focusNode;
+  final void Function(String) onChanged;
   final void Function() onSubmitted;
   final bool isSearching;
 
@@ -699,6 +667,7 @@ class _SearchBar extends HookWidget {
                 contentPadding: EdgeInsets.zero,
               ),
               textInputAction: TextInputAction.search,
+              onChanged: onChanged,
               onSubmitted: (_) => onSubmitted(),
             ),
           ),
@@ -716,7 +685,10 @@ class _SearchBar extends HookWidget {
           ] else if (hasText) ...[
             const SizedBox(width: 8),
             GestureDetector(
-              onTap: controller.clear,
+              onTap: () {
+                controller.clear();
+                onChanged('');
+              },
               child: Container(
                 width: 20,
                 height: 20,
@@ -736,170 +708,66 @@ class _SearchBar extends HookWidget {
   }
 }
 
-/// The message shown where search results appear, before a search.
-class _SearchPlaceholder extends StatelessWidget {
-  const new();
+class _SearchResults extends ConsumerWidget {
+  const new({required this.searchState});
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(
-          Icons.search,
-          size: 64,
-          color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-        ),
-        const SizedBox(height: 16),
-        BodyLargeText(
-          context.t.search.placeholder,
-          color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-        ),
-      ],
-    );
-  }
-}
-
-class _RecentSearchTerms extends ConsumerWidget {
-  const new({required this.onSelected});
-
-  final void Function(String term) onSelected;
+  final SearchResult searchState;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final terms = ref.watch(recentDiarySearchTermsProvider);
-    if (terms.isEmpty) {
-      return const _SearchPlaceholder();
+    final notifier = ref.watch(diarySearchProvider.notifier);
+
+    if (searchState.searchTerm.isEmpty) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.search,
+            size: 64,
+            color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
+          ),
+          const SizedBox(height: 16),
+          BodyLargeText(
+            context.t.search.placeholder,
+            color: context.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+          ),
+        ],
+      );
     }
 
-    final colorScheme = context.colorScheme;
-    final notifier = ref.watch(recentDiarySearchTermsProvider.notifier);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: TitleSmallText(
-                context.t.search.recentTitle,
-                color: colorScheme.onSurfaceVariant,
-              ),
-            ),
-            TextButton(
-              onPressed: notifier.clear,
-              child: Text(context.t.search.clearRecent),
-            ),
-          ],
+    if (searchState.diaries.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(16),
+        child: BodyLargeText(
+          context.t.search.noResults,
+          color: context.colorScheme.onSurfaceVariant,
         ),
-        Flexible(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                for (final term in terms)
-                  ListTile(
-                    contentPadding: EdgeInsets.zero,
-                    leading: Icon(
-                      Icons.history,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                    title: BodyLargeText(term, maxLines: 1),
-                    trailing: IconButton(
-                      tooltip: context.t.search.removeRecent,
-                      onPressed: () => notifier.remove(term),
-                      icon: Icon(
-                        Icons.close,
-                        color: colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                    onTap: () => onSelected(term),
-                  ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+      );
+    }
 
-class _SearchResultsView extends HookConsumerWidget {
-  const new({required this.term, required this.onSelected});
-
-  final String term;
-  final void Function(DiaryEntry entry) onSelected;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final scrollOffset = ref.watch(
-      diarySearchSessionProvider.select((place) => place.scrollOffset),
-    );
-    final diarySearchSessionNotifier = ref.watch(
-      diarySearchSessionProvider.notifier,
-    );
-    final results = ref.watch(diarySearchResultsProvider);
-    final notifier = ref.watch(diarySearchResultsProvider.notifier);
-
-    final scrollController = useScrollController(
-      initialScrollOffset: scrollOffset,
-      keepScrollOffset: false,
-      onAttach: (position) {
-        final isScrolling = position.isScrollingNotifier;
-        isScrolling.addListener(() {
-          if (!isScrolling.value) {
-            diarySearchSessionNotifier.saveScrollOffset(position.pixels);
+    return ScrollEndReachedListener(
+      onEndReached: searchState.hasMore ? notifier.loadMore : null,
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: searchState.diaries.length + (searchState.hasMore ? 1 : 0),
+        separatorBuilder: (context, index) => const Gap(8),
+        itemBuilder: (context, index) {
+          if (index == searchState.diaries.length) {
+            return const _LoadingMoreItem();
           }
-        });
-      },
-      keys: [term],
-    );
 
-    final colorScheme = context.colorScheme;
-    switch (results) {
-      case AsyncValue(value: final loaded?, :final hasError):
-        if (loaded.entries.isEmpty) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: BodyLargeText(
-              context.t.search.noResults,
-              color: colorScheme.onSurfaceVariant,
-            ),
-          );
-        }
-        return ScrollEndReachedListener(
-          onEndReached: loaded.hasMore && !hasError ? notifier.loadMore : null,
-          child: ListView.separated(
-            controller: scrollController,
-            shrinkWrap: true,
-            itemCount: loaded.entries.length + (loaded.hasMore ? 1 : 0),
-            separatorBuilder: (context, index) => const Gap(8),
-            itemBuilder: (context, index) {
-              if (index == loaded.entries.length) {
-                return hasError
-                    ? _LoadMoreFailedItem(onRetry: notifier.loadMore)
-                    : const _LoadingMoreItem();
-              }
-              final entry = loaded.entries[index];
-              return _SearchResultTile(
-                diary: entry,
-                searchTerm: term,
-                onTap: () => onSelected(entry),
-              );
+          final diary = searchState.diaries[index];
+          return _SearchResultTile(
+            diary: diary,
+            searchTerm: searchState.searchTerm,
+            onTap: () {
+              Navigator.of(context).pop(diary.date);
             },
-          ),
-        );
-      case AsyncValue(hasError: true):
-        return Padding(
-          padding: const EdgeInsets.all(16),
-          child: BodyLargeText(
-            context.t.search.failed,
-            color: colorScheme.onSurfaceVariant,
-          ),
-        );
-      case AsyncValue():
-        return centerLoadingIndicator;
-    }
+          );
+        },
+      ),
+    );
   }
 }
 
@@ -913,28 +781,6 @@ class _LoadingMoreItem extends StatelessWidget {
         strokeWidth: 2,
         color: context.colorScheme.primary,
       ),
-    );
-  }
-}
-
-class _LoadMoreFailedItem extends StatelessWidget {
-  const new({required this.onRetry});
-
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        BodyMediumText(
-          context.t.search.loadMoreFailed,
-          color: context.colorScheme.onSurfaceVariant,
-        ),
-        TextButton(
-          onPressed: onRetry,
-          child: Text(context.t.search.retry),
-        ),
-      ],
     );
   }
 }

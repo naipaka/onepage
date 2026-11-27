@@ -312,227 +312,57 @@ abstract class _$CachedDiaries extends $AsyncNotifier<DiariesWithDates> {
   }
 }
 
-/// The minimum length of a diary search term.
-///
-/// {@macro diary.DiaryQuery.minSearchTermLength}
+/// Provides search functionality for diary entries.
 
-@ProviderFor(minDiarySearchTermLength)
-final minDiarySearchTermLengthProvider = MinDiarySearchTermLengthProvider._();
+@ProviderFor(DiarySearch)
+final diarySearchProvider = DiarySearchProvider._();
 
-/// The minimum length of a diary search term.
-///
-/// {@macro diary.DiaryQuery.minSearchTermLength}
-
-final class MinDiarySearchTermLengthProvider
-    extends $FunctionalProvider<int, int, int>
-    with $Provider<int> {
-  /// The minimum length of a diary search term.
-  ///
-  /// {@macro diary.DiaryQuery.minSearchTermLength}
-  MinDiarySearchTermLengthProvider._()
+/// Provides search functionality for diary entries.
+final class DiarySearchProvider
+    extends $NotifierProvider<DiarySearch, SearchResult> {
+  /// Provides search functionality for diary entries.
+  DiarySearchProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'minDiarySearchTermLengthProvider',
+        name: r'diarySearchProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$minDiarySearchTermLengthHash();
+  String debugGetCreateSourceHash() => _$diarySearchHash();
 
   @$internal
   @override
-  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  int create(Ref ref) {
-    return minDiarySearchTermLength(ref);
-  }
+  DiarySearch create() => DiarySearch();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(int value) {
+  Override overrideWithValue(SearchResult value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<int>(value),
+      providerOverride: $SyncValueProvider<SearchResult>(value),
     );
   }
 }
 
-String _$minDiarySearchTermLengthHash() =>
-    r'2c0231b3fa43f380af4760ba9823e3a29cb16f73';
+String _$diarySearchHash() => r'3d54c125b7c06c36894bd659c57f63f9a7c6a27f';
 
-/// {@template onepage.DiarySearchSession}
-/// The diary search that the search dialog shows, kept until the app closes
-/// so that the dialog opens again where the user left it.
-///
-/// The term is the input without the spaces around it, and is empty when
-/// nothing is searched.
-/// {@endtemplate}
+/// Provides search functionality for diary entries.
 
-@ProviderFor(DiarySearchSession)
-final diarySearchSessionProvider = DiarySearchSessionProvider._();
-
-/// {@template onepage.DiarySearchSession}
-/// The diary search that the search dialog shows, kept until the app closes
-/// so that the dialog opens again where the user left it.
-///
-/// The term is the input without the spaces around it, and is empty when
-/// nothing is searched.
-/// {@endtemplate}
-final class DiarySearchSessionProvider
-    extends $NotifierProvider<DiarySearchSession, DiarySearchPlace> {
-  /// {@template onepage.DiarySearchSession}
-  /// The diary search that the search dialog shows, kept until the app closes
-  /// so that the dialog opens again where the user left it.
-  ///
-  /// The term is the input without the spaces around it, and is empty when
-  /// nothing is searched.
-  /// {@endtemplate}
-  DiarySearchSessionProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'diarySearchSessionProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$diarySearchSessionHash();
-
-  @$internal
-  @override
-  DiarySearchSession create() => DiarySearchSession();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DiarySearchPlace value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<DiarySearchPlace>(value),
-    );
-  }
-}
-
-String _$diarySearchSessionHash() =>
-    r'f8adaf2a6e190be2b6be0578f68f33ebd0e7c6d7';
-
-/// {@template onepage.DiarySearchSession}
-/// The diary search that the search dialog shows, kept until the app closes
-/// so that the dialog opens again where the user left it.
-///
-/// The term is the input without the spaces around it, and is empty when
-/// nothing is searched.
-/// {@endtemplate}
-
-abstract class _$DiarySearchSession extends $Notifier<DiarySearchPlace> {
-  DiarySearchPlace build();
+abstract class _$DiarySearch extends $Notifier<SearchResult> {
+  SearchResult build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<DiarySearchPlace, DiarySearchPlace>;
+    final ref = this.ref as $Ref<SearchResult, SearchResult>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<DiarySearchPlace, DiarySearchPlace>,
-              DiarySearchPlace,
-              Object?,
-              Object?
-            >;
-    return element.handleCreate(ref, build);
-  }
-}
-
-/// {@template onepage.DiarySearchResults}
-/// The diary entries that contain the term of [DiarySearchSession], the
-/// newest first, loaded a number of entries at a time.
-///
-/// The results stay after the search dialog closes once the first entries
-/// are loaded, and are searched again when the term changes.
-/// When diaries of [CachedDiaries] are added or changed, the results add,
-/// update or remove them, among the dates loaded so far.
-/// An empty term has no entries, and searches nothing.
-/// A failure to load more entries keeps the loaded ones in the state.
-/// {@endtemplate}
-
-@ProviderFor(DiarySearchResults)
-final diarySearchResultsProvider = DiarySearchResultsProvider._();
-
-/// {@template onepage.DiarySearchResults}
-/// The diary entries that contain the term of [DiarySearchSession], the
-/// newest first, loaded a number of entries at a time.
-///
-/// The results stay after the search dialog closes once the first entries
-/// are loaded, and are searched again when the term changes.
-/// When diaries of [CachedDiaries] are added or changed, the results add,
-/// update or remove them, among the dates loaded so far.
-/// An empty term has no entries, and searches nothing.
-/// A failure to load more entries keeps the loaded ones in the state.
-/// {@endtemplate}
-final class DiarySearchResultsProvider
-    extends $AsyncNotifierProvider<DiarySearchResults, LoadedDiaryEntries> {
-  /// {@template onepage.DiarySearchResults}
-  /// The diary entries that contain the term of [DiarySearchSession], the
-  /// newest first, loaded a number of entries at a time.
-  ///
-  /// The results stay after the search dialog closes once the first entries
-  /// are loaded, and are searched again when the term changes.
-  /// When diaries of [CachedDiaries] are added or changed, the results add,
-  /// update or remove them, among the dates loaded so far.
-  /// An empty term has no entries, and searches nothing.
-  /// A failure to load more entries keeps the loaded ones in the state.
-  /// {@endtemplate}
-  DiarySearchResultsProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'diarySearchResultsProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$diarySearchResultsHash();
-
-  @$internal
-  @override
-  DiarySearchResults create() => DiarySearchResults();
-}
-
-String _$diarySearchResultsHash() =>
-    r'90050b68b37aea7829d4a221b1fa62c96994364f';
-
-/// {@template onepage.DiarySearchResults}
-/// The diary entries that contain the term of [DiarySearchSession], the
-/// newest first, loaded a number of entries at a time.
-///
-/// The results stay after the search dialog closes once the first entries
-/// are loaded, and are searched again when the term changes.
-/// When diaries of [CachedDiaries] are added or changed, the results add,
-/// update or remove them, among the dates loaded so far.
-/// An empty term has no entries, and searches nothing.
-/// A failure to load more entries keeps the loaded ones in the state.
-/// {@endtemplate}
-
-abstract class _$DiarySearchResults extends $AsyncNotifier<LoadedDiaryEntries> {
-  FutureOr<LoadedDiaryEntries> build();
-  @$mustCallSuper
-  @override
-  WhenComplete runBuild() {
-    final ref =
-        this.ref as $Ref<AsyncValue<LoadedDiaryEntries>, LoadedDiaryEntries>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<AsyncValue<LoadedDiaryEntries>, LoadedDiaryEntries>,
-              AsyncValue<LoadedDiaryEntries>,
+              AnyNotifier<SearchResult, SearchResult>,
+              SearchResult,
               Object?,
               Object?
             >;

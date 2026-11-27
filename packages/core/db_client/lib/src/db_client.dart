@@ -149,45 +149,22 @@ class DbClient extends _$DbClient {
   ///
   /// This method takes a [searchTerm] parameter and searches for diary entries
   /// that contain the search term in their content. The search is
-  /// case-insensitive, and every character of the term matches only itself.
-  /// Returns a list of [DiaryEntry] objects ordered by date in descending
-  /// order.
+  /// case-insensitive. Returns a list of [DiaryEntry] objects ordered by date
+  /// in descending order.
   Future<List<DiaryEntry>> searchDiaries({
     required String searchTerm,
     int? limit,
     int? offset,
   }) {
     final query = select(diaries)
-      ..where((tbl) => _containsSearchTerm(tbl, searchTerm))
+      ..where(
+        (tbl) => tbl.content.lower().contains(searchTerm.toLowerCase()),
+      )
       ..orderBy([(tbl) => OrderingTerm.desc(tbl.date)]);
     if (limit != null) {
       query.limit(limit, offset: offset);
     }
     return query.get();
-  }
-
-  /// Searches the diary entries of [ids] by content, as [searchDiaries]
-  /// does.
-  ///
-  /// Returns the entries in no particular order.
-  Future<List<DiaryEntry>> searchDiariesByIdIn({
-    required Iterable<int> ids,
-    required String searchTerm,
-  }) {
-    final query = select(diaries)
-      ..where(
-        (tbl) => tbl.id.isIn(ids) & _containsSearchTerm(tbl, searchTerm),
-      );
-    return query.get();
-  }
-
-  Expression<bool> _containsSearchTerm($DiariesTable tbl, String searchTerm) {
-    final escaped = searchTerm
-        .toLowerCase()
-        .replaceAll(r'\', r'\\')
-        .replaceAll('%', r'\%')
-        .replaceAll('_', r'\_');
-    return tbl.content.lower().like('%$escaped%', escapeChar: r'\');
   }
 
   /// Counts unique days with diary entries containing non-empty content within

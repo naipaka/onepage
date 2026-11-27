@@ -50,10 +50,6 @@ void main() {
       });
     });
 
-    test('minSearchTermLength is two characters', () {
-      expect(diaryQuery.minSearchTermLength, 2);
-    });
-
     group('searchDiaries', () {
       late DiaryEntry older;
       late DiaryEntry newer;
@@ -95,15 +91,6 @@ void main() {
         );
 
         expect(diaries, isEmpty);
-      });
-
-      test('searchDiariesByIdIn returns the matches among the ids', () async {
-        final diaries = await diaryQuery.searchDiariesByIdIn(
-          ids: [older.id],
-          searchTerm: 'tokyo',
-        );
-
-        expect(diaries, [older]);
       });
     });
 

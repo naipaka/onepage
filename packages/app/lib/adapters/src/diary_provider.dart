@@ -4,13 +4,11 @@ import 'package:async/async.dart';
 import 'package:clock/clock.dart';
 import 'package:db_client/db_client.dart';
 import 'package:diary/diary.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 
 import 'db_client_provider.dart';
 import 'diary_image_provider.dart';
-import 'prefs_client_provider.dart';
 
 part 'diary_provider.g.dart';
 
@@ -211,184 +209,69 @@ class CachedDiaries extends _$CachedDiaries {
   }
 }
 
-/// The minimum length of a diary search term.
-///
-/// {@macro diary.DiaryQuery.minSearchTermLength}
+/// Type definition for search result with pagination information.
+typedef SearchResult = ({
+  List<DiaryEntry> diaries,
+  bool hasMore,
+  String searchTerm,
+});
+
+/// Provides search functionality for diary entries.
 @Riverpod(keepAlive: true)
-int minDiarySearchTermLength(Ref ref) {
-  final diaryQuery = ref.watch(diaryQueryProvider);
-  return diaryQuery.minSearchTermLength;
-}
-
-/// The text the user entered in the diary search, the term searched from it,
-/// and how far the results of the term are scrolled.
-typedef DiarySearchPlace = ({String input, String term, double scrollOffset});
-
-/// {@template onepage.DiarySearchSession}
-/// The diary search that the search dialog shows, kept until the app closes
-/// so that the dialog opens again where the user left it.
-///
-/// The term is the input without the spaces around it, and is empty when
-/// nothing is searched.
-/// {@endtemplate}
-@Riverpod(keepAlive: true)
-class DiarySearchSession extends _$DiarySearchSession {
-  int get _minDiarySearchTermLength =>
-      ref.read(minDiarySearchTermLengthProvider);
-
-  RecentDiarySearchTerms get _recentDiarySearchTermsNotifier =>
-      ref.read(recentDiarySearchTermsProvider.notifier);
+class DiarySearch extends _$DiarySearch {
+  static const int _pageSize = 20;
 
   @override
-  DiarySearchPlace build() => (input: '', term: '', scrollOffset: 0);
+  SearchResult build() {
+    return (diaries: [], hasMore: false, searchTerm: '');
+  }
 
-  /// Searches the term in [input].
+  /// Searches diary entries with the given search term.
   ///
-  /// Searches nothing when the term is shorter than
-  /// [minDiarySearchTermLength]. Keeps how far the results are scrolled when
-  /// the term is the term already searched, and starts from the top of them
-  /// otherwise.
-  /// A search that is not [incremental] adds the term to
-  /// [RecentDiarySearchTerms].
-  Future<void> search(String input, {required bool incremental}) async {
-    final trimmed = input.trim();
-    final isSearchable = trimmed.length >= _minDiarySearchTermLength;
-    final term = isSearchable ? trimmed : '';
-    final isSameTerm = term == state.term;
-    final scrollOffset = isSameTerm ? state.scrollOffset : 0.0;
-    state = (input: input, term: term, scrollOffset: scrollOffset);
-    if (incremental || term.isEmpty) {
+  /// If [isLoadMore] is true, it appends results to existing ones.
+  /// Otherwise, it replaces the current results.
+  Future<void> search(String searchTerm, {bool isLoadMore = false}) async {
+    if (searchTerm.trim().isEmpty) {
+      state = (diaries: [], hasMore: false, searchTerm: '');
       return;
     }
-    await _recentDiarySearchTermsNotifier.add(term);
+
+    final diaryQuery = ref.read(diaryQueryProvider);
+    final currentState = state;
+    final offset = isLoadMore ? currentState.diaries.length : 0;
+
+    final results = await diaryQuery.searchDiaries(
+      searchTerm: searchTerm.trim(),
+      limit: _pageSize,
+      offset: offset,
+    );
+
+    final hasMore = results.length == _pageSize;
+    final diaries = isLoadMore
+        ? [...currentState.diaries, ...results]
+        : results;
+
+    state = (
+      diaries: diaries,
+      hasMore: hasMore,
+      searchTerm: searchTerm.trim(),
+    );
   }
-
-  /// Saves how far the results of the term are scrolled.
-  void saveScrollOffset(double scrollOffset) {
-    state = (input: state.input, term: state.term, scrollOffset: scrollOffset);
-  }
-}
-
-/// The diary entries loaded for a search, and whether more of them are left.
-typedef LoadedDiaryEntries = ({List<DiaryEntry> entries, bool hasMore});
-
-/// {@template onepage.DiarySearchResults}
-/// The diary entries that contain the term of [DiarySearchSession], the
-/// newest first, loaded a number of entries at a time.
-///
-/// The results stay after the search dialog closes once the first entries
-/// are loaded, and are searched again when the term changes.
-/// When diaries of [CachedDiaries] are added or changed, the results add,
-/// update or remove them, among the dates loaded so far.
-/// An empty term has no entries, and searches nothing.
-/// A failure to load more entries keeps the loaded ones in the state.
-/// {@endtemplate}
-@riverpod
-class DiarySearchResults extends _$DiarySearchResults {
-  static const _loadSize = 20;
-
-  static const LoadedDiaryEntries _noEntries = (entries: [], hasMore: false);
-
-  DiaryQuery get _diaryQuery => ref.read(diaryQueryProvider);
-
-  DiarySearchPlace get _diarySearchSession =>
-      ref.read(diarySearchSessionProvider);
 
   /// Runs one load at a time, so that calls during a load wait for it
-  /// instead of loading the same entries again.
-  final _load = AsyncCache<void>.ephemeral();
+  /// instead of loading the same results again.
+  final _loadMore = AsyncCache<void>.ephemeral();
 
-  @override
-  FutureOr<LoadedDiaryEntries> build() {
-    final term = ref.watch(
-      diarySearchSessionProvider.select((place) => place.term),
-    );
-    if (term.isEmpty) {
-      return _noEntries;
-    }
-    ref.listen(cachedDiariesProvider, (previous, next) {
-      final ids = _changedIds(previous?.value?.diaries, next.value?.diaries);
-      if (ids.isNotEmpty) {
-        unawaited(_applyChanges(term: term, ids: ids));
-      }
-    });
-    return _loadFirst(term);
-  }
-
-  /// Loads the next entries.
-  ///
-  /// Does nothing when no entries are loaded or none are left.
-  Future<void> loadMore() => _load.fetch(() async {
-    final loaded = state.value;
-    if (loaded == null || !loaded.hasMore) {
-      return;
-    }
-    final result = await AsyncValue.guard(() async {
-      final next = await _search(
-        term: _diarySearchSession.term,
-        offset: loaded.entries.length,
-      );
-      return (
-        entries: [...loaded.entries, ...next.entries],
-        hasMore: next.hasMore,
-      );
-    });
-    if (ref.mounted) {
-      state = result;
+  /// Loads more search results for the current search term.
+  Future<void> loadMore() => _loadMore.fetch(() async {
+    final currentState = state;
+    if (currentState.hasMore && currentState.searchTerm.isNotEmpty) {
+      await search(currentState.searchTerm, isLoadMore: true);
     }
   });
 
-  /// Loads the first entries of [term], and keeps them once they are loaded.
-  Future<LoadedDiaryEntries> _loadFirst(String term) async {
-    final loaded = await _search(term: term, offset: 0);
-    ref.keepAlive();
-    return loaded;
-  }
-
-  /// Replaces the loaded entries of [ids] with the ones that contain [term]
-  /// now, leaving out the ones older than the loaded dates.
-  Future<void> _applyChanges({
-    required String term,
-    required List<int> ids,
-  }) async {
-    final matched = await _diaryQuery.searchDiariesByIdIn(
-      ids: ids,
-      searchTerm: term,
-    );
-    final loaded = state.value;
-    if (!ref.mounted || loaded == null) {
-      return;
-    }
-    final unchanged = loaded.entries.where((entry) => !ids.contains(entry.id));
-    final oldestDate = loaded.hasMore ? loaded.entries.last.date : null;
-    final amongLoadedDates = matched.where(
-      (entry) => oldestDate == null || !entry.date.isBefore(oldestDate),
-    );
-    final entries = [...unchanged, ...amongLoadedDates]
-      ..sort((a, b) => b.date.compareTo(a.date));
-    state = AsyncData((entries: entries, hasMore: loaded.hasMore));
-  }
-
-  Future<LoadedDiaryEntries> _search({
-    required String term,
-    required int offset,
-  }) async {
-    final entries = await _diaryQuery.searchDiaries(
-      searchTerm: term,
-      limit: _loadSize,
-      offset: offset,
-    );
-    return (entries: entries, hasMore: entries.length == _loadSize);
-  }
-
-  static List<int> _changedIds(List<Diary>? before, List<Diary>? after) {
-    if (before == null || after == null) {
-      return const [];
-    }
-    final entries = {for (final diary in before) diary.entry.id: diary.entry};
-    return [
-      for (final diary in after)
-        if (entries[diary.entry.id] != diary.entry) diary.entry.id,
-    ];
+  /// Clears the search results.
+  void clear() {
+    state = (diaries: [], hasMore: false, searchTerm: '');
   }
 }

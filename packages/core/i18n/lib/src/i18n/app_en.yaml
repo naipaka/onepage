@@ -106,12 +106,6 @@ search:
   searchHint: "Enter search keyword"
   placeholder: "Search results will appear here"
   noResults: "No search results found"
-  recentTitle: "Recent searches"
-  clearRecent: "Clear All"
-  removeRecent: "Remove"
-  failed: "Could not search your diary"
-  loadMoreFailed: "Could not load more results"
-  retry: "Retry"
 notification:
   title: "Notifications"
   timePickerConfirm: "OK"

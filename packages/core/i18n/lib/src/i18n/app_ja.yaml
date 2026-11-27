@@ -103,12 +103,6 @@ search:
   searchHint: "検索キーワードを入力"
   placeholder: "検索結果がここに表示されます"
   noResults: "検索結果がありません"
-  recentTitle: "最近の検索"
-  clearRecent: "すべて消す"
-  removeRecent: "削除"
-  failed: "検索できませんでした"
-  loadMoreFailed: "読み込めませんでした"
-  retry: "再試行"
 notification:
   title: "Notifications"
   timePickerConfirm: "決定"

@@ -33,13 +33,6 @@ class DiaryQuery {
     );
   }
 
-  /// {@template diary.DiaryQuery.minSearchTermLength}
-  /// The minimum length of a search term that [searchDiaries] is used with.
-  ///
-  /// A shorter term matches too many diaries to be useful.
-  /// {@endtemplate}
-  int get minSearchTermLength => 2;
-
   /// Searches diaries by content.
   ///
   /// - [searchTerm] - The search term to look for in diary content.
@@ -55,19 +48,6 @@ class DiaryQuery {
       limit: limit,
       offset: offset,
     );
-  }
-
-  /// Searches the diaries of [ids] by content, as [searchDiaries] does.
-  ///
-  /// Returns the diaries in no particular order.
-  ///
-  /// - [ids] - The IDs of the diaries to search.
-  /// - [searchTerm] - The search term to look for in diary content.
-  Future<List<DiaryEntry>> searchDiariesByIdIn({
-    required Iterable<int> ids,
-    required String searchTerm,
-  }) {
-    return dbClient.searchDiariesByIdIn(ids: ids, searchTerm: searchTerm);
   }
 
   /// Counts unique days with diary entries containing non-empty content within

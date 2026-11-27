@@ -118,24 +118,10 @@ class _FailingDiaries extends CachedDiaries {
   Future<DiariesWithDates> build() => Future.error(Exception('failed'));
 }
 
-/// Search results whose next page keeps loading.
-class _LoadingMoreSearch extends DiarySearchResults {
+/// A search whose next page keeps loading.
+class _LoadingMoreSearch extends DiarySearch {
   @override
   Future<void> loadMore() => Completer<void>().future;
-}
-
-/// Search results whose first page fails to load.
-class _FailingSearch extends DiarySearchResults {
-  @override
-  Future<LoadedDiaryEntries> build() => Future.error(Exception('failed'));
-}
-
-/// Search results whose next page fails to load.
-class _FailingToLoadMoreSearch extends DiarySearchResults {
-  @override
-  Future<void> loadMore() async {
-    state = AsyncError(Exception('failed'), StackTrace.current);
-  }
 }
 
 void main() {
@@ -146,7 +132,6 @@ void main() {
       required GoldenVariant variant,
       Widget page = const HomePage(),
       bool recoveryRuns = false,
-      List<String> recentDiarySearchTerms = const [],
       List<Override> overrides = const [],
       Future<void> Function(WidgetTester tester, _Texts texts)? act,
     }) async {
@@ -160,10 +145,6 @@ void main() {
         now: _now,
         dbClient: dbClient,
         photoStorage: photoStorage,
-        prefsClient: createPrefsClient(
-          hapticsEnabled: true,
-          recentDiarySearchTerms: recentDiarySearchTerms,
-        ),
         overrides: [
           devicePhotosProvider.overrideWithValue(FakeDevicePhotos()),
           photoRecoveryCommandProvider.overrideWithValue(
@@ -197,24 +178,6 @@ void main() {
       // Waits for the search after typing stops.
       await tester.pump(const Duration(seconds: 1));
       await tester.pump(const Duration(seconds: 1));
-    }
-
-    /// Scrolls the search results to the end, where the next page loads.
-    Future<void> scrollResultsToEnd(WidgetTester tester) async {
-      final position = tester
-          .state<ScrollableState>(
-            find.descendant(
-              of: find.descendant(
-                of: find.byType(Dialog),
-                matching: find.byType(ListView),
-              ),
-              matching: find.byType(Scrollable),
-            ),
-          )
-          .position;
-      position.jumpTo(position.maxScrollExtent);
-      await tester.pump();
-      await tester.pump();
     }
 
     for (final variant in GoldenVariant.values) {
@@ -374,62 +337,24 @@ void main() {
           tester,
           'home_page_search_results',
           variant: variant,
-          overrides: [
-            diarySearchResultsProvider.overrideWith(_LoadingMoreSearch.new),
-          ],
+          overrides: [diarySearchProvider.overrideWith(_LoadingMoreSearch.new)],
           act: (tester, texts) async {
             await search(tester, texts.found);
-            await scrollResultsToEnd(tester);
+            final position = tester
+                .state<ScrollableState>(
+                  find.descendant(
+                    of: find.descendant(
+                      of: find.byType(Dialog),
+                      matching: find.byType(ListView),
+                    ),
+                    matching: find.byType(Scrollable),
+                  ),
+                )
+                .position;
+            position.jumpTo(position.maxScrollExtent);
             // The loading indicator keeps moving, so the frames never settle.
+            await tester.pump();
             await tester.pump(const Duration(milliseconds: 500));
-          },
-        );
-      });
-
-      testWidgets('renders the recent search terms with ${variant.suffix}', (
-        tester,
-      ) async {
-        await expectGoldenMatches(
-          tester,
-          'home_page_search_recent',
-          variant: variant,
-          recentDiarySearchTerms: [
-            _textsOf(variant).found,
-            _textsOf(variant).missing,
-          ],
-          act: (tester, _) => openSearch(tester),
-        );
-      });
-
-      testWidgets('renders a search that failed with ${variant.suffix}', (
-        tester,
-      ) async {
-        await expectGoldenMatches(
-          tester,
-          'home_page_search_failed',
-          variant: variant,
-          overrides: [
-            diarySearchResultsProvider.overrideWith(_FailingSearch.new),
-          ],
-          act: (tester, texts) => search(tester, texts.found),
-        );
-      });
-
-      testWidgets('renders search results that failed to load more with '
-          '${variant.suffix}', (tester) async {
-        await expectGoldenMatches(
-          tester,
-          'home_page_search_load_more_failed',
-          variant: variant,
-          overrides: [
-            diarySearchResultsProvider.overrideWith(
-              _FailingToLoadMoreSearch.new,
-            ),
-          ],
-          act: (tester, texts) async {
-            await search(tester, texts.found);
-            await scrollResultsToEnd(tester);
-            await scrollResultsToEnd(tester);
           },
         );
       });

@@ -161,22 +161,5 @@ void main() {
         expect(prefsClient.hasShownDiaryImageNotice, isTrue);
       });
     });
-
-    group('recentDiarySearchTerms', () {
-      test('returns an empty list when no value is stored', () {
-        expect(prefsClient.recentDiarySearchTerms, isEmpty);
-      });
-
-      test('stores the terms in order', () async {
-        final result = await prefsClient.setRecentDiarySearchTerms([
-          'cafe',
-          'rain',
-        ]);
-
-        expect(result, isTrue);
-        expect(prefs.getStringList('recentDiarySearchTerms'), ['cafe', 'rain']);
-        expect(prefsClient.recentDiarySearchTerms, ['cafe', 'rain']);
-      });
-    });
   });
 }

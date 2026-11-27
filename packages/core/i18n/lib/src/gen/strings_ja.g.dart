@@ -175,12 +175,6 @@ class _Translations$search$ja implements Translations$search$en {
 	@override String get searchHint => '検索キーワードを入力';
 	@override String get placeholder => '検索結果がここに表示されます';
 	@override String get noResults => '検索結果がありません';
-	@override String get recentTitle => '最近の検索';
-	@override String get clearRecent => 'すべて消す';
-	@override String get removeRecent => '削除';
-	@override String get failed => '検索できませんでした';
-	@override String get loadMoreFailed => '読み込めませんでした';
-	@override String get retry => '再試行';
 }
 
 // Path: notification
@@ -488,12 +482,6 @@ extension on TranslationsJa {
 			'search.searchHint' => '検索キーワードを入力',
 			'search.placeholder' => '検索結果がここに表示されます',
 			'search.noResults' => '検索結果がありません',
-			'search.recentTitle' => '最近の検索',
-			'search.clearRecent' => 'すべて消す',
-			'search.removeRecent' => '削除',
-			'search.failed' => '検索できませんでした',
-			'search.loadMoreFailed' => '読み込めませんでした',
-			'search.retry' => '再試行',
 			'notification.title' => 'Notifications',
 			'notification.timePickerConfirm' => '決定',
 			'notification.addTime' => '時間を追加',

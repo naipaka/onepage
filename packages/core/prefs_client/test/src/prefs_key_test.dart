@@ -38,7 +38,7 @@ void main() {
     });
 
     test('enum values are correctly defined', () {
-      expect(PrefsKey.values, hasLength(8));
+      expect(PrefsKey.values, hasLength(7));
       expect(PrefsKey.values, contains(PrefsKey.textInputHaptic));
       expect(PrefsKey.values, contains(PrefsKey.otherHaptic));
       expect(PrefsKey.values, contains(PrefsKey.notificationSettings));
@@ -46,7 +46,6 @@ void main() {
       expect(PrefsKey.values, contains(PrefsKey.hasDeclinedInAppReview));
       expect(PrefsKey.values, contains(PrefsKey.diaryImageNoticeShown));
       expect(PrefsKey.values, contains(PrefsKey.photoRecoveryDismissed));
-      expect(PrefsKey.values, contains(PrefsKey.recentDiarySearchTerms));
     });
   });
 }

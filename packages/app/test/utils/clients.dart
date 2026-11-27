@@ -17,22 +17,11 @@ DbClient createDbClient() {
 }
 
 /// Creates a mock of [PrefsClient] with no notification settings.
-///
-/// It keeps the recent diary search terms that are set.
 MockPrefsClient createPrefsClient({
   bool hapticsEnabled = false,
   bool photoRecoveryDismissed = false,
-  List<String> recentDiarySearchTerms = const [],
 }) {
   final prefsClient = MockPrefsClient();
-  var recentTerms = recentDiarySearchTerms;
-  when(() => prefsClient.recentDiarySearchTerms).thenAnswer((_) => recentTerms);
-  when(() => prefsClient.setRecentDiarySearchTerms(any())).thenAnswer((
-    invocation,
-  ) async {
-    recentTerms = invocation.positionalArguments.single as List<String>;
-    return true;
-  });
   when(() => prefsClient.textInputHapticEnabled).thenReturn(hapticsEnabled);
   when(() => prefsClient.otherHapticEnabled).thenReturn(hapticsEnabled);
   when(
