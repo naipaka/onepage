@@ -242,6 +242,77 @@ void main() {
       }
     });
 
+    group('search', () {
+      final field = find.descendant(
+        of: find.byType(Dialog),
+        matching: find.byType(TextField),
+      );
+
+      setUp(() async {
+        final today = clock.now();
+        for (var i = 1; i <= 30; i++) {
+          await dbClient.insertDiary(
+            content: 'cafe $i',
+            date: DateTime(today.year, today.month, today.day - i),
+          );
+        }
+      });
+
+      // The cursor of the search field keeps blinking, so the frames never
+      // settle.
+      Future<void> pumpFrames(WidgetTester tester) async {
+        await tester.pump();
+        await tester.pump(const Duration(seconds: 1));
+      }
+
+      testWidgets('loads the next page at the end of the results', (
+        tester,
+      ) async {
+        await pumpHome(tester);
+        await tester.tap(find.byIcon(Icons.search).first);
+        await pumpFrames(tester);
+        await tester.enterText(field, 'cafe');
+        // Waits for the search after typing stops.
+        await pumpFrames(tester);
+        await pumpFrames(tester);
+        final container = ProviderScope.containerOf(tester.element(field));
+        int loadedCount() => container.read(diarySearchProvider).diaries.length;
+        expect(loadedCount(), 20);
+
+        final position = tester
+            .state<ScrollableState>(
+              find.descendant(
+                of: find.descendant(
+                  of: find.byType(Dialog),
+                  matching: find.byType(ListView),
+                ),
+                matching: find.byType(Scrollable),
+              ),
+            )
+            .position;
+        position.jumpTo(position.maxScrollExtent);
+        await pumpFrames(tester);
+        position.jumpTo(position.maxScrollExtent);
+        await pumpFrames(tester);
+
+        expect(loadedCount(), 30);
+        expect(
+          find.descendant(
+            of: find.byType(Dialog),
+            matching: find.text('cafe 30', findRichText: true),
+          ),
+          findsOneWidget,
+        );
+        expect(
+          find.descendant(
+            of: find.byType(Dialog),
+            matching: find.byType(CircularProgressIndicator),
+          ),
+          findsNothing,
+        );
+      });
+    });
+
     testWidgets('shows a failed load and loads again on retry', (
       tester,
     ) async {

@@ -16,7 +16,6 @@ import 'package:onepage/pages/pages.dart';
 import 'package:onepage/widgets/widgets.dart';
 import 'package:photo_client/photo_client.dart';
 import 'package:photo_storage/photo_storage.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../utils/clients.dart';
 import '../golden_fakes.dart';
@@ -334,14 +333,6 @@ void main() {
 
       testWidgets('renders the search results loading more with '
           '${variant.suffix}', (tester) async {
-        // Reports the visibility of the last row in the frame that shows it,
-        // so that no timer of the next report is left after the test.
-        final interval = VisibilityDetectorController.instance.updateInterval;
-        VisibilityDetectorController.instance.updateInterval = Duration.zero;
-        addTearDown(
-          () => VisibilityDetectorController.instance.updateInterval = interval,
-        );
-
         await expectGoldenMatches(
           tester,
           'home_page_search_results',

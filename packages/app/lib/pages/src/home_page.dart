@@ -17,7 +17,6 @@ import 'package:provider_utils/provider_utils.dart';
 import 'package:scroll_calendar/scroll_calendar.dart';
 import 'package:theme/theme.dart';
 import 'package:utils/utils.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 import 'package:widgets/widgets.dart';
 
 import '../../adapters/adapters.dart';
@@ -716,6 +715,8 @@ class _SearchResults extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.watch(diarySearchProvider.notifier);
+
     if (searchState.searchTerm.isEmpty) {
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -745,51 +746,40 @@ class _SearchResults extends ConsumerWidget {
       );
     }
 
-    return ListView.separated(
-      shrinkWrap: true,
-      itemCount: searchState.diaries.length + (searchState.hasMore ? 1 : 0),
-      separatorBuilder: (context, index) => const Gap(8),
-      itemBuilder: (context, index) {
-        if (index == searchState.diaries.length) {
-          return _LoadMoreItem(
-            onLoadMore: () async {
-              await ref.read(diarySearchProvider.notifier).loadMore();
+    return ScrollEndReachedListener(
+      onEndReached: searchState.hasMore ? notifier.loadMore : null,
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemCount: searchState.diaries.length + (searchState.hasMore ? 1 : 0),
+        separatorBuilder: (context, index) => const Gap(8),
+        itemBuilder: (context, index) {
+          if (index == searchState.diaries.length) {
+            return const _LoadingMoreItem();
+          }
+
+          final diary = searchState.diaries[index];
+          return _SearchResultTile(
+            diary: diary,
+            searchTerm: searchState.searchTerm,
+            onTap: () {
+              Navigator.of(context).pop(diary.date);
             },
           );
-        }
-
-        final diary = searchState.diaries[index];
-        return _SearchResultTile(
-          diary: diary,
-          searchTerm: searchState.searchTerm,
-          onTap: () {
-            Navigator.of(context).pop(diary.date);
-          },
-        );
-      },
+        },
+      ),
     );
   }
 }
 
-class _LoadMoreItem extends StatelessWidget {
-  const new({required this.onLoadMore});
-
-  final void Function() onLoadMore;
+class _LoadingMoreItem extends StatelessWidget {
+  const new();
 
   @override
   Widget build(BuildContext context) {
-    return VisibilityDetector(
-      key: const Key('load_more_search_results'),
-      onVisibilityChanged: (info) {
-        if (info.visibleFraction > 0.1) {
-          onLoadMore();
-        }
-      },
-      child: Center(
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: context.colorScheme.primary,
-        ),
+    return Center(
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        color: context.colorScheme.primary,
       ),
     );
   }
@@ -976,8 +966,6 @@ class _ImageSelectionActionButton extends ConsumerWidget {
     final cachedDiaries = ref.watch(cachedDiariesProvider.notifier);
     final tracker = ref.watch(trackerProvider);
     final prefsClient = ref.watch(prefsClientProvider);
-    final imageCount = ref.watch(diaryImageCountProvider);
-    final colorScheme = context.colorScheme;
 
     return ListenableBuilder(
       listenable: FocusManager.instance,
@@ -1083,12 +1071,7 @@ class _ImageSelectionActionButton extends ConsumerWidget {
 
         return IconButton(
           onPressed: selectImage,
-          icon: Icon(
-            Icons.add_photo_alternate_outlined,
-            color: imageCount.whenOrNull(
-              data: (count) => count < 1 ? colorScheme.primary : null,
-            ),
-          ),
+          icon: const Icon(Icons.add_photo_alternate_outlined),
         );
       },
     );

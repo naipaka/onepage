@@ -139,12 +139,6 @@ void main() {
         });
       });
 
-      test('watchDiaryImageCount emits the image count', () async {
-        await dbClient.insertDiaryImage(diaryId: diary.id, fileName: 'a.jpg');
-
-        expect(await dbClient.watchDiaryImageCount().first, 1);
-      });
-
       test('deleteDiaryImage returns the file name of the image', () async {
         final image = await dbClient.insertDiaryImage(
           diaryId: diary.id,

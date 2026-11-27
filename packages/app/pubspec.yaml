@@ -72,7 +72,6 @@ dependencies:
   url_launcher: ^6.3.3
   utils:
     path: ../core/utils/
-  visibility_detector: ^0.4.0+2
   widgets:
     path: ../core/widgets/
 

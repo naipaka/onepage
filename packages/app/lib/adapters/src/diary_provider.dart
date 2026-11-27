@@ -30,15 +30,6 @@ DiaryQuery diaryQuery(Ref ref) {
   return DiaryQuery(dbClient: dbClient);
 }
 
-/// Provides a stream of the total diary image count.
-///
-/// Emits the current count whenever images are added or removed.
-@riverpod
-Stream<int> diaryImageCount(Ref ref) {
-  final query = ref.watch(diaryQueryProvider);
-  return query.diaryImageCount();
-}
-
 /// Provides the diary images whose photo data is outside the app.
 ///
 /// This is not a stream, because a paused stream keeps the database from
@@ -267,13 +258,17 @@ class DiarySearch extends _$DiarySearch {
     );
   }
 
+  /// Runs one load at a time, so that calls during a load wait for it
+  /// instead of loading the same results again.
+  final _loadMore = AsyncCache<void>.ephemeral();
+
   /// Loads more search results for the current search term.
-  Future<void> loadMore() async {
+  Future<void> loadMore() => _loadMore.fetch(() async {
     final currentState = state;
     if (currentState.hasMore && currentState.searchTerm.isNotEmpty) {
       await search(currentState.searchTerm, isLoadMore: true);
     }
-  }
+  });
 
   /// Clears the search results.
   void clear() {

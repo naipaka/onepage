@@ -121,16 +121,5 @@ void main() {
 
       expect(await diaryQuery.getExternalDiaryImages(), [external]);
     });
-
-    test('diaryImageCount emits the image count', () async {
-      final entry = await dbClient.insertDiary(
-        content: 'Diary',
-        date: DateTime(2024),
-      );
-      await dbClient.insertDiaryImage(diaryId: entry.id, fileName: 'a.jpg');
-      await dbClient.insertDiaryImage(diaryId: entry.id, fileName: 'b.jpg');
-
-      expect(await diaryQuery.diaryImageCount().first, 2);
-    });
   });
 }

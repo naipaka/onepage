@@ -114,50 +114,6 @@ final class DiaryQueryProvider
 
 String _$diaryQueryHash() => r'c2aaf09175f18fb5ff5d9eefca6e772125fae621';
 
-/// Provides a stream of the total diary image count.
-///
-/// Emits the current count whenever images are added or removed.
-
-@ProviderFor(diaryImageCount)
-final diaryImageCountProvider = DiaryImageCountProvider._();
-
-/// Provides a stream of the total diary image count.
-///
-/// Emits the current count whenever images are added or removed.
-
-final class DiaryImageCountProvider
-    extends $FunctionalProvider<AsyncValue<int>, int, Stream<int>>
-    with $FutureModifier<int>, $StreamProvider<int> {
-  /// Provides a stream of the total diary image count.
-  ///
-  /// Emits the current count whenever images are added or removed.
-  DiaryImageCountProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'diaryImageCountProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$diaryImageCountHash();
-
-  @$internal
-  @override
-  $StreamProviderElement<int> $createElement($ProviderPointer pointer) =>
-      $StreamProviderElement(pointer);
-
-  @override
-  Stream<int> create(Ref ref) {
-    return diaryImageCount(ref);
-  }
-}
-
-String _$diaryImageCountHash() => r'8c192998efc25cc71524afa6d5b7e815afccf01a';
-
 /// Provides the diary images whose photo data is outside the app.
 ///
 /// This is not a stream, because a paused stream keeps the database from
@@ -392,7 +348,7 @@ final class DiarySearchProvider
   }
 }
 
-String _$diarySearchHash() => r'9655f6dd5d9515995bec8c6b4312b59f16dcd9fb';
+String _$diarySearchHash() => r'3d54c125b7c06c36894bd659c57f63f9a7c6a27f';
 
 /// Provides search functionality for diary entries.
 
